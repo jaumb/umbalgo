@@ -1,8 +1,8 @@
-// Algorithm 1.3 (page 151)
+// Algorithm 1.3, page 151
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Queue<Item> implements QueueADT<Item>, Iterable<Item> {
+public class Queue<Item> implements QueueApi<Item>, Iterable<Item> {
   private Node first;
   private Node last;
   private int N;

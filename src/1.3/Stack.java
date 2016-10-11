@@ -1,8 +1,8 @@
-// Algorithm 1.2 (page 149)
+// Algorithm 1.2, page 149
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Stack<Item> implements StackADT<Item>, Iterable<Item> {
+public class Stack<Item> implements StackApi<Item>, Iterable<Item> {
   private Node first;
   private int N;
 

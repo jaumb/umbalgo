@@ -1,7 +1,7 @@
-// Algorithm 1.1 (page 141)
+// Algorithm 1.1, page 141
 import java.util.Iterator;
 
-public class ResizingArrayStack<Item> implements StackADT<Item>, Iterable<Item> {
+public class ResizingArrayStack<Item> implements StackApi<Item>, Iterable<Item> {
   private Item[] a = (Item[]) new Object[1];
   private int N = 0;
 

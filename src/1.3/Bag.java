@@ -1,8 +1,8 @@
-// Algorithm 1.4 (page 155)
+// Algorithm 1.4, page 155
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Bag<Item> implements BagADT<Item>, Iterable<Item> {
+public class Bag<Item> implements BagApi<Item>, Iterable<Item> {
   private Node first;
 
   private class Node {
