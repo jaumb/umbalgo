@@ -1,6 +1,4 @@
 // Algorithm 2.4.2, page 278 & 271
-import java.util.Comparable;
-
 public class MergeBU {
   private static Comparable[] aux;
 

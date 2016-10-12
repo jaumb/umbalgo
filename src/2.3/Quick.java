@@ -1,5 +1,5 @@
 // Algorithm 2.5.1, page 289 & 291
-import java.util.Comparable;
+import edu.princeton.cs.algs4;
 
 public class Quick {
   public static void sort(Comparable[] a) {
