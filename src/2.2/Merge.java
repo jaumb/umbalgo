@@ -33,4 +33,8 @@ public class Merge {
       else
         a[k] = aux[i++];
   }
+
+  private static boolean less(Comparable v, Comparable w) {
+    return v.compareTo(w) < 0;
+  }
 }
