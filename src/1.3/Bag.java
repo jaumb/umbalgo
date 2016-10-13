@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 public class Bag<Item> implements BagApi<Item>, Iterable<Item> {
   private Node first;
+  private int N = 0;
 
   private class Node {
     Item item;
@@ -15,6 +16,7 @@ public class Bag<Item> implements BagApi<Item>, Iterable<Item> {
     first = new Node();
     first.item = item;
     first.next = oldfirst;
+    N++;
   }
 
   public boolean isEmpty() {

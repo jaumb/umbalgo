@@ -1,6 +1,4 @@
 // Algorithm 2.2, page 251 & 245
-import java.util.Comparable;
-
 public class Insertion {
   public static void sort(Comparable[] a) {
     int N = a.length;

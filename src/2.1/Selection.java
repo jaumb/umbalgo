@@ -1,6 +1,4 @@
 // Algorithm 2.1, page 249 & 245
-import java.util.Comparable;
-
 public class Selection {
   public static void sort(Comparable[] a) {
     int N = a.length;

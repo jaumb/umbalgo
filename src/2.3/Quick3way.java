@@ -1,7 +1,5 @@
 // Algorithm 2.5.2, page 299 & 289
-import java.util.Comparable;
-
-public class Quick {
+public class Quick3way {
   public static void sort(Comparable[] a) {
     StdRandom.shuffle(a);
     sort(a, 0, a.length - 1);

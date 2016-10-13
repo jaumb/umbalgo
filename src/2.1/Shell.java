@@ -1,6 +1,4 @@
 // Algorithm 2.3, page 259 & 245
-import java.util.Comparable;
-
 public class Shell {
   public static void sort(Comparable[] a) {
     int N = a.length;
