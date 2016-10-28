@@ -32,17 +32,17 @@ var step = function() {
 }
 
 var sort = function(a) {
-  callStack.push(Sort(a));
+  callStack.push(new Sort(a));
   next();
 }
 
 var less = function(v, w) {
-  callStack.push(less(v, w));
+  callStack.push(new less(v, w));
   next();
 }
 
 var exch = function(a, i, j) {
-  callStack.push(exch(a, i, j));
+  callStack.push(new exch(a, i, j));
   next();
 }
 
