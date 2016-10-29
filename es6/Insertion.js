@@ -1,17 +1,11 @@
 var callStack = [];
 
+var trigger = function(msg) {
+  console.log(msg);
+}
+
 var invoke = function() {
-  let a = [
-    86,
-    71,
-    10,
-    75,
-    73,
-    64,
-    87,
-    23,
-    41
-  ];
+  var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
   sort(a);
 }
 
@@ -24,7 +18,7 @@ var step = function() {
   }
   // If the stack is empty, we're done.
   if (callStack.length === 0) {
-    alert("Done");
+    console.log("Done");
   } else {
     // Otherwise, execute the next line.
     callStack[callStack.length - 1].next();
@@ -32,150 +26,147 @@ var step = function() {
 }
 
 var sort = function(a) {
+  console.log(a);
   callStack.push(new Sort(a));
-  next();
+  step();
 }
 
 var less = function(v, w) {
-  callStack.push(new less(v, w));
-  next();
+  callStack.push(new Less(v, w));
+  step();
 }
 
 var exch = function(a, i, j) {
-  callStack.push(new exch(a, i, j));
-  next();
+  callStack.push(new Exch(a, i, j));
+  step();
 }
 
 class Sort {
   constructor(a) {
-    let params = {
+    console.log("Invoke: sort");
+    this.params = {
       "a": a
     };
-    let locals = {
+    this.locals = {
       "N": undefined,
       "i": undefined,
       "j": undefined
     };
-    let helpers = {
+    this.helpers = {
       predicate_for_1: undefined,
       is_first_iteration_for_1: true,
       predicate_for_2: undefined,
       is_first_iteration_for_2: true
     };
-    let next = line[0];
-    let result = undefined;
-
-    this.trigger = function(lineNumber) {
-      alert("Trigger line " + lineNumber);
-    }
+    this.result = undefined;
 
     this.line = [
       function() { // 01:int N = a.length;
-        locals["N"] = params["a"].length;
-        next = line[1];
-        trigger(1);
+        this.locals["N"] = this.params["a"].length;
+        this.next = this.line[1];
+        trigger("Sort(): 1");
       },
       function() { // 02:for (int i = 1; i < N; i++) {
-        if (helpers["is_first_iteration_for_1"] === true) {
-          locals["i"] = 1;
-          helpers["is_first_iteration_for_1"] = false;
+        if (this.helpers["is_first_iteration_for_1"] === true) {
+          this.locals["i"] = 1;
+          this.helpers["is_first_iteration_for_1"] = false;
         } else {
-          locals["i"]++;
+          this.locals["i"]++;
         }
-        if (locals["i"] < locals["N"]) {
-          next = line[2];
+        if (this.locals["i"] < this.locals["N"]) {
+          this.next = this.line[2];
         } else {
-          next = undefined;
+          this.next = undefined;
+          callStack.pop();
         }
-        trigger(2);
+        trigger("Sort(): 2");
       },
       function() { // 03:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
-        if (helpers["is_first_iteration_for_2"] === true) {
-          locals["j"] = locals["i"];
-          helpers["is_first_iteration_for_2"] = false;
+        if (this.helpers["is_first_iteration_for_2"] === true) {
+          this.locals["j"] = this.locals["i"];
+          this.helpers["is_first_iteration_for_2"] = false;
         } else {
-          locals["j"]--;
+          this.locals["j"]--;
         }
-        if (locals["j"] > 0 && less(params["a"][locals["j"]], params["a"][locals["j"] - 1])) {
-          next = line[3];
+        if (this.locals["j"] > 0 && less(this.params["a"][this.locals["j"]], this.params["a"][this.locals["j"] - 1])) {
+          this.next = this.line[3];
         } else {
-          next = line[1];
+          this.next = this.line[1];
         }
-        trigger(3);
+        trigger("Sort(): 3");
       },
       function() { // 04:        exch(a, j, j - 1);
-        exch(params["a"], locals["j"], locals["j"] - 1);
-        next = line[2];
-        trigger(4);
+        this.exch(params["a"], this.locals["j"], this.locals["j"] - 1);
+        this.next = this.line[2];
+        trigger("Sort(): 4");
       }
       // 05:    }
       // 06:}
     ]
+
+    this.next = this.line[0];
   }
 }
 
 class Less {
   constructor(v, w) {
-    let params = {
+    console.log("Invoke: less");
+    this.params = {
       "v": v,
       "w": w
     };
-    let locals = {
+    this.locals = {
     };
-    let helpers = {
+    this.helpers = {
     };
-    let next = line[0];
-    let result = undefined;
 
-    this.trigger = function(lineNumber) {
-      alert("Trigger line " + lineNumber)
-    }
+    this.result = undefined;
 
     this.line = [
       function() { // 01:return v.compareTo(w) < 0;
-        result = v < w;
-        next = undefined;
-        trigger(1);
+        this.result = v < w;
+        this.next = undefined;
+        callStack.pop();
+        trigger("Less(): 1");
       }
     ]
+        this.next = this.line[0];
   }
 }
 
 class Exch {
   constructor(a, i, j) {
-    let params = {
+    console.log("Invoke: exch");
+    this.params = {
       "a": a,
       "i": i,
       "j": j
     };
-    let locals = {
+    this.locals = {
       "t": undefined
     };
-    let helpers = {
+    this.helpers = {
     };
-    let next = line[0];
-    let result = undefined;
-
-    this.trigger = function(lineNumber) {
-      alert("Trigger line " + lineNumber)
-    }
+    this.result = undefined;
 
     this.line = [
       function() { // 01:Comparable t = a[i];
-        locals["t"] = params["a"][params["i"]];
-        next = line[1];
-        trigger(1);
+        this.locals["t"] = this.params["a"][this.params["i"]];
+        this.next = this.line[1];
+        trigger("Exch(): 1");
       },
       function() { // 02:a[i] = a[j];
-        params["a"][params["i"]] = params["a"][params["j"]];
-        next = line[2];
-        trigger(2);
+        this.params["a"][this.params["i"]] = this.params["a"][this.params["j"]];
+        this.next = this.line[2];
+        trigger("Exch(): 2");
       },
       function() { // 03:a[j] = t;
-        params["a"][params["j"]] = locals["t"];
-        next = undefined;
-        trigger(3);
+        this.params["a"][this.params["j"]] = this.locals["t"];
+        this.next = undefined;
+        callStack.pop();
+        trigger("Exch(): 3");
       }
     ]
+    this.next = line[0];
   }
 }
