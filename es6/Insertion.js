@@ -1,3 +1,4 @@
+var lastReturn = undefined
 var callStack = [];
 
 var trigger = function(msg) {
@@ -10,35 +11,34 @@ var invoke = function() {
 }
 
 var step = function() {
-  // Otherwise, pop frames off the stack until we find one with a line to
-  // execute queued up.
-  while (callStack.length > 0
-         && callStack[callStack.length - 1].next === undefined) {
-    callStack.pop();
-  }
-  // If the stack is empty, we're done.
   if (callStack.length === 0) {
+    // If the stack is empty, we're done.
     console.log("Done");
   } else {
     // Otherwise, execute the next line.
     callStack[callStack.length - 1].next();
+    if (callStack[callStack.length - 1].next === undefined) {
+      // If execution of the current frame is complete, pop it and return the
+      // result.
+      return callStack.pop().result;
+    }
   }
 }
 
 var sort = function(a) {
   console.log(a);
   callStack.push(new Sort(a));
-  step();
+  return step();
 }
 
 var less = function(v, w) {
   callStack.push(new Less(v, w));
-  step();
+  return step();
 }
 
 var exch = function(a, i, j) {
   callStack.push(new Exch(a, i, j));
-  step();
+  return step();
 }
 
 class Sort {
@@ -68,40 +68,53 @@ class Sort {
       },
       function() { // 02:for (int i = 1; i < N; i++) {
         if (this.helpers["is_first_iteration_for_1"] === true) {
+          // Initialize for loop if this is the first iteration
           this.locals["i"] = 1;
           this.helpers["is_first_iteration_for_1"] = false;
-        } else {
-          this.locals["i"]++;
         }
         if (this.locals["i"] < this.locals["N"]) {
           this.next = this.line[2];
         } else {
+          // If we're done with this loop, reset it's state
+          this.locals["i"] = undefined;
+          this.helpers["is_first_iteration_for_1"] = true;
+          // The bottom of this loop is the end of the program, so set next to
+          // undefined to indicate we're done executing this function.
           this.next = undefined;
-          callStack.pop();
         }
-        trigger("Sort(): 2");
+        trigger("Sort(): 2; a=" + this.params['a']);
       },
       function() { // 03:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
         if (this.helpers["is_first_iteration_for_2"] === true) {
+          // Initialize for loop if this is the first iteration
           this.locals["j"] = this.locals["i"];
           this.helpers["is_first_iteration_for_2"] = false;
-        } else {
-          this.locals["j"]--;
         }
         if (this.locals["j"] > 0 && less(this.params["a"][this.locals["j"]], this.params["a"][this.locals["j"] - 1])) {
           this.next = this.line[3];
         } else {
-          this.next = this.line[1];
+          // If we're done with this loop, reset it's state
+          this.locals["j"] = undefined;
+          this.helpers["is_first_iteration_for_2"] = true;
+          this.next = this.line[5];
         }
-        trigger("Sort(): 3");
+        trigger("Sort(): 3; a=" + this.params['a']);
       },
       function() { // 04:        exch(a, j, j - 1);
-        this.exch(params["a"], this.locals["j"], this.locals["j"] - 1);
+        exch(this.params["a"], this.locals["j"], this.locals["j"] - 1);
+        this.next = this.line[4];
+        trigger("Sort(): 4; a=" + this.params['a']);
+      },
+      function() { // 05:    } // conditionally jump back to top of loop here
+        this.locals["j"]--;
         this.next = this.line[2];
-        trigger("Sort(): 4");
+        trigger("Sort(): 5; a=" + this.params['a']);
+      },
+      function() { // 06:}
+        this.locals["i"]++;
+        this.next = this.line[1];
+        trigger("Sort(): 6; a=" + this.params['a']);
       }
-      // 05:    }
-      // 06:}
     ]
 
     this.next = this.line[0];
@@ -126,7 +139,6 @@ class Less {
       function() { // 01:return v.compareTo(w) < 0;
         this.result = v < w;
         this.next = undefined;
-        callStack.pop();
         trigger("Less(): 1");
       }
     ]
@@ -163,10 +175,9 @@ class Exch {
       function() { // 03:a[j] = t;
         this.params["a"][this.params["j"]] = this.locals["t"];
         this.next = undefined;
-        callStack.pop();
         trigger("Exch(): 3");
       }
     ]
-    this.next = line[0];
+    this.next = this.line[0];
   }
 }
