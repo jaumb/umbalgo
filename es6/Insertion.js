@@ -43,7 +43,6 @@ var exch = function(a, i, j) {
 
 class Sort {
   constructor(a) {
-    console.log("Invoke: sort");
     this.params = {
       "a": a
     };
@@ -64,7 +63,7 @@ class Sort {
       function() { // 01:int N = a.length;
         this.locals["N"] = this.params["a"].length;
         this.next = this.line[1];
-        trigger("Sort(): 1");
+        trigger("Sort():1");
       },
       function() { // 02:for (int i = 1; i < N; i++) {
         if (this.helpers["is_first_iteration_for_1"] === true) {
@@ -82,7 +81,7 @@ class Sort {
           // undefined to indicate we're done executing this function.
           this.next = undefined;
         }
-        trigger("Sort(): 2; a=" + this.params['a']);
+        trigger("Sort():2");
       },
       function() { // 03:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
         if (this.helpers["is_first_iteration_for_2"] === true) {
@@ -98,22 +97,22 @@ class Sort {
           this.helpers["is_first_iteration_for_2"] = true;
           this.next = this.line[5];
         }
-        trigger("Sort(): 3; a=" + this.params['a']);
+        trigger("Sort():3");
       },
       function() { // 04:        exch(a, j, j - 1);
         exch(this.params["a"], this.locals["j"], this.locals["j"] - 1);
         this.next = this.line[4];
-        trigger("Sort(): 4; a=" + this.params['a']);
+        trigger("Sort():4");
       },
       function() { // 05:    } // conditionally jump back to top of loop here
         this.locals["j"]--;
         this.next = this.line[2];
-        trigger("Sort(): 5; a=" + this.params['a']);
+        trigger("Sort():5");
       },
       function() { // 06:}
         this.locals["i"]++;
         this.next = this.line[1];
-        trigger("Sort(): 6; a=" + this.params['a']);
+        trigger("Sort():6");
       }
     ]
 
@@ -139,7 +138,7 @@ class Less {
       function() { // 01:return v.compareTo(w) < 0;
         this.result = v < w;
         this.next = undefined;
-        trigger("Less(): 1");
+        trigger("Less():1");
       }
     ]
         this.next = this.line[0];
@@ -165,17 +164,17 @@ class Exch {
       function() { // 01:Comparable t = a[i];
         this.locals["t"] = this.params["a"][this.params["i"]];
         this.next = this.line[1];
-        trigger("Exch(): 1");
+        trigger("Exch():1");
       },
       function() { // 02:a[i] = a[j];
         this.params["a"][this.params["i"]] = this.params["a"][this.params["j"]];
         this.next = this.line[2];
-        trigger("Exch(): 2");
+        trigger("Exch():2");
       },
       function() { // 03:a[j] = t;
         this.params["a"][this.params["j"]] = this.locals["t"];
         this.next = undefined;
-        trigger("Exch(): 3");
+        trigger("Exch():3; a=" + a);
       }
     ]
     this.next = this.line[0];
