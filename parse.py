@@ -12,20 +12,24 @@ class Parser:
 		for line in input_text.strip('\r').split('\n'):
 			if line.startswith('// Java:'):
 				if self.java:
-					self._add_line(self.java, self.javascript)
+
+					self._add_line()
 					self.javascript = list()
 				self.java = line[8:]
 			elif self.java:
 				self.javascript.append(line)
 		else:
 			if self.java and self.javascript:
-				self._add_line(self.java, self.javascript)
+				self._add_line()
 
 	def dump_json(self):
 		return json.dumps(self.lines, indent=4, sort_keys=True) + '\n'
 
-	def _add_line(self, java, javascript):
-		self.lines.append(dict(Java=java, JavaScript='\n'.join(javascript)))
+	def _add_line(self):
+		self.lines.append(dict(Java=self.java, JavaScript=self._make_function()))
+
+	def _make_function(self):
+		return 'function() {\n  ' + '\n  '.join(self.javascript) + '\n}'
 
 if __name__ == '__main__':
 	arg_parser = argparse.ArgumentParser()
