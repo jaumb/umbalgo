@@ -4,26 +4,28 @@ import argparse, json, sys
 
 class Parser:
 	def __init__(self, text):
-		self.this_line_java = None
-		self.this_line_javascript = list()
+		self.java = None
+		self.javascript = list()
 		self.lines = list()
+
+	def parse(self):
 		for line in input_text.strip('\r').split('\n'):
 			if line.startswith('// Java:'):
-				if self.this_line_java:
-					self._add_line(self.this_line_java, self.this_line_javascript)
-				self.this_line_java = line[8:]
-			elif self.this_line_java:
-				self.this_line_javascript.append(line)
-		if self.this_line_java and self.this_line_javascript:
-			self.lines.append(dict(Java=self.this_line_java,
-								   JavaScript='\n'.join(self.this_line_javascript)))
+				if self.java:
+					self._add_line(self.java, self.javascript)
+					self.javascript = list()
+				self.java = line[8:]
+			elif self.java:
+				self.javascript.append(line)
+		else:
+			if self.java and self.javascript:
+				self._add_line(self.java, self.javascript)
+
+	def dump_json(self):
+		return json.dumps(self.lines, indent=4, sort_keys=True) + '\n'
 
 	def _add_line(self, java, javascript):
 		self.lines.append(dict(Java=java, JavaScript='\n'.join(javascript)))
-		self.this_line_javascript = list()
-
-	def dump_json(self):
-		return json.dumps(self.lines, indent=4, sort_keys=True)
 
 if __name__ == '__main__':
 	arg_parser = argparse.ArgumentParser()
@@ -39,6 +41,7 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	code_parser = Parser(input_text)
+	code_parser.parse()
 
 	try:
 		with open(args.output, 'w') as f:
