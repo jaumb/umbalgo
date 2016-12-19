@@ -36,10 +36,13 @@ class Runner {
    * Execute next line of code and trigger corresponding callback.
    */
   next() {
-    if (this.callStack[this.callStack.size] !== undefined) {
-      this.callStack[this.callStack.size].next();
-    } else {
+    if (this.callStack.size
+        && this.callStack[this.callStack.size] === undefined) {
       this.callStack.pop()
+    }
+    if (this.callStack.size) {
+      this.callStack[this.callStack.size].next();
+    }
   }
   /**
    * Trigger next UI transition.
