@@ -33,7 +33,7 @@ var Runner = function () {
   _createClass(Runner, [{
     key: "register",
     value: function register(identifier, func) {
-      this.functions[identifier] = func;
+      this.functions[identifier] = func_factory;
     }
     /**
      * Invoke a function by name, with the supplied arguments.
@@ -45,11 +45,13 @@ var Runner = function () {
   }, {
     key: "invoke",
     value: function invoke(identifier, resultcb) {
+      var _functions;
+
       for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
         args[_key - 2] = arguments[_key];
       }
 
-      this.callStack.push(new (Function.prototype.bind.apply(this.functions[identifier], [null].concat(args)))());
+      this.callStack.push((_functions = this.functions)[identifier].apply(_functions, [runner, resultcb].concat(args)));
     }
     /**
      * Execute next line of code and trigger corresponding callback.
@@ -115,7 +117,13 @@ var ForeignFunction = function () {
     this.resultcb = undefined;
 
     // Register this function with the runner
-    this.runner.register(this.name, this.constructor);
+    this.runner.register(this.name, function () {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return new (Function.prototype.bind.apply(this, [null].concat(args)))();
+    });
   }
   /**
    * Invoke this function.
@@ -126,8 +134,8 @@ var ForeignFunction = function () {
   _createClass(ForeignFunction, [{
     key: "invoke",
     value: function invoke() {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
       }
 
       // Set the current line to the first line of the function (the declaration).

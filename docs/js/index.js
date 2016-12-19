@@ -1,5 +1,7 @@
 //(function() {
 
+
+/*
 const loadFile = function(url, callback) {
   let client = new XMLHttpRequest();
   client.open('GET', url);
@@ -7,22 +9,23 @@ const loadFile = function(url, callback) {
   client.send();
 }
 
-const runner = new Runner();
-
-loadFile('libs/algo/2.1-selection-sort.js',
+loadFile('/js/libs/algo/2.1-selection-sort.js',
          function(response) {
            var sort = new ForeignFunction(runner, response)
          });
 
-loadFile('libs/algo/2.1-selection-less.js',
+loadFile('/js/libs/algo/2.1-selection-less.js',
          function(response) {
            var less = new ForeignFunction(runner, response)
          });
 
-loadFile('libs/algo/2.1-selection-exch.js',
+loadFile('/js/libs/algo/2.1-selection-exch.js',
          function(response) {
            var exch = new ForeignFunction(runner, response)
          });
+*/
+
+const runner = new Runner();
 
 const onInvokeSort = function() {
   let a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
