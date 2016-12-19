@@ -15,4 +15,7 @@ do
 done
 popd
 
-./node_modules/.bin/babel -d ./docs/js/libs/runner ./src/libs/runner/runner.js
+pushd .
+cd src
+../node_modules/.bin/babel -d ../docs/js ./libs/runner/runner.js
+popd

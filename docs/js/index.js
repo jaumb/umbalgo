@@ -9,17 +9,17 @@ const loadFile = function(url, callback) {
 
 const runner = new Runner();
 
-loadFile('/js/algo/2.1-selection-sort.js',
+loadFile('libs/algo/2.1-selection-sort.js',
          function(response) {
            var sort = new ForeignFunction(runner, response)
          });
 
-loadFile('/js/algo/2.1-selection-less.js',
+loadFile('libs/algo/2.1-selection-less.js',
          function(response) {
            var less = new ForeignFunction(runner, response)
          });
 
-loadFile('/js/algo/2.1-selection-exch.js',
+loadFile('libs/algo/2.1-selection-exch.js',
          function(response) {
            var exch = new ForeignFunction(runner, response)
          });
