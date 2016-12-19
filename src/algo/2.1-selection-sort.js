@@ -1,5 +1,5 @@
 // Java:public static void sort(Comparable[] a) {
-selection(a) {
+sort(a) {
 // Java:  int N = a.length;
   this.locals["N"] = this.args["a"].length;
   // This tells the Runner what line to execute next.
@@ -43,11 +43,13 @@ selection(a) {
   }
   // Check if the condition is true
   if (this.locals["j"] > 0
-      && less(this.args["a"][this.locals["j"]],
-              this.args["a"][this.locals["j"] - 1])) {
+      && this.runner.invoke("less",
+                            undefined,
+                            (this.args["a"][this.locals["j"]],
+                             this.args["a"][this.locals["j"] - 1]))) {
     // If so, proceed to the next line, which is the first line of the body of
     // the loop.
-    this.frame.next = 5;
+    this.nextLineNumber = 5;
   } else {
     // Otherwise, jump to past the loop body
     this.nextLineNumber = 7;
@@ -61,10 +63,10 @@ selection(a) {
   // and is looked up by it's name as a string (the first argument to invoke()).
   // The other arguments are the arguments to exch. exch is then invoked with
   // said arguments and pushed on the call stack. Execution will then continue
-  // there until it returns, and, if it's not void, storing it's return value
-  // in this.runner.result, where it could be retrieved by this function when
-  // it resumes execution after the call to exch is popped off of the stack.
+  // there until it returns the result through resultcb(x). Here, no callback
+  // is provided as exch() is a void function.
   this.runner.invoke("exch",
+                     undefined,
                      this.args["a"],
                      this.locals["j"],
                      this.locals["j"] - 1);
@@ -78,10 +80,9 @@ selection(a) {
   // loop and nothing else.
   this.nextLineNumber = 3;
 // Java:}
-  // This is the last line of the function, so we set the next line number
-  // undefined.
+  // This is the last line of the function, so set nextLineNumber undefined to
+  // indicate this to the runner.
   this.nextLineNumber = undefined;
-  // If this wasn't a void function, we would set this.result to the return
-  // value here, as below:
-  this.result = undefined;
+  // If this wasn't a void function, we would return a value through the provided
+  // resultcb callback. See less() for an example.
 }

@@ -10,12 +10,10 @@ class Runner {
   constructor() {
     /** Map of available functions. */
     this.functions = {};
-    /** The currently executing function. */
-    this.executing = null;
     /** The call stack */
     this.callStack = [];
-    /** The most recently returned result */
-    this.result = undefined;
+    /** The callback for returning the result of current function */
+    this.resultcb = undefined;
   }
   /**
    * Register a new function
@@ -28,17 +26,20 @@ class Runner {
   /**
    * Invoke a function by name, with the supplied arguments.
    * @param {String} identifier The identifier of the function to be invoked
+   * @param {resultcb} A single parameter function to receive the return value
    * @param {...} args A variadic argument list to be applied to the function
   */
-  invoke(identifier, ...args) {
-    this.executing = this.functions[identifier];
-    this.executing.invoke(args);
+  invoke(identifier, resultcb ...args) {
+    this.callStack.push(new this.functions[identifier](...args))
   }
   /**
    * Execute next line of code and trigger corresponding callback.
    */
   next() {
-    this.callStack[this.callStack.size].next();
+    if (this.callStack[this.callStack.size] !== undefined) {
+      this.callStack[this.callStack.size].next();
+    } else {
+      this.callStack.pop()
   }
   /**
    * Trigger next UI transition.
@@ -56,11 +57,15 @@ class ForeignFunction {
    * Constructs a foreign function from an array of lines of annotated foreign
    * code, each paired with an equiivalent javascript function.
    * @param runner {Runner} The runner that invoked this function.
+   * @param {resultcb} A single parameter function to provide the return value
    * @param json {Array} An array of annotated foreign code lines.
    */
-  constructor(runner, json) {
+  constructor(runner, resultcb, json) {
     /** The object literal that describes this foreign function model. */
     this.definition = JSON.parse(json);
+    /** This function's identifier */
+    this.identifier = (this.definition[0]["JavaScript"] + "}")
+      .match(/^\s*(\w+)/m)[0]
     /** The runner that invoked this function. */
     this.runner = runner;
     /** A map of the arguments this function was invoked with. */
@@ -74,7 +79,10 @@ class ForeignFunction {
     /** The next line to be executed line number. */
     this.nextLineNumber = undefined;
     /** The result of this function. */
-    this.result = undefined;
+    this.resultcb = undefined;
+
+    // Register this function with the runner
+    this.runner.register(this.name, this.constructor);
   }
   /**
    * Invoke this function.
