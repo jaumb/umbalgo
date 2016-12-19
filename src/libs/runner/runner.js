@@ -29,7 +29,7 @@ class Runner {
    * @param {resultcb} A single parameter function to receive the return value
    * @param {...} args A variadic argument list to be applied to the function
   */
-  invoke(identifier, resultcb ...args) {
+  invoke(identifier, resultcb, ...args) {
     this.callStack.push(new this.functions[identifier](...args))
   }
   /**
