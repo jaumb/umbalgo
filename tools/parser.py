@@ -29,7 +29,7 @@ class Parser:
 		self.lines.append(dict(Java=self.java, JavaScript=self._make_function()))
 
 	def _make_function(self):
-		return 'function() {\n  ' + '\n  '.join(self.javascript) + '\n}'
+		return '(function(that) {\n  ' + '\n  '.join(self.javascript) + '\n})'
 
 if __name__ == '__main__':
 	arg_parser = argparse.ArgumentParser()

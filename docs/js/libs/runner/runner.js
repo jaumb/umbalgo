@@ -25,14 +25,14 @@ var Runner = function () {
   }
   /**
    * Register a new function
-   * @param identifier {String} The function model's identifier
-   * @param func {ForeignFunction} An object modeling a foreign function
+   * @param identifier {String} The function model's identifier.
+   * @param func_factory {Function} Returns a new ForeignFunction.
    */
 
 
   _createClass(Runner, [{
     key: "register",
-    value: function register(identifier, func) {
+    value: function register(identifier, func_factory) {
       this.functions[identifier] = func_factory;
     }
     /**
@@ -45,13 +45,16 @@ var Runner = function () {
   }, {
     key: "invoke",
     value: function invoke(identifier, resultcb) {
-      var _functions;
+      var _callStack;
+
+      this.callStack.push(this.functions[identifier]());
+      console.log(this.callStack);
 
       for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
         args[_key - 2] = arguments[_key];
       }
 
-      this.callStack.push((_functions = this.functions)[identifier].apply(_functions, [runner, resultcb].concat(args)));
+      (_callStack = this.callStack[this.callStack.length - 1]).invoke.apply(_callStack, args);
     }
     /**
      * Execute next line of code and trigger corresponding callback.
@@ -60,11 +63,13 @@ var Runner = function () {
   }, {
     key: "next",
     value: function next() {
-      if (this.callStack.size && this.callStack[this.callStack.size] === undefined) {
+      if (this.callStack.length !== 0 && this.callStack[this.callStack.length - 1].nextLineNumber === undefined) {
+        console.log("Runner next: pop");
         this.callStack.pop();
       }
-      if (this.callStack.size) {
-        this.callStack[this.callStack.size].next();
+      if (this.callStack.length !== 0) {
+        console.log("Runner next: func next");
+        this.callStack[this.callStack.length - 1].next();
       }
     }
     /**
@@ -74,7 +79,7 @@ var Runner = function () {
   }, {
     key: "triggerUi",
     value: function triggerUi(identifier, lineNumber) {
-      console.log("Executed identifier():" + lineNumber);
+      console.log("Executed identifier():" + this.callStack[this.callStack.length - 1].currentLineNumber);
     }
   }]);
 
@@ -87,18 +92,32 @@ var Runner = function () {
 
 
 var ForeignFunction = function () {
-  /**
-   * Constructs a foreign function from an array of lines of annotated foreign
-   * code, each paired with an equiivalent javascript function.
-   * @param runner {Runner} The runner that invoked this function.
-   * @param {resultcb} A single parameter function to provide the return value
-   * @param json {Array} An array of annotated foreign code lines.
-   */
+  _createClass(ForeignFunction, [{
+    key: "factory",
+    value: function factory() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return new (Function.prototype.bind.apply(ForeignFunction, [null].concat(args)))();
+    }
+    /**
+     * Constructs a foreign function from an array of lines of annotated foreign
+     * code, each paired with an equiivalent javascript function.
+     * @param runner {Runner} The runner that invoked this function.
+     * @param {resultcb} A single parameter function to provide the return value
+     * @param json {Array} An array of annotated foreign code lines.
+     */
+
+  }]);
+
   function ForeignFunction(runner, resultcb, json) {
     _classCallCheck(this, ForeignFunction);
 
     /** The object literal that describes this foreign function model. */
-    this.definition = JSON.parse(json);
+    // TODO: For now, using pre-parsed data
+    this.definition = json;
+    //this.definition = JSON.parse(json);
     /** This function's identifier */
     this.identifier = (this.definition[0]["JavaScript"] + "}").match(/^\s*(\w+)/m)[0];
     /** The runner that invoked this function. */
@@ -115,15 +134,6 @@ var ForeignFunction = function () {
     this.nextLineNumber = undefined;
     /** The result of this function. */
     this.resultcb = undefined;
-
-    // Register this function with the runner
-    this.runner.register(this.name, function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return new (Function.prototype.bind.apply(this, [null].concat(args)))();
-    });
   }
   /**
    * Invoke this function.
@@ -139,17 +149,17 @@ var ForeignFunction = function () {
       }
 
       // Set the current line to the first line of the function (the declaration).
-      this.runner.currentLineNumber = 1;
+      this.currentLineNumber = 1;
       // Set the next line to executed to the second line fo the function (the
       // first line of the body).
-      this.runner.nextLineNumber = 2;
+      this.nextLineNumber = 2;
       // Create an array of this function's parameters' names
-      params = (this.definition[0]["JavaScript"] + "}").match(/^\s*(\w+)\s*\(\s*([^)]*)\s*\)/m)[1].split(/,/).map(function (s) {
+      this.params = (this.definition[0]["JavaScript"] + "}").match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*\w+(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m)[1].split(/,/).map(function (s) {
         return s.trim();
       });
       // Populate this functions arguments map
-      for (i = 0; i < arguments.length; ++i) {
-        args[params[i]] = arguments[i];
+      for (var i = 0; i < arguments.length; ++i) {
+        this.args[this.params[i]] = arguments[i];
       }
     }
     /**
@@ -159,13 +169,17 @@ var ForeignFunction = function () {
   }, {
     key: "next",
     value: function next() {
+      console.log(this.args["a"]);
       // Advance to the next line.
       this.currentLineNumber = this.nextLineNumber;
       // Execute the JavaScript implementation of this line.
-      this.definition[this.currentLineNumber - 1]["JavaScript"]();
+      if (this.currentLineNumber !== 1) {
+        // But only if it's not the first, which doesn't actually do anything.
+        eval(this.definition[this.currentLineNumber - 1]["JavaScript"])(this);
+      }
       // Invoke a callback with this line number as an argument. This callback
       // will manipulate the view.
-      this.runner.triggerUi(currentLineNumber);
+      this.runner.triggerUi(this.currentLineNumber);
     }
   }]);
 
