@@ -39,7 +39,8 @@ class Runner {
    */
   next() {
     if (this.callStack.length !== 0
-        && this.callStack[this.callStack.length - 1].nextLineNumber === undefined) {
+        && this.callStack[this.callStack.length - 1].nextLineNumber
+        === undefined) {
       console.log("Runner next: pop");
       this.callStack.pop();
     }
@@ -52,7 +53,8 @@ class Runner {
    * Trigger next UI transition.
    */
   triggerUi(identifier, lineNumber) {
-    console.log("Executed identifier():" + this.callStack[this.callStack.length - 1].currentLineNumber);
+    console.log("Executed " + identifier + "():"
+                + this.callStack[this.callStack.length - 1].currentLineNumber);
   }
 }
 
