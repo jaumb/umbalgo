@@ -79,7 +79,7 @@ var Runner = function () {
   }, {
     key: "triggerUi",
     value: function triggerUi(identifier, lineNumber) {
-      console.log("Executed identifier():" + this.callStack[this.callStack.length - 1].currentLineNumber);
+      console.log("Executed " + identifier + "():" + this.callStack[this.callStack.length - 1].currentLineNumber);
     }
   }]);
 
