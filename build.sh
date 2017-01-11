@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -v
+
 WD=$(pwd)
 PARSE=${WD}/tools/parser.py
 IN=${WD}/src/algo

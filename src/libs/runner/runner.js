@@ -10,9 +10,9 @@ class Runner {
   constructor() {
     /** Map of available functions. */
     this.functions = {};
-    /** The call stack */
+    /** The call stack. */
     this.callStack = [];
-    /** The callback for returning the result of current function */
+    /** The callback for returning the result of current function. */
     this.resultcb = undefined;
   }
   /**
@@ -28,7 +28,7 @@ class Runner {
    * @param {String} identifier The identifier of the function to be invoked
    * @param {resultcb} A single parameter function to receive the return value
    * @param {...} args A variadic argument list to be applied to the function
-  */
+   */
   invoke(identifier, resultcb, ...args) {
     this.callStack.push(this.functions[identifier]());
     console.log(this.callStack);
@@ -67,7 +67,7 @@ class ForeignFunction {
   }
   /**
    * Constructs a foreign function from an array of lines of annotated foreign
-   * code, each paired with an equiivalent javascript function.
+   * code, each paired with an equivalent javascript function.
    * @param runner {Runner} The runner that invoked this function.
    * @param {resultcb} A single parameter function to provide the return value
    * @param json {Array} An array of annotated foreign code lines.
@@ -105,7 +105,9 @@ class ForeignFunction {
     // Set the next line to executed to the second line fo the function (the
     // first line of the body).
     this.nextLineNumber = 2;
-    // Create an array of this function's parameters' names
+    // Create an array of this function's parameters' names. A regex extracts
+    // the parameter list from the declaration, after which they're split on
+    // commas and whitespace is trimmed to leave a list of parameter names.
     this.params = (this.definition[0]["JavaScript"] + "}")
       .match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*\w+(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m)[1]
       .split(/,/)
@@ -124,11 +126,21 @@ class ForeignFunction {
     this.currentLineNumber = this.nextLineNumber;
     // Execute the JavaScript implementation of this line.
     if (this.currentLineNumber !== 1) {
-      // But only if it's not the first, which doesn't actually do anything.
+      // But only if it's not the first, which doesn't actually do anything
+      // (it is the function declaration). 'this' is passed in as a parameter,
+      // which is referred to within the implementation as 'that', since the
+      // 'this' pointer within that context points elsewhere, and we need
+      // access to this object's properties. We index into the array of JS
+      // line implementations (this.definition) with this.currentLineNumber - 1,
+      // as the array is 0-indexed and lines are 1-indexed everywhere else for
+      // ease of understanding.
       eval(this.definition[this.currentLineNumber - 1]["JavaScript"])(this);
     }
     // Invoke a callback with this line number as an argument. This callback
     // will manipulate the view.
-    this.runner.triggerUi(this.currentLineNumber);
+    this.runner.triggerUi(this.identifier, this.currentLineNumber);
+    //console.log("current=" + this.currentLineNumber + "; next="
+    //            + this.nextLineNumber + "; source="
+    //            + this.definition[this.currentLineNumber - 1]["JavaScript"]);
   }
 }
