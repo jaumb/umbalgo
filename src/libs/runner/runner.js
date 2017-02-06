@@ -1,146 +1,130 @@
-/**
- * Executes a foreign-language function modeled as a Function object.
- */
-class Runner {
-  /**
-   * Construct a runner, and break at the first line of execution.
-   * @param func {ForeignFunction} A function model object, instantiated with the
-   *     appropriate arguments
-   */
-  constructor() {
-    /** Map of available functions. */
-    this.functions = {};
-    /** The call stack. */
-    this.callStack = [];
-    /** The callback for returning the result of current function. */
-    this.resultcb = undefined;
-  }
-  /**
-   * Register a new function
-   * @param identifier {String} The function model's identifier.
-   * @param func_factory {Function} Returns a new ForeignFunction.
-   */
-  register(identifier, func_factory) {
-    this.functions[identifier] = func_factory;
-  }
-  /**
-   * Invoke a function by name, with the supplied arguments.
-   * @param {String} identifier The identifier of the function to be invoked
-   * @param {resultcb} A single parameter function to receive the return value
-   * @param {...} args A variadic argument list to be applied to the function
-   */
-  invoke(identifier, resultcb, ...args) {
-    this.callStack.push(this.functions[identifier]());
-    console.log(this.callStack);
-    this.callStack[this.callStack.length - 1].invoke(...args);
-  }
-  /**
-   * Execute next line of code and trigger corresponding callback.
-   */
-  next() {
-    if (this.callStack.length !== 0
-        && this.callStack[this.callStack.length - 1].nextLineNumber
-        === undefined) {
-      console.log("Runner next: pop");
-      this.callStack.pop();
-    }
-    if (this.callStack.length !== 0) {
-      console.log("Runner next: func next");
-      this.callStack[this.callStack.length - 1].next();
-    }
-  }
-  /**
-   * Trigger next UI transition.
-   */
-  triggerUi(identifier, lineNumber) {
-    console.log("Executed " + identifier + "():"
-                + this.callStack[this.callStack.length - 1].currentLineNumber);
-  }
-}
-
-/**
- * A model of a foreign-language function.
- */
-class ForeignFunction {
-  factory(...args) {
-    return new ForeignFunction(...args);
-  }
-  /**
-   * Constructs a foreign function from an array of lines of annotated foreign
-   * code, each paired with an equivalent javascript function.
-   * @param runner {Runner} The runner that invoked this function.
-   * @param {resultcb} A single parameter function to provide the return value
-   * @param json {Array} An array of annotated foreign code lines.
-   */
-  constructor(runner, resultcb, json) {
-    /** The object literal that describes this foreign function model. */
-    // TODO: For now, using pre-parsed data
-    this.definition = json;
-    //this.definition = JSON.parse(json);
-    /** This function's identifier */
-    this.identifier = (this.definition[0]["JavaScript"] + "}")
+// Done2
+class FunctionModel {
+  constructor(jsonRepr) {
+    // For now, use preparsed.
+    this.codeLines = jsonRepr;
+    //this.codeLines = JSON.parse(jsonRepr);
+    // TODO: These two regexs could be combined to capture both the identifier
+    // and the parameters in a single go.
+    // Use a regex to extract this function model's identifier from it's
+    // declaration.
+    /*
+    this.identifier = (this.codeLines[0]["JavaScript"] + "}")
       .match(/^\s*(\w+)/m)[0];
-    /** The runner that invoked this function. */
-    this.runner = runner;
-    /** A map of the arguments this function was invoked with. */
-    this.args = {};
-    /** A map of the function's local variables. */
-    this.locals = {};
-    /** An array of maps of helper variables for each line. */
-    this.helpers = Array(this.definition.length).fill({});
-    /** The currently executing line number. */
-    this.currentLineNumber = undefined;
-    /** The next line to be executed line number. */
-    this.nextLineNumber = undefined;
-    /** The result of this function. */
-    this.resultcb = undefined;
-  }
-  /**
-   * Invoke this function.
-   * @param args {...} The arguments to invoke with.
-   */
-  invoke(...args) {
-    // Set the current line to the first line of the function (the declaration).
-    this.currentLineNumber = 1;
-    // Set the next line to executed to the second line fo the function (the
-    // first line of the body).
-    this.nextLineNumber = 2;
-    // Create an array of this function's parameters' names. A regex extracts
-    // the parameter list from the declaration, after which they're split on
-    // commas and whitespace is trimmed to leave a list of parameter names.
-    this.params = (this.definition[0]["JavaScript"] + "}")
+    console.log("id=" + this.identifier);
+    // User a regex to extract this function model's parameter list from it's
+    // declaration and store as an array.
+    this.params = (this.codeLines[0]["JavaScript"] + "}")
       .match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*\w+(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m)[1]
       .split(/,/)
       .map(function(s) { return s.trim(); });
-    // Populate this functions arguments map
+    console.log("params=" + this.params);
+    */
+
+    const m = (this.codeLines[0]["JavaScript"]).match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
+    this.identifier = m[1];
+    this.params = m[2].split(/,/).map(function(s) { return s.trim(); });
+  }
+
+  /**
+   * Return a 1-indexed function implementing the specified function model
+   * native line of code.
+   */
+  getLine(lineNumber) {
+    return this.codeLines[lineNumber - 1];
+  }
+}
+
+// Done2
+class StackFrame {
+  constructor(vm, funcModel, resultCallback, ...args) {
+    this.vm = vm;
+    this.funcModel = funcModel;
+    this.args = {};
+
+    //------------------------ This may work
+    const argsToApply = [...args];
+    // TODO: This can likely be done with the equivalent of a for-each in JS;
+    // look into how to do this when internet is available.
+
+    // Populate the function's arguments map
+    for (let i = 0; i < argsToApply.length; ++i) {
+      this.args[this.funcModel.params[i]] = argsToApply[i];
+    }
+    //------------------------
+
+/* -------- This is how it was implemented before, and will most certainly work.
+    // Populate the function's arguments map
     for (let i = 0; i < arguments.length; ++i) {
-      this.args[this.params[i]] = arguments[i];
+      this.args[this.funcModel.params[i]] = arguments[i + 2];
+    }
+*/
+
+    this.locals = {};
+    this.cache = {};
+    this.currentLine = this.funcModel.getLine(1);
+    this.nextLine = this.funcModel.getLine(2);
+    this.resultCallback = resultCallback;
+    this.result = undefined;
+  }
+
+  next() {
+    this.currentLine = this.nextLine;
+    eval(this.currentLine["JavaScript"])(this);
+  }
+
+  returnResult() {
+    if (this.resultCallback) {
+      console.log(this.result);
+      this.resultCallback(this.result);
     }
   }
-  /**
-   * Advance to the next line of the function.
-   */
+}
+
+class VirtualMachine {
+  constructor() {
+    this.callStack = [];
+    this.funcModels = {};
+  }
+/*
+  loadFunc(uri) {
+    // TODO: Load parser output into jsonRepr as a String
+    jsonRepr = "DYNAMICALLY LOAD PARSER OUTPUT HERE";
+    func = new FunctionModel(jsonRepr);
+    this.funcModels[func.identifier] = func;
+  }
+*/
+  // For now, just load as an object literal.
+  loadFunc(func) {
+    this.funcModels[func.identifier] = func;
+  }
+
+  invokeFunc(identifier, resultCallback, ...args) {
+    console.log("Invoke: " + identifier + "(" + [...args] + ")");
+    this.callStack.push(
+      new StackFrame(this,
+                     this.funcModels[identifier],
+                     resultCallback,
+                     ...args));
+  }
+
+  getStackFrame() {
+    return this.callStack[this.callStack.length - 1];
+  }
+
   next() {
-    console.log(this.args["a"]);
-    // Advance to the next line.
-    this.currentLineNumber = this.nextLineNumber;
-    // Execute the JavaScript implementation of this line.
-    if (this.currentLineNumber !== 1) {
-      // But only if it's not the first, which doesn't actually do anything
-      // (it is the function declaration). 'this' is passed in as a parameter,
-      // which is referred to within the implementation as 'that', since the
-      // 'this' pointer within that context points elsewhere, and we need
-      // access to this object's properties. We index into the array of JS
-      // line implementations (this.definition) with this.currentLineNumber - 1,
-      // as the array is 0-indexed and lines are 1-indexed everywhere else for
-      // ease of understanding.
-      eval(this.definition[this.currentLineNumber - 1]["JavaScript"])(this);
+    // Execute the next line of the top stack frame.
+    this.getStackFrame().next();
+
+    if (!this.getStackFrame().nextLine) {
+      // Execution of the top stack frame is complete, so execute the result
+      // callback and pop it off the stack.
+      this.getStackFrame().returnResult();
+      this.callStack.pop();
     }
-    // Invoke a callback with this line number as an argument. This callback
-    // will manipulate the view.
-    this.runner.triggerUi(this.identifier, this.currentLineNumber);
-    //console.log("current=" + this.currentLineNumber + "; next="
-    //            + this.nextLineNumber + "; source="
-    //            + this.definition[this.currentLineNumber - 1]["JavaScript"]);
+  }
+
+  setResult(result) {
+    this.getStackFrame().result = result;
   }
 }
