@@ -16,12 +16,20 @@ var Runner = function () {
   function Runner() {
     _classCallCheck(this, Runner);
 
+<<<<<<< Updated upstream
     /** Map of available functions. */
     this.functions = {};
     /** The call stack */
     this.callStack = [];
     /** The callback for returning the result of current function */
     this.resultcb = undefined;
+=======
+    var m = this.codeLines[0]["JavaScript"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
+    this.identifier = m[1];
+    this.params = m[2].split(/,/).map(function (s) {
+      return s.trim();
+    });
+>>>>>>> Stashed changes
   }
   /**
    * Register a new function
@@ -60,6 +68,7 @@ var Runner = function () {
      * Execute next line of code and trigger corresponding callback.
      */
 
+<<<<<<< Updated upstream
   }, {
     key: "next",
     value: function next() {
@@ -80,6 +89,36 @@ var Runner = function () {
     key: "triggerUi",
     value: function triggerUi(identifier, lineNumber) {
       console.log("Executed " + identifier + "():" + this.callStack[this.callStack.length - 1].currentLineNumber);
+=======
+    /* -------- This is how it was implemented before, and will most certainly work.
+        // Populate the function's arguments map
+        for (let i = 0; i < arguments.length; ++i) {
+          this.args[this.funcModel.params[i]] = arguments[i + 2];
+        }
+    */
+
+    this.locals = {};
+    this.cache = {};
+    this.currentLine = this.funcModel.getLine(1);
+    this.nextLine = this.funcModel.getLine(2);
+    this.resultCallback = resultCallback;
+    this.result = undefined;
+  }
+
+  _createClass(StackFrame, [{
+    key: "next",
+    value: function next() {
+      this.currentLine = this.nextLine;
+      eval(this.currentLine["JavaScript"])(this);
+    }
+  }, {
+    key: "returnResult",
+    value: function returnResult() {
+      if (this.resultCallback) {
+        console.log(this.result);
+        this.resultCallback(this.result);
+      }
+>>>>>>> Stashed changes
     }
   }]);
 
@@ -101,6 +140,7 @@ var ForeignFunction = function () {
 
       return new (Function.prototype.bind.apply(ForeignFunction, [null].concat(args)))();
     }
+<<<<<<< Updated upstream
     /**
      * Constructs a foreign function from an array of lines of annotated foreign
      * code, each paired with an equiivalent javascript function.
@@ -161,6 +201,22 @@ var ForeignFunction = function () {
       for (var i = 0; i < arguments.length; ++i) {
         this.args[this.params[i]] = arguments[i];
       }
+=======
+  }, {
+    key: "invokeFunc",
+    value: function invokeFunc(identifier, resultCallback) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      console.log("Invoke: " + identifier + "(" + [].concat(args) + ")");
+      this.callStack.push(new (Function.prototype.bind.apply(StackFrame, [null].concat([this, this.funcModels[identifier], resultCallback], args)))());
+    }
+  }, {
+    key: "getStackFrame",
+    value: function getStackFrame() {
+      return this.callStack[this.callStack.length - 1];
+>>>>>>> Stashed changes
     }
     /**
      * Advance to the next line of the function.
@@ -169,6 +225,7 @@ var ForeignFunction = function () {
   }, {
     key: "next",
     value: function next() {
+<<<<<<< Updated upstream
       console.log(this.args["a"]);
       // Advance to the next line.
       this.currentLineNumber = this.nextLineNumber;
@@ -176,10 +233,25 @@ var ForeignFunction = function () {
       if (this.currentLineNumber !== 1) {
         // But only if it's not the first, which doesn't actually do anything.
         eval(this.definition[this.currentLineNumber - 1]["JavaScript"])(this);
+=======
+      // Execute the next line of the top stack frame.
+      this.getStackFrame().next();
+
+      if (!this.getStackFrame().nextLine) {
+        // Execution of the top stack frame is complete, so execute the result
+        // callback and pop it off the stack.
+        this.getStackFrame().returnResult();
+        this.callStack.pop();
+>>>>>>> Stashed changes
       }
       // Invoke a callback with this line number as an argument. This callback
       // will manipulate the view.
       this.runner.triggerUi(this.currentLineNumber);
+    }
+  }, {
+    key: "setResult",
+    value: function setResult(result) {
+      this.getStackFrame().result = result;
     }
   }]);
 
