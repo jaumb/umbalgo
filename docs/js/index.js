@@ -1,3 +1,14 @@
+const loader = function(filename) {
+  var client = new XMLHttpRequest();
+  client.open('GET', '../algo/' + filename);
+  client.onreadystatechange = function() {
+    console.log(client.responseTest);
+  };
+  client.send();
+}
+
+loader('2.1-selection-sort.js');
+
 const exch = [
   {
     "Java": "private static void exch(Comparable[] a, int i, int j) {",
