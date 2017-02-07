@@ -1,6 +1,6 @@
 const loader = function(filename) {
   var client = new XMLHttpRequest();
-  client.open('GET', '../algo/' + filename);
+  client.open('GET', 'js/libs/algo/' + filename);
   client.onreadystatechange = function() {
     console.log(client.responseTest);
   };
