@@ -1,11 +1,11 @@
 let vm = new VirtualMachine();
 
 const loader = function(filename) {
-  var xhr = new XMLHttpRequest;
+  const xhr = new XMLHttpRequest;
   xhr.open("GET", "js/libs/algo/" + filename);
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      vm.loadFunc(new FunctionModel(JSON.parse(client.responseText)));
+      vm.loadFunc(new FunctionModel(JSON.parse(xhr.responseText)));
       console.log(client.responseText);
     } else if (xhr.readyState === XMLHttpRequest.DONE) {
       console.log("Error loading " + filename);
