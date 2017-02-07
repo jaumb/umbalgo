@@ -8,7 +8,7 @@ exch(a, i, j) {
   that.nextLine = that.funcModel.getLine(4);
 // Java:  a[j] = t;
   that.args["a"][that.args["j"]] = that.locals["t"];
-  console.log(a);
+  console.log(that.args["a"]);
   that.nextLine = undefined;
 // Java:}
 }

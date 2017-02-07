@@ -21,7 +21,7 @@
     },
     {
         "Java": "      if (less(a[j], a[min]))",
-        "JavaScript": "(function(that) {\n    // Invoke less() and store the result in the helpers map. The first argument\n    // to invoke() is the function name, followed by a callback that takes a\n    // single argument to recieve the return value. Any following arguments are\n    // passed on as parameters to the function being invoked.\n    that.vm.invokeFunc(\n      \"less\",\n      function(result) {\n        if(result === true) {\n          console.log('result=true');\n          that.nextLine = that.funcModel.getLine(7);\n        } else {\n          console.log('result=false');\n          that.nextLine = that.funcModel.getLine(8);\n        }\n        // Perhaps set a flag here to disable next() until the result callback\n        // has been triggered (that would be a race, though one that the human\n        // would likely lose...)?\n      },\n      that.args[\"a\"][that.locals[\"j\"]],\n      that.args[\"a\"][that.locals[\"min\"]]);\n})"
+        "JavaScript": "(function(that) {\n    // Invoke less() and store the result in the helpers map. The first argument\n    // to invoke() is the function name, followed by a callback that takes a\n    // single argument to recieve the return value. Any following arguments are\n    // passed on as parameters to the function being invoked.\n    that.vm.invokeFunc(\n      \"less\",\n      function(result) { that.nextLine = that.funcModel.getLine(result ? 7 : 8) },\n      that.args[\"a\"][that.locals[\"j\"]],\n      that.args[\"a\"][that.locals[\"min\"]]);\n})"
     },
     {
         "Java": "        min = j;",

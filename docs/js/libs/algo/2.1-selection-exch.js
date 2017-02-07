@@ -13,7 +13,7 @@
     },
     {
         "Java": "  a[j] = t;",
-        "JavaScript": "(function(that) {\n    that.args[\"a\"][that.args[\"j\"]] = that.locals[\"t\"];\n    console.log(a);\n    that.nextLine = undefined;\n})"
+        "JavaScript": "(function(that) {\n    that.args[\"a\"][that.args[\"j\"]] = that.locals[\"t\"];\n    console.log(that.args[\"a\"]);\n    that.nextLine = undefined;\n})"
     },
     {
         "Java": "}",

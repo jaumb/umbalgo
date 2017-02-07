@@ -67,18 +67,7 @@ sort(a) {
   // passed on as parameters to the function being invoked.
   that.vm.invokeFunc(
     "less",
-    function(result) {
-      if(result === true) {
-        console.log('result=true');
-        that.nextLine = that.funcModel.getLine(7);
-      } else {
-        console.log('result=false');
-        that.nextLine = that.funcModel.getLine(8);
-      }
-      // Perhaps set a flag here to disable next() until the result callback
-      // has been triggered (that would be a race, though one that the human
-      // would likely lose...)?
-    },
+    function(result) { that.nextLine = that.funcModel.getLine(result ? 7 : 8) },
     that.args["a"][that.locals["j"]],
     that.args["a"][that.locals["min"]]);
 // Java:        min = j;

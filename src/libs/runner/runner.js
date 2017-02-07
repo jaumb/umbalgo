@@ -1,18 +1,12 @@
 class FunctionModel {
-  constructor(jsonRepr) {
-    // For now, use preparsed.
-    this.codeLines = jsonRepr;
-    //this.codeLines = JSON.parse(jsonRepr);
+  constructor(filename) {
+    this.codeLines = filename;
     // Extract the function name and parameter list from the definition
-    const m = (this.codeLines[0]["JavaScript"]).match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
-    this.identifier = m[1];
-    this.params = m[2].split(/,/).map(function(s) { return s.trim(); });
+    const match = (this.codeLines[0]["JavaScript"]).match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
+    this.identifier = match[1];
+    this.params = match[2].split(/,/).map(function(s) { return s.trim(); });
   }
 
-  /**
-   * Return a 1-indexed function implementing the specified function model
-   * native line of code.
-   */
   getLine(lineNumber) {
     return this.codeLines[lineNumber - 1];
   }
@@ -23,32 +17,28 @@ class StackFrame {
     this.vm = vm;
     this.funcModel = funcModel;
     this.args = {};
-
-    const argsToApply = [...args];
-    // TODO: This can likely be done with the equivalent of a for-each in JS;
-    // look into how to do this when internet is available.
-
-    // Populate the function's arguments map
-    for (let i = 0; i < argsToApply.length; ++i) {
-      this.args[this.funcModel.params[i]] = argsToApply[i];
-    }
-
     this.locals = {};
     this.cache = {};
     this.currentLine = this.funcModel.getLine(1);
     this.nextLine = this.funcModel.getLine(2);
     this.resultCallback = resultCallback;
     this.result = undefined;
+
+    // Populate the function's arguments map
+    const funcArgs = [...args]
+    for (let i = 0; i < funcArgs.length; ++i) {
+      this.args[this.funcModel.params[i]] = funcArgs[i];
+    }
   }
 
   next() {
     this.currentLine = this.nextLine;
+    console.log("Java: " + this.currentLine["Java"]);
     eval(this.currentLine["JavaScript"])(this);
   }
 
   returnResult() {
     if (this.resultCallback) {
-      console.log(this.result);
       this.resultCallback(this.result);
     }
   }
@@ -59,17 +49,22 @@ class VirtualMachine {
     this.callStack = [];
     this.funcModels = {};
   }
-/*
-  loadFunc(uri) {
-    // TODO: Load parser output into jsonRepr as a String
-    jsonRepr = "DYNAMICALLY LOAD PARSER OUTPUT HERE";
-    func = new FunctionModel(jsonRepr);
-    this.funcModels[func.identifier] = func;
-  }
-*/
-  // For now, just load as an object literal.
-  loadFunc(func) {
-    this.funcModels[func.identifier] = func;
+
+  loadFunc(filename) {
+    const xhr = new XMLHttpRequest;
+    xhr.open("GET", "js/libs/algo/" + filename);
+    let cached_this = this;
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          const func = new FunctionModel(JSON.parse(xhr.responseText));
+          cached_this.funcModels[func.identifier] = func;
+        } else {
+          alert("Error loading " + filename);
+        }
+      }
+    };
+    xhr.send();
   }
 
   invokeFunc(identifier, resultCallback, ...args) {
@@ -81,23 +76,23 @@ class VirtualMachine {
                      ...args));
   }
 
-  getStackFrame() {
+  getFrame() {
     return this.callStack[this.callStack.length - 1];
   }
 
   next() {
     // Execute the next line of the top stack frame.
-    this.getStackFrame().next();
+    this.getFrame().next();
 
-    if (!this.getStackFrame().nextLine) {
+    if (!this.getFrame().nextLine) {
       // Execution of the top stack frame is complete, so execute the result
       // callback and pop it off the stack.
-      this.getStackFrame().returnResult();
+      this.getFrame().returnResult();
       this.callStack.pop();
     }
   }
 
   setResult(result) {
-    this.getStackFrame().result = result;
+    this.getFrame().result = result;
   }
 }
