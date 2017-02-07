@@ -6,7 +6,7 @@ const loader = function(filename) {
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       vm.loadFunc(new FunctionModel(JSON.parse(xhr.responseText)));
-      console.log(client.responseText);
+      console.log(xhr.responseText);
     } else if (xhr.readyState === XMLHttpRequest.DONE) {
       console.log("Error loading " + filename);
     }
