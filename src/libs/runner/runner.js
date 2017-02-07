@@ -1,26 +1,9 @@
-// Done2
 class FunctionModel {
   constructor(jsonRepr) {
     // For now, use preparsed.
     this.codeLines = jsonRepr;
     //this.codeLines = JSON.parse(jsonRepr);
-    // TODO: These two regexs could be combined to capture both the identifier
-    // and the parameters in a single go.
-    // Use a regex to extract this function model's identifier from it's
-    // declaration.
-    /*
-    this.identifier = (this.codeLines[0]["JavaScript"] + "}")
-      .match(/^\s*(\w+)/m)[0];
-    console.log("id=" + this.identifier);
-    // User a regex to extract this function model's parameter list from it's
-    // declaration and store as an array.
-    this.params = (this.codeLines[0]["JavaScript"] + "}")
-      .match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*\w+(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m)[1]
-      .split(/,/)
-      .map(function(s) { return s.trim(); });
-    console.log("params=" + this.params);
-    */
-
+    // Extract the function name and parameter list from the definition
     const m = (this.codeLines[0]["JavaScript"]).match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
     this.identifier = m[1];
     this.params = m[2].split(/,/).map(function(s) { return s.trim(); });
@@ -35,14 +18,12 @@ class FunctionModel {
   }
 }
 
-// Done2
 class StackFrame {
   constructor(vm, funcModel, resultCallback, ...args) {
     this.vm = vm;
     this.funcModel = funcModel;
     this.args = {};
 
-    //------------------------ This may work
     const argsToApply = [...args];
     // TODO: This can likely be done with the equivalent of a for-each in JS;
     // look into how to do this when internet is available.
@@ -51,14 +32,6 @@ class StackFrame {
     for (let i = 0; i < argsToApply.length; ++i) {
       this.args[this.funcModel.params[i]] = argsToApply[i];
     }
-    //------------------------
-
-/* -------- This is how it was implemented before, and will most certainly work.
-    // Populate the function's arguments map
-    for (let i = 0; i < arguments.length; ++i) {
-      this.args[this.funcModel.params[i]] = arguments[i + 2];
-    }
-*/
 
     this.locals = {};
     this.cache = {};
