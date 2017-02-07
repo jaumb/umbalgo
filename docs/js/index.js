@@ -1,14 +1,20 @@
+let vm = new VirtualMachine();
+
 const loader = function(filename) {
   var client = new XMLHttpRequest();
   client.open('GET', 'js/libs/algo/' + filename);
   client.onreadystatechange = function() {
-    console.log(client.responseTest);
+    vm.loadFunc(new FunctionModel(JSON.parse(client.responseText)));
+    console.log(client.responseText);
   };
   client.send();
 }
 
+loader('2.1-selection-exch.js');
+loader('2.1-selection-less.js');
 loader('2.1-selection-sort.js');
 
+/*
 const exch = [
   {
     "Java": "private static void exch(Comparable[] a, int i, int j) {",
@@ -97,13 +103,14 @@ const sort = [
     "JavaScript": "(function(that) {\n  }\n  \n})"
   }
 ];
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 
-let vm = new VirtualMachine();
-vm.loadFunc(new FunctionModel(exch));
-vm.loadFunc(new FunctionModel(less));
-vm.loadFunc(new FunctionModel(sort));
+
+//vm.loadFunc(new FunctionModel(exch));
+//vm.loadFunc(new FunctionModel(less));
+//vm.loadFunc(new FunctionModel(sort));
 
 const onInvokeSort = function() {
   let a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
