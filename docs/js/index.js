@@ -2,17 +2,21 @@ let vm = new VirtualMachine();
 
 const loader = function(filename) {
   var client = new XMLHttpRequest();
-  client.open('GET', 'js/libs/algo/' + filename);
+  client.open("GET", "js/libs/algo/" + filename, false);
   client.onreadystatechange = function() {
-    vm.loadFunc(new FunctionModel(JSON.parse(client.responseText)));
-    console.log(client.responseText);
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      vm.loadFunc(new FunctionModel(JSON.parse(client.responseText)));
+      console.log(client.responseText);
+    } else if (xhr.readyState === XMLHttpRequest.DONE) {
+      console.log("Error loading " + filename);
+    }
   };
   client.send();
 }
 
-loader('2.1-selection-exch.js');
-loader('2.1-selection-less.js');
-loader('2.1-selection-sort.js');
+loader("2.1-selection-exch.js");
+loader("2.1-selection-less.js");
+loader("2.1-selection-sort.js");
 
 /*
 const exch = [
