@@ -4,22 +4,20 @@ var vizlib = (function() {
   /****************************************************************************
    *  private variables
    ****************************************************************************/
-  var array = [];     // input array of numbers
-  var elements;  // array of objects created from input numbers
+  var _array = [];     // input array of numbers
+  var _elements;  // array of objects created from input numbers
 
-  var svgW;  // svg canvas width
-  var svgH;  // svg canvas height
+  var _svgW;  // svg canvas width
+  var _svgH;  // svg canvas height
 
-  var box_size;  // length of one side of one element
+  var _box_size;  // length of one side of one element
 
-  var min_element;  // the min element for selectionsort
+  var _min_element;  // the min element for selectionsort
 
-  var bindTo;  // the DOM element visualization will be appended to
+  var _dur = 250;  // duration of transition
 
-  var dur = 250;  // duration of transition
-
-  var q = [];  // queue for vizualization actions
-  var intervalID = undefined; // for storing interval timer's ID
+  var _q = [];  // queue for vizualization actions
+  var _intervalID = undefined; // for storing interval timer's ID
 
 
   /****************************************************************************
@@ -64,9 +62,9 @@ var vizlib = (function() {
     var result = [];
     for (var i = 0; i < array.length; i++) {
       result.push(_createElement(array[i],                // value
-                                 (i + 1) * box_size,      // x coord
-                                 (svgH - box_size) / 2,   // y coord
-                                 box_size,
+                                 (i + 1) * _box_size,      // x coord
+                                 (_svgH - _box_size) / 2,   // y coord
+                                 _box_size,
                                  i));
     }
     return result;
@@ -96,23 +94,23 @@ var vizlib = (function() {
    */
   var _initialize = function(arr, element) {
     console.log("Initializing values/coords...");
-    array = arr;  // assign array member to input array
+    _array = arr;  // assign array member to input array
     // set window dimensions
     // TODO: bootstrap?
-    svgW = window.innerWidth;
-    svgH = window.innerHeight;
-    console.log("  current window dims: " + svgW +", " + svgH);
+    _svgW = window.innerWidth;
+    _svgH = window.innerHeight;
+    console.log("  current window dims: " + _svgW +", " + _svgH);
     // scale box size based on window size, room for one box on left/right
-    box_size = (svgW / (array.length + 2));
+    _box_size = (_svgW / (_array.length + 2));
 
     /*
     Create element objects for array and min
     */
-    elements = _arrayToElements(array);
-    min_element = [_createElement(elements[0].current.val,
-                                 box_size,
-                                 (svgH - box_size) / 2 + box_size,
-                                 box_size,
+    _elements = _arrayToElements(_array);
+    _min_element = [_createElement(_elements[0].current.val,
+                                 _box_size,
+                                 (_svgH - _box_size) / 2 + _box_size,
+                                 _box_size,
                                  0)];
 
     /*
@@ -138,8 +136,8 @@ var vizlib = (function() {
     // append the svg canvas
     d3.select(element)
       .append("svg")
-      .attr("width", svgW)
-      .attr("height", svgH)
+      .attr("width", _svgW)
+      .attr("height", _svgH)
       .attr('id','svg_canvas');
     // append element for holding array elements
     d3.select("#svg_canvas")
@@ -172,7 +170,7 @@ var vizlib = (function() {
 
     // draw the array boxes
     rects.selectAll('rect')
-      .data(elements)
+      .data(_elements)
       .enter()
       .append('rect')
       .attr('x', function(d) { return d.current.x; })
@@ -185,21 +183,21 @@ var vizlib = (function() {
 
     // draw array element labels
     labels.selectAll('text')
-      .data(elements)
+      .data(_elements)
       .enter()
       .append('text')
       .attr('x', function(d) { return d.current.x + .5 * d.current.size; })
       .attr('y', function(d) { return d.current.y + .8 * d.current.size; })
       .text(function(d) { return d.current.val; })
       .attr('font-size', function() {
-        return (box_size * .7) + "px";
+        return (_box_size * .7) + "px";
       })
-      .attr('font-family', 'sans-serif')
+      .attr('font-family', 'monotype')
       .attr('text-anchor', 'middle');
 
     // draw min element
     min.selectAll('rect')
-      .data(min_element)
+      .data(_min_element)
       .enter()
       .append('rect')
       .attr('x', function(d) { return d.current.x; })
@@ -212,7 +210,7 @@ var vizlib = (function() {
 
     // draw min label
     min_label.selectAll('text')
-      .data(min_element)
+      .data(_min_element)
       .enter()
       .append('text')
       .attr('x', function(d) { return d.current.x + d.current.size * .5; })
@@ -221,7 +219,7 @@ var vizlib = (function() {
       .attr('font-size', function(d) {
         return (d.current.size * .7) + "px";
       })
-      .attr('font-family', 'sans-serif')
+      .attr('font-family', 'monotype')
       .attr('text-anchor', 'middle');
   };
 
@@ -235,31 +233,31 @@ var vizlib = (function() {
     var min_label = d3.select('#min_label').selectAll('text');
 
     rects.transition()
-      .duration(dur)
+      .duration(_dur)
       .attr('x', function(d) { return d.next.x; })
       .attr('y', function(d) { return d.next.y; })
       .attr('fill', function(d) { return d.next.color; });
 
     labels.transition()
-      .duration(dur)
+      .duration(_dur)
       .attr('x', function(d) { return d.next.x + .5 * d.current.size; })
       .attr('y', function(d) { return d.next.y + .8 * d.current.size; })
       .text(function(d) { return d.next.val; });
 
     min.transition()
-      .duration(dur)
+      .duration(_dur)
       .attr('x', function(d) { return d.next.x; })
       .attr('y', function(d) { return d.next.y; })
       .attr('fill', function(d) { return d.next.color; });
 
     min_label.transition()
-      .duration(dur)
+      .duration(_dur)
       .attr('x', function(d) { return d.next.x + d.current.size * .5; })
       .attr('y', function(d) { return d.next.y + d.current.size * .8; })
       .text(function(d) {return d.next.val; });
 
-    _updateElements(elements);
-    _updateElements(min_element);
+    _updateElements(_elements);
+    _updateElements(_min_element);
   }
 
   /**
@@ -268,7 +266,7 @@ var vizlib = (function() {
    * @param {string} new_color - The color string for the new background-color.
    */
   var _change_color = function(elements, new_color) {
-    q.push(function() {
+    _q.push(function() {
       elements.forEach(function(elem) {
         elem.next.color = new_color;
       })
@@ -281,15 +279,15 @@ var vizlib = (function() {
    * @param {number} j - The index of the other element being swapped.
    */
   var _array_swap = function(i, j) {
-    q.push(function() {
-      elements[i].next.x = elements[j].current.x;
-      elements[i].next.y = elements[j].current.y;
-      elements[i].next.index = j;
-      elements[i].next.val = elements[i].current.val;
-      elements[j].next.x = elements[i].current.x;
-      elements[j].next.y = elements[i].current.y;
-      elements[j].next.index = i;
-      elements[j].next.val = elements[j].current.val;
+    _q.push(function() {
+      _elements[i].next.x = _elements[j].current.x;
+      _elements[i].next.y = _elements[j].current.y;
+      _elements[i].next.index = j;
+      _elements[i].next.val = _elements[i].current.val;
+      _elements[j].next.x = _elements[i].current.x;
+      _elements[j].next.y = _elements[i].current.y;
+      _elements[j].next.index = i;
+      _elements[j].next.val = _elements[j].current.val;
     })
   }
 
@@ -299,8 +297,8 @@ var vizlib = (function() {
    * @param {number} arr_index - The index of the element with min's new value.
    */
   var _change_min = function(arr_index) {
-    q.push(function() {
-      min_element[0].next.val = elements[arr_index].current.val;
+    _q.push(function() {
+      _min_element[0].next.val = _elements[arr_index].current.val;
     });
   }
 
@@ -310,8 +308,8 @@ var vizlib = (function() {
    * @param {Object} arr_index - The element to move min's x position to.
    */
   var _move_min = function(arr_index) {
-    q.push(function() {
-      min_element[0].next.x = elements[arr_index].current.x;
+    _q.push(function() {
+      _min_element[0].next.x = _elements[arr_index].current.x;
     });
   }
 
@@ -322,8 +320,8 @@ var vizlib = (function() {
 
   var initialize = function(array, element) {
     _initialize(array, element);
-    q.push(_draw);
-    q.push(_redraw);
+    _q.push(_draw);
+    _q.push(_redraw);
   }
 
   /**
@@ -332,7 +330,7 @@ var vizlib = (function() {
    */
   var change_min = function(arr_index) {
     _change_min(arr_index);
-    q.push(_redraw);
+    _q.push(_redraw);
   }
 
   /**
@@ -341,42 +339,42 @@ var vizlib = (function() {
    */
   var move_min = function(arr_index) {
     _move_min(arr_index);
-    q.push(_redraw);
+    _q.push(_redraw);
   }
 
   var array_swap = function(i, j) {
     _array_swap(i, j);
-    q.push(_redraw);
+    _q.push(_redraw);
   }
 
   var array_change_color = function(indexes, color) {
     elems = [];
     indexes.forEach(function(index) {
-        elems.push(elements[index]);
+        elems.push(_elements[index]);
     })
     _change_color(elems, color);
-    q.push(_redraw);
+    _q.push(_redraw);
   }
 
   var min_change_color = function(color) {
-    _change_color(min_element, color);
-    q.push(_redraw);
+    _change_color(_min_element, color);
+    _q.push(_redraw);
   }
 
   var step = function() {
-      if (q.length > 0) {
-          var callback = q.shift();
+      if (_q.length > 0) {
+          var callback = _q.shift();
           callback();
       }
   }
 
   var pauseplay = function() {
-      if (intervalID === undefined) {
-          intervalID = setInterval(step, dur);
+      if (_intervalID === undefined) {
+          _intervalID = setInterval(step, _dur);
           return;
       }
-      clearInterval(intervalID);
-      intervalID = undefined;
+      clearInterval(_intervalID);
+      _intervalID = undefined;
   }
 
 
