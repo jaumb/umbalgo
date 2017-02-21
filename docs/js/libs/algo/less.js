@@ -5,7 +5,7 @@
     },
     {
         "Java": "  return v.compareTo(w) < 0;",
-        "JavaScript": "(function(that) {\n    vm.setResult(that.args[\"v\"] < that.args[\"w\"]);\n    that.nextLine = undefined;\n})"
+        "JavaScript": "(function(that) {\n    vm.setResult(that.args[\"v\"] < that.args[\"w\"]);\n    that.nextLineNumber = undefined;\n})"
     },
     {
         "Java": "}",

@@ -2,6 +2,6 @@
 less(v, w) {
 // Java:  return v.compareTo(w) < 0;
   vm.setResult(that.args["v"] < that.args["w"]);
-  that.nextLine = undefined;
+  that.nextLineNumber = undefined;
 // Java:}
 }

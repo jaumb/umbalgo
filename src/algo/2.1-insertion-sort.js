@@ -2,7 +2,7 @@
 sort(a) {
 // Java:  int N = a.length;
   that.locals["N"] = that.args["a"].length;
-  that.nextLine = that.funcModel.getLine(3);
+  that.nextLineNumber = 3;
 // Java:  for (int i = 1; i < N; i++) {
   if (that.cache["3__firstIteration"] === undefined) {
     that.locals["i"] = 1;
@@ -11,9 +11,9 @@ sort(a) {
     that.locals["i"]++;
   }
   if (that.locals["i"] < that.locals["N"]) {
-    that.nextLine = that.funcModel.getLine(4);
+    that.nextLineNumber = 6;
   } else {
-    that.nextLine = undefined;
+    that.nextLineNumber = undefined;
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
   }
@@ -31,11 +31,11 @@ sort(a) {
       "less",
       function(result) {
         if (result) {
-          that.nextLine = that.funcModel.getLine(5);
+          that.nextLineNumber = 5;
         } else {
           that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
           that.vm.visualization.stepall();
-          that.nextLine = that.funcModel.getLine(7);
+          that.nextLineNumber = 7;
           that.locals["j"] = undefined;
           that.cache["4__firstIteration"] = undefined;
         }
@@ -45,7 +45,7 @@ sort(a) {
   } else {
     that.vm.visualization.updateBoundary(that.locals["i"]);
     that.vm.visualization.stepall();
-    that.nextLine = that.funcModel.getLine(7);
+    that.nextLineNumber = 7;
     that.locals["j"] = undefined;
     that.cache["4__firstIteration"] = undefined;
   }
@@ -59,10 +59,10 @@ sort(a) {
     that.args["a"],
     that.locals["j"],
     that.locals["j"] - 1);
-  that.nextLine = that.funcModel.getLine(6);
+  that.nextLineNumber = 6;
 // Java:    }
-  that.nextLine = that.funcModel.getLine(4);
+  that.nextLineNumber = 4;
 // Java:  }
-  that.nextLine = that.funcModel.getLine(3);
+  that.nextLineNumber = 3;
 // Java:}
 }

@@ -19,8 +19,9 @@ class StackFrame {
     this.args = {};
     this.locals = {};
     this.cache = {};
-    this.currentLine = this.funcModel.getLine(1);
-    this.nextLine = this.funcModel.getLine(2);
+    this.currentLineNumber = 1;
+    this.highlightLine(1);
+    this.nextLineNumber = 2;
     this.resultCallback = resultCallback;
     this.result = undefined;
 
@@ -32,9 +33,26 @@ class StackFrame {
   }
 
   next() {
-    this.currentLine = this.nextLine;
-    console.log("Java: " + this.currentLine["Java"]);
-    eval(this.currentLine["JavaScript"])(this);
+    //this.highlightLine(this.currentLineNumber);
+    //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
+    this.currentLineNumber = this.nextLineNumber;
+    this.highlightLine(this.currentLineNumber);
+    console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
+
+    eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
+  }
+
+  highlightLine(lineNumber) {
+    try {
+      for (let i = 1; i <= this.funcModel.codeLines.length; ++i) {
+        document.getElementById("" + i).style.backgroundColor = "";
+      }
+      if (lineNumber) {
+        document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   returnResult() {
@@ -67,13 +85,19 @@ class VirtualMachine {
     xhr.send();
   }
 
+  populateCodePane(funcModel) {
+    let codePaneHtml = "";
+    for (let i = 1; i <= funcModel.codeLines.length; ++i) {
+      codePaneHtml += ('<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n");
+    }
+    document.getElementById("codePane").innerHTML = codePaneHtml;
+  }
+
   invokeFunc(identifier, resultCallback, ...args) {
     console.log("Invoke: " + identifier + "(" + [...args] + ")");
-    this.callStack.push(
-      new StackFrame(this,
-                     this.funcModels[identifier],
-                     resultCallback,
-                     ...args));
+    let func = this.funcModels[identifier];
+    this.populateCodePane(func);
+    this.callStack.push(new StackFrame(this, func, resultCallback, ...args));
   }
 
   getFrame() {
@@ -84,11 +108,17 @@ class VirtualMachine {
     // Execute the next line of the top stack frame.
     this.getFrame().next();
 
-    if (!this.getFrame().nextLine) {
+    if (!this.getFrame().nextLineNumber) {
       // Execution of the top stack frame is complete, so execute the result
       // callback and pop it off the stack.
       this.getFrame().returnResult();
       this.callStack.pop();
+
+
+      this.populateCodePane(this.getFrame().funcModel);
+
+
+      //this.getFrame().highlightLine(this.getFrame().currentLineNumber)
     }
   }
 

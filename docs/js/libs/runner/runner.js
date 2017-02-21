@@ -36,8 +36,9 @@ var StackFrame = function () {
     this.args = {};
     this.locals = {};
     this.cache = {};
-    this.currentLine = this.funcModel.getLine(1);
-    this.nextLine = this.funcModel.getLine(2);
+    this.currentLineNumber = 1;
+    this.highlightLine(1);
+    this.nextLineNumber = 2;
     this.resultCallback = resultCallback;
     this.result = undefined;
 
@@ -56,9 +57,27 @@ var StackFrame = function () {
   _createClass(StackFrame, [{
     key: "next",
     value: function next() {
-      this.currentLine = this.nextLine;
-      console.log("Java: " + this.currentLine["Java"]);
-      eval(this.currentLine["JavaScript"])(this);
+      //this.highlightLine(this.currentLineNumber);
+      //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
+      this.currentLineNumber = this.nextLineNumber;
+      this.highlightLine(this.currentLineNumber);
+      console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
+
+      eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
+    }
+  }, {
+    key: "highlightLine",
+    value: function highlightLine(lineNumber) {
+      try {
+        for (var i = 1; i <= this.funcModel.codeLines.length; ++i) {
+          document.getElementById("" + i).style.backgroundColor = "";
+        }
+        if (lineNumber) {
+          document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, {
     key: "returnResult",
@@ -99,6 +118,15 @@ var VirtualMachine = function () {
       xhr.send();
     }
   }, {
+    key: "populateCodePane",
+    value: function populateCodePane(funcModel) {
+      var codePaneHtml = "";
+      for (var i = 1; i <= funcModel.codeLines.length; ++i) {
+        codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n";
+      }
+      document.getElementById("codePane").innerHTML = codePaneHtml;
+    }
+  }, {
     key: "invokeFunc",
     value: function invokeFunc(identifier, resultCallback) {
       for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
@@ -106,7 +134,9 @@ var VirtualMachine = function () {
       }
 
       console.log("Invoke: " + identifier + "(" + [].concat(args) + ")");
-      this.callStack.push(new (Function.prototype.bind.apply(StackFrame, [null].concat([this, this.funcModels[identifier], resultCallback], args)))());
+      var func = this.funcModels[identifier];
+      this.populateCodePane(func);
+      this.callStack.push(new (Function.prototype.bind.apply(StackFrame, [null].concat([this, func, resultCallback], args)))());
     }
   }, {
     key: "getFrame",
@@ -119,11 +149,15 @@ var VirtualMachine = function () {
       // Execute the next line of the top stack frame.
       this.getFrame().next();
 
-      if (!this.getFrame().nextLine) {
+      if (!this.getFrame().nextLineNumber) {
         // Execution of the top stack frame is complete, so execute the result
         // callback and pop it off the stack.
         this.getFrame().returnResult();
         this.callStack.pop();
+
+        this.populateCodePane(this.getFrame().funcModel);
+
+        //this.getFrame().highlightLine(this.getFrame().currentLineNumber)
       }
     }
   }, {
