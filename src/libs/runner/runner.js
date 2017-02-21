@@ -37,21 +37,15 @@ class StackFrame {
     //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
     this.currentLineNumber = this.nextLineNumber;
     this.highlightLine(this.currentLineNumber);
-    console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
-
     eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
   }
 
   highlightLine(lineNumber) {
-    try {
-      for (let i = 1; i <= this.funcModel.codeLines.length; ++i) {
-        document.getElementById("" + i).style.backgroundColor = "";
-      }
-      if (lineNumber) {
-        document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
-      }
-    } catch (err) {
-      console.log(err);
+    for (let i = 1; i <= this.funcModel.codeLines.length; ++i) {
+      document.getElementById("" + i).style.backgroundColor = "";
+    }
+    if (lineNumber) {
+      document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
     }
   }
 
@@ -91,6 +85,7 @@ class VirtualMachine {
       codePaneHtml += ('<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n");
     }
     document.getElementById("codePane").innerHTML = codePaneHtml;
+    hljs.highlightBlock(document.getElementById("codePane"));
   }
 
   invokeFunc(identifier, resultCallback, ...args) {

@@ -61,22 +61,16 @@ var StackFrame = function () {
       //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
       this.currentLineNumber = this.nextLineNumber;
       this.highlightLine(this.currentLineNumber);
-      console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
-
       eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
     }
   }, {
     key: "highlightLine",
     value: function highlightLine(lineNumber) {
-      try {
-        for (var i = 1; i <= this.funcModel.codeLines.length; ++i) {
-          document.getElementById("" + i).style.backgroundColor = "";
-        }
-        if (lineNumber) {
-          document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
-        }
-      } catch (err) {
-        console.log(err);
+      for (var i = 1; i <= this.funcModel.codeLines.length; ++i) {
+        document.getElementById("" + i).style.backgroundColor = "";
+      }
+      if (lineNumber) {
+        document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
       }
     }
   }, {
@@ -125,6 +119,8 @@ var VirtualMachine = function () {
         codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n";
       }
       document.getElementById("codePane").innerHTML = codePaneHtml;
+
+      hljs.highlightBlock(document.getElementById("codePane"));
     }
   }, {
     key: "invokeFunc",
