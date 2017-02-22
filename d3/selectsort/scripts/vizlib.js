@@ -192,7 +192,7 @@ var vizlib = (function() {
       .attr('font-size', function() {
         return (_box_size * .7) + "px";
       })
-      .attr('font-family', 'monotype')
+      .attr('font-family', 'sans-serif')
       .attr('text-anchor', 'middle');
 
     // draw min element
@@ -219,7 +219,7 @@ var vizlib = (function() {
       .attr('font-size', function(d) {
         return (d.current.size * .7) + "px";
       })
-      .attr('font-family', 'monotype')
+      .attr('font-family', 'sans-serif')
       .attr('text-anchor', 'middle');
   };
 
