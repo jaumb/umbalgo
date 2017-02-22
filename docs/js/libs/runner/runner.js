@@ -4,11 +4,24 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Represents a function implemented in an arbitrary language.
+ * These are the objects operated upon by the `VirtualMachine`.
+ */
 var FunctionModel = function () {
-  function FunctionModel(filename) {
+  /**
+   * Construct a FunctionModel object.
+   * The identifier and parameter list will be automatically deduced.
+   * @param {Array.CodeLine} codeLines - An array of CodeLine objects that make
+   *     up the function model. These are implicitly constructed when
+   *     dynamically parser output from a file, so the CodeLine class doesn't
+   *     actually exist. Please see the UML diagram's for information about the
+   *     structure of these objects.
+   */
+  function FunctionModel(codeLines) {
     _classCallCheck(this, FunctionModel);
 
-    this.codeLines = filename;
+    this.codeLines = codeLines;
     // Extract the function name and parameter list from the definition
     var match = this.codeLines[0]["JavaScript"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
     this.identifier = match[1];
@@ -16,6 +29,13 @@ var FunctionModel = function () {
       return s.trim();
     });
   }
+
+  /**
+   * Return a single CodeLine from this function model.
+   * @param {number} lineNumber - The one-indexed line number to return.
+   * @return {CodeLine} - The requested CodeLine object.
+   */
+
 
   _createClass(FunctionModel, [{
     key: "getLine",
@@ -27,22 +47,47 @@ var FunctionModel = function () {
   return FunctionModel;
 }();
 
+/**
+ * Encodes the current execution context maintained by the VirtualMachine.
+ * This object tracks control flow and any objects in scope, much like a stack
+ * frame in C-like languages.
+ */
+
+
 var StackFrame = function () {
+  /**
+   * Constructs a StackFrame object, which occurs when a function is invoked.
+   * @param {VirtualMachine} vm - A reference back to the VirtualMachine that
+   *     created this frame.
+   * @param {FunctionModel} funcModel - The function model who's execution
+   *     context is encoded by this frame.
+   * @param {Function} resultCallback - A callback that receives the return
+   *     value, if any, when execution of `funcModel` is complete.
+   * @param {...} args - The arguments to apply to `funcModel`.
+   */
   function StackFrame(vm, funcModel, resultCallback) {
     _classCallCheck(this, StackFrame);
 
+    /** A reference back to the VirtualMachine that created this frame. */
     this.vm = vm;
+    /** The function model being executed in the context of this frame. */
     this.funcModel = funcModel;
+    /** A map of the arguments with which this function was invoked. */
     this.args = {};
+    /** A map to store local variables within the scope of this function. */
     this.locals = {};
+    /** A map of helper variables for maintaining state from line-to-line. */
     this.cache = {};
+    /** The current line number for controlling flow. */
     this.currentLineNumber = 1;
-    this.highlightLine(1);
+    /** The next line number for controlling flow. */
     this.nextLineNumber = 2;
+    /** A single parameter callback for receiving the return value. */
     this.resultCallback = resultCallback;
+    /** The result of this function call, if execution is complete. */
     this.result = undefined;
 
-    // Populate the function's arguments map
+    // Populate the function's args map with the provided arguments.
 
     for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
       args[_key - 3] = arguments[_key];
@@ -52,7 +97,17 @@ var StackFrame = function () {
     for (var i = 0; i < funcArgs.length; ++i) {
       this.args[this.funcModel.params[i]] = funcArgs[i];
     }
+
+    // Highlight the first line in the code pane.
+    this.highlightLine(1);
   }
+
+  /**
+   * Execute the next line of code, update the UI, and update any relevant state
+   * encoded in this frame.
+   * TODO: Elaborate.
+   */
+
 
   _createClass(StackFrame, [{
     key: "next",
@@ -63,6 +118,12 @@ var StackFrame = function () {
       this.highlightLine(this.currentLineNumber);
       eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
     }
+
+    /**
+     * Highlight the specified line in the code pane (and only that line).
+     * @param {Number} lineNumber - The one-indexed line to highlight.
+     */
+
   }, {
     key: "highlightLine",
     value: function highlightLine(lineNumber) {
@@ -73,6 +134,12 @@ var StackFrame = function () {
         document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
       }
     }
+
+    /**
+     * Trigger the result callback that was provided when this frame was created
+     * (if any was provided).
+     */
+
   }, {
     key: "returnResult",
     value: function returnResult() {
@@ -119,7 +186,6 @@ var VirtualMachine = function () {
         codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n";
       }
       document.getElementById("codePane").innerHTML = codePaneHtml;
-
       hljs.highlightBlock(document.getElementById("codePane"));
     }
   }, {
