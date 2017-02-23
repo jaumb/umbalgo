@@ -31,6 +31,8 @@
         font-family:'Verdana';
       }
     </style>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript">
 // this functions creates and returns an insertion sort
@@ -266,5 +268,10 @@ function insertionSortViz(list) {
   <body>
     <button type="button" onclick="onInvoke()">invoke</button>
     <button type="button" onclick="onNext()">next</button>
+    <pre>
+      <code id="codePane">
+        <!-- Dynamically generated code pane will be inserted here -->
+      </code>
+    </pre>
   </body>
 </html>
