@@ -7,16 +7,16 @@ var element = (function() {
 
   // non-text elements
   var fill;
-  var fill-opacity;
+  var fill_opacity;
   var stroke;
-  var stroke-width;
-  var stroke-opacity;
+  var stroke_width;
+  var stroke_opacity;
 
   // svg text elements
   var val;
   var font;
-  var font-size;
-  var text-anchor;
+  var font_size;
+  var text_anchor;
 
   // svg rect elements
   var width;
