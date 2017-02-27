@@ -33,7 +33,7 @@ line {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
-function unbalancedBST(dur) {
+function bst(dur) {
     var svgW = 958, svgH = 460, vRad = 20;
     var dx = 40; // change in x going from parent to child node
     var dy = 70; // change in y going from parent to child node
@@ -69,7 +69,6 @@ function unbalancedBST(dur) {
         q.push(function() {
             tree.nodes.push({
                 val:elem,
-                sp:{},
                 pos:{x:tree.nodeSP.x, y:tree.nodeSP.y},
                 lc:null,
                 rc:null
@@ -91,8 +90,6 @@ function unbalancedBST(dur) {
             node1 = tree.find(e1);
             node2 = tree.find(e2);
             node2.rc = node1;
-            node1.sp.x = node1.pos.x;
-            node1.sp.y = node1.pos.y;
             node1.pos.x = node2.pos.x + dx;
             node1.pos.y = node2.pos.y + dy;
             tree.reposition();
@@ -106,8 +103,6 @@ function unbalancedBST(dur) {
             node1 = tree.find(e1);
             node2 = tree.find(e2);
             node2.lc = node1;
-            node1.sp.x = node1.pos.x;
-            node1.sp.y = node1.pos.y;
             node1.pos.x = node2.pos.x - dx;
             node1.pos.y = node2.pos.y + dy;
             tree.reposition();
@@ -135,7 +130,7 @@ function unbalancedBST(dur) {
         function getNodes(node) {
             if (!node) { return; }
             nodes.push({val:node.val, size:node.size, lc:node.lc, rc:node.rc,
-                            pos:node.pos, seq:node.seq, sp:tree.nodeSp});
+                            pos:node.pos, seq:node.seq});
             getNodes(node.lc);
             getNodes(node.rc);
         }
@@ -263,8 +258,8 @@ function unbalancedBST(dur) {
 
         circles.enter()
             .append('circle')
-            .attr('cx', function(d) { return d.sp.x; })
-            .attr('cy', function(d) { return d.sp.y; })
+            .attr('cx', function(d) { return d.pos.x; })
+            .attr('cy', function(d) { return d.pos.y; })
             .attr('r', vRad)
             .transition().duration(dur)
             .attr('cx', function(d) { return d.pos.x; })
@@ -282,8 +277,8 @@ function unbalancedBST(dur) {
 
         labels.enter()
             .append('text')
-            .attr('x', function(d) { return d.sp.x; })
-            .attr('y', function(d) { return d.sp.y + 5; })
+            .attr('x', function(d) { return d.pos.x; })
+            .attr('y', function(d) { return d.pos.y + 5; })
             .text(function(d) { return d.val; })
             .transition().duration(dur)
             .attr('x', function(d) { return d.pos.x; })
@@ -336,7 +331,7 @@ function unbalancedBST(dur) {
 
 // example of a client using the tree visualization
 var tree = {root:null};
-var treeViz = unbalancedBST(1000);
+var treeViz = bst(1000);
 
 // get 10 randomly ordered integers
 elements = d3.range(1,11);
