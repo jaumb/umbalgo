@@ -23,7 +23,7 @@ var FunctionModel = function () {
 
     this.codeLines = codeLines;
     // Extract the function name and parameter list from the definition
-    var match = this.codeLines[0]["JavaScript"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
+    var match = this.codeLines[0]["impl"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
     this.identifier = match[1];
     this.params = match[2].split(/,/).map(function (s) {
       return s.trim();
@@ -112,7 +112,7 @@ var StackFrame = function () {
       if (this.noop) {
         this.noop = false;
       } else {
-        eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
+        eval(this.funcModel.getLine(this.currentLineNumber)["impl"])(this);
       }
     }
     /**
@@ -127,7 +127,15 @@ var StackFrame = function () {
         document.getElementById("" + i).style.backgroundColor = "";
       }
       if (lineNumber) {
+        // Highlight the specified line in the code pane,
         document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
+        // and display the associated note, if there is any.
+        var note = this.funcModel.getLine(lineNumber)["note"];
+        if (note) {
+          document.getElementById("codeNote").innerHTML = eval(note)(this);
+        } else {
+          document.getElementById("codeNote").innerHTML = "";
+        }
       }
     }
     /**
@@ -192,7 +200,7 @@ var VirtualMachine = function () {
       var codePaneHtml = "";
       var funcModel = this.getFrame().funcModel;
       for (var i = 1; i <= funcModel.codeLines.length; ++i) {
-        codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n";
+        codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["code"] + "</span>\n";
       }
       document.getElementById("codePane").innerHTML = codePaneHtml;
       // Update code colorization/formatting

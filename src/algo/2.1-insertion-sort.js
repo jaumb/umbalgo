@@ -1,9 +1,9 @@
-// Java:public static void sort(Comparable[] a) {
+// Code:public static void sort(Comparable[] a) {
 sort(a) {
-// Java:  int N = a.length;
+// Code:  int N = a.length;
   that.locals["N"] = that.args["a"].length;
   that.nextLineNumber = 3;
-// Java:  for (int i = 1; i < N; i++) {
+// Code:  for (int i = 1; i < N; i++) {
   if (that.cache["3__firstIteration"] === undefined) {
     that.locals["i"] = 1;
     that.cache["3__firstIteration"] = false;
@@ -17,7 +17,8 @@ sort(a) {
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
   }
-// Java:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
+// Code:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
+// Note:"Here's an example note that shows i=" + that.locals["i"] + "."
   if (that.cache["4__firstIteration"] === undefined) {
     that.locals["j"] = that.locals["i"];
     that.cache["4__firstIteration"] = false;
@@ -49,7 +50,7 @@ sort(a) {
     that.locals["j"] = undefined;
     that.cache["4__firstIteration"] = undefined;
   }
-// Java:      exch(a, j, j - 1);
+// Code:      exch(a, j, j - 1);
   that.vm.visualization.swap(that.locals["j"] - 1, that.locals["j"]);
   that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
   that.vm.visualization.stepall();
@@ -60,9 +61,9 @@ sort(a) {
     that.locals["j"],
     that.locals["j"] - 1);
   that.nextLineNumber = 6;
-// Java:    }
+// Code:    }
   that.nextLineNumber = 4;
-// Java:  }
+// Code:  }
   that.nextLineNumber = 3;
-// Java:}
+// Code:}
 }

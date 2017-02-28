@@ -1,35 +1,43 @@
 #!/usr/bin/env python3
 
-import argparse, json, sys
+import argparse
+import json
+import sys
 
 class Parser:
 	def __init__(self, text):
-		self.java = None
-		self.javascript = list()
-		self.lines = list()
+		self._code = None
+		self._note = None
+		self._impl = []
+		self._lines = []
 
 	def parse(self):
 		for line in input_text.strip('\r').split('\n'):
-			if line.startswith('// Java:'):
-				if self.java:
-
+			if line.startswith('// Code:'):
+				if self._code:
 					self._add_line()
-					self.javascript = list()
-				self.java = line[8:]
-			elif self.java:
-				self.javascript.append(line)
+					self._note = None
+					self._impl = []
+				self._code = line[8:]
+			elif self._code and line.startswith('// Note:'):
+				self._note = '(function(that) { return ' + line[8:] + '; })'
+			elif self._code:
+				self._impl.append(line)
 		else:
-			if self.java and self.javascript:
+			if self._code and self._impl:
 				self._add_line()
 
 	def dump_json(self):
-		return json.dumps(self.lines, indent=4, sort_keys=True) + '\n'
+		return json.dumps(self._lines, indent=2, sort_keys=True) + '\n'
 
 	def _add_line(self):
-		self.lines.append(dict(Java=self.java, JavaScript=self._make_function()))
+		line = { 'code': self._code, 'impl': self._make_function() }
+		if self._note:
+			line['note'] = self._note
+		self._lines.append(line)
 
 	def _make_function(self):
-		return '(function(that) {\n  ' + '\n  '.join(self.javascript) + '\n})'
+		return '(function(that) {\n  ' + '\n  '.join(self._impl) + '\n})'
 
 if __name__ == '__main__':
 	arg_parser = argparse.ArgumentParser()
