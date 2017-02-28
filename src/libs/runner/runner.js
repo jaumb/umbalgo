@@ -19,7 +19,6 @@ class FunctionModel {
     this.identifier = match[1];
     this.params = match[2].split(/,/).map(function(s) { return s.trim(); });
   }
-
   /**
    * Return a single CodeLine from this function model.
    * @param {number} lineNumber - The one-indexed line number to return.
@@ -57,38 +56,35 @@ class StackFrame {
     this.locals = {};
     /** A map of helper variables for maintaining state from line-to-line. */
     this.cache = {};
-    /** The current line number for controlling flow. */
-    //this.currentLineNumber = 1;
     /** The next line number for controlling flow. */
     this.nextLineNumber = 2;
     /** A single parameter callback for receiving the return value. */
     this.resultCallback = resultCallback;
     /** The result of this function call, if execution is complete. */
     this.result = undefined;
+    /** When this flag is true, do nothing but advance the highlighted line on
+        the next call to `next`. */
+    this.noop = false;
 
     // Populate the function's args map with the provided arguments.
     const funcArgs = [...args];
     for (let i = 0; i < funcArgs.length; ++i) {
       this.args[this.funcModel.params[i]] = funcArgs[i];
     }
-
-    // Highlight the first line in the code pane.
-    //this.highlightLine(1);
   }
-
   /**
    * Execute the next line of code, update the UI, and update any relevant state
    * encoded in this frame.
    * TODO: Elaborate.
    */
   next() {
-    //this.highlightLine(this.currentLineNumber);
-    //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
     this.currentLineNumber = this.nextLineNumber;
-    eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
-    //this.highlightLine(this.currentLineNumber);
+    if (this.noop) {
+      this.noop = false;
+    } else {
+      eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
+    }
   }
-
   /**
    * Highlight the specified line in the code pane (and only that line).
    * @param {Number} lineNumber - The one-indexed line to highlight.
@@ -101,7 +97,6 @@ class StackFrame {
       document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
     }
   }
-
   /**
    * Trigger the result callback that was provided when this frame was created
    * (if any was provided).
@@ -143,6 +138,8 @@ class VirtualMachine {
                                        resultCallback,
                                        ...args));
     this.populateCodePane();
+    // Highlight the first line of the function body in the code pane
+    this.getFrame().highlightLine(this.getFrame().nextLineNumber);
   }
 
   populateCodePane() {
@@ -154,8 +151,6 @@ class VirtualMachine {
     document.getElementById("codePane").innerHTML = codePaneHtml;
     // Update code colorization/formatting
     hljs.highlightBlock(document.getElementById("codePane"));
-    // Highlight the first line of the function body in the code pane
-    this.getFrame().highlightLine(this.getFrame().nextLineNumber);
   }
 
   getFrame() {
@@ -170,11 +165,17 @@ class VirtualMachine {
       // If the top stack frame hasn't returned, highlight the next line.
       this.getFrame().highlightLine(this.getFrame().nextLineNumber);
     } else {
-      // Otherwise, fire the result callback, pop it off the stack, and redraw
-      // the code pane.
+      // Otherwise, fire the result callback,
       this.getFrame().returnResult();
+      // and pop the frame off the stack.
       this.callStack.pop();
+      // Set flag to indicate that the next call to `next` should do nothing but
+      // advance the highlighted line.
+      this.getFrame().noop = true;
+      // redraw the code pane,
       this.populateCodePane();
+      // and highlight the current line.
+      this.getFrame().highlightLine(this.getFrame().currentLineNumber);
     }
   }
 
