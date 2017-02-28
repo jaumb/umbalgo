@@ -1,12 +1,15 @@
 
 var element = (function() {
 
+<<<<<<< HEAD
   /****************************************************************************
    *  private variables
    ****************************************************************************/
   // source of all element IDs
   var _id = 0;
 
+=======
+>>>>>>> 467b9343c4c85a4facbfca30481b9331f27fe541
   // all elements
   var _fill = color_codes.BACKGROUND;  // interior color of an element
   var _fill_opacity = 1;               // 0 (invisible) to 1 (solid)
@@ -14,9 +17,15 @@ var element = (function() {
   var _stroke_width = 1;               // thickness of outline
   var _stroke_opacity = 1;
 
+<<<<<<< HEAD
   // all elements but line
   // var _sp = {x:0, y:0}; // if we want default rect/text starting pos
   // var _pos = {x:0, y:0}; // if we want default rect/text pos
+=======
+  // all elements except line
+  var sp = {x, y};
+  var pos = {x, y};
+>>>>>>> 467b9343c4c85a4facbfca30481b9331f27fe541
 
 
   // svg line elements only
@@ -37,6 +46,7 @@ var element = (function() {
   // var _pos = {cx:0, cy:0};  // if we want default circle pos
   var _r;
 
+<<<<<<< HEAD
   /****************************************************************************
    *  private methods
    ****************************************************************************/
@@ -76,6 +86,9 @@ var element = (function() {
       r:r,
     }
   };
+=======
+  return {
+>>>>>>> 467b9343c4c85a4facbfca30481b9331f27fe541
 
   var text = function(x, y, val) {
     return {
@@ -116,4 +129,5 @@ var element = (function() {
     text:text,
     line:line
   }
+
 })();

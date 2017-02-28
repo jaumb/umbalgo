@@ -1,13 +1,13 @@
-// Java:public static void sort(Comparable[] a) {
+// Code:public static void sort(Comparable[] a) {
 sort(a) {
-// Java:  int N = a.length;
+// Code:  int N = a.length;
   that.locals["N"] = that.args["a"].length;
   // Tell the Runner which line should be executed next. If this were a
   // conditional construct of some sort, we may need to jump over a block or
   // back to the top of a loop. This was a simple assignment statement, so we
   // just want to proceed to the next line.
   that.nextLine = that.funcModel.getLine(3)
-// Java:  for (int i = 0; i < N; i++) {
+// Code:  for (int i = 0; i < N; i++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
   if (that.cache["3__firstIteration"] === undefined) {
@@ -32,10 +32,10 @@ sort(a) {
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
   }
-// Java:    int min = i;
+// Code:    int min = i;
   that.locals["min"] = that.locals["i"];
   that.nextLine = that.funcModel.getLine(5);
-// Java:    for (int j = i + 1; j < N; j++) {
+// Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
   if (that.cache["5__firstIteration"] === undefined) {
@@ -60,7 +60,7 @@ sort(a) {
     that.locals["j"] = undefined;
     that.cache["5__firstIteration"] = undefined;
   }
-// Java:      if (less(a[j], a[min]))
+// Code:      if (less(a[j], a[min]))
   // Invoke less() and store the result in the helpers map. The first argument
   // to invoke() is the function name, followed by a callback that takes a
   // single argument to recieve the return value. Any following arguments are
@@ -70,16 +70,16 @@ sort(a) {
     function(result) { that.nextLine = that.funcModel.getLine(result ? 7 : 8) },
     that.args["a"][that.locals["j"]],
     that.args["a"][that.locals["min"]]);
-// Java:        min = j;
+// Code:        min = j;
   // This is a simple assignment.
   that.locals["min"] = that.locals["j"];
   // Then advance to the next line.
   that.nextLine = that.funcModel.getLine(8);
-// Java:    }
+// Code:    }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLine = that.funcModel.getLine(5);
-// Java:    exch(a, i, min);
+// Code:    exch(a, i, min);
   // Invoke exch. exch() is a function that was registered with the runner
   // and is looked up by it's name as a string (the first argument to invoke()).
   // The other arguments are the arguments to exch. exch is then invoked with
@@ -94,9 +94,9 @@ sort(a) {
     that.locals["min"]);
 
   that.nextLine = that.funcModel.getLine(10);
-// Java:  }
+// Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLine = that.funcModel.getLine(3);
-// Java:}
+// Code:}
 }

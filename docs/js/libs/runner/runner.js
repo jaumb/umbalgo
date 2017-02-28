@@ -23,13 +23,12 @@ var FunctionModel = function () {
 
     this.codeLines = codeLines;
     // Extract the function name and parameter list from the definition
-    var match = this.codeLines[0]["JavaScript"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
+    var match = this.codeLines[0]["impl"].match(/(?:\\n|\s)*\((?:\\n|\s)*function(?:\\n|\s)*\((?:\\n|\s)*\w*(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*(\w+)(?:\\n|\s)*\((?:\\n|\s)*([^)]*)(?:\\n|\s)*\)(?:\\n|\s)*{(?:\\n|\s)*}(?:\\n|\s)*\)/m);
     this.identifier = match[1];
     this.params = match[2].split(/,/).map(function (s) {
       return s.trim();
     });
   }
-
   /**
    * Return a single CodeLine from this function model.
    * @param {number} lineNumber - The one-indexed line number to return.
@@ -78,14 +77,15 @@ var StackFrame = function () {
     this.locals = {};
     /** A map of helper variables for maintaining state from line-to-line. */
     this.cache = {};
-    /** The current line number for controlling flow. */
-    //this.currentLineNumber = 1;
     /** The next line number for controlling flow. */
     this.nextLineNumber = 2;
     /** A single parameter callback for receiving the return value. */
     this.resultCallback = resultCallback;
     /** The result of this function call, if execution is complete. */
     this.result = undefined;
+    /** When this flag is true, do nothing but advance the highlighted line on
+        the next call to `next`. */
+    this.noop = false;
 
     // Populate the function's args map with the provided arguments.
 
@@ -97,11 +97,7 @@ var StackFrame = function () {
     for (var i = 0; i < funcArgs.length; ++i) {
       this.args[this.funcModel.params[i]] = funcArgs[i];
     }
-
-    // Highlight the first line in the code pane.
-    //this.highlightLine(1);
   }
-
   /**
    * Execute the next line of code, update the UI, and update any relevant state
    * encoded in this frame.
@@ -112,13 +108,13 @@ var StackFrame = function () {
   _createClass(StackFrame, [{
     key: "next",
     value: function next() {
-      //this.highlightLine(this.currentLineNumber);
-      //console.log("Java: " + this.funcModel.getLine(this.currentLineNumber)["Java"]);
       this.currentLineNumber = this.nextLineNumber;
-      eval(this.funcModel.getLine(this.currentLineNumber)["JavaScript"])(this);
-      //this.highlightLine(this.currentLineNumber);
+      if (this.noop) {
+        this.noop = false;
+      } else {
+        eval(this.funcModel.getLine(this.currentLineNumber)["impl"])(this);
+      }
     }
-
     /**
      * Highlight the specified line in the code pane (and only that line).
      * @param {Number} lineNumber - The one-indexed line to highlight.
@@ -131,10 +127,17 @@ var StackFrame = function () {
         document.getElementById("" + i).style.backgroundColor = "";
       }
       if (lineNumber) {
+        // Highlight the specified line in the code pane,
         document.getElementById("" + lineNumber).style.backgroundColor = "#ff8080";
+        // and display the associated note, if there is any.
+        var note = this.funcModel.getLine(lineNumber)["note"];
+        if (note) {
+          document.getElementById("codeNote").innerHTML = eval(note)(this);
+        } else {
+          document.getElementById("codeNote").innerHTML = "";
+        }
       }
     }
-
     /**
      * Trigger the result callback that was provided when this frame was created
      * (if any was provided).
@@ -188,6 +191,8 @@ var VirtualMachine = function () {
       console.log("Invoke: " + identifier + "(" + [].concat(args) + ")");
       this.callStack.push(new (Function.prototype.bind.apply(StackFrame, [null].concat([this, this.funcModels[identifier], resultCallback], args)))());
       this.populateCodePane();
+      // Highlight the first line of the function body in the code pane
+      this.getFrame().highlightLine(this.getFrame().nextLineNumber);
     }
   }, {
     key: "populateCodePane",
@@ -195,13 +200,11 @@ var VirtualMachine = function () {
       var codePaneHtml = "";
       var funcModel = this.getFrame().funcModel;
       for (var i = 1; i <= funcModel.codeLines.length; ++i) {
-        codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["Java"] + "</span>\n";
+        codePaneHtml += '<span id="' + i + '">' + funcModel.getLine(i)["code"] + "</span>\n";
       }
       document.getElementById("codePane").innerHTML = codePaneHtml;
       // Update code colorization/formatting
       hljs.highlightBlock(document.getElementById("codePane"));
-      // Highlight the first line of the function body in the code pane
-      this.getFrame().highlightLine(this.getFrame().nextLineNumber);
     }
   }, {
     key: "getFrame",
@@ -218,11 +221,17 @@ var VirtualMachine = function () {
         // If the top stack frame hasn't returned, highlight the next line.
         this.getFrame().highlightLine(this.getFrame().nextLineNumber);
       } else {
-        // Otherwise, fire the result callback, pop it off the stack, and redraw
-        // the code pane.
+        // Otherwise, fire the result callback,
         this.getFrame().returnResult();
+        // and pop the frame off the stack.
         this.callStack.pop();
+        // Set flag to indicate that the next call to `next` should do nothing but
+        // advance the highlighted line.
+        this.getFrame().noop = true;
+        // redraw the code pane,
         this.populateCodePane();
+        // and highlight the current line.
+        this.getFrame().highlightLine(this.getFrame().currentLineNumber);
       }
     }
   }, {

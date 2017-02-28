@@ -5,7 +5,6 @@ var vizupdate = (function() {
   /****************************************************************************
    *  private variables
    ****************************************************************************/
-
   // queue of functions to update the canvas
   var q = [];
 
@@ -13,7 +12,6 @@ var vizupdate = (function() {
   /****************************************************************************
    *  private methods
    ****************************************************************************/
-
   // execute the next function on the queue
   function next(viz, dur, intervalID) {
     var f = q.shift();
@@ -143,6 +141,7 @@ var vizupdate = (function() {
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
+      .attr('font', function(d) { return d.font; })
       .attr('font-size', function(d) { return d.font_size; })
       .attr('text-anchor', function(d) { return d.text_anchor; });
 
@@ -153,6 +152,7 @@ var vizupdate = (function() {
       .attr('y', function(d) { return d.sp.y; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
+      .attr('font', function(d) { return d.font; })
       .attr('font-size', function(d) { return d.font_size; })
       .attr('text-anchor', function(d) { return d.text_anchor; })
       .transition().duration(dur)
@@ -161,6 +161,7 @@ var vizupdate = (function() {
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
+      .attr('font', function(d) { return d.font; })
       .attr('font-size', function(d) { return d.font_size; })
       .attr('text-anchor', function(d) { return d.text_anchor; });
 
@@ -170,7 +171,6 @@ var vizupdate = (function() {
   /****************************************************************************
    *  public methods
    ****************************************************************************/
-
   // exposed method that executes all functions on the queue
   // and updates the canvas
   function redraw(viz, dur) {
@@ -213,7 +213,6 @@ var vizupdate = (function() {
   /****************************************************************************
    *  return public methods
    ****************************************************************************/
-
   return {
     redraw:redraw,
     addOperation:addOperation,
