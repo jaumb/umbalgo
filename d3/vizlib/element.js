@@ -2,8 +2,14 @@
 var element = (function() {
   // all elements
   var id;  // a unique id for this element
-  var x;
-  var y;
+
+  // all elements but line
+  var sp = {x, y};
+  var pos = {x, y};
+
+  // svg line elements
+  var sp = {x1, y1, x2, y2};
+  var pos = {x1, y1, x2, y2};
 
   // non-text elements
   var fill;
@@ -24,13 +30,6 @@ var element = (function() {
 
   // svg circle elements
   var radius;
-
-  // svg line elements
-  var x1;
-  var y1;
-  var x2;
-  var y2;
-
 
 
 
