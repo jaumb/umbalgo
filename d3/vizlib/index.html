@@ -12,8 +12,9 @@
     <script type="text/javascript">
       var e1 = element.rect(50, 100, 40, 40);
       var e2 = element.circle(120, 120, 20);
-      var e3 = element.text(100, 100, 'sample text');
-      var e4 = element.line(0,0,150,150);
+      var e3 = element.text(120, 120, 'sample text');
+      var e4 = element.line(50,50,150,150);
+      var e5 = element.rect(150, 100, 40, 40);
 
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
@@ -31,6 +32,14 @@
         .attr('x', e1.sp.x)
         .attr('y', e1.sp.y)
         .attr('fill', color_codes.FINISHED);
+
+        d3.select("#svg_canvas")
+          .append('rect')
+          .attr('width', e5.width)
+          .attr('height', e5.height)
+          .attr('x', e5.sp.x)
+          .attr('y', e5.sp.y)
+          .attr('fill', color_codes.ACTIVE);
 
       d3.select("#svg_canvas")
         .append('circle')
@@ -56,12 +65,13 @@
         .attr('x2', e4.sp.x2)
         .attr('y2', e4.sp.y2)
         .attr('stroke-width', e4.stroke_width)
-        .attr('stroke', e4.stroke);  
+        .attr('stroke', e4.stroke);
 
       console.log("e1's id: " + e1.id);
       console.log("e2's id: " + e2.id);
       console.log("e3's id: " + e3.id);
       console.log("e4's id: " + e4.id);
+      console.log("e5's id: " + e5.id);
 
 
 
