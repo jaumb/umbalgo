@@ -1,53 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Insertion Sort</title>
-    <style type="text/css">
-      body {
-        width:960px;
-        margin:10px auto;
-      }
-      rect {
-        stroke:darkgreen;
-        stroke-width:3px;
-      }
-      line {
-        stroke-width:3px;
-      }
-      #insertionsvg g text:hover, #insertionsvg g rect:hover {
-        cursor:pointer;
-      }
-      #navdiv {
-        background:#555;
-      }
-      #insertionsvg {
-        border:2px solid grey;
-      }
-      #navdiv button, #navdiv textarea {
-        vertical-align:middle;
-      }
-      #g_labels text {
-        text-anchor:middle;
-        font-family:'Verdana';
-      }
-    </style>
+    <title>Heap Sort</title>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-    <script type="text/javascript" src="insertion.js"></script>
     <script type="text/javascript" src="js/libs/runner/runner.js"></script>
     <script type="text/javascript">
       let vm = new VirtualMachine();
       vm.loadFunc("exch.js");
       vm.loadFunc("less.js");
-      vm.loadFunc("2.1-insertion-sort.js");
+      vm.loadFunc("sink.js");
+      vm.loadFunc("2.4-heapsort-sort.js");
 
       const onInvoke = function() {
-        let a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
-        vm.visualization = insertionSortViz(a);
-        vm.visualization.highlight([0]);
-        vm.visualization.unhighlight([0]);
-        vm.visualization.updateBoundary(0);
+        let a = [0, 86, 71, 10, 75, 73, 64, 87, 23, 41];
         console.log("Input: " + a);
         vm.invokeFunc("sort", function(result) { console.log("Result: " + a); }, a);
       };
