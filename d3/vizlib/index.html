@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="./d3.v3.js"></script>
+    <script type="text/javascript" src="./common.js"></script>
+    <script type="text/javascript" src="./element.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var e1 = element.rect(50, 100, 40, 40);
+      var e2 = element.circle(120, 120, 20);
+      var e3 = element.text(100, 100, 'sample text');
+      var e4 = element.line(0,0,150,150);
+
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id','svg_canvas');
+
+      d3.select("#svg_canvas")
+        .append('rect')
+        .attr('width', e1.width)
+        .attr('height', e1.height)
+        .attr('x', e1.sp.x)
+        .attr('y', e1.sp.y)
+        .attr('fill', color_codes.FINISHED);
+
+      d3.select("#svg_canvas")
+        .append('circle')
+        .attr('r', e2.r)
+        .attr('cx', e2.sp.x)
+        .attr('cy', e2.sp.y)
+        .attr('fill', color_codes.COMPARE);
+
+      d3.select('#svg_canvas')
+        .append('text')
+        .attr('x', e3.sp.x)
+        .attr('y', e3.sp.y)
+        .attr('fill', e3.fill)
+        .style('font-size', e3.font_size)
+        .style('text-anchor', e3.text_anchor)
+        .style('font-family', e3.font)
+        .text(e3.val);
+
+      d3.select("#svg_canvas")
+        .append('line')
+        .attr('x1', e4.sp.x1)
+        .attr('y1', e4.sp.y1)
+        .attr('x2', e4.sp.x2)
+        .attr('y2', e4.sp.y2)
+        .attr('stroke-width', e4.stroke_width)
+        .attr('stroke', e4.stroke);  
+
+      console.log("e1's id: " + e1.id);
+      console.log("e2's id: " + e2.id);
+      console.log("e3's id: " + e3.id);
+      console.log("e4's id: " + e4.id);
+
+
+
+    </script>
+  </body>
+</html>
