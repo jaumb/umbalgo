@@ -1,9 +1,10 @@
 
 var element = (function() {
+
   // all elements
   var id;  // a unique id for this element
 
-  // all elements but line
+  // all elements except line
   var sp = {x, y};
   var pos = {x, y};
 
@@ -31,9 +32,8 @@ var element = (function() {
   // svg circle elements
   var radius;
 
-
-
   return {
 
   }
+
 })();
