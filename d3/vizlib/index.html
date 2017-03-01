@@ -5,16 +5,30 @@
     <title>D3 Test</title>
     <script type="text/javascript" src="./d3.v3.js"></script>
     <script type="text/javascript" src="./common.js"></script>
-    <script type="text/javascript" src="./element.js"></script>
+    <script type="text/javascript" src="./element_factory.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
     <script type="text/javascript">
-      var e1 = element.rect(50, 100, 40, 40);
-      var e2 = element.circle(120, 120, 20);
-      var e3 = element.text(120, 120, 'sample text');
-      var e4 = element.line(50,50,150,150);
-      var e5 = element.rect(150, 100, 40, 40);
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+      var size = svgW / 12;
+
+      var elems = [];
+      for (var i = 0; i < 10; i++) {
+        elems.push(element_factory.rect());
+        elems[i].pos.x = size + size * i;
+        elems[i].pos.y = 100;
+        elems[i].width = size;
+        elems[i].height = size;
+        if (i % 2 === 0) {
+          elems[i].fill = color_codes.ACTIVE;
+        }
+        else {
+          elems[i].fill = color_codes.COMPARE;
+        }
+      }
+
 
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
@@ -26,54 +40,23 @@
         .attr('id','svg_canvas');
 
       d3.select("#svg_canvas")
+        .append('g')
+        .attr('id','g_arr_elems');
+
+      d3.select("#g_arr_elems")
+        .selectAll('rect')
+        .data(elems)
+        .enter()
         .append('rect')
-        .attr('width', e1.width)
-        .attr('height', e1.height)
-        .attr('x', e1.sp.x)
-        .attr('y', e1.sp.y)
-        .attr('fill', color_codes.FINISHED);
+        .attr('width', function(d) { return d.width; })
+        .attr('height', function(d) { return d.height; })
+        .attr('x', function(d) { return d.pos.x; })
+        .attr('y', function(d) { return d.pos.y; })
+        .attr('fill', function(d) { return d.fill; });
 
-        d3.select("#svg_canvas")
-          .append('rect')
-          .attr('width', e5.width)
-          .attr('height', e5.height)
-          .attr('x', e5.sp.x)
-          .attr('y', e5.sp.y)
-          .attr('fill', color_codes.ACTIVE);
-
-      d3.select("#svg_canvas")
-        .append('circle')
-        .attr('r', e2.r)
-        .attr('cx', e2.sp.x)
-        .attr('cy', e2.sp.y)
-        .attr('fill', color_codes.COMPARE);
-
-      d3.select('#svg_canvas')
-        .append('text')
-        .attr('x', e3.sp.x)
-        .attr('y', e3.sp.y)
-        .attr('fill', e3.fill)
-        .style('font-size', e3.font_size)
-        .style('text-anchor', e3.text_anchor)
-        .style('font-family', e3.font)
-        .text(e3.val);
-
-      d3.select("#svg_canvas")
-        .append('line')
-        .attr('x1', e4.sp.x1)
-        .attr('y1', e4.sp.y1)
-        .attr('x2', e4.sp.x2)
-        .attr('y2', e4.sp.y2)
-        .attr('stroke-width', e4.stroke_width)
-        .attr('stroke', e4.stroke);
-
-      console.log("e1's id: " + e1.id);
-      console.log("e2's id: " + e2.id);
-      console.log("e3's id: " + e3.id);
-      console.log("e4's id: " + e4.id);
-      console.log("e5's id: " + e5.id);
-
-
+      for (i = 0; i < 10; i++) {
+        console.log("e" + i + "'s id: " + elems[i].id);
+      }
 
     </script>
   </body>

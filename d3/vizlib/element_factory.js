@@ -50,8 +50,8 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:_sp,
-      pos:_pos,
+      pos:{x:_pos.x, y:_pos.y},
+      sp:{x:_pos.x, y:_pos.y},
       width:_size,
       height:_size,
     }

@@ -20,14 +20,6 @@ var vizlib = (function() {
    *  return public methods
    ****************************************************************************/
   return {
-    initialize:initialize,
-    change_min:change_min,
-    move_min:move_min,
-    array_swap:array_swap,
-    array_change_color:array_change_color,
-    min_change_color:min_change_color,
-    step:step,
-    pauseplay:pauseplay
 
   };
 })();
