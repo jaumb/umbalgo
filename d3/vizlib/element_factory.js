@@ -1,5 +1,5 @@
 
-var element = (function() {
+var element_factory = (function() {
 
   /****************************************************************************
    *  private variables
@@ -15,27 +15,21 @@ var element = (function() {
   var _stroke_opacity = 1;
 
   // all elements but line
-  // var _sp = {x:0, y:0}; // if we want default rect/text starting pos
-  // var _pos = {x:0, y:0}; // if we want default rect/text pos
+  var _sp = {x:null, y:null}; // if we want default rect/text starting pos
+  var _pos = {x:null, y:null}; // if we want default rect/text pos
 
 
   // svg line elements only
-  // var _line_sp  = {x1:0, y1:0, x2:0, y2:0}; // default line starting pos
-  // var _line_pos = {x1:0, y1:0, x2:0, y2:0}; // default line pos
+  var _line_sp  = {x1:0, y1:0, x2:0, y2:0}; // default line starting pos
+  var _line_pos = {x1:0, y1:0, x2:0, y2:0}; // default line pos
 
   // svg text elements
-  var _font = 'sans-serif';
+  var _font = 'courier new';
   var _font_size = 'medium';
   var _text_anchor = 'middle';
 
   // svg rect elements
-  var _width;
-  var _height;
-
-  // svg circle elements
-  // var _sp  = {cx:0, cy:0};  // if we want default circle starting pos
-  // var _pos = {cx:0, cy:0};  // if we want default circle pos
-  var _r;
+  var _size = null;
 
   /****************************************************************************
    *  private methods
@@ -48,7 +42,7 @@ var element = (function() {
   /****************************************************************************
    *  public methods
    ****************************************************************************/
-  var rect = function(x, y, w, h) {
+  var rect = function() {
     return {
       id:_newID(),
       fill:_fill,
@@ -56,10 +50,10 @@ var element = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{x:x, y:y},
-      pos:{x:x, y:y},
-      width:w,
-      height:h,
+      sp:_sp,
+      pos:_pos,
+      width:_size,
+      height:_size,
     }
   };
 
@@ -71,9 +65,9 @@ var element = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{x:x, y:y},
-      pos:{x:x, y:y},
-      r:r,
+      sp:{cx:_sp.x, cy:_sp.y},
+      pos:{cx:_pos.x, cy:_pos.y},
+      r:_size
     }
   };
 
@@ -85,23 +79,23 @@ var element = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{x:x, y:y},
-      pos:{x:x, y:y},
+      sp:_sp,
+      pos:_pos,
       font:_font,
       font_size:_font_size,
       text_anchor:_text_anchor,
-      val:val,
+      val:null
     }
   };
 
-  var line = function(x1, y1, x2, y2) {
+  var line = function() {
     return {
       id:_newID(),
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{x1:x1, y1:y1, x2:x2, y2:y2},
-      pos:{x1:x1, y1:y1, x2:x2, y2:y2},
+      sp:_line_sp,
+      pos:_line_pos
     }
   };
 
