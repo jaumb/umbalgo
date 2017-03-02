@@ -130,12 +130,12 @@ var vizupdate = (function() {
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; });
 
-    // draw all labels
-    var labels = d3.select("#g_labels")
+    // draw all text elements
+    var text = d3.select("#g_text")
       .selectAll('text')
-      .data(viz.getLabels());
+      .data(viz.getText());
 
-    labels.text(function(d) { return d.val; })
+    text.text(function(d) { return d.val; })
       .transition().duration(dur)
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
@@ -145,7 +145,7 @@ var vizupdate = (function() {
       .attr('font-size', function(d) { return d.font_size; })
       .attr('text-anchor', function(d) { return d.text_anchor; });
 
-    labels.enter()
+    text.enter()
       .append('text')
       .text(function(d) { return d.val; })
       .attr('x', function(d) { return d.sp.x; })
@@ -202,10 +202,10 @@ var vizupdate = (function() {
         .append('g')
         .attr('id','g_lines');
 
-    // append group element for labels
+    // append group element for text elements
     d3.select("#svgcanvas")
       .append('g')
-      .attr('id','g_labels');
+      .attr('id','g_text');
 
   }
 
