@@ -13,7 +13,12 @@ var vizupdate = (function() {
   /****************************************************************************
    *  private methods
    ****************************************************************************/
-  // execute the next function on the queue
+
+  /**
+   * Execute the next function on the queue.
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Duration of the function's execution in milliseconds.
+   */
   function next(viz, dur) {
     console.log("val of dur: " + dur);
     var f = _q.shift();
@@ -25,7 +30,11 @@ var vizupdate = (function() {
     }
   }
 
-  // private function to actually update the svg canvas
+  /**
+   * Update the svg canvas.
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Num. of milliseconds to spend updating the canvas.
+   */
   function draw(viz, dur) {
 
     // draw all rectangles
@@ -174,33 +183,41 @@ var vizupdate = (function() {
   /****************************************************************************
    *  public methods
    ****************************************************************************/
-  // exposed method that executes all functions on the _queue
-  // and updates the canvas
-  function redraw(viz, dur) {
-    var durPerFunction = _q.length ? dur : dur / _q.length;
 
+  /**
+   * Public method to execute all functions currently in the queue and then
+   * update the svg canvas.
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Duration of the entire redraw in milliseconds.
+   */
+  function redraw(viz, dur) {
+    // TODO: Revisit how to allocate time per redraw component.
     if ( _q.length ) {
       var durPerFunction = dur / _q.length;
       _intervalID = setInterval(next,
                                durPerFunction,
                                viz,               // next arg 1
                                durPerFunction);   // next arg 2
-    }
-    else {
+    } else {
       draw(viz, dur);
     }
-
-
   }
 
-  // add an operation for visualization next time redraw() is called
+  /**
+   * Add a function to the queue. Any changes this function makes to the
+   * visualization's elements will be reflected the next time redraw() is
+   * called.
+   * @param {Object} operation - A function object to be added to the queue.
+   */
   function addOperation(operation) {
     _q.push(operation);
   }
 
-  // initialize the visualization layout
+  /**
+   * Initialize the visualization layout by appending group elements to the
+   * svg canvas for each type of element (rect, circle, line, text).
+   */
   function initialize() {
-
     // append group element for rectangles
     d3.select("#svgcanvas")
         .append('g')
@@ -220,7 +237,6 @@ var vizupdate = (function() {
     d3.select("#svgcanvas")
       .append('g')
       .attr('id','g_text');
-
   }
 
 
