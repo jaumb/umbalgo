@@ -6,6 +6,7 @@
     <script type="text/javascript" src="./d3.v3.js"></script>
     <script type="text/javascript" src="./common.js"></script>
     <script type="text/javascript" src="./element_factory.js"></script>
+    <script type="text/javascript" src="./vizupdate.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -13,20 +14,53 @@
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
       var size = svgW / 12;
+      var radius = size / 2;
 
       var elems = [];
+      var circles = [];
+      var lines = [];
       for (var i = 0; i < 10; i++) {
         elems.push(element_factory.rect());
+        elems[i].sp.x = size + size * i;
+        elems[i].sp.y = 100;
         elems[i].pos.x = size + size * i;
         elems[i].pos.y = 100;
         elems[i].width = size;
         elems[i].height = size;
+        elems[i].stroke_width = 3;
         if (i % 2 === 0) {
           elems[i].fill = color_codes.ACTIVE;
         }
         else {
           elems[i].fill = color_codes.COMPARE;
         }
+
+        circles.push(element_factory.circle());
+        circles[i].sp.cx = (size + radius) + size * i;
+        circles[i].sp.cy = 200;
+        circles[i].pos.cx = (size + radius) + size * i;
+        circles[i].pos.cy = 200;
+        circles[i].r = radius;
+        circles[i].stroke_width = 3;
+        if (i % 2 === 0) {
+          circles[i].fill = color_codes.FINISHED;
+        }
+        else {
+          circles[i].fill = color_codes.ACTIVE;
+        }
+
+        lines.push(element_factory.line());
+        lines[i].sp.x1 = (size + radius) + size * i;
+        lines[i].sp.y1 = 75;
+        lines[i].sp.x2 = (size + radius) + size * i;
+        lines[i].sp.y2 = 200 + radius + 25;
+        lines[i].pos.x1 = (size + radius) + size * i;
+        lines[i].pos.y1 = 75;
+        lines[i].pos.x2 = (size + radius) + size * i;
+        lines[i].pos.y2 = 200 + radius + 25;
+        lines[i].stroke = color_codes.BLACK;
+        lines[i].stroke_width = 3;
+
       }
 
 
@@ -41,21 +75,87 @@
 
       d3.select("#svg_canvas")
         .append('g')
-        .attr('id','g_arr_elems');
+        .attr('id','g_rects');
 
-      d3.select("#g_arr_elems")
-        .selectAll('rect')
-        .data(elems)
-        .enter()
-        .append('rect')
-        .attr('width', function(d) { return d.width; })
-        .attr('height', function(d) { return d.height; })
-        .attr('x', function(d) { return d.pos.x; })
-        .attr('y', function(d) { return d.pos.y; })
-        .attr('fill', function(d) { return d.fill; });
+      d3.select("#svg_canvas")
+        .append('g')
+        .attr('id','g_circles');
+
+      d3.select("#svg_canvas")
+        .append('g')
+        .attr('id','g_lines');
+
+      d3.select("#svg_canvas")
+        .append('g')
+        .attr('id','g_text');
+
+      // d3.select("#g_arr_elems")
+      //   .selectAll('rect')
+      //   .data(elems)
+      //   .enter()
+      //   .append('rect')
+      //   .attr('width', function(d) { return d.width; })
+      //   .attr('height', function(d) { return d.height; })
+      //   .attr('x', function(d) { return d.pos.x; })
+      //   .attr('y', function(d) { return d.pos.y; })
+      //   .attr('fill', function(d) { return d.fill; })
+      //   .attr('stroke', function(d) { return d.stroke; })
+      //   .attr('stroke-width', function(d) { return d.stroke_width * 3; });
+      //
+      // d3.select("#g_circles")
+      //   .selectAll('circle')
+      //   .data(circles)
+      //   .enter()
+      //   .append('circle')
+      //   .attr('r', function(d) { return d.r; })
+      //   .attr('cx', function(d) { return d.pos.cx; })
+      //   .attr('cy', function(d) { return d.pos.cy; })
+      //   .attr('fill', function(d) { return d.fill; })
+      //   .attr('stroke', function(d) { return d.stroke; })
+      //   .attr('stroke-width', function(d) { return d.stroke_width * 3; });
+      //
+      // d3.select("#g_lines")
+      //   .selectAll('line')
+      //   .data(lines)
+      //   .enter()
+      //   .append('line')
+      //   .attr('x1', function(d) { return d.pos.x1; })
+      //   .attr('y1', function(d) { return d.pos.y1; })
+      //   .attr('x2', function(d) { return d.pos.x2; })
+      //   .attr('y2', function(d) { return d.pos.y2; })
+      //   .attr('stroke', function(d) { return d.stroke; })
+      //   .attr('stroke-width', function(d) { return d.stroke_width; })
+
+      viz = {
+        getRects: function() {
+          return elems;
+        },
+        getCircles: function() {
+          return circles;
+        },
+        getLines: function() {
+          return lines;
+        },
+        getText: function() {
+          return [];
+        }
+      }
+
+      var drop_blacken = function(elems) {
+        elems.forEach(function(e) {
+          e.fill = color_codes.BLACK;
+          e.pos.cy += 200;
+        });
+      }
+
+      vizupdate.redraw(viz, 3000);
+      vizupdate.addOperation(drop_blacken(circles));
+      vizupdate.redraw(viz, 3000);
 
       for (i = 0; i < 10; i++) {
         console.log("e" + i + "'s id: " + elems[i].id);
+        console.log("c" + i + "'s id: " + circles[i].id);
+        console.log("l" + i + "'s id: " + lines[i].id);
       }
 
     </script>

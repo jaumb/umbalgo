@@ -6,19 +6,22 @@ var vizupdate = (function() {
    *  private variables
    ****************************************************************************/
   // queue of functions to update the canvas
-  var q = [];
+  var _q = [];
+  var _intervalID = null;
 
 
   /****************************************************************************
    *  private methods
    ****************************************************************************/
   // execute the next function on the queue
-  function next(viz, dur, intervalID) {
-    var f = q.shift();
-    f();
+  function next(viz, dur) {
+    console.log("val of dur: " + dur);
+    var f = _q.shift();
+    console.log("var f = " + f);
+    if ( f ) { f(); }
     draw(viz, dur);
-    if (q.length <= 0) {
-      clearInterval(intervalID);
+    if (_q.length <= 0) {
+      clearInterval(_intervalID);
     }
   }
 
@@ -47,7 +50,7 @@ var vizupdate = (function() {
       .attr('y', function(d) { return d.sp.y; })
       .attr('width', function(d) { return d.width; })
       .attr('height', function(d) { return d.height; })
-      .attr('fill', 'white')
+      .attr('fill', function(d) { return d.fill; })
       .attr('stroke', function(d) { return d.stroke; })
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
@@ -69,31 +72,31 @@ var vizupdate = (function() {
       .data(viz.getCircles());
 
     circles.transition().duration(dur)
-      .attr('cx', function(d) { return d.pos.x; })
-      .attr('cy', function(d) { return d.pos.y; })
+      .attr('cx', function(d) { return d.pos.cx; })
+      .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
-      .attr('r', function(d) { return d.radius; })
+      .attr('r', function(d) { return d.r; })
       .attr('stroke', function(d) { return d.stroke; })
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; });
 
     circles.enter()
       .append('circle')
-      .attr('cx', function(d) { return d.sp.x; })
-      .attr('cy', function(d) { return d.sp.y; })
+      .attr('cx', function(d) { return d.sp.cx; })
+      .attr('cy', function(d) { return d.sp.cy; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
-      .attr('r', function(d) { return d.radius; })
+      .attr('r', function(d) { return d.r; })
       .attr('stroke', function(d) { return d.stroke; })
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .transition().duration(dur)
-      .attr('cx', function(d) { return d.pos.x; })
-      .attr('cy', function(d) { return d.pos.y; })
+      .attr('cx', function(d) { return d.pos.cx; })
+      .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
-      .attr('r', function(d) { return d.radius; })
+      .attr('r', function(d) { return d.r; })
       .attr('stroke', function(d) { return d.stroke; })
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; });
@@ -171,17 +174,28 @@ var vizupdate = (function() {
   /****************************************************************************
    *  public methods
    ****************************************************************************/
-  // exposed method that executes all functions on the queue
+  // exposed method that executes all functions on the _queue
   // and updates the canvas
   function redraw(viz, dur) {
-    var durPerFunction = dur / q.length;
-    var intervalID = setInterval(next, durPerFunction, viz,
-                                                 durPerFunction, intervalID);
+    var durPerFunction = _q.length ? dur : dur / _q.length;
+
+    if ( _q.length ) {
+      var durPerFunction = dur / _q.length;
+      _intervalID = setInterval(next,
+                               durPerFunction,
+                               viz,               // next arg 1
+                               durPerFunction);   // next arg 2
+    }
+    else {
+      draw(viz, dur);
+    }
+
+
   }
 
   // add an operation for visualization next time redraw() is called
   function addOperation(operation) {
-    q.push(operation);
+    _q.push(operation);
   }
 
   // initialize the visualization layout
