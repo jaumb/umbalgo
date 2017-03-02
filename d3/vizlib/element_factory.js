@@ -53,11 +53,11 @@ var element_factory = (function() {
       pos:{x:_pos.x, y:_pos.y},
       sp:{x:_pos.x, y:_pos.y},
       width:_size,
-      height:_size,
+      height:_size
     }
   };
 
-  var circle = function(x, y, r) {
+  var circle = function() {
     return {
       id:_newID(),
       fill:_fill,
@@ -71,7 +71,7 @@ var element_factory = (function() {
     }
   };
 
-  var text = function(x, y, val) {
+  var text = function() {
     return {
       id:_newID(),
       fill:color_codes.BLACK,
@@ -94,8 +94,8 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:_line_sp,
-      pos:_line_pos
+      sp:{_line_sp.x1, _line_sp.y1, _line_sp.x2, _line_sp.y2},
+      pos:{_line_pos.x1, _line_pos.y1, _line_pos.x2, _line_pos.y2}
     }
   };
 
