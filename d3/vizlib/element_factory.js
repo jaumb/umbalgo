@@ -20,8 +20,8 @@ var element_factory = (function() {
 
 
   // svg line elements only
-  var _line_sp  = {x1:0, y1:0, x2:0, y2:0}; // default line starting pos
-  var _line_pos = {x1:0, y1:0, x2:0, y2:0}; // default line pos
+  var _line_sp  = {x1:null, y1:null, x2:null, y2:null}; // default line starting pos
+  var _line_pos = {x1:null, y1:null, x2:null, y2:null}; // default line pos
 
   // svg text elements
   var _font = 'courier new';
@@ -94,8 +94,8 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{_line_sp.x1, _line_sp.y1, _line_sp.x2, _line_sp.y2},
-      pos:{_line_pos.x1, _line_pos.y1, _line_pos.x2, _line_pos.y2}
+      sp:{x1:_line_sp.x1, y1:_line_sp.y1, x2:_line_sp.x2, y2:_line_sp.y2},
+      pos:{x1:_line_pos.x1, y1:_line_pos.y1, x2:_line_pos.x2, y2:_line_pos.y2}
     }
   };
 
