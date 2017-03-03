@@ -72,9 +72,34 @@ var vizlib = (function() {
   /****************************************************************************
    *  public methods
    ****************************************************************************/
-   var get = function(algorithm) {
+  // Knuth.java
+  var knuth = (function() {
+    // needs:
+    // 1 array (array of strings to shuffle)
+    // 2 elements (track i and r)
+  })();
 
-   }
+  // BinarySearch.java
+  var binary_search = (function() {
+    // needs:
+    // 1 array (sorted array of ints)
+    // 4 elements (lo, hi, mid, int searching for)
+    //   can be done with color, but should have labels
+  })();
+
+  // LinkedBag.java
+  var linked_bag = (function() {
+    // needs:
+    // 
+  });
+  // ResizingArrrayBag.java
+  // LinkedQueue.java
+  // ResizingArrrayQueue.java
+  // LinkedStack.java
+  // ResizingArrrayStack.java
+  // QuickFindUF.java
+  // QuickUnionUF.java
+  // WeightedQuickUnionUF.java
 
   /****************************************************************************
    *  return public methods
