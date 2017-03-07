@@ -24,7 +24,7 @@ var array_factory = (function(){
       var rect = element_factory.rect();
       rect.pos.x = firstPos.x + i * boxSize;
       rect.pos.y = firstPos.y;
-      rect.sp = pos;
+      rect.sp = rect.pos;
       rect.width = boxSize;
       rect.height = boxSize;
       _elems.push(rect);
@@ -81,7 +81,7 @@ var array_factory = (function(){
             rect.stroke_opacity = 0;
             rect.fill = color_codes.WHITE;
             rect.fill_opacity = 0;
-            break;
+            //break;
           }
         });
       });
