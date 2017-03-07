@@ -1,3 +1,88 @@
+class VirtualMachine {
+  constructor() {
+    /** The call stack, comprised of `StackFrame`s. */
+    this.callStack = [];
+    /** Map of `FunctionModel`s indexed by identifier. */
+    this.funcModels = {};
+    /** Map for storing "global" (i.e., higher-than-function-scope state. This
+        will probably be used for class-level state in most circumstances. */
+    this.globals = {};
+  }
+
+  loadFunc(filename) {
+    const xhr = new XMLHttpRequest;
+    xhr.open("GET", "js/libs/algo/" + filename);
+    let cached_this = this;
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          const func = new FunctionModel(JSON.parse(xhr.responseText));
+          cached_this.funcModels[func.identifier] = func;
+        } else {
+          alert("Error loading " + filename);
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  invokeFunc(identifier, resultCallback, ...args) {
+    console.log("Invoke: " + identifier + "(" + [...args] + ")");
+    this.callStack.push(new StackFrame(this,
+                                       this.funcModels[identifier],
+                                       resultCallback,
+                                       ...args));
+    this.populateCodePane();
+    // Highlight the first line of the function body in the code pane
+    this.getFrame().highlightLine(this.getFrame().nextLineNumber);
+  }
+
+  populateCodePane() {
+    let codePaneHtml = "";
+    let funcModel = this.getFrame().funcModel;
+    for (let i = 1; i <= funcModel.codeLines.length; ++i) {
+      codePaneHtml += ('<span id="' + i + '">' + funcModel.getLine(i)["code"] + "</span>\n");
+    }
+    document.getElementById("codePane").innerHTML = codePaneHtml;
+    // Update code colorization/formatting
+    hljs.highlightBlock(document.getElementById("codePane"));
+  }
+
+  getFrame() {
+    return this.callStack[this.callStack.length - 1];
+  }
+
+  next() {
+    // Execute the next line of the top stack frame.
+    this.getFrame().next();
+
+    if (this.getFrame().nextLineNumber) {
+      // If the top stack frame hasn't returned, highlight the next line.
+      this.getFrame().highlightLine(this.getFrame().nextLineNumber);
+    } else {
+      // Otherwise, fire the result callback,
+      this.getFrame().returnResult();
+      // and pop the frame off the stack.
+      this.callStack.pop();
+      // Set flag to indicate that the next call to `next` should do nothing but
+      // advance the highlighted line.
+      if (this.getFrame()) {
+        this.getFrame().noop = true;
+        // redraw the code pane,
+        this.populateCodePane();
+        // and highlight the current line.
+        this.getFrame().highlightLine(this.getFrame().currentLineNumber);
+      } else {
+        // TODO: Clear code pane (or something)
+      }
+    }
+  }
+
+  setResult(result) {
+    this.getFrame().result = result;
+  }
+}
+
 /**
  * Represents a function implemented in an arbitrary language.
  * These are the objects operated upon by the `VirtualMachine`.
@@ -113,81 +198,5 @@ class StackFrame {
     if (this.resultCallback) {
       this.resultCallback(this.result);
     }
-  }
-}
-
-class VirtualMachine {
-  constructor() {
-    this.callStack = [];
-    this.funcModels = {};
-  }
-
-  loadFunc(filename) {
-    const xhr = new XMLHttpRequest;
-    xhr.open("GET", "js/libs/algo/" + filename);
-    let cached_this = this;
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          const func = new FunctionModel(JSON.parse(xhr.responseText));
-          cached_this.funcModels[func.identifier] = func;
-        } else {
-          alert("Error loading " + filename);
-        }
-      }
-    };
-    xhr.send();
-  }
-
-  invokeFunc(identifier, resultCallback, ...args) {
-    console.log("Invoke: " + identifier + "(" + [...args] + ")");
-    this.callStack.push(new StackFrame(this,
-                                       this.funcModels[identifier],
-                                       resultCallback,
-                                       ...args));
-    this.populateCodePane();
-    // Highlight the first line of the function body in the code pane
-    this.getFrame().highlightLine(this.getFrame().nextLineNumber);
-  }
-
-  populateCodePane() {
-    let codePaneHtml = "";
-    let funcModel = this.getFrame().funcModel;
-    for (let i = 1; i <= funcModel.codeLines.length; ++i) {
-      codePaneHtml += ('<span id="' + i + '">' + funcModel.getLine(i)["code"] + "</span>\n");
-    }
-    document.getElementById("codePane").innerHTML = codePaneHtml;
-    // Update code colorization/formatting
-    hljs.highlightBlock(document.getElementById("codePane"));
-  }
-
-  getFrame() {
-    return this.callStack[this.callStack.length - 1];
-  }
-
-  next() {
-    // Execute the next line of the top stack frame.
-    this.getFrame().next();
-
-    if (this.getFrame().nextLineNumber) {
-      // If the top stack frame hasn't returned, highlight the next line.
-      this.getFrame().highlightLine(this.getFrame().nextLineNumber);
-    } else {
-      // Otherwise, fire the result callback,
-      this.getFrame().returnResult();
-      // and pop the frame off the stack.
-      this.callStack.pop();
-      // Set flag to indicate that the next call to `next` should do nothing but
-      // advance the highlighted line.
-      this.getFrame().noop = true;
-      // redraw the code pane,
-      this.populateCodePane();
-      // and highlight the current line.
-      this.getFrame().highlightLine(this.getFrame().currentLineNumber);
-    }
-  }
-
-  setResult(result) {
-    this.getFrame().result = result;
   }
 }
