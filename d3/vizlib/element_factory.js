@@ -50,10 +50,10 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      pos:{x:_pos.x, y:_pos.y},
-      sp:{x:_pos.x, y:_pos.y},
-      width:_size,
-      height:_size
+      pos:{x:_pos.x, y:_pos.y}, // replace
+      sp:{x:_pos.x, y:_pos.y}, // replace
+      width:_size, // replace
+      height:_size // replace
     }
   };
 
@@ -65,9 +65,9 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{cx:_sp.x, cy:_sp.y},
-      pos:{cx:_pos.x, cy:_pos.y},
-      r:_size
+      sp:{cx:_sp.x, cy:_sp.y}, // replace
+      pos:{cx:_pos.x, cy:_pos.y}, // replace
+      r:_size // replace
     }
   };
 
@@ -79,12 +79,12 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:_sp,
-      pos:_pos,
+      sp:_sp, // replace
+      pos:_pos, // replace
       font:_font,
       font_size:_font_size,
       text_anchor:_text_anchor,
-      val:null
+      val:null // replace
     }
   };
 
@@ -94,8 +94,10 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-      sp:{x1:_line_sp.x1, y1:_line_sp.y1, x2:_line_sp.x2, y2:_line_sp.y2},
-      pos:{x1:_line_pos.x1, y1:_line_pos.y1, x2:_line_pos.x2, y2:_line_pos.y2}
+      sp: // replace
+      {x1:_line_sp.x1, y1:_line_sp.y1, x2:_line_sp.x2, y2:_line_sp.y2},
+      pos: // replace
+      {x1:_line_pos.x1, y1:_line_pos.y1, x2:_line_pos.x2, y2:_line_pos.y2}
     }
   };
 
