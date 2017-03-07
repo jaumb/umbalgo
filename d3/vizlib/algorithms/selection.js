@@ -15,12 +15,19 @@ var selection = (function(elems, bounding_box) {
   //////////////////////////////////////////////////////////////////////////////
 
   var _initializeMin = function() {
-    var array_elems = array.getRects();
-    var first = array_elems[0];
-    min.label.val = first.label.val;
+    var first = array.getRects()[0];
     min.pos.x = first.pos.x;
-    min.pos.y = first.pos.y;
-    min.sp = min.pos;
+    min.pos.y = first.pos.y + first.height;
+    min.sp.x = min.pos.x;
+    min.sp.y = min.pos.y;
+    min.height = min.width = first.width;
+
+    // initialize min label
+    min.label.val = first.label.val;
+    min.label.pos.x = min.pos.x;
+    min.label.pos.y = min.pos.y;
+    min.label.sp.x = min.pos.x;
+    min.label.sp.y = min.pos.y;
   }
 
   /**
