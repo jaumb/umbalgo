@@ -27,7 +27,7 @@ var vizlib = (function() {
    // collect argument elements and elements from argument array in one array
    rects.forEach(function(element) {
      if (element.hasOwnProperty('width')) { r.push(element); }
-     else if ( Array.isArray(element) ) { r.concat(element); }
+     else if ( Array.isArray(element) ) { r = r.concat(element); }
    });
    // sort the array by element.id
    r.sort(function(a, b) {
@@ -47,7 +47,7 @@ var vizlib = (function() {
    // collect argument elements and elements from argument array in one array
    circles.forEach(function(element) {
      if (element.hasOwnProperty('r')) { c.push(element); }
-     else if ( Array.isArray(element) ) { c.concat(element); }
+     else if ( Array.isArray(element) ) { c = c.concat(element); }
    });
    // sort the array by element.id
    c.sort(function(a, b) {
