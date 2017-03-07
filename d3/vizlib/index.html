@@ -44,21 +44,23 @@
         .attr('id','g_text');
 
 
-      var dur = 2000;
+      var dur = 3000;
 
       var l = [];
-      for (var i = 1; i <= 10; i++) {
+      for (var i = 1; i <= 3; i++) {
         l.push(i);
       }
       d3.shuffle(l);
 
       var viz = vizlib.get_selection(l, bounding_box);
+      viz.initializeMin();
       vizupdate.redraw(viz, dur);
 
       var sorted = [];
       var n = l.length;
       for (var i = 0; i < n; i++) {
-        vizupdate.addOperation(viz.setFill([i], color_codes.ACTIVE));
+        viz.setFill([i], color_codes.ACTIVE);
+        vizupdate.redraw(viz, dur);
         for (var j = i + 1; j < n; j++) {
           var min = i;
           if (l[j] < l[min]) {
@@ -67,8 +69,9 @@
           var tmp = l[i];
           l[i] = l[min];
           l[min] = tmp;
-          vizupdate.redraw(viz, dur);
         }
+        viz.setFill([i], color_codes.FINISHED);
+        vizupdate.redraw(viz, dur);
         sorted.push(i);
       }
 
