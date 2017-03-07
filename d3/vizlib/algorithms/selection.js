@@ -112,7 +112,12 @@ var selection = (function(elems, bounding_box) {
   }
 
   var getText = function() {
-    return vizlib.getText();
+    text = []
+    array.getRects().forEach(function(rect) {
+      text.push(rect.label);
+    });
+    text.push(min.label);
+    return vizlib.getText(text);
   }
   //end of element array getters////////////////////////////////////////////////
 
