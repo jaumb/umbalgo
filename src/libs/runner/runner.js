@@ -35,6 +35,8 @@ class VirtualMachine {
     this.populateCodePane();
     // Highlight the first line of the function body in the code pane
     this.getFrame().highlightLine(this.getFrame().nextLineNumber);
+    this.redrawStackPane();
+    this.redrawVariablePanes();
   }
 
   populateCodePane() {
@@ -46,6 +48,38 @@ class VirtualMachine {
     document.getElementById("codePane").innerHTML = codePaneHtml;
     // Update code colorization/formatting
     hljs.highlightBlock(document.getElementById("codePane"));
+  }
+
+  redrawStackPane() {
+    // TODO: Remove this try. This is only here for HTML pages that don't
+    // have a `stackPane` element yet.
+    let stackPaneHtml = "";
+    for (let i = this.callStack.length - 1; i >= 0; --i) {
+      stackPaneHtml += this.callStack[i].funcModel.identifier + "<br />";
+    }
+    try {
+      document.getElementById("stackPane").innerHTML = stackPaneHtml;
+    } catch (e) { }
+  }
+
+  redrawVariablePanes() {
+    // TODO: Remove this try. This is only here for HTML pages that don't
+    // have a `localPane`/`argsPane` element yet.
+    let localsPaneHtml = "";
+    for (let [identifier, value] of Object.entries(this.getFrame().locals)) {
+      localsPaneHtml += identifier + "=" + value + "<br />";
+    }
+    try {
+      document.getElementById("localsPane").innerHTML = localsPaneHtml;
+    } catch (e) { }
+
+    let argsPaneHtml = "";
+    for (let [identifier, value] of Object.entries(this.getFrame().args)) {
+      argsPaneHtml += identifier + "=" + value + "<br />";
+    }
+    try {
+      document.getElementById("argsPane").innerHTML = argsPaneHtml;
+    } catch (e) { }
   }
 
   getFrame() {
@@ -70,12 +104,15 @@ class VirtualMachine {
         this.getFrame().noop = true;
         // redraw the code pane,
         this.populateCodePane();
-        // and highlight the current line.
+        // highlight the current line,
         this.getFrame().highlightLine(this.getFrame().currentLineNumber);
+        // and redraw the call stack trace.
+        this.redrawStackPane();
       } else {
         // TODO: Clear code pane (or something)
       }
     }
+    this.redrawVariablePanes();
   }
 
   setResult(result) {

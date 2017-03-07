@@ -1,72 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stack</title>
+    <title>Quick Sort</title>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <script type="text/javascript" src="js/libs/runner/runner.js"></script>
     <script type="text/javascript">
       let vm = new VirtualMachine();
+      vm.loadFunc("exch.js");
+      vm.loadFunc("less.js");
+      vm.loadFunc("2.3-quicksort-sort.js");
+      vm.loadFunc("2.3-quicksort-partition.js");
 
-      vm.loadFunc("1.3-stack-push.js");
-      vm.loadFunc("1.3-stack-pop.js");
-
-      // Initialize stack with contents (1, 2, 3)
-      vm.globals["first"] = {
-        "item": 1,
-        "next": {
-          "item": 2,
-          "next": {
-            "item": 3,
-            "next": null
-          }
-        }
-      };
-
-      const reverse = function(array) {
-        for (let i = 0;
-             i <= Math.floor(array.length / 2);
-             ++i) {
-
-          let swap = array[i];
-          array[i] = array[array.length - i - 1];
-          array[array.length - i - 1] = swap;
-        }
-        return array;
-      }
-
-      const stackAsTopFirstArray = function(first) {
-        let stack = [];
-        for (let i = first; i; i = i["next"]) {
-          stack.push(i);
-        }
-        return stack;
-      }
-
-      const onPush = function() {
-      vm.invokeFunc("push", function(result) {
-          console.log(reverse(stackAsTopFirstArray(vm.globals["first"])));
-        }, document.getElementById("item").value);
-      };
-
-      const onPop = function() {
-      vm.invokeFunc("pop", function(result) {
-          console.log(reverse(stackAsTopFirstArray(vm.globals["first"])));
-          document.getElementById("item").value = result;
-        });
+      const onInvoke = function() {
+        let a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
+        console.log("Input: " + a);
+        vm.invokeFunc(
+          "sort",
+          function(result) { console.log("Result: " + a); },
+          a,
+          0,
+          a.length - 1);
       };
 
       const onNext = function() {
         vm.next();
       };
-
     </script>
   </head>
   <body>
-    <button type="button" onclick="onPush()">push</button>
-    <button type="button" onclick="onPop()">pop</button>
+    <button type="button" onclick="onInvoke()">invoke</button>
     <button type="button" onclick="onNext()">next</button>
-    <input type="text" id="item">
     <div id="codeNote">
       <!-- Dynamically generated note will be inserted here -->
     </div>
