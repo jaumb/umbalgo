@@ -27,11 +27,11 @@ var vizlib = (function() {
    // collect argument elements and elements from argument array in one array
    rects.forEach(function(element) {
      if (element.hasOwnProperty('width')) { r.push(element); }
-     else if ( element.isArray() ) { r.concat(element); }
+     else if ( Array.isArray(element) ) { r.concat(element); }
    });
    // sort the array by element.id
    r.sort(function(a, b) {
-     a.id < b.id ? return -1 : a.id > b.id ? return 1 : 0;
+     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
    });
    return r;
   }
@@ -47,17 +47,33 @@ var vizlib = (function() {
    // collect argument elements and elements from argument array in one array
    circles.forEach(function(element) {
      if (element.hasOwnProperty('r')) { c.push(element); }
-     else if ( element.isArray() ) { c.concat(element); }
+     else if ( Array.isArray(element) ) { c.concat(element); }
    });
    // sort the array by element.id
    c.sort(function(a, b) {
-     a.id < b.id ? return -1 : a.id > b.id ? return 1 : 0;
+     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
    });
    return c;
   }
 
-  var selection = function(input) {
-    return selection(input);
+  /**
+  * Return an ordered array of all line elements.
+  */
+  var getLines = function() {
+    // TODO: to be implemented
+    return [];
+  }
+
+  /**
+  * Return an ordered array of all text elements.
+  */
+  var getText = function() {
+    // TODO: to be implemented
+    return [];
+  }
+
+  var get_selection = function(elements, bounding_box) {
+    return selection(elements, bounding_box);
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -68,6 +84,6 @@ var vizlib = (function() {
     getCircles:getCircles,
     getLines:getLines,
     getText:getText,
-    selection:selection
+    get_selection:get_selection
   };
 })();
