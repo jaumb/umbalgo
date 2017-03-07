@@ -68,17 +68,17 @@ var vizlib = (function() {
   * Return an ordered array of all text elements.
   */
   var getText = function() {
-    var c = [];
+    var t = [];
     // collect argument elements and elements from argument array in one array
-    circles.forEach(function(element) {
-     if (element.hasOwnProperty('r')) { c.push(element); }
-     else if ( Array.isArray(element) ) { c = c.concat(element); }
+    text.forEach(function(element) {
+     if (element.hasOwnProperty('text_anchor')) { t.push(element); }
+     else if ( Array.isArray(element) ) { t = t.concat(element); }
     });
     // sort the array by element.id
-    c.sort(function(a, b) {
+    t.sort(function(a, b) {
      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
     });
-    return c;
+    return t;
   }
 
   var get_selection = function(elements, bounding_box) {
