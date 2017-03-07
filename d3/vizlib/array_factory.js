@@ -27,6 +27,12 @@ var array_factory = (function(){
       rect.sp = rect.pos;
       rect.width = boxSize;
       rect.height = boxSize;
+
+      // set up label text element
+      rect.label.val = e;
+      rect.label.pos = rect.pos;
+      rect.label.sp = rect.pos;
+
       _elems.push(rect);
     });
 
