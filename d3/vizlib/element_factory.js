@@ -53,18 +53,11 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-<<<<<<< Updated upstream
       pos:{x:_pos.x, y:_pos.y}, // replace
       sp:{x:_pos.x, y:_pos.y}, // replace
       width:_size, // replace
-      height:_size // replace
-=======
-      pos:{x:_pos.x, y:_pos.y},
-      sp:{x:_pos.x, y:_pos.y},
-      width:_size,
-      height:_size,
+      height:_size, // replace
       label:_label
->>>>>>> Stashed changes
     }
   };
 
@@ -76,16 +69,10 @@ var element_factory = (function() {
       stroke:_stroke,
       stroke_width:_stroke_width,
       stroke_opacity:_stroke_opacity,
-<<<<<<< Updated upstream
       sp:{cx:_sp.x, cy:_sp.y}, // replace
       pos:{cx:_pos.x, cy:_pos.y}, // replace
-      r:_size // replace
-=======
-      sp:{cx:_sp.x, cy:_sp.y},
-      pos:{cx:_pos.x, cy:_pos.y},
-      r:_size,
+      r:_size, // replace
       label:label
->>>>>>> Stashed changes
     }
   };
 
@@ -102,11 +89,7 @@ var element_factory = (function() {
       font:_font,
       font_size:_font_size,
       text_anchor:_text_anchor,
-<<<<<<< Updated upstream
-      val:null // replace
-=======
       val:''
->>>>>>> Stashed changes
     }
   };
 
