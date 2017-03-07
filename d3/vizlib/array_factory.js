@@ -24,14 +24,17 @@ var array_factory = (function(){
       var rect = element_factory.rect();
       rect.pos.x = firstPos.x + i * boxSize;
       rect.pos.y = firstPos.y;
-      rect.sp = rect.pos;
+      rect.sp.x = rect.pos.x;
+      rect.sp.y = rect.pos.y;
       rect.width = boxSize;
       rect.height = boxSize;
 
       // set up label text element
       rect.label.val = e;
-      rect.label.pos = rect.pos;
-      rect.label.sp = rect.pos;
+      rect.label.pos.x = rect.pos.x;
+      rect.label.pos.y = rect.pos.y;
+      rect.label.sp.x = rect.pos.x;
+      rect.label.sp.y = rect.pos.y;
 
       _elems.push(rect);
     });
