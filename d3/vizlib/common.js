@@ -3,7 +3,7 @@ Color palette.
 */
 var color_codes = {
   BLACK: '#000',
-  WHITE: '#ffffff'
+  WHITE: '#ffffff',
   BACKGROUND: '#eeeeee',
   ACTIVE: '#f79fb0',
   COMPARE: '#e4cc55',
