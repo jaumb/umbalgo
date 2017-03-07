@@ -1,9 +1,10 @@
 
 var element_factory = (function() {
 
-  /****************************************************************************
-   *  private variables
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  private variables
+  //////////////////////////////////////////////////////////////////////////////
+
   // source of all element IDs
   var _id = 0;
 
@@ -31,20 +32,34 @@ var element_factory = (function() {
   // svg rect elements
   var _size = null;
 
-  // default val element for rect and circle labels
-  var _label = text();
-
-  /****************************************************************************
-   *  private methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  private methods
+  //////////////////////////////////////////////////////////////////////////////
   var _newID = function() {
     return ++_id;
   }
 
 
-  /****************************************************************************
-   *  public methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  public methods
+  //////////////////////////////////////////////////////////////////////////////
+  var text = function() {
+   return {
+     id:_newID(),
+     fill:color_codes.BLACK,
+     fill_opacity:_fill_opacity,
+     stroke:_stroke,
+     stroke_width:_stroke_width,
+     stroke_opacity:_stroke_opacity,
+     sp:_sp, // replace
+     pos:_pos, // replace
+     font:_font,
+     font_size:_font_size,
+     text_anchor:_text_anchor,
+     val:''
+   }
+  };
+
   var rect = function() {
     return {
       id:_newID(),
@@ -57,7 +72,7 @@ var element_factory = (function() {
       sp:{x:_pos.x, y:_pos.y}, // replace
       width:_size, // replace
       height:_size, // replace
-      label:_label
+      label:text()
     }
   };
 
@@ -72,24 +87,7 @@ var element_factory = (function() {
       sp:{cx:_sp.x, cy:_sp.y}, // replace
       pos:{cx:_pos.x, cy:_pos.y}, // replace
       r:_size, // replace
-      label:label
-    }
-  };
-
-  var text = function() {
-    return {
-      id:_newID(),
-      fill:color_codes.BLACK,
-      fill_opacity:_fill_opacity,
-      stroke:_stroke,
-      stroke_width:_stroke_width,
-      stroke_opacity:_stroke_opacity,
-      sp:_sp, // replace
-      pos:_pos, // replace
-      font:_font,
-      font_size:_font_size,
-      text_anchor:_text_anchor,
-      val:''
+      label:text()
     }
   };
 
@@ -106,9 +104,9 @@ var element_factory = (function() {
     }
   };
 
-  /****************************************************************************
-   *  return public methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  return public methods
+  //////////////////////////////////////////////////////////////////////////////
 
 
   return {
