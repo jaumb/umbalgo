@@ -1,231 +1,73 @@
-
+// depencies: all algorithm files
 
 var vizlib = (function() {
-  /****************************************************************************
-   *  private variables
-   ****************************************************************************/
-
-
-  /****************************************************************************
-   *  private methods
-   ****************************************************************************/
-   /**
-    * Return an ordered array of all rect elements.
-    * @param {...Object} rects - All rect arrays/elements in this algorithm.
-    */
-  var _getRects = function(...rects) {
-    var r = [];
-    // collect argument elements and elements from argument array in one array
-    rects.forEach(function(element) {
-      if (element.hasOwnProperty('width')) { r.push(element); }
-      else if ( element.isArray() ) { r.concat(element); }
-    });
-    // sort the array by element.id
-    r.sort(function(a, b) {
-      a.id < b.id ? return -1 : a.id > b.id ? return 1 : 0;
-    });
-    return r;
-  }
-
-
-
-
-
-  /****************************************************************************
-   *  public methods
-   ****************************************************************************/
   //////////////////////////////////////////////////////////////////////////////
-  // CHAPTER 1
+  //  private variables
   //////////////////////////////////////////////////////////////////////////////
 
-  // Knuth.java
-  var knuth = (function() {
-    // needs:
-    // 1 array (array of strings to shuffle)
-    // 2 elements (track i and r)
-  })();
-
-  // BinarySearch.java
-  var binary_search = (function() {
-    // needs:
-    // 1 array (sorted array of ints)
-    // 4 elements (lo, hi, mid, int searching for)
-    //   can be done with color, but should have labels
-  })();
-
-  // LinkedBag.java
-  var linked_bag = (function() {
-    // needs:
-    //
-  });
-
-  // ResizingArrrayBag.java
-  var resizing_array_bag = (function() {
-    // needs:
-    //
-  });
-
-  // LinkedQueue.java
-  var linked_queue = (function() {
-    // needs:
-    //
-  });
-
-  // ResizingArrrayQueue.java
-  var resizing_array_queue = (function() {
-    // needs:
-    //
-  });
-
-  // LinkedStack.java
-  var linked_stack = (function() {
-    // needs:
-    //
-  });
-
-  // ResizingArrrayStack.java
-  var resizing_array_stack = (function() {
-    // needs:
-    //
-  });
-
-  // QuickFindUF.java
-  var quickfindUF = (function() {
-    // needs:
-    //
-  });
-
-  // QuickUnionUF.java
-  var quickunionUF = (function() {
-    // needs:
-    //
-  });
-
-  // WeightedQuickUnionUF.java
-  var weighted_quickunionUF = (function() {
-    // needs:
-    //
-  });
 
   //////////////////////////////////////////////////////////////////////////////
-  // CHAPTER 2
+  //  private methods
+  //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+  //////////////////////////////////////////////////////////////////////////////
+  //  public methods
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Selection.java
-   * Selection Sort visualization object.
-   * @param {Object} input - Object containing data and canvas constraints.
-   */
-  var selection = (function(input) {
-    // private variables
-    var min = element_factory.rect();
-    var array = array_factory.(input.data, input.size);
-
-    // private methods
-
-    // public methods
-    var getRects = function() {
-      return _getRects(array, min);
-    }
-
-    // exposed methods
-    return {
-      getRects:getRects,
-    }
-  });
-
-  // Insertion.java
-  var insertion = (function() {
-    // needs:
-    // 1 array of elements to be sorted
-    //
-  });
-
-  // Shell.java
-  var shell = (function() {
-    // needs:
-    //
-  });
-
-  // Merge.java
-  var merge = (function() {
-    // needs:
-    //
-  });
-
-  // Quick.java
-  var quick = (function() {
-    // needs:
-    //
-  });
-
-  // Quick3way.java
-  var quick_3way = (function() {
-    // needs:
-    //
-  });
-
-  // Heap.java
-  var heap = (function() {
-    // needs:
-    //
-  });
-
-  // MaxPQ.java
-  var maxPQ = (function() {
-    // needs:
-    //
-  });
-
-  // MinPQ.java
-  var minPQ = (function() {
-    // needs:
-    //
-  });
+  * Return an ordered array of all rect elements.
+  * @param {...Object} rects - All rect arrays/elements in this algorithm.
+  */
+  var getRects = function(...rects) {
+   var r = [];
+   // collect argument elements and elements from argument array in one array
+   rects.forEach(function(element) {
+     if (element.hasOwnProperty('width')) { r.push(element); }
+     else if ( element.isArray() ) { r.concat(element); }
+   });
+   // sort the array by element.id
+   r.sort(function(a, b) {
+     a.id < b.id ? return -1 : a.id > b.id ? return 1 : 0;
+   });
+   return r;
+  }
 
   //////////////////////////////////////////////////////////////////////////////
-  // CHAPTER 3
-  //////////////////////////////////////////////////////////////////////////////
 
-  // SequentialSearchST.java
-  // BinarySearchST.java
-  // BST.java
-  // RedBlackBST.java
-  // SeparateChainingHashST.java
+  /**
+  * Return an ordered array of all rect elements.
+  * @param {...Object} rects - All rect arrays/elements in this algorithm.
+  */
+  var getCircles = function(...circles) {
+   var c = [];
+   // collect argument elements and elements from argument array in one array
+   circles.forEach(function(element) {
+     if (element.hasOwnProperty('r')) { c.push(element); }
+     else if ( element.isArray() ) { c.concat(element); }
+   });
+   // sort the array by element.id
+   c.sort(function(a, b) {
+     a.id < b.id ? return -1 : a.id > b.id ? return 1 : 0;
+   });
+   return c;
+  }
 
-  //////////////////////////////////////////////////////////////////////////////
-  // CHAPTER 4
-  //////////////////////////////////////////////////////////////////////////////
-  // Graph.java
-  // DepthFirstPaths.java
-  // BreadthFirstPaths.java
-  // CC.java
-  // Digraph.java
-  // DirectedCycle.java
-  // DepthFirstOrder.java
-  // Topological.java
-  // KosarajuSharirSCC.java
-  // EdgeWeightedGraph.java
-  // KruskalMST.java
-  // EdgeWeightedDigraph.java
-  // DijkstraSP.java
-  // AcyclicSP.java
+  var selection = function(input) {
+    return selection(input);
+  }
 
   //////////////////////////////////////////////////////////////////////////////
-  // CHAPTER 5
+  //  return public methods
   //////////////////////////////////////////////////////////////////////////////
-  // LSD.java
-  // MSD.java
-  // TrieST.java
-  // KMP.java
-  // NFA.java
-  // RunLength.java
-  // Huffman.java
-
-  /****************************************************************************
-   *  return public methods
-   ****************************************************************************/
   return {
-
+    getRects:getRects,
+    getCircles:getCircles,
+    getLines:getLines,
+    getText:getText,
+    selection:selection
   };
 })();
