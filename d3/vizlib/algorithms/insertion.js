@@ -7,8 +7,8 @@ var insertion = (function(elems, bounding_box) {
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
-  var bound = element_factory.line();
-  var array = array_factory.get_array(elems, bounding_box);
+  var _bound = element_factory.line();
+  var _array = array_factory.get_array(elems, bounding_box);
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
@@ -24,8 +24,8 @@ var insertion = (function(elems, bounding_box) {
     var y1 = elem.pos.y - 1/4 * elem.height;
     var x2 = x1;
     var y2 = elem.pos.y + elem.height + 1/4 * elem.height;
-    bound.pos = {x1:x1, y1:y1, x2:x2, y2:y2};
-    bound.sp = {x1:x1, y1:y1, x2:x2, y2:y2};
+    _bound.pos = {x1:x1, y1:y1, x2:x2, y2:y2};
+    _bound.sp = {x1:x1, y1:y1, x2:x2, y2:y2};
   }
 
   /**
@@ -34,7 +34,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {number} index2 - Index of second element to swap.
    */
   var _swap = function(index1, index2) {
-    array.swap(index1, index2);
+    _array.swap(index1, index2);
   }
 
   /**
@@ -43,7 +43,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var _setFill = function(elements, new_color) {
-    array.setFill(elements, new_color);
+    _array.setFill(elements, new_color);
   }
 
   /**
@@ -52,7 +52,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var _setLabels = function(indices, val) {
-    array.setLabels(elements, val);
+    _array.setLabels(elements, val);
   }
 
 
@@ -63,7 +63,7 @@ var insertion = (function(elems, bounding_box) {
 
   //element array getters///////////////////////////////////////////////////////
   var getRects = function() {
-    return vizlib.getRects(array.getRects());
+    return vizlib.getRects(_array.getRects());
   }
 
   var getCircles = function() {
@@ -71,12 +71,12 @@ var insertion = (function(elems, bounding_box) {
   }
 
   var getLines = function() {
-    return vizlib.getLines(bound);
+    return vizlib.getLines(_bound);
   }
 
   var getText = function() {
     var text = [];
-    array.getRects().forEach(function(e) {
+    _array.getRects().forEach(function(e) {
       text.push(e.label);
     });
     return vizlib.getText(text);
@@ -89,7 +89,7 @@ var insertion = (function(elems, bounding_box) {
    */
   var setBoundPos = function(index) {
     redraw.addOperation(function() {
-      _setBoundPos(array.getRects()[index]);
+      _setBoundPos(_array.getRects()[index]);
     });
   }
 

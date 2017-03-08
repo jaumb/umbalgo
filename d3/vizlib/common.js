@@ -1,9 +1,11 @@
 /*
 Color palette.
 */
-var color_codes = {
+var colors = {
   BLACK: '#000',
   WHITE: '#ffffff',
+  BLUE: '#2E09D2',
+  GREEN: '#00E200',
   BACKGROUND: '#eeeeee',
   ACTIVE: '#f79fb0',
   COMPARE: '#e4cc55',

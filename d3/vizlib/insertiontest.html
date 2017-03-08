@@ -56,9 +56,9 @@
       var viz = vizlib.get_insertion(l, bounding_box);
       redraw.draw(viz, dur);
 
-      viz.setFill([0], color_codes.COMPARE);
+      viz.setFill([0], colors.COMPARE);
       redraw.draw(viz, dur);
-      viz.setFill([0], color_codes.WHITE);
+      viz.setFill([0], colors.WHITE);
       redraw.draw(viz, dur);
       viz.setBoundPos(0);
       redraw.draw(viz, dur);
@@ -66,7 +66,7 @@
       // insertion sort implementation
       for (var i = 1; i < l.length; i++) {
         for (var j = i; j > 0; j--) {
-          viz.setFill([j - 1, j], color_codes.COMPARE);
+          viz.setFill([j - 1, j], colors.COMPARE);
           redraw.draw(viz, dur);
           if (l[j] < l[j - 1]) {
             var tmp = l[j - 1];
@@ -74,10 +74,10 @@
             l[j] = tmp;
             viz.swap(j - 1, j);
             redraw.draw(viz, dur);
-            viz.setFill([j - 1, j], color_codes.WHITE);
+            viz.setFill([j - 1, j], colors.WHITE);
             redraw.draw(viz, dur);
           } else {
-            viz.setFill([j - 1, j], color_codes.WHITE);
+            viz.setFill([j - 1, j], colors.WHITE);
             redraw.draw(viz, dur);
             break;
           }

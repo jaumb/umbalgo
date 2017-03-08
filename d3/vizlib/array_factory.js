@@ -66,7 +66,7 @@ var array_factory = (function(){
     function emphasize(indices, color) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          _elems[i].emphasis.stroke = color_codes.EMPHASIZE;
+          _elems[i].emphasis.stroke = colors.EMPHASIZE;
           _elems[i].emphasis.stroke_opacity = .3;
         } else {
           var rect = element_factory.rect();
@@ -76,7 +76,7 @@ var array_factory = (function(){
           rect.sp.y = rect.pos.y;
           rect.width = boxSize + 1/5 * boxSize;
           rect.height = boxSize + 1/5 * boxSize;
-          rect.stroke = color_codes.EMPHASIZE;
+          rect.stroke = colors.EMPHASIZE;
           rect.stroke_opacity = .3;
           rect.fill_opacity = 0;
           _elems[i].emphasis = rect;
@@ -88,7 +88,7 @@ var array_factory = (function(){
     function deemphasize(indices) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          _elems[i].emphasis.stroke = color_codes.WHITE;
+          _elems[i].emphasis.stroke = colors.WHITE;
           _elems[i].emphasis.stroke_opacity = 0;
         }
       });
