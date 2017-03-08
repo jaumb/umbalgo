@@ -1,5 +1,4 @@
 
-
 var vizupdate = (function() {
 
   /****************************************************************************
@@ -27,6 +26,7 @@ var vizupdate = (function() {
     draw(viz, dur);
     if (_q.length <= 0) {
       clearInterval(_intervalID);
+      _intervalID = null;
     }
   }
 
@@ -194,6 +194,7 @@ var vizupdate = (function() {
     // TODO: Revisit how to allocate time per redraw component.
     if ( _q.length ) {
       var durPerFunction = dur / _q.length;
+      if (_intervalID) { clearInterval(_intervalID); }
       _intervalID = setInterval(next,
                                durPerFunction,
                                viz,               // next arg 1

@@ -13,7 +13,6 @@ var array_factory = (function(){
     var _W = _X2 - _X1;
     var _H = _Y2 - _Y1;
     var _elems = [];
-    var _emphasis = [];
 
     // calculate starting positions and size of array slots
     var boxSize = _W / (elems.length + 2);
@@ -24,18 +23,12 @@ var array_factory = (function(){
       var rect = element_factory.rect();
       rect.pos.x = firstPos.x + i * boxSize;
       rect.pos.y = firstPos.y;
-      rect.sp.x = rect.pos.x;
-      rect.sp.y = rect.pos.y;
+      rect.sp = {x:rect.pos.x, y:rect.pos.y};
       rect.width = boxSize;
       rect.height = boxSize;
-
-      // set up label text element
       rect.label.val = e;
-      rect.label.pos.x = rect.pos.x;
-      rect.label.pos.y = rect.pos.y;
-      rect.label.sp.x = rect.pos.x;
-      rect.label.sp.y = rect.pos.y;
-
+      rect.label.pos = {x:rect.pos.x, y:rect.pos.y};
+      rect.label.sp = {x:rect.pos.x, y:rect.pos.y};
       _elems.push(rect);
     });
 
@@ -67,32 +60,31 @@ var array_factory = (function(){
     // emphasize([index..], color)
     function emphasize(indices, color) {
       indices.forEach(function(i) {
-        var rect = element_factory.rect();
-        rect.pos.x = _elems[i].pos.x - 1/10 * boxSize;
-        rect.pos.y = _elems[i].pos.y - 1/10 * boxSize;
-        rect.sp = pos;
-        rect.width = boxSize + 1/5 * boxSize;
-        rect.height = boxSize + 1/5 * boxSize;
-        rect.stroke = color_codes.EMPHASIZE;
-        rect.stroke_opacity = .3;
-        rect.fill_opacity = 0;
-        rect.target = _elems[i];
-        _emphasis.push(rect);
+        if (_elems[i].emphasis) {
+          _elems[i].emphasis.stroke = color_codes.EMPHASIZE;
+          _elems[i].emphasis.stroke_opacity = .3;
+        } else {
+          var rect = element_factory.rect();
+          rect.pos.x = _elems[i].pos.x - 1/10 * boxSize;
+          rect.pos.y = _elems[i].pos.y - 1/10 * boxSize;
+          rect.sp = pos;
+          rect.width = boxSize + 1/5 * boxSize;
+          rect.height = boxSize + 1/5 * boxSize;
+          rect.stroke = color_codes.EMPHASIZE;
+          rect.stroke_opacity = .3;
+          rect.fill_opacity = 0;
+          _elems[i].emphasis = rect;
+        }
       });
     }
 
     // deemphasize([index..])
     function deemphasize(indices) {
       indices.forEach(function(i) {
-        _emphasis.forEach(function(rect) {
-          if (rect.target === _elems[i]) {
-            rect.stroke = color_codes.WHITE;
-            rect.stroke_opacity = 0;
-            rect.fill = color_codes.WHITE;
-            rect.fill_opacity = 0;
-            //break;
-          }
-        });
+        if (_elems[i].emphasis) {
+          _elems[i].emphasis.stroke = color_codes.WHITE;
+          _elems[i].emphasis.stroke_opacity = 0;
+        }
       });
     }
 
@@ -112,7 +104,13 @@ var array_factory = (function(){
 
     // return array of rect elements
     function getRects() {
-      return _elems.concat(_emphasis);
+      var emphasis = [];
+      _elems.forEach(function(e){
+        if (e.emphasis) {
+          emphasis.push(e.emphasis);
+        }
+      });
+      return _elems.concat(emphasis);
     }
 
     // return public functions

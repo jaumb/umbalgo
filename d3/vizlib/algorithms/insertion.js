@@ -1,68 +1,31 @@
 /**
- * Selection.java
- * Selection Sort visualization object.
+ * Insertion.java
+ * Insertion Sort visualization object.
  * @param {Object} input - Object containing data and canvas constraints.
  */
-var selection = (function(elems, bounding_box) {
+var insertion = (function(elems, bounding_box) {
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
-  var min = element_factory.rect();
+  var bound = element_factory.line();
   var array = array_factory.get_array(elems, bounding_box);
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
   //////////////////////////////////////////////////////////////////////////////
 
-  var _initializeMin = function() {
-    var array_elems = array.getRects();
-    var first = array_elems[0];
-    min.label.val = first.label.val;
-    min.pos.x = first.pos.x;
-    min.pos.y = first.pos.y;
-    min.sp = min.pos;
-  }
-
   /**
-   * Set the value of the min element's label.
-   * @param {string} newVal - new
+   * Set the coordinates of the boundary line.
+   * @param {object} elem - Array element to the right of which
+   * the boundary line will be drawn.
    */
-  var _setMinLabel = function(new_Val) {
-    min.label.val = new_Val;
-  }
-
-  /**
-   * Set the coordinates of the min element.
-   * @param {object} array_element - Array element to align min with.
-   */
-  var _setMinPos = function(array_element) {
-    min.pos.x = array_element.pos.x;
-    min.pos.y = array_element.pos.y + array_element.height * 1.5;
-  }
-
-  /**
-   * Set the fill color of the min element.
-   * @param {string} new_color - New fill color of min element.
-   */
-  var _setMinFill = function(new_color) {
-    min.fill = new_color;
-  }
-
-  /**
-   * Emphasize (thicken border of) a rect element.
-   * @param {number[]} indices - Array of indices to emphasize.
-   * @param {string} color - Color for emphasis border.
-   */
-  var _emphasize = function(indices, color) {
-    array.emphasize(indices, color);
-  }
-
-  /**
-   * Demphasize (remove thick border around) a rect element.
-   * @param {number[]} indices - Array of indices to deemphasize.
-   */
-  var _deemphasize = function(indices) {
-    array.deemphasize(indices);
+  var _setBoundPos = function(elem) {
+    var x1 = elem.pos.x + elem.width;
+    var y1 = elem.pos.y - 1/4 * elem.height;
+    var x2 = x1;
+    var y2 = elem.pos.y + elem.height + 1/4 * elem.height;
+    bound.pos = {x1:x1, y1:y1, x2:x2, y2:y2};
+    bound.sp = {x1:x1, y1:y1, x2:x2, y2:y2};
   }
 
   /**
@@ -100,7 +63,7 @@ var selection = (function(elems, bounding_box) {
 
   //element array getters///////////////////////////////////////////////////////
   var getRects = function() {
-    return vizlib.getRects(array.getRects(), min);
+    return vizlib.getRects(array.getRects());
   }
 
   var getCircles = function() {
@@ -108,7 +71,7 @@ var selection = (function(elems, bounding_box) {
   }
 
   var getLines = function() {
-    return vizlib.getLines();
+    return vizlib.getLines(bound);
   }
 
   var getText = function() {
@@ -117,53 +80,12 @@ var selection = (function(elems, bounding_box) {
   //end of element array getters////////////////////////////////////////////////
 
   /**
-   * Set the value of the min element's label.
-   * @param {string} newVal - new
+   * Set the coordinates of the boundary element.
+   * @param {number} index - Array element index to align boundary with.
    */
-  var setMinLabel = function(new_val) {
+  var setBoundPos = function(index) {
     vizupdate.addOperation(function() {
-      _setMinLabel(new_val);
-    });
-  }
-
-  /**
-   * Set the coordinates of the min element.
-   * @param {object} array_element - Array element to align min with.
-   */
-  var setMinPos = function(array_element) {
-    vizupdate.addOperation(function() {
-      _setMinPos(array_element);
-    });
-  }
-
-  /**
-   * Set the fill color of the min element.
-   * @param {string} new_color - New fill color of min element.
-   */
-  var setMinFill = function(new_color) {
-    vizupdate.addOperation(function() {
-      _setMinFill(new_color);
-    });
-  }
-
-  /**
-   * Emphasize (thicken border of) a rect element.
-   * @param {number[]} indices - Array of indices to emphasize.
-   * @param {string} color - Color for emphasis border.
-   */
-  var emphasize = function(indices, color) {
-    vizupdate.addOperation(function() {
-      _emphasize(indices, color);
-    });
-  }
-
-  /**
-   * Demphasize (remove thick border around) a rect element.
-   * @param {number[]} indices - Array of indices to deemphasize.
-   */
-  var deemphasize = function(indices) {
-    vizupdate.addOperation(function() {
-      _deemphasize(indices);
+      _setBoundPos(array.getRects()[index]);
     });
   }
 
@@ -200,11 +122,6 @@ var selection = (function(elems, bounding_box) {
     });
   }
 
-  var initializeMin = function() {
-    vizupdate.addOperation(_initializeMin);
-
-  }
-
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -215,14 +132,10 @@ var selection = (function(elems, bounding_box) {
     getCircles:getCircles,
     getLines:getLines,
     getText:getText,
-    setMinLabel:setMinLabel,
-    setMinPos:setMinPos,
-    setMinFill:setMinFill,
-    emphasize:emphasize,
-    deemphasize:deemphasize,
+    setBoundPos:setBoundPos,
     swap:swap,
     setFill:setFill,
     setLabels:setLabels,
-    initializeMin
   }
+
 });

@@ -7,7 +7,7 @@
     <script type="text/javascript" src="./common.js"></script>
     <script type="text/javascript" src="./element_factory.js"></script>
     <script type="text/javascript" src="./array_factory.js"></script>
-    <script type="text/javascript" src="./algorithms/selection.js"></script>
+    <script type="text/javascript" src="./algorithms/insertion.js"></script>
     <script type="text/javascript" src="./vizlib.js"></script>
     <script type="text/javascript" src="./vizupdate.js"></script>
   </head>
@@ -44,36 +44,48 @@
         .attr('id','g_text');
 
 
+      // example of a client using the insertion visualization
       var dur = 3000;
 
       var l = [];
-      for (var i = 1; i <= 3; i++) {
+      for (var i = 1; i <= 5; i++) {
         l.push(i);
       }
       d3.shuffle(l);
 
-      var viz = vizlib.get_selection(l, bounding_box);
-      viz.initializeMin();
+      var viz = vizlib.get_insertion(l, bounding_box);
       vizupdate.redraw(viz, dur);
 
-      var sorted = [];
-      var n = l.length;
-      for (var i = 0; i < n; i++) {
-        viz.setFill([i], color_codes.ACTIVE);
-        vizupdate.redraw(viz, dur);
-        for (var j = i + 1; j < n; j++) {
-          var min = i;
-          if (l[j] < l[min]) {
-            min = j;
+      viz.setFill([0], color_codes.COMPARE);
+      vizupdate.redraw(viz, dur);
+      viz.setFill([0], color_codes.WHITE);
+      vizupdate.redraw(viz, dur);
+      viz.setBoundPos(0);
+      vizupdate.redraw(viz, dur);
+
+      // insertion sort implementation
+      for (var i = 1; i < l.length; i++) {
+        for (var j = i; j > 0; j--) {
+          viz.setFill([j - 1, j], color_codes.COMPARE);
+          vizupdate.redraw(viz, dur);
+          if (l[j] < l[j - 1]) {
+            var tmp = l[j - 1];
+            l[j - 1] = l[j];
+            l[j] = tmp;
+            viz.swap(j - 1, j);
+            vizupdate.redraw(viz, dur);
+            viz.setFill([j - 1, j], color_codes.WHITE);
+            vizupdate.redraw(viz, dur);
+          } else {
+            viz.setFill([j - 1, j], color_codes.WHITE);
+            vizupdate.redraw(viz, dur);
+            break;
           }
-          var tmp = l[i];
-          l[i] = l[min];
-          l[min] = tmp;
         }
-        viz.setFill([i], color_codes.FINISHED);
+        viz.setBoundPos(i);
         vizupdate.redraw(viz, dur);
-        sorted.push(i);
       }
+
 
     </script>
   </body>

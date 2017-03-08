@@ -59,30 +59,37 @@ var vizlib = (function() {
   /**
   * Return an ordered array of all line elements.
   */
-  var getLines = function() {
-    // TODO: to be implemented
-    return [];
+  var getLines = function(...lines) {
+    var l = [];
+    // collect argument elements and elements from argument array in one array
+    lines.forEach(function(e) {
+      if (e.hasOwnProperty('pos') && e.pos.hasOwnProperty('x1')) { l.push(e); }
+      else if ( Array.isArray(e) ) { l = l.concat(e); }
+    });
+    // sort the array by line id
+    return l.sort(function(a, b) { return a.id - b.id; });
   }
 
   /**
   * Return an ordered array of all text elements.
   */
-  var getText = function() {
+  var getText = function(...text) {
     var t = [];
     // collect argument elements and elements from argument array in one array
-    text.forEach(function(element) {
-     if (element.hasOwnProperty('text_anchor')) { t.push(element); }
-     else if ( Array.isArray(element) ) { t = t.concat(element); }
+    text.forEach(function(e) {
+      if (e.hasOwnProperty('text-anchor')) { t.push(e); }
+      else if ( Array.isArray(e) ) { t = t.concat(e); }
     });
-    // sort the array by element.id
-    t.sort(function(a, b) {
-     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-    });
-    return t;
+    // sort the array by text element id
+    return t.sort(function(a, b) { return a.id - b.id; });
   }
 
   var get_selection = function(elements, bounding_box) {
     return selection(elements, bounding_box);
+  }
+
+  var get_insertion = function(elements, bounding_box) {
+    return insertion(elements, bounding_box);
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -93,6 +100,8 @@ var vizlib = (function() {
     getCircles:getCircles,
     getLines:getLines,
     getText:getText,
-    get_selection:get_selection
+    get_selection:get_selection,
+    get_insertion:get_insertion
   };
+
 })();
