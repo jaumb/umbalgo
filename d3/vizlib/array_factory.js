@@ -54,8 +54,8 @@ var array_factory = (function(){
 
     // swap(index1, index2)
     function swap(i, j) {
-      _elems[i].label.pos.x = _elems[j].pos.x + 1/2 boxSize;
-      _elems[j].label.pos.x = _elems[i].pos.x + 1/2 boxSize;
+      _elems[i].label.pos.x = _elems[j].pos.x + 1/2 * boxSize;
+      _elems[j].label.pos.x = _elems[i].pos.x + 1/2 * boxSize;
       _elems[i].label.pos.y = _elems[j].pos.y + 1/3 * _elems[j].label.font_size;
       _elems[j].label.pos.y = _elems[i].pos.y + 1/3 * _elems[i].label.font_size;
       var tmp = _elems[i].label;
