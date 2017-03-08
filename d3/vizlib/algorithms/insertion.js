@@ -75,7 +75,11 @@ var insertion = (function(elems, bounding_box) {
   }
 
   var getText = function() {
-    return vizlib.getText();
+    var text = [];
+    array.getRects().forEach(function(e) {
+      text.push(e.label);
+    });
+    return vizlib.getText(text);
   }
   //end of element array getters////////////////////////////////////////////////
 
