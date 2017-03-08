@@ -12,7 +12,7 @@ var element_factory = (function() {
   var _fill = color_codes.BACKGROUND;  // interior color of an element
   var _fill_opacity = 1;               // 0 (invisible) to 1 (solid)
   var _stroke = color_codes.BLACK;     // the color of an outline
-  var _stroke_width = '3px';               // thickness of outline
+  var _stroke_width = '.3vw';          // thickness of outline
   var _stroke_opacity = 1;
 
   // all elements but line
