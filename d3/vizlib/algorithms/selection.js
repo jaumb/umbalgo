@@ -15,12 +15,19 @@ var selection = (function(elems, bounding_box) {
   //////////////////////////////////////////////////////////////////////////////
 
   var _initializeMin = function() {
-    var array_elems = array.getRects();
-    var first = array_elems[0];
-    min.label.val = first.label.val;
+    var first = array.getRects()[0];
     min.pos.x = first.pos.x;
-    min.pos.y = first.pos.y;
-    min.sp = min.pos;
+    min.pos.y = first.pos.y + first.height;
+    min.sp.x = min.pos.x;
+    min.sp.y = min.pos.y;
+    min.height = min.width = first.width;
+
+    // initialize min label
+    min.label.val = first.label.val;
+    min.label.pos.x = min.pos.x;
+    min.label.pos.y = min.pos.y;
+    min.label.sp.x = min.pos.x;
+    min.label.sp.y = min.pos.y;
   }
 
   /**
@@ -112,7 +119,12 @@ var selection = (function(elems, bounding_box) {
   }
 
   var getText = function() {
-    return vizlib.getText();
+    text = []
+    array.getRects().forEach(function(rect) {
+      text.push(rect.label);
+    });
+    text.push(min.label);
+    return vizlib.getText(text);
   }
   //end of element array getters////////////////////////////////////////////////
 
@@ -121,7 +133,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} newVal - new
    */
   var setMinLabel = function(new_val) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setMinLabel(new_val);
     });
   }
@@ -131,7 +143,7 @@ var selection = (function(elems, bounding_box) {
    * @param {object} array_element - Array element to align min with.
    */
   var setMinPos = function(array_element) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setMinPos(array_element);
     });
   }
@@ -141,7 +153,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color of min element.
    */
   var setMinFill = function(new_color) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setMinFill(new_color);
     });
   }
@@ -152,7 +164,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} color - Color for emphasis border.
    */
   var emphasize = function(indices, color) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _emphasize(indices, color);
     });
   }
@@ -162,7 +174,7 @@ var selection = (function(elems, bounding_box) {
    * @param {number[]} indices - Array of indices to deemphasize.
    */
   var deemphasize = function(indices) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _deemphasize(indices);
     });
   }
@@ -173,7 +185,7 @@ var selection = (function(elems, bounding_box) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _swap(index1, index2);
     });
   }
@@ -184,7 +196,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setFill(indices, color);
     });
   }
@@ -195,13 +207,13 @@ var selection = (function(elems, bounding_box) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    vizupdate.addOperation(function(){
+    redraw.addOperation(function(){
       _setLabels(indices, val);
     });
   }
 
   var initializeMin = function() {
-    vizupdate.addOperation(_initializeMin);
+    redraw.addOperation(_initializeMin);
 
   }
 
