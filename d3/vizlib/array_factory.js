@@ -23,12 +23,18 @@ var array_factory = (function(){
       var rect = element_factory.rect();
       rect.pos.x = firstPos.x + i * boxSize;
       rect.pos.y = firstPos.y;
-      rect.sp = {x:rect.pos.x, y:rect.pos.y};
+      rect.sp.x = rect.pos.x;
+      rect.sp.y = rect.pos.y;
       rect.width = boxSize;
       rect.height = boxSize;
       rect.label.val = e;
-      rect.label.pos = {x:rect.pos.x, y:rect.pos.y};
-      rect.label.sp = {x:rect.pos.x, y:rect.pos.y};
+      rect.label.pos.x = rect.pos.x;
+      rect.label.pos.y = rect.pos.y;
+      rect.label.sp.x = rect.label.pos.x;
+      rect.label.sp.y = rect.label.pos.y;
+      rect.label.stroke_width = 
+      rect.label.font_size = 
+      rect.label.font = 
       _elems.push(rect);
     });
 
@@ -48,8 +54,8 @@ var array_factory = (function(){
 
     // swap(index1, index2)
     function swap(i, j) {
-      _elems[i].label.pos.x = _elems[j].pos.x;
-      _elems[j].label.pos.x = _elems[i].pos.x;
+      _elems[i].label.pos.x = _elems[j].pos.x + 1/2 boxSize;
+      _elems[j].label.pos.x = _elems[i].pos.x + 1/2 boxSize;
       _elems[i].label.pos.y = _elems[j].pos.y + 1/3 * _elems[j].label.font_size;
       _elems[j].label.pos.y = _elems[i].pos.y + 1/3 * _elems[i].label.font_size;
       var tmp = _elems[i].label;
@@ -119,6 +125,7 @@ var array_factory = (function(){
       setOutline:setOutline,
       swap:swap,
       emphasize:emphasize,
+      deemphasize:deemphasize,
       setLabelFill:setLabelFill,
       setLabels:setLabels,
       getRects:getRects
