@@ -51,8 +51,8 @@ var element_factory = (function() {
      stroke:_stroke,
      stroke_width:_stroke_width,
      stroke_opacity:_stroke_opacity,
-     sp:_sp, // replace
-     pos:_pos, // replace
+     sp:{x:_sp.x, y:_sp.y}, // replace
+     pos:{x:_pos.x, y:_pos.y}, // replace
      font:_font,
      font_size:_font_size,
      text_anchor:_text_anchor,
