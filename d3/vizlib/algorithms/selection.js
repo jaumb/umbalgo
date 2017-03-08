@@ -28,6 +28,9 @@ var selection = (function(elems, bounding_box) {
     min.label.pos.y = min.pos.y;
     min.label.sp.x = min.pos.x;
     min.label.sp.y = min.pos.y;
+    min.label.font_size = (.7 * first.width) + 'px';
+    min.label.pos.x = min.pos.x + 1/2 * first.width;
+    min.label.pos.y = min.pos.y + .72 * first.width;
   }
 
   /**
@@ -43,7 +46,9 @@ var selection = (function(elems, bounding_box) {
    * @param {object} array_index - Array element to align min with.
    */
   var _setMinPos = function(array_index) {
-    min.pos.x = array.getRects()[array_index].pos.x;
+    index = array.getRects()[array_index];
+    min.pos.x = index.pos.x;
+    min.label.pos.x = index.pos.x + 1/2 * min.width;
   }
 
   /**
