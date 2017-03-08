@@ -40,11 +40,10 @@ var selection = (function(elems, bounding_box) {
 
   /**
    * Set the coordinates of the min element.
-   * @param {object} array_element - Array element to align min with.
+   * @param {object} array_index - Array element to align min with.
    */
-  var _setMinPos = function(array_element) {
-    min.pos.x = array_element.pos.x;
-    min.pos.y = array_element.pos.y + array_element.height * 1.5;
+  var _setMinPos = function(array_index) {
+    min.pos.x = array.getRects()[array_index].pos.x;
   }
 
   /**
