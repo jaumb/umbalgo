@@ -9,7 +9,7 @@
     <script type="text/javascript" src="./array_factory.js"></script>
     <script type="text/javascript" src="./algorithms/selection.js"></script>
     <script type="text/javascript" src="./vizlib.js"></script>
-    <script type="text/javascript" src="./vizupdate.js"></script>
+    <script type="text/javascript" src="./redraw.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -54,13 +54,13 @@
 
       var viz = vizlib.get_selection(l, bounding_box);
       viz.initializeMin();
-      vizupdate.redraw(viz, dur);
+      redraw.draw(viz, dur);
 
       var sorted = [];
       var n = l.length;
       for (var i = 0; i < n; i++) {
         viz.setFill([i], color_codes.ACTIVE);
-        vizupdate.redraw(viz, dur);
+        redraw.draw(viz, dur);
         for (var j = i + 1; j < n; j++) {
           var min = i;
           if (l[j] < l[min]) {
@@ -71,7 +71,7 @@
           l[min] = tmp;
         }
         viz.setFill([i], color_codes.FINISHED);
-        vizupdate.redraw(viz, dur);
+        redraw.draw(viz, dur);
         sorted.push(i);
       }
 

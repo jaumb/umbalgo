@@ -9,7 +9,7 @@
     <script type="text/javascript" src="./array_factory.js"></script>
     <script type="text/javascript" src="./algorithms/insertion.js"></script>
     <script type="text/javascript" src="./vizlib.js"></script>
-    <script type="text/javascript" src="./vizupdate.js"></script>
+    <script type="text/javascript" src="./redraw.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -54,36 +54,36 @@
       d3.shuffle(l);
 
       var viz = vizlib.get_insertion(l, bounding_box);
-      vizupdate.redraw(viz, dur);
+      redraw.draw(viz, dur);
 
       viz.setFill([0], color_codes.COMPARE);
-      vizupdate.redraw(viz, dur);
+      redraw.draw(viz, dur);
       viz.setFill([0], color_codes.WHITE);
-      vizupdate.redraw(viz, dur);
+      redraw.draw(viz, dur);
       viz.setBoundPos(0);
-      vizupdate.redraw(viz, dur);
+      redraw.draw(viz, dur);
 
       // insertion sort implementation
       for (var i = 1; i < l.length; i++) {
         for (var j = i; j > 0; j--) {
           viz.setFill([j - 1, j], color_codes.COMPARE);
-          vizupdate.redraw(viz, dur);
+          redraw.draw(viz, dur);
           if (l[j] < l[j - 1]) {
             var tmp = l[j - 1];
             l[j - 1] = l[j];
             l[j] = tmp;
             viz.swap(j - 1, j);
-            vizupdate.redraw(viz, dur);
+            redraw.draw(viz, dur);
             viz.setFill([j - 1, j], color_codes.WHITE);
-            vizupdate.redraw(viz, dur);
+            redraw.draw(viz, dur);
           } else {
             viz.setFill([j - 1, j], color_codes.WHITE);
-            vizupdate.redraw(viz, dur);
+            redraw.draw(viz, dur);
             break;
           }
         }
         viz.setBoundPos(i);
-        vizupdate.redraw(viz, dur);
+        redraw.draw(viz, dur);
       }
 
 

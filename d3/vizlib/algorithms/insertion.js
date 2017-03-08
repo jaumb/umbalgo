@@ -84,7 +84,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {number} index - Array element index to align boundary with.
    */
   var setBoundPos = function(index) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setBoundPos(array.getRects()[index]);
     });
   }
@@ -95,7 +95,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _swap(index1, index2);
     });
   }
@@ -106,7 +106,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    vizupdate.addOperation(function() {
+    redraw.addOperation(function() {
       _setFill(indices, color);
     });
   }
@@ -117,7 +117,7 @@ var insertion = (function(elems, bounding_box) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    vizupdate.addOperation(function(){
+    redraw.addOperation(function(){
       _setLabels(indices, val);
     });
   }

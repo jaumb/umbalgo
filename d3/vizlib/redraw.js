@@ -1,5 +1,5 @@
 
-var vizupdate = (function() {
+var redraw = (function() {
 
   /****************************************************************************
    *  private variables
@@ -18,12 +18,10 @@ var vizupdate = (function() {
    * @param {Object} viz - The visualization object for a specific algorithm.
    * @param {number} dur - Duration of the function's execution in milliseconds.
    */
-  function next(viz, dur) {
-    console.log("val of dur: " + dur);
+  function _next(viz, dur) {
     var f = _q.shift();
-    console.log("var f = " + f);
     if ( f ) { f(); }
-    draw(viz, dur);
+    _draw(viz, dur);
     if (_q.length <= 0) {
       clearInterval(_intervalID);
       _intervalID = null;
@@ -35,7 +33,7 @@ var vizupdate = (function() {
    * @param {Object} viz - The visualization object for a specific algorithm.
    * @param {number} dur - Num. of milliseconds to spend updating the canvas.
    */
-  function draw(viz, dur) {
+  function _draw(viz, dur) {
 
     // draw all rectangles
     var rects = d3.select("#g_rects")
@@ -190,17 +188,17 @@ var vizupdate = (function() {
    * @param {Object} viz - The visualization object for a specific algorithm.
    * @param {number} dur - Duration of the entire redraw in milliseconds.
    */
-  function redraw(viz, dur) {
+  function draw(viz, dur) {
     // TODO: Revisit how to allocate time per redraw component.
     if ( _q.length ) {
       var durPerFunction = dur / _q.length;
       if (_intervalID) { clearInterval(_intervalID); }
-      _intervalID = setInterval(next,
+      _intervalID = setInterval(_next,
                                durPerFunction,
                                viz,               // next arg 1
                                durPerFunction);   // next arg 2
     } else {
-      draw(viz, dur);
+      _draw(viz, dur);
     }
   }
 
@@ -245,7 +243,7 @@ var vizupdate = (function() {
    *  return public methods
    ****************************************************************************/
   return {
-    redraw:redraw,
+    draw:draw,
     addOperation:addOperation,
     initialize:initialize
   };
