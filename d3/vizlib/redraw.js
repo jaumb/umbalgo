@@ -41,6 +41,7 @@ var redraw = (function() {
       .data(viz.getRects());
 
     rects.transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('width', function(d) { return d.width; })
@@ -53,6 +54,7 @@ var redraw = (function() {
 
     rects.enter()
       .append('rect')
+      .attr('id', function(d) { return d.id; })
       .attr('x', function(d) { return d.sp.x; })
       .attr('y', function(d) { return d.sp.y; })
       .attr('width', function(d) { return d.width; })
@@ -63,6 +65,7 @@ var redraw = (function() {
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
       .transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('fill', function(d) { return d.fill; })
       .attr('width', function(d) { return d.width; })
       .attr('height', function(d) { return d.height; })
@@ -79,6 +82,7 @@ var redraw = (function() {
       .data(viz.getCircles());
 
     circles.transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('cx', function(d) { return d.pos.cx; })
       .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -90,6 +94,7 @@ var redraw = (function() {
 
     circles.enter()
       .append('circle')
+      .attr('id', function(d) { return d.id; })
       .attr('cx', function(d) { return d.sp.cx; })
       .attr('cy', function(d) { return d.sp.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -99,6 +104,7 @@ var redraw = (function() {
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('cx', function(d) { return d.pos.cx; })
       .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -114,6 +120,7 @@ var redraw = (function() {
       .data(viz.getLines());
 
     lines.transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('x1', function(d) { return d.pos.x1; })
       .attr('y1', function(d) { return d.pos.y1; })
       .attr('x2', function(d) { return d.pos.x2; })
@@ -124,6 +131,7 @@ var redraw = (function() {
 
     lines.enter()
       .append('line')
+      .attr('id', function(d) { return d.id; })
       .attr('x1', function(d) { return d.sp.x1; })
       .attr('y1', function(d) { return d.sp.y1; })
       .attr('x2', function(d) { return d.sp.x2; })
@@ -132,6 +140,7 @@ var redraw = (function() {
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('x1', function(d) { return d.pos.x1; })
       .attr('y1', function(d) { return d.pos.y1; })
       .attr('x2', function(d) { return d.pos.x2; })
@@ -147,6 +156,7 @@ var redraw = (function() {
 
     text.text(function(d) { return d.val; })
       .transition().duration(dur)
+      .attr('id', function(d) { return d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
@@ -158,6 +168,7 @@ var redraw = (function() {
     text.enter()
       .append('text')
       .text(function(d) { return d.val; })
+      .attr('id', function(d) { return d.id; })
       .attr('x', function(d) { return d.sp.x; })
       .attr('y', function(d) { return d.sp.y; })
       .attr('fill', function(d) { return d.fill; })
@@ -167,6 +178,7 @@ var redraw = (function() {
       .attr('text-anchor', function(d) { return d.text_anchor; })
       .transition().duration(dur)
       .text(function(d) { return d.val; })
+      .attr('id', function(d) { return d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
