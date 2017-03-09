@@ -16,10 +16,6 @@
     <script type="text/javascript">
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
-      var bounding_box = {
-        p1:{ x:0, y:0 },
-        p2:{ x:svgW, y:svgH }
-      }
 
       d3.select(".chart-container")
         .append("svg")
@@ -53,7 +49,7 @@
       }
       d3.shuffle(l);
 
-      var viz = vizlib.get_insertion(l, bounding_box);
+      var viz = vizlib.get_insertion(l, svgW, svgH);
       redraw.draw(viz, dur);
 
       viz.setBoundPos(0);
@@ -62,6 +58,7 @@
       // insertion sort implementation
       for (var i = 1; i < l.length; i++) {
         for (var j = i; j > 0; j--) {
+          viz.emphasize([j]);
           viz.setFill([j - 1, j], colors.COMPARE);
           redraw.draw(viz, dur);
           if (l[j] < l[j - 1]) {
@@ -69,11 +66,17 @@
             l[j - 1] = l[j];
             l[j] = tmp;
             viz.swap(j - 1, j);
+            viz.moveEmphasis(j, j - 1);
             redraw.draw(viz, dur);
             viz.setFill([j - 1, j], colors.BACKGROUND);
             redraw.draw(viz, dur);
+            if (j === 1) {
+              viz.deemphasize([j - 1]);
+              redraw.draw(viz, dur);
+            }
           } else {
             viz.setFill([j - 1, j], colors.BACKGROUND);
+            viz.deemphasize([j]);
             redraw.draw(viz, dur);
             break;
           }

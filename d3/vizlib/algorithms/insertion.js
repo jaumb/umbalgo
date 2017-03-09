@@ -1,15 +1,21 @@
 /**
  * Insertion.java
  * Insertion Sort visualization object.
- * @param {Object} input - Object containing data and canvas constraints.
+ * @param {number[]|string[]} elems - Elements to sort.
+ * @param {number} svgW - Width of the svg canvas.
+ * @param {number} svgH - Height of the svg canvas.
  */
-var insertion = (function(elems, bounding_box) {
+var insertion = (function(elems, svgW, svgH) {
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
+  var _boundingBox = {
+    p1:{x:0, y:0},
+    p2:{x:svgW, y:svgH}
+  }
   var _bound = element_factory.line();
   _bound.stroke = colors.BLUE;
-  var _array = array_factory.get_array(elems, bounding_box);
+  var _array = array_factory.get_array(elems, _boundingBox);
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
@@ -127,20 +133,53 @@ var insertion = (function(elems, bounding_box) {
     });
   }
 
+  /**
+   * Emphasize array slots.
+   * @param {number[]} indices - The indices of the slots to emphasize.
+   */
+  var emphasize = function(indices) {
+    redraw.addOperation(function(){
+      _array.emphasize(indices);
+    });
+  }
+
+  /**
+   * Move emphasis box.
+   * @param {number} i - The index of the emphasized slot.
+   * @param {number} j - The index of the slot to emphasize.
+   */
+  var moveEmphasis = function(i, j) {
+    redraw.addOperation(function(){
+      _array.moveEmphasis(i, j);
+    });
+  }
+
+  /**
+   * De-emphasize array slots.
+   * @param {number[]} indices - The indices of the slots to de-emphasize.
+   */
+  var deemphasize = function(indices) {
+    redraw.addOperation(function(){
+      _array.deemphasize(indices);
+    });
+  }
 
 
   //////////////////////////////////////////////////////////////////////////////
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
-    getRects:getRects,
-    getCircles:getCircles,
-    getLines:getLines,
-    getText:getText,
     setBoundPos:setBoundPos,
     swap:swap,
     setFill:setFill,
     setLabels:setLabels,
+    emphasize:emphasize,
+    moveEmphasis:moveEmphasis,
+    deemphasize:deemphasize,
+    getRects:getRects,
+    getCircles:getCircles,
+    getLines:getLines,
+    getText:getText
   }
 
 });

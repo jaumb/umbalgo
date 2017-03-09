@@ -41,6 +41,21 @@ var array_factory = (function(){
     });
 
     /**************************************************************************
+     *  private Array_viz methods
+     **************************************************************************/
+    /**
+     * Fit the emphasis box around an array slot.
+     * @param {Object} emphasis - The emphasis rect element.
+     * @param {Object} slot - The array slot rect element.
+     */
+    function _fitEmphasis(emphasis, slot) {
+      emphasis.pos.x = slot.pos.x - 1/10 * slot.width;
+      emphasis.pos.y = slot.pos.y - 1/10 * slot.height;
+      emphasis.width = slot.width + 1/5 * slot.width;
+      emphasis.height = slot.height + 1/5 * slot.height;
+    }
+
+    /**************************************************************************
      *  public Array_viz methods
      **************************************************************************/
     /**
@@ -91,12 +106,9 @@ var array_factory = (function(){
           _elems[i].emphasis.stroke_opacity = .3;
         } else {
           var rect = element_factory.rect();
-          rect.pos.x = _elems[i].pos.x - 1/10 * _boxSize;
-          rect.pos.y = _elems[i].pos.y - 1/10 * _boxSize;
+          _fitEmphasis(rect, _elems[i]);
           rect.sp.x = rect.pos.x;
           rect.sp.y = rect.pos.y;
-          rect.width = _boxSize + 1/5 * _boxSize;
-          rect.height = _boxSize + 1/5 * _boxSize;
           rect.stroke = colors.EMPHASIZE;
           rect.stroke_opacity = .5;
           rect.fill_opacity = 0;
@@ -106,14 +118,27 @@ var array_factory = (function(){
     }
 
     /**
+     * Move emphasis box.
+     * @param {number} i - The index of the emphasized slot.
+     * @param {number} j - The index of the slot to emphasize.
+     */
+    function moveEmphasis(i, j) {
+      if (_elems[i].emphasis) {
+        _elems[j].emphasis = _elems[i].emphasis;
+        _elems[i].emphasis = null;
+        _fitEmphasis(_elems[j].emphasis, _elems[j]);
+      }
+    }
+
+    /**
      * De-emphasize array slots.
      * @param {number[]} indices - The indices of the slots to de-emphasize.
      */
     function deemphasize(indices) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          _elems[i].emphasis.stroke = colors.WHITE;
-          _elems[i].emphasis.stroke_opacity = 0;
+          redraw.removeRect(_elems[i].emphasis.id);
+          _elems[i].emphasis = null;
         }
       });
     }
@@ -178,6 +203,7 @@ var array_factory = (function(){
       setOutline:setOutline,
       swap:swap,
       emphasize:emphasize,
+      moveEmphasis:moveEmphasis,
       deemphasize:deemphasize,
       setLabelFill:setLabelFill,
       setLabels:setLabels,

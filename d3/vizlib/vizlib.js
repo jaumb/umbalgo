@@ -88,8 +88,8 @@ var vizlib = (function() {
     return selection(elements, bounding_box);
   }
 
-  var get_insertion = function(elements, bounding_box) {
-    return insertion(elements, bounding_box);
+  var get_insertion = function(elements, svgW, svgH) {
+    return insertion(elements, svgW, svgH);
   }
 
   //////////////////////////////////////////////////////////////////////////////

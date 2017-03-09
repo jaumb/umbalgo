@@ -41,7 +41,7 @@ var redraw = (function() {
       .data(viz.getRects());
 
     rects.transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'rect_' + d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('width', function(d) { return d.width; })
@@ -54,7 +54,7 @@ var redraw = (function() {
 
     rects.enter()
       .append('rect')
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'rect_' + d.id; })
       .attr('x', function(d) { return d.sp.x; })
       .attr('y', function(d) { return d.sp.y; })
       .attr('width', function(d) { return d.width; })
@@ -65,7 +65,7 @@ var redraw = (function() {
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .attr('fill-opacity', function(d) { return d.fill_opacity; })
       .transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'rect_' + d.id; })
       .attr('fill', function(d) { return d.fill; })
       .attr('width', function(d) { return d.width; })
       .attr('height', function(d) { return d.height; })
@@ -82,7 +82,7 @@ var redraw = (function() {
       .data(viz.getCircles());
 
     circles.transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'circle_' + d.id; })
       .attr('cx', function(d) { return d.pos.cx; })
       .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -94,7 +94,7 @@ var redraw = (function() {
 
     circles.enter()
       .append('circle')
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'circle_' + d.id; })
       .attr('cx', function(d) { return d.sp.cx; })
       .attr('cy', function(d) { return d.sp.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -104,7 +104,7 @@ var redraw = (function() {
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'circle_' + d.id; })
       .attr('cx', function(d) { return d.pos.cx; })
       .attr('cy', function(d) { return d.pos.cy; })
       .attr('fill', function(d) { return d.fill; })
@@ -120,7 +120,7 @@ var redraw = (function() {
       .data(viz.getLines());
 
     lines.transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'line_' + d.id; })
       .attr('x1', function(d) { return d.pos.x1; })
       .attr('y1', function(d) { return d.pos.y1; })
       .attr('x2', function(d) { return d.pos.x2; })
@@ -131,7 +131,7 @@ var redraw = (function() {
 
     lines.enter()
       .append('line')
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'line_' + d.id; })
       .attr('x1', function(d) { return d.sp.x1; })
       .attr('y1', function(d) { return d.sp.y1; })
       .attr('x2', function(d) { return d.sp.x2; })
@@ -140,7 +140,7 @@ var redraw = (function() {
       .attr('stroke-width', function(d) { return d.stroke_width; })
       .attr('stroke-opacity', function(d) { return d.stroke_opacity; })
       .transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'line_' + d.id; })
       .attr('x1', function(d) { return d.pos.x1; })
       .attr('y1', function(d) { return d.pos.y1; })
       .attr('x2', function(d) { return d.pos.x2; })
@@ -156,7 +156,7 @@ var redraw = (function() {
 
     text.text(function(d) { return d.val; })
       .transition().duration(dur)
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'text_' + d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
@@ -168,7 +168,7 @@ var redraw = (function() {
     text.enter()
       .append('text')
       .text(function(d) { return d.val; })
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'text_' + d.id; })
       .attr('x', function(d) { return d.sp.x; })
       .attr('y', function(d) { return d.sp.y; })
       .attr('fill', function(d) { return d.fill; })
@@ -178,7 +178,7 @@ var redraw = (function() {
       .attr('text-anchor', function(d) { return d.text_anchor; })
       .transition().duration(dur)
       .text(function(d) { return d.val; })
-      .attr('id', function(d) { return d.id; })
+      .attr('id', function(d) { return 'text_' + d.id; })
       .attr('x', function(d) { return d.pos.x; })
       .attr('y', function(d) { return d.pos.y; })
       .attr('fill', function(d) { return d.fill; })
@@ -225,6 +225,38 @@ var redraw = (function() {
   }
 
   /**
+   * Remove a rect svg element from the canvas.
+   * @param {number} id - The id of the element to remove.
+   */
+  function removeRect(id) {
+    d3.select('#rect_' + id).remove();
+  }
+
+  /**
+   * Remove a cirlce svg element from the canvas.
+   * @param {number} id - The id of the element to remove.
+   */
+  function removeCircle(id) {
+    d3.select('#circle_' + id).remove();
+  }
+
+  /**
+   * Remove a line svg element from the canvas.
+   * @param {number} id - The id of the element to remove.
+   */
+  function removeLine(id) {
+    d3.select('#line_' + id).remove();
+  }
+
+  /**
+   * Remove a text svg element from the canvas.
+   * @param {number} id - The id of the element to remove.
+   */
+  function removeText(id) {
+    d3.select('#text_' + id).remove();
+  }
+
+  /**
    * Initialize the visualization layout by appending group elements to the
    * svg canvas for each type of element (rect, circle, line, text).
    */
@@ -257,6 +289,10 @@ var redraw = (function() {
   return {
     draw:draw,
     addOperation:addOperation,
+    removeRect:removeRect,
+    removeCircle:removeCircle,
+    removeLine:removeLine,
+    removeText:removeText,
     initialize:initialize
   };
 
