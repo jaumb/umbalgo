@@ -43,201 +43,504 @@ var element_factory = (function() {
   //////////////////////////////////////////////////////////////////////////////
   //  public methods
   //////////////////////////////////////////////////////////////////////////////
-  var text = function() {
-   return {
-     id:_newID(),
-     fill:colors.BLACK,
-     fill_opacity:_fill_opacity,
-     stroke:_stroke,
-     stroke_width:_stroke_width,
-     stroke_opacity:_stroke_opacity,
-     sp:{x:_sp.x, y:_sp.y}, // replace
-     pos:{x:_pos.x, y:_pos.y}, // replace
-     font:_font,
-     font_size:_font_size,
-     text_anchor:_text_anchor,
-     val:''
-   }
-  };
+
+
+  function Text(new_id) {
+    var id = _newID();
+    var fill = colors.BLACK;
+    var fill_opacity = _fill_opacity;
+    var stroke = _stroke;
+    var stroke_width = _stroke_width;
+    var stroke_opacity = _stroke_opacity;
+    var sp = {x:_sp.x, y:_sp.y}; // replace
+    var pos = {x:_pos.x, y:_pos.y}; // replace
+    var font = _font;
+    var font_size = _font_size;
+    var text_anchor = _text_anchor;
+    var val = '';
+
+    // getters and setters
+
+    function getID() {
+      return id;
+    }
+
+    function getFill() {
+      return fill;
+    }
+
+    function setFill(color) {
+      fill = color;
+    }
+
+    function getFillOpacity() {
+      return fill_opacity;
+    }
+
+    function setFillOpacity(opacity) {
+      fill_opacity = opacity;
+    }
+
+    function getStroke() {
+      return stroke;
+    }
+
+    function setStroke(val) {
+      stroke = val;
+    }
+
+    function getStrokeWidth() {
+      return stroke_width;
+    }
+
+    function setStrokeWidth(width) {
+      stroke_width = width;
+    }
+
+    function getStrokeOpacity() {
+      return stroke_opacity;
+    }
+
+    function setStrokeOpacity(opacity) {
+      stroke_opacity = opacity;
+    }
+
+    function getSpX() {
+      return sp.x;
+    }
+
+    function setSpX(newX) {
+      sp.x = newX;
+    }
+
+    function getSpY() {
+      return sp.x;
+    }
+
+    function setSpY(newY) {
+      sp.y = newY;
+    }
+
+    function getSp() {
+      return { x:sp.x, y:sp.y };
+    }
+
+    function setSp(spX, spY) {
+      setSpX(spX);
+      setSpY(spY);
+    }
+
+    function getPosX() {
+      return pos.x;
+    }
+
+    function setPosX(newX) {
+      pos.x = newX;
+    }
+
+    function getPosY() {
+      return pos.y;
+    }
+
+    function setPosY(newY) {
+      pos.y = newY;
+    }
+
+    function getPos() {
+      return { x:pos.x, y:pos.y };
+    }
+
+    function setPos(posX, posY) {
+      setPosX(posX);
+      setPosY(posY);
+    }
+
+    // text-specific functions
+
+    function getFont() {
+      return font;
+    }
+
+    function setFont(newFont) {
+      font = newFont;
+    }
+
+    function getFontSize() {
+      return font_size;
+    }
+
+    function setFontSize(newSize) {
+      font_size = newSize;
+    }
+
+    function getTextAnchor() {
+      return text_anchor;
+    }
+
+    function setTextAnchor(newAnchor) {
+      text_anchor = newAnchor;
+    }
+
+    function getVal() {
+      return val;
+    }
+
+    function setVal(newVal) {
+      val = newVal;
+    }
+
+    // return public functions
+    return {
+      getID:getID,
+      getFill:getFill,
+      setFill:setFill,
+      getFillOpacity:getFillOpacity,
+      setFillOpacity:setFillOpacity,
+      getStroke:getStroke,
+      setStroke:setStroke,
+      getStrokeWidth:getStrokeWidth,
+      setStrokeWidth:setStrokeWidth,
+      getStrokeOpacity:getStrokeOpacity,
+      setStrokeOpacity:setStrokeOpacity,
+      getPosX:getPosX,
+      setPosX:setPosX,
+      getPosY:getPosY,
+      setPosY:setPosY,
+      getSpX:getSpX,
+      setSpX:setSpX,
+      getSpY:getSpY,
+      setSpY:setSpY,
+      getPos:getPos,
+      setPos:setPos,
+      getSp:getSp,
+      setSp:setSp,
+      getFont:getFont,
+      setFont:setFont,
+      getFontSize:getFontSize,
+      setFontSize:setFontSize,
+      getTextAnchor:getTextAnchor,
+      setTextAnchor:setTextAnchor,
+      getVal:getVal,
+      setVal:setVal
+    }
+  }
 
   /**
     * Rect object definition
     * @param {number} new_id - A unique ID for this Rect object.
     */
    function Rect(new_id) {
-     var id = new_id;
-     var fill = _fill;
-     var fill_opacity = _fill_opacity;
-     var stroke = _stroke;
-     var stroke_width = _stroke_width;
-     var stroke_opacity = _stroke_opacity;
-     var pos = {x:_pos.x, y:_pos.y};
-     var sp = {x:_pos.x, y:_pos.y};
-     var width = _size;
-     var height = _size;
-     var label = new Text();
+    var id = new_id;
+    var fill = _fill;
+    var fill_opacity = _fill_opacity;
+    var stroke = _stroke;
+    var stroke_width = _stroke_width;
+    var stroke_opacity = _stroke_opacity;
+    var sp = {x:_pos.x, y:_pos.y};
+    var pos = {x:_pos.x, y:_pos.y};
+    var width = _size;
+    var height = _size;
+    var label = new Text(_newID());
 
-     // getters and setters
+    // getters and setters
 
-     function getID() {
-       return this.id;
-     }
+    function getID() {
+     return id;
+    }
 
-     function getFill() {
-       return this.fill;
-     }
+    function getFill() {
+     return fill;
+    }
 
-     function setFill(color) {
-       fill = this.color;
-     }
+    function setFill(color) {
+     fill = color;
+    }
 
-     function getFillOpacity() {
-       return this.fill_opacity;
-     }
+    function getFillOpacity() {
+     return fill_opacity;
+    }
 
-     function setFillOpacity(opacity) {
-       this.fill_opacity = opacity;
-     }
+    function setFillOpacity(opacity) {
+     fill_opacity = opacity;
+    }
 
-     function getStroke() {
-       return this.stroke;
-     }
+    function getStroke() {
+     return stroke;
+    }
 
-     function setStroke(val) {
-       this.stroke = val;
-     }
+    function setStroke(val) {
+     stroke = val;
+    }
 
-     function getStrokeWidth() {
-       return this.stroke_width;
-     }
+    function getStrokeWidth() {
+     return stroke_width;
+    }
 
-     function setStrokeWidth(width) {
-       this.stroke_width = width;
-     }
+    function setStrokeWidth(width) {
+     stroke_width = width;
+    }
 
-     function getStrokeOpacity() {
-       return this.stroke_opacity;
-     }
+    function getStrokeOpacity() {
+     return stroke_opacity;
+    }
 
-     function setStrokeOpacity(opacity) {
-       this.stroke_opacity = opacity;
-     }
+    function setStrokeOpacity(opacity) {
+     stroke_opacity = opacity;
+    }
 
-     function getPosX() {
-       return this.pos.x;
-     }
+    function getSpX() {
+     return sp.x;
+    }
 
-     function setPosX(newX) {
-       this.pos.x = newX;
-     }
+    function setSpX(newX) {
+     sp.x = newX;
+    }
 
-     function getPosY() {
-       return this.pos.y;
-     }
+    function getSpY() {
+     return sp.x;
+    }
 
-     function setPosY(newY) {
-       this.pos.y = newY;
-     }
+    function setSpY(newY) {
+     sp.y = newY;
+    }
 
-     function getSpX() {
-       return this.sp.x;
-     }
+    function getSp() {
+     return { x:sp.x, y:sp.y };
+    }
 
-     function setSpX(newX) {
-       this.sp.x = newX;
-     }
+    function setSp(spX, spY) {
+     setSpX(spX);
+     setSpY(spY);
+    }
 
-     function getSpY() {
-       return this.sp.x;
-     }
+    function getPosX() {
+     return pos.x;
+    }
 
-     function setSpY(newY) {
-       this.sp.y = newY;
-     }
+    function setPosX(newX) {
+     pos.x = newX;
+    }
 
-     function getPos() {
-       return { x:this.pos.x, y:this.pos.y };
-     }
+    function getPosY() {
+     return pos.y;
+    }
 
-     function setPos(posX, posY) {
-       setPosX(posX);
-       setPosY(posY);
-     }
+    function setPosY(newY) {
+     pos.y = newY;
+    }
 
-     function getSp() {
-       return { x:this.sp.x, y:this.sp.y };
-     }
+    function getPos() {
+     return { x:pos.x, y:pos.y };
+    }
 
-     function setSp(spX, spY) {
-       setSpX(spX);
-       setSpY(spY);
-     }
+    function setPos(posX, posY) {
+     setPosX(posX);
+     setPosY(posY);
+    }
 
-     function getWidth() {
-       return this.width;
-     }
+    // rect-specific functions
 
-     function setWidth(w) {
-       this.width = w;
-     }
+    function getWidth() {
+     return width;
+    }
 
-     function getHeight() {
-       return this.height;
-     }
+    function setWidth(w) {
+     width = w;
+    }
 
-     function setHeight(h) {
-       this.height = h;
-     }
+    function getHeight() {
+     return height;
+    }
 
-     function getLabel() {
-       return this.label;
-     }
+    function setHeight(h) {
+     height = h;
+    }
 
-     // return public functions
-     return {
-       getID:getID,
-       getFill:getFill,
-       setFill:setFill,
-       getFillOpacity:getFillOpacity,
-       setFillOpacity:setFillOpacity,
-       getStroke:getStroke,
-       setStroke:setStroke,
-       getStrokeWidth:getStrokeWidth,
-       setStrokeWidth:setStrokeWidth,
-       getStrokeOpacity:getStrokeOpacity,
-       setStrokeOpacity:setStrokeOpacity,
-       getPosX:getPosX,
-       setPosX:setPosX,
-       getPosY:getPosY,
-       setPosY:setPosY,
-       getSpX:getSpX,
-       setSpX:setSpX,
-       getSpY:getSpY,
-       setSpY:setSpY,
-       getPos:getPos,
-       setPos:setPos,
-       getSp:getSp,
-       setSp:setSp,
-       getWidth:getWidth,
-       setWidth:setWidth,
-       getHeight:getHeight,
-       setHeight:setHeight,
-       getLabel:getLabel
-     }
-   }
+    function getLabel() {
+     return label;
+    }
 
-  var circle = function() {
+    // return public functions
     return {
-      id:_newID(),
-      fill:_fill,
-      fill_opacity:_fill_opacity,
-      stroke:_stroke,
-      stroke_width:_stroke_width,
-      stroke_opacity:_stroke_opacity,
-      sp:{cx:_sp.x, cy:_sp.y}, // replace
-      pos:{cx:_pos.x, cy:_pos.y}, // replace
-      r:_size, // replace
-      label:text()
+     getID:getID,
+     getFill:getFill,
+     setFill:setFill,
+     getFillOpacity:getFillOpacity,
+     setFillOpacity:setFillOpacity,
+     getStroke:getStroke,
+     setStroke:setStroke,
+     getStrokeWidth:getStrokeWidth,
+     setStrokeWidth:setStrokeWidth,
+     getStrokeOpacity:getStrokeOpacity,
+     setStrokeOpacity:setStrokeOpacity,
+     getPosX:getPosX,
+     setPosX:setPosX,
+     getPosY:getPosY,
+     setPosY:setPosY,
+     getSpX:getSpX,
+     setSpX:setSpX,
+     getSpY:getSpY,
+     setSpY:setSpY,
+     getPos:getPos,
+     setPos:setPos,
+     getSp:getSp,
+     setSp:setSp,
+     getWidth:getWidth,
+     setWidth:setWidth,
+     getHeight:getHeight,
+     setHeight:setHeight,
+     getLabel:getLabel
+    }
+  }
+
+  var circle = function(new_id) {
+    id = new_id;
+    var fill = _fill;
+    var fill_opacity = _fill_opacity;
+    var stroke = _stroke;
+    var stroke_width = _stroke_width;
+    var stroke_opacity = _stroke_opacity;
+    var sp = {cx:_pos.x, cy:_pos.y};
+    var pos = {cx:_pos.x, cy:_pos.y};
+    var r = _size;
+    var label = new Text(_newID());
+
+    // getters and setters
+
+    function getID() {
+      return id;
+    }
+
+    function getFill() {
+      return fill;
+    }
+
+    function setFill(color) {
+      fill = color;
+    }
+
+    function getFillOpacity() {
+      return fill_opacity;
+    }
+
+    function setFillOpacity(opacity) {
+      fill_opacity = opacity;
+    }
+
+    function getStroke() {
+      return stroke;
+    }
+
+    function setStroke(val) {
+      stroke = val;
+    }
+
+    function getStrokeWidth() {
+      return stroke_width;
+    }
+
+    function setStrokeWidth(width) {
+      stroke_width = width;
+    }
+
+    function getStrokeOpacity() {
+      return stroke_opacity;
+    }
+
+    function setStrokeOpacity(opacity) {
+      stroke_opacity = opacity;
+    }
+
+    function getSpCX() {
+      return sp.cx;
+    }
+
+    function setSpCX(newX) {
+      sp.cx = newX;
+    }
+
+    function getSpCY() {
+      return sp.cx;
+    }
+
+    function setSpCY(newY) {
+      sp.cy = newY;
+    }
+
+    function getSp() {
+      return { cx:sp.cx, cy:sp.cy };
+    }
+
+    function setSp(spX, spY) {
+      setSpCX(spX);
+      setSpCY(spY);
+    }
+
+    function getPosCX() {
+      return pos.cx;
+    }
+
+    function setPosCX(newX) {
+      pos.cx = newX;
+    }
+
+    function getPosCY() {
+      return pos.cy;
+    }
+
+    function setPosCY(newY) {
+      pos.cy = newY;
+    }
+
+    function getPos() {
+      return { cx:pos.cx, cy:pos.cy };
+    }
+
+    function setPos(posX, posY) {
+      setPosCX(posX);
+      setPosCY(posY);
+    }
+
+    function getR() {
+      return r;
+    }
+
+    function setR(newR) {
+      r = newR;
+    }
+
+    function getLabel() {
+      return label;
+    }
+
+    // return public functions
+    return {
+      getID:getID,
+      getFill:getFill,
+      setFill:setFill,
+      getFillOpacity:getFillOpacity,
+      setFillOpacity:setFillOpacity,
+      getStroke:getStroke,
+      setStroke:setStroke,
+      getStrokeWidth:getStrokeWidth,
+      setStrokeWidth:setStrokeWidth,
+      getStrokeOpacity:getStrokeOpacity,
+      setStrokeOpacity:setStrokeOpacity,
+      getPosCX:getPosCX,
+      setPosCX:setPosCX,
+      getPosCY:getPosCY,
+      setPosCY:setPosCY,
+      getSpCX:getSpCX,
+      setSpCX:setSpCX,
+      getSpCY:getSpCY,
+      setSpCY:setSpCY,
+      getPos:getPos,
+      setPos:setPos,
+      getSp:getSp,
+      setSp:setSp,
+      getR:getR,
+      setR:setR,
+      getLabel:getLabel
     }
   };
 
