@@ -80,83 +80,83 @@ var element_factory = (function() {
      // getters and setters
 
      function getID() {
-       return id;
+       return this.id;
      }
 
      function getFill() {
-       return fill;
+       return this.fill;
      }
 
      function setFill(color) {
-       fill = color;
+       fill = this.color;
      }
 
      function getFillOpacity() {
-       return fill_opacity;
+       return this.fill_opacity;
      }
 
      function setFillOpacity(opacity) {
-       fill_opacity = opacity;
+       this.fill_opacity = opacity;
      }
 
      function getStroke() {
-       return stroke;
+       return this.stroke;
      }
 
      function setStroke(val) {
-       stroke = val;
+       this.stroke = val;
      }
 
      function getStrokeWidth() {
-       return stroke_width;
+       return this.stroke_width;
      }
 
      function setStrokeWidth(width) {
-       stroke_width = width;
+       this.stroke_width = width;
      }
 
      function getStrokeOpacity() {
-       return stroke_opacity;
+       return this.stroke_opacity;
      }
 
      function setStrokeOpacity(opacity) {
-       stroke_opacity = opacity;
+       this.stroke_opacity = opacity;
      }
 
      function getPosX() {
-       return pos.x;
+       return this.pos.x;
      }
 
      function setPosX(newX) {
-       pos.x = newX;
+       this.pos.x = newX;
      }
 
      function getPosY() {
-       return pos.y;
+       return this.pos.y;
      }
 
      function setPosY(newY) {
-       pos.y = newY;
+       this.pos.y = newY;
      }
 
      function getSpX() {
-       return sp.x;
+       return this.sp.x;
      }
 
      function setSpX(newX) {
-       sp.x = newX;
+       this.sp.x = newX;
      }
 
      function getSpY() {
-       return sp.x;
+       return this.sp.x;
      }
 
      function setSpY(newY) {
-       sp.y = newY;
+       this.sp.y = newY;
      }
 
      function getPos() {
-       return { x:pos.x, y:pos.y };
+       return { x:this.pos.x, y:this.pos.y };
      }
 
      function setPos(posX, posY) {
@@ -165,7 +165,7 @@ var element_factory = (function() {
      }
 
      function getSp() {
-       return { x:pos.x, y:pos.y };
+       return { x:this.sp.x, y:this.sp.y };
      }
 
      function setSp(spX, spY) {
@@ -174,23 +174,23 @@ var element_factory = (function() {
      }
 
      function getWidth() {
-       return width;
+       return this.width;
      }
 
      function setWidth(w) {
-       width = w;
+       this.width = w;
      }
 
      function getHeight() {
-       return height;
+       return this.height;
      }
 
      function setHeight(h) {
-       height = h;
+       this.height = h;
      }
 
      function getLabel() {
-       return label;
+       return this.label;
      }
 
      // return public functions
