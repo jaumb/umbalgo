@@ -137,7 +137,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} newVal - new
    */
   var setMinLabel = function(new_val) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _setMinLabel(new_val);
     });
   }
@@ -147,7 +147,7 @@ var selection = (function(elems, bounding_box) {
    * @param {object} array_element - Array element to align min with.
    */
   var setMinPos = function(array_element) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _setMinPos(array_element);
     });
   }
@@ -157,7 +157,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color of min element.
    */
   var setMinFill = function(new_color) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _setMinFill(new_color);
     });
   }
@@ -168,7 +168,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} color - Color for emphasis border.
    */
   var emphasize = function(indices, color) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _emphasize(indices, color);
     });
   }
@@ -178,7 +178,7 @@ var selection = (function(elems, bounding_box) {
    * @param {number[]} indices - Array of indices to deemphasize.
    */
   var deemphasize = function(indices) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _deemphasize(indices);
     });
   }
@@ -189,7 +189,7 @@ var selection = (function(elems, bounding_box) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _swap(index1, index2);
     });
   }
@@ -200,7 +200,7 @@ var selection = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _setFill(indices, color);
     });
   }
@@ -211,13 +211,13 @@ var selection = (function(elems, bounding_box) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    redraw.addOperation(function(){
+    redraw.addOp(function(){
       _setLabels(indices, val);
     });
   }
 
   var initializeMin = function() {
-    redraw.addOperation(_initializeMin);
+    redraw.addOp(_initializeMin);
 
   }
 

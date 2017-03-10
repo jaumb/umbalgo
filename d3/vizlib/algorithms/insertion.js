@@ -35,33 +35,6 @@ var insertion = (function(elems, svgW, svgH) {
     _bound.sp = {x1:x1, y1:y1, x2:x2, y2:y2};
   }
 
-  /**
-   * Use array's swap function to swap two elements in the array.
-   * @param {number} index1 - Index of first element to swap.
-   * @param {number} index2 - Index of second element to swap.
-   */
-  var _swap = function(index1, index2) {
-    _array.swap(index1, index2);
-  }
-
-  /**
-   * Change the fill color of elements at specified indices.
-   * @param {number[]} elements - Array of element indices.
-   * @param {string} new_color - New fill color for specified indices.
-   */
-  var _setFill = function(elements, new_color) {
-    _array.setFill(elements, new_color);
-  }
-
-  /**
-   * Set val of label property for elements at specified indices.
-   * @param {number[]} indices - Indices of elements to get new val.
-   * @param {string} val - Value to give to elements at specified indexes.
-   */
-  var _setLabels = function(indices, val) {
-    _array.setLabels(elements, val);
-  }
-
 
   //////////////////////////////////////////////////////////////////////////////
   // public methods
@@ -95,7 +68,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align boundary with.
    */
   var setBoundPos = function(index) {
-    redraw.addOperation(function() {
+    redraw.addOp(function() {
       _setBoundPos(_array.getRects()[index]);
     });
   }
@@ -106,8 +79,8 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    redraw.addOperation(function() {
-      _swap(index1, index2);
+    redraw.addOp(function() {
+      _array.swap(index1, index2);
     });
   }
 
@@ -117,8 +90,8 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    redraw.addOperation(function() {
-      _setFill(indices, color);
+    redraw.addOp(function() {
+      _array.setFill(elements, new_color);
     });
   }
 
@@ -128,8 +101,8 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    redraw.addOperation(function(){
-      _setLabels(indices, val);
+    redraw.addOp(function(){
+      _array.setLabels(elements, val);
     });
   }
 
@@ -138,7 +111,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to emphasize.
    */
   var emphasize = function(indices) {
-    redraw.addOperation(function(){
+    redraw.addOp(function(){
       _array.emphasize(indices);
     });
   }
@@ -149,7 +122,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} j - The index of the slot to emphasize.
    */
   var moveEmphasis = function(i, j) {
-    redraw.addOperation(function(){
+    redraw.addOp(function(){
       _array.moveEmphasis(i, j);
     });
   }
@@ -159,7 +132,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to de-emphasize.
    */
   var deemphasize = function(indices) {
-    redraw.addOperation(function(){
+    redraw.addOp(function(){
       _array.deemphasize(indices);
     });
   }

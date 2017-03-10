@@ -103,7 +103,7 @@ var array_factory = (function(){
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
           _elems[i].emphasis.stroke = colors.EMPHASIZE;
-          _elems[i].emphasis.stroke_opacity = .3;
+          _elems[i].emphasis.stroke_opacity = .5;
         } else {
           var rect = element_factory.rect();
           _fitEmphasis(rect, _elems[i]);
@@ -137,7 +137,7 @@ var array_factory = (function(){
     function deemphasize(indices) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          redraw.removeRect(_elems[i].emphasis.id);
+          redraw.removeElem(_elems[i].emphasis.id);
           _elems[i].emphasis = null;
         }
       });

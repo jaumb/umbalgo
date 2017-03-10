@@ -65,8 +65,10 @@
             var tmp = l[j - 1];
             l[j - 1] = l[j];
             l[j] = tmp;
-            viz.swap(j - 1, j);
-            viz.moveEmphasis(j, j - 1);
+            viz.swap(j-1,j);
+            viz.moveEmphasis(j,j-1);
+            //redraw.bundleOps(function() {viz.swap(j - 1, j);},
+            //                function() {viz.moveEmphasis(j, j - 1);});
             redraw.draw(viz, dur);
             viz.setFill([j - 1, j], colors.BACKGROUND);
             redraw.draw(viz, dur);
