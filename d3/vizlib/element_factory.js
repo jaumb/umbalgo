@@ -40,11 +40,6 @@ var element_factory = (function() {
   }
 
 
-  //////////////////////////////////////////////////////////////////////////////
-  //  public methods
-  //////////////////////////////////////////////////////////////////////////////
-
-
   function Text(new_id) {
     var id = _newID();
     var fill = colors.BLACK;
@@ -393,7 +388,7 @@ var element_factory = (function() {
     }
   }
 
-  var circle = function(new_id) {
+  function Circle(new_id) {
     id = new_id;
     var fill = _fill;
     var fill_opacity = _fill_opacity;
@@ -544,18 +539,200 @@ var element_factory = (function() {
     }
   };
 
-  var line = function() {
-    return {
-      id:_newID(),
-      stroke:_stroke,
-      stroke_width:_stroke_width,
-      stroke_opacity:_stroke_opacity,
-      sp: // replace
-      {x1:_line_sp.x1, y1:_line_sp.y1, x2:_line_sp.x2, y2:_line_sp.y2},
-      pos: // replace
-      {x1:_line_pos.x1, y1:_line_pos.y1, x2:_line_pos.x2, y2:_line_pos.y2}
+  function Line(new_id) {
+    var id = new_id;
+    var stroke = _stroke;
+    var stroke_width = _stroke_width;
+    var stroke_opacity = _stroke_opacity;
+    var sp = {
+      x1:_line_sp.x1,
+      y1:_line_sp.y1,
+      x2:_line_sp.x2,
+      y2:_line_sp.y2
+    };
+    var pos = {
+      x1:_line_pos.x1,
+      y1:_line_pos.y1,
+      x2:_line_pos.x2,
+      y2:_line_pos.y2
+    };
+
+    // getters and setters
+
+    function getStroke() {
+      return stroke;
     }
+
+    function setStroke(val) {
+      stroke = val;
+    }
+
+    function getStrokeWidth() {
+      return stroke_width;
+    }
+
+    function setStrokeWidth(width) {
+      stroke_width = width;
+    }
+
+    function getStrokeOpacity() {
+      return stroke_opacity;
+    }
+
+    function setStrokeOpacity(opacity) {
+      stroke_opacity = opacity;
+    }
+
+    function getSpX1() {
+     return sp.x1;
+    }
+
+    function setSpX1(newX) {
+     sp.x1 = newX;
+    }
+
+    function getSpX2() {
+     return sp.x2;
+    }
+
+    function setSpX2(newX) {
+     sp.x2 = newX;
+    }
+
+    function getSpY1() {
+     return sp.y1;
+    }
+
+    function setSpY1(newY) {
+     sp.y1 = newY;
+    }
+
+    function getSpY2() {
+     return sp.y2;
+    }
+
+    function setSpY2(newY) {
+     sp.y2 = newY;
+    }
+
+    function getSp() {
+     return {
+       x1:sp.x1,
+       y1:sp.y1,
+       x2:sp.x2,
+       y2:sp.y2
+     };
+    }
+
+    function setSp(spX1, spY1, spX2, spY2) {
+     setSpX1(spX1);
+     setSpY1(spY1);
+     setSpX2(spX2);
+     setSpY2(spY2);
+    }
+
+    function getPosX1() {
+     return pos.x1;
+    }
+
+    function setPosX1(newX) {
+     pos.x1 = newX;
+    }
+
+    function getPosX2() {
+     return pos.x2;
+    }
+
+    function setPosX2(newX) {
+     pos.x2 = newX;
+    }
+
+    function getPosY1() {
+     return pos.y1;
+    }
+
+    function setPosY1(newY) {
+     pos.y1 = newY;
+    }
+
+    function getPosY2() {
+     return pos.y2;
+    }
+
+    function setPosY2(newY) {
+     pos.y2 = newY;
+    }
+
+    function getPos() {
+     return {
+       x1:pos.x1,
+       y1:pos.y1,
+       x2:pos.x2,
+       y2:pos.y2
+     };
+    }
+
+    function setPos(posX1, posY1, posX2, posY2) {
+     setPosX1(posX1);
+     setPosY1(posY1);
+     setPosX2(posX2);
+     setPosY2(posY2);
+    }
+
+    // return public functions
+    return {
+      getID:getID,
+      getStroke:getStroke,
+      setStroke:setStroke,
+      getStrokeWidth:getStrokeWidth,
+      setStrokeWidth:setStrokeWidth,
+      getStrokeOpacity:getStrokeOpacity,
+      setStrokeOpacity:setStrokeOpacity,
+      getSpX1:getSpX1,
+      setSpX1:setSpX1,
+      getSpX2:getSpX2,
+      setSpX2:setSpX2,
+      getSpY1:getSpY1,
+      setSpY1:setSpY1,
+      getSpY2:getSpY2,
+      setSpY2:setSpY2,
+      getSp:getSp,
+      setSp:setSp,
+      getPosX1:getPosX1,
+      setPosX1:setPosX1,
+      getPosX2:getPosX2,
+      setPosX2:setPosX2,
+      getPosY1:getPosY1,
+      setPosY1:setPosY1,
+      getPosY2:getPosY2,
+      setPosY2:setPosY2,
+      getPos:getPos,
+      setPos:setPos
+    }
+
   };
+
+
+  //////////////////////////////////////////////////////////////////////////////
+  //  public methods
+  //////////////////////////////////////////////////////////////////////////////
+
+  function getText() {
+    return new Text(_newID());
+  }
+
+  function getRect() {
+    return new Rect(_newID());
+  }
+
+  function getCircle() {
+    return new Circle(_newID());
+  }
+
+  function getLine() {
+    return new Line(_newID());
+  }
+
 
   //////////////////////////////////////////////////////////////////////////////
   //  return public methods
