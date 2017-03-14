@@ -740,9 +740,9 @@ var element_factory = (function() {
 
 
   return {
-    rect:rect,
-    circle:circle,
-    text:text,
-    line:line
+    Rect:Rect,
+    Circle:Circle,
+    Text:Text,
+    Line:Line
   }
 })();
