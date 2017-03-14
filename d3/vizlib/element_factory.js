@@ -740,9 +740,9 @@ var element_factory = (function() {
 
 
   return {
-    Rect:Rect,
-    Circle:Circle,
-    Text:Text,
-    Line:Line
+    getRect:getRect,
+    getCircle:getCircle,
+    getText:getText,
+    getLine:getLine
   }
 })();
