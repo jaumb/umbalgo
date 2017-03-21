@@ -109,7 +109,7 @@ var element_factory = (function() {
     }
 
     function getSpY() {
-      return sp.x;
+      return sp.y;
     }
 
     function setSpY(newY) {
@@ -292,7 +292,7 @@ var element_factory = (function() {
     }
 
     function getSpY() {
-     return sp.x;
+     return sp.y;
     }
 
     function setSpY(newY) {
