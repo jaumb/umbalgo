@@ -28,22 +28,11 @@ var selection = (function(elems, bounding_box) {
     var minLabel = min.getLabel();
     var firstLabel = first.getLabel();
     minLabel.setVal(firstLabel.getVal());
-    // minLabel.setPosX(firstLabel.getPosX());
-    // minLabel.setPosY(firstLabel.getPosY());
     minLabel.setSpX(minLabel.getPosX());
     minLabel.setSpY(minLabel.getPosY());
     minLabel.setFontSize(.7 * first.getWidth() + 'px');
     minLabel.setPosX(min.getPosX() + .5 * min.getWidth());
     minLabel.setPosY(min.getPosY() + .72 * min.getWidth());
-
-    // min.label.val = first.label.val;
-    // min.label.pos.x = min.pos.x;
-    // min.label.pos.y = min.pos.y;
-    // min.label.sp.x = min.pos.x;
-    // min.label.sp.y = min.pos.y;
-    // min.label.font_size = (.7 * first.width) + 'px';
-    // min.label.pos.x = min.pos.x + 1/2 * first.width;
-    // min.label.pos.y = min.pos.y + .72 * first.width;
   }
 
   /**
@@ -51,7 +40,6 @@ var selection = (function(elems, bounding_box) {
    * @param {string} newVal - new
    */
   var _setMinLabel = function(new_Val) {
-    // min.label.val = new_Val;
     min.getLabel().setVal(new_Val);
   }
 
@@ -60,9 +48,6 @@ var selection = (function(elems, bounding_box) {
    * @param {object} array_index - Array element to align min with.
    */
   var _setMinPos = function(array_index) {
-    // index = array.getRects()[array_index];
-    // min.pos.x = index.pos.x;
-    // min.label.pos.x = index.pos.x + 1/2 * min.width;
     var elem = array.getSlots()[array_index];
     min.setPosX(elem.getPosX());
     min.getLabel().setPosX(elem.getPosX() + .5 * min.getWidth());
@@ -73,7 +58,6 @@ var selection = (function(elems, bounding_box) {
    * @param {string} new_color - New fill color of min element.
    */
   var _setMinFill = function(new_color) {
-    // min.fill = new_color;
     min.setFill(new_color);
   }
 
@@ -85,9 +69,6 @@ var selection = (function(elems, bounding_box) {
    var _emphasize = function(indices) {
      array.emphasize(indices);
    }
-  // var _emphasize = function(indices, color) {
-  //   array.emphasize(indices, color);
-  // }
 
   /**
    * Demphasize (remove thick border around) a rect element.
