@@ -23,20 +23,20 @@ var array_factory = (function(){
 
     // create the initial array of elements
     elems.forEach(function(e, i) {
-      var rect = element_factory.rect();
-      rect.pos.x = _firstPos.x + i * _boxSize;
-      rect.pos.y = _firstPos.y;
-      rect.sp.x = rect.pos.x;
-      rect.sp.y = rect.pos.y;
-      rect.width = _boxSize;
-      rect.height = _boxSize;
-      rect.stroke_width = '.3vw';
-      rect.label.val = e;
-      rect.label.font_size = (.7 * _boxSize) + 'px';
-      rect.label.pos.x = rect.pos.x + 1/2 * _boxSize;
-      rect.label.pos.y = rect.pos.y + .72 * _boxSize;
-      rect.label.sp.x = rect.label.pos.x;
-      rect.label.sp.y = rect.label.pos.y;
+      var rect = element_factory.getRect();
+      rect.setPosX(_firstPos.x + i * _boxSize);
+      rect.setPosY(_firstPos.y);
+      rect.setSpX(rect.getPosX());
+      rect.setSpY(rect.getPosY());
+      rect.setWidth(_boxSize);
+      rect.setHeight(_boxSize);
+      rect.setStrokeWidth('.3vw');
+      rect.getLabel().setVal(e);
+      rect.getLabel().setFontSize((.7 * _boxSize) + 'px');
+      rect.getLabel().setPosX(rect.getPosX() + 1/2 * _boxSize);
+      rect.getLabel().setPosY(rect.getPosY() + .72 * _boxSize);
+      rect.getLabel().setSpX(rect.getLabel().getPosX());
+      rect.getLabel().setSpY(rect.getLabel().getPosY());
       _elems.push(rect);
     });
 
@@ -49,10 +49,10 @@ var array_factory = (function(){
      * @param {Object} slot - The array slot rect element.
      */
     function _fitEmphasis(emphasis, slot) {
-      emphasis.pos.x = slot.pos.x - 1/10 * slot.width;
-      emphasis.pos.y = slot.pos.y - 1/10 * slot.height;
-      emphasis.width = slot.width + 1/5 * slot.width;
-      emphasis.height = slot.height + 1/5 * slot.height;
+      emphasis.setPosX(slot.getPosX() - 1/10 * slot.getWidth());
+      emphasis.setPosY(slot.getPosY() - 1/10 * slot.getHeight());
+      emphasis.setWidth(slot.getWidth() + 1/5 * slot.getWidth());
+      emphasis.setHeight(slot.getHeight() + 1/5 * slot.getHeight());
     }
 
     /**************************************************************************
@@ -65,7 +65,7 @@ var array_factory = (function(){
      */
     function setFill(indices, color) {
       indices.forEach(function(i) {
-        _elems[i].fill = color;
+        _elems[i].setFill(color);
       });
     }
 
@@ -76,7 +76,7 @@ var array_factory = (function(){
      */
     function setOutline(indices, color) {
       indices.forEach(function(i) {
-        _elems[i].stroke = color;
+        _elems[i].setStroke(color);
       });
     }
 
@@ -86,13 +86,13 @@ var array_factory = (function(){
      * @param {number} j - The index of element 2.
      */
     function swap(i, j) {
-      _elems[i].label.pos.x = _elems[j].pos.x + 1/2 * _boxSize;
-      _elems[j].label.pos.x = _elems[i].pos.x + 1/2 * _boxSize;
-      _elems[i].label.pos.y = _elems[j].pos.y + .72 * _boxSize;
-      _elems[j].label.pos.y = _elems[i].pos.y + .72 * _boxSize;
-      var tmp = _elems[i].label;
-      _elems[i].label = _elems[j].label;
-      _elems[j].label = tmp;
+      _elems[i].getLabel().setPosX(_elems[j].getPosX() + 1/2 * _boxSize);
+      _elems[j].getLabel().setPosX(_elems[i].getPosX() + 1/2 * _boxSize);
+      _elems[i].getLabel().setPosY(_elems[j].getPosY() + .72 * _boxSize);
+      _elems[j].getLabel().setPosY(_elems[i].getPosY() + .72 * _boxSize);
+      var tmp = _elems[i].getLabel();
+      _elems[i].setLabel(_elems[j].getLabel());
+      _elems[j].setLabel(tmp);
     }
 
     /**
@@ -102,16 +102,16 @@ var array_factory = (function(){
     function emphasize(indices) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          _elems[i].emphasis.stroke = colors.EMPHASIZE;
-          _elems[i].emphasis.stroke_opacity = .5;
+          _elems[i].emphasis.setStroke(colors.EMPHASIZE);
+          _elems[i].emphasis.setStrokeOpacity(.5);
         } else {
-          var rect = element_factory.rect();
+          var rect = element_factory.getRect();
           _fitEmphasis(rect, _elems[i]);
-          rect.sp.x = rect.pos.x;
-          rect.sp.y = rect.pos.y;
-          rect.stroke = colors.EMPHASIZE;
-          rect.stroke_opacity = .5;
-          rect.fill_opacity = 0;
+          rect.setSpX(rect.getPosX());
+          rect.setSpY(rect.getPosY());
+          rect.setStroke(colors.EMPHASIZE);
+          rect.setStrokeOpacity(.5);
+          rect.setFillOpacity(0);
           _elems[i].emphasis = rect;
         }
       });
@@ -137,7 +137,7 @@ var array_factory = (function(){
     function deemphasize(indices) {
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
-          redraw.removeElem(_elems[i].emphasis.id);
+          redraw.removeElem(_elems[i].emphasis.getID());
           _elems[i].emphasis = null;
         }
       });
@@ -146,11 +146,11 @@ var array_factory = (function(){
     /**
      * Create or change slots' text label.
      * @param {number[]} indices - The indices of the slots to modify.
-     * @param {number|string} new_label - The slots' new text label.
+     * @param {number|string} new_label - The slots' new text label(s).
      */
     function setLabels(indices, new_label) {
       indices.forEach(function(i) {
-        _elems[i].label.val = new_label;
+        _elems[i].getLabel().setVal(new_label);
       });
     }
 
@@ -161,7 +161,7 @@ var array_factory = (function(){
      */
     function setLabelFill(indices, color) {
       indices.forEach(function(i) {
-        _elems[i].label.fill = color;
+        _elems[i].getLabel().setFill(color);
       });
     }
 
@@ -190,9 +190,7 @@ var array_factory = (function(){
     function getRects() {
       var emphasis = [];
       _elems.forEach(function(e){
-        if (e.emphasis) {
-          emphasis.push(e.emphasis);
-        }
+        if (e.emphasis) { emphasis.push(e.emphasis); }
       });
       return _elems.concat(emphasis);
     }

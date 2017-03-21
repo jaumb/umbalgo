@@ -355,6 +355,22 @@ var element_factory = (function() {
      return label;
     }
 
+    function setLabel(new_label) {
+      label.setFill(new_label.getFill());
+      label.setFillOpacity(new_label.getFillOpacity());
+      label.setStroke(new_label.getStroke());
+      label.setStrokeWidth(new_label.getStrokeWidth());
+      label.setStrokeOpacity(new_label.getStrokeOpacity());
+      label.setPosX(new_label.getPosX());
+      label.setPosY(new_label.getPosY());
+      label.setSpX(new_label.getSpX());
+      label.setSpY(new_label.getSpY());
+      label.setFont(new_label.getFont());
+      label.setFontSize(new_label.getFontSize());
+      label.setTextAnchor(new_label.getTextAnchor());
+      label.setVal(new_label.getVal());
+    }
+
     // return public functions
     return {
      getID:getID,
@@ -384,7 +400,8 @@ var element_factory = (function() {
      setWidth:setWidth,
      getHeight:getHeight,
      setHeight:setHeight,
-     getLabel:getLabel
+     getLabel:getLabel,
+     setLabel:setLabel
     }
   }
 
@@ -508,6 +525,22 @@ var element_factory = (function() {
       return label;
     }
 
+    function setLabel(new_label) {
+      label.setFill(new_label.getFill());
+      label.setFillOpacity(new_label.getFillOpacity());
+      label.setStroke(new_label.getStroke());
+      label.setStrokeWidth(new_label.getStrokeWidth());
+      label.setStrokeOpacity(new_label.getStrokeOpacity());
+      label.setPosX(new_label.getPosX());
+      label.setPosY(new_label.getPosY());
+      label.setSpX(new_label.getSpX());
+      label.setSpY(new_label.getSpY());
+      label.setFont(new_label.getFont());
+      label.setFontSize(new_label.getFontSize());
+      label.setTextAnchor(new_label.getTextAnchor());
+      label.setVal(new_label.getVal());
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -535,7 +568,8 @@ var element_factory = (function() {
       setSp:setSp,
       getR:getR,
       setR:setR,
-      getLabel:getLabel
+      getLabel:getLabel,
+      setLabel:setLabel
     }
   };
 
@@ -558,6 +592,10 @@ var element_factory = (function() {
     };
 
     // getters and setters
+
+    function getID() {
+      return id;
+    }
 
     function getStroke() {
       return stroke;

@@ -13,8 +13,8 @@ var insertion = (function(elems, svgW, svgH) {
     p1:{x:0, y:0},
     p2:{x:svgW, y:svgH}
   }
-  var _bound = element_factory.line();
-  _bound.stroke = colors.BLUE;
+  var _bound = element_factory.getLine();
+  _bound.setStroke(colors.BLUE);
   var _array = array_factory.get_array(elems, _boundingBox);
 
   //////////////////////////////////////////////////////////////////////////////
@@ -27,12 +27,12 @@ var insertion = (function(elems, svgW, svgH) {
    * the boundary line will be drawn.
    */
   var _setBoundPos = function(elem) {
-    var x1 = elem.pos.x + elem.width;
-    var y1 = elem.pos.y - 1/4 * elem.height;
+    var x1 = elem.getPosX() + elem.getWidth();
+    var y1 = elem.getPosY() - 1/4 * elem.getHeight();
     var x2 = x1;
-    var y2 = elem.pos.y + elem.height + 1/4 * elem.height;
-    _bound.pos = {x1:x1, y1:y1, x2:x2, y2:y2};
-    _bound.sp = {x1:x1, y1:y1, x2:x2, y2:y2};
+    var y2 = elem.getPosY() + elem.getHeight() + 1/4 * elem.getHeight();
+    _bound.setPos(x1, y1, x2, y2);
+    _bound.setSp(x1, y1, x2, y2);
   }
 
 
@@ -56,9 +56,7 @@ var insertion = (function(elems, svgW, svgH) {
 
   var getText = function() {
     var text = [];
-    _array.getRects().forEach(function(e) {
-      text.push(e.label);
-    });
+    _array.getRects().forEach(function(e) { text.push(e.getLabel()); });
     return vizlib.getText(text);
   }
   //end of element array getters////////////////////////////////////////////////
@@ -87,11 +85,11 @@ var insertion = (function(elems, svgW, svgH) {
   /**
    * Change the fill color of elements at specified indices.
    * @param {number[]} elements - Array of element indices.
-   * @param {string} new_color - New fill color for specified indices.
+   * @param {string} color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
     redraw.addOp(function() {
-      _array.setFill(elements, new_color);
+      _array.setFill(indices, color);
     });
   }
 
@@ -102,7 +100,7 @@ var insertion = (function(elems, svgW, svgH) {
    */
   var setLabels = function(indices, val) {
     redraw.addOp(function(){
-      _array.setLabels(elements, val);
+      _array.setLabels(indices, val);
     });
   }
 

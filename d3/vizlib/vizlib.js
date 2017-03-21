@@ -26,7 +26,7 @@ var vizlib = (function() {
    var r = [];
    // collect argument elements and elements from argument array in one array
    rects.forEach(function(element) {
-     if (element.hasOwnProperty('width')) { r.push(element); }
+     if (element.constructor.name == 'Rect') { r.push(element); }
      else if ( Array.isArray(element) ) { r = r.concat(element); }
    });
    // sort the array by element.id
@@ -46,7 +46,7 @@ var vizlib = (function() {
    var c = [];
    // collect argument elements and elements from argument array in one array
    circles.forEach(function(element) {
-     if (element.hasOwnProperty('r')) { c.push(element); }
+     if (element.constructor.name == 'Circle') { c.push(element); }
      else if ( Array.isArray(element) ) { c = c.concat(element); }
    });
    // sort the array by element.id
@@ -63,7 +63,7 @@ var vizlib = (function() {
     var l = [];
     // collect argument elements and elements from argument array in one array
     lines.forEach(function(e) {
-      if (e.hasOwnProperty('pos') && e.pos.hasOwnProperty('x1')) { l.push(e); }
+      if (e.constructor.name == 'Line') { l.push(e); }
       else if ( Array.isArray(e) ) { l = l.concat(e); }
     });
     // sort the array by line id
@@ -77,7 +77,7 @@ var vizlib = (function() {
     var t = [];
     // collect argument elements and elements from argument array in one array
     text.forEach(function(e) {
-      if (e.hasOwnProperty('text-anchor')) { t.push(e); }
+      if (e.constructor.name == 'Text') { t.push(e); }
       else if ( Array.isArray(e) ) { t = t.concat(e); }
     });
     // sort the array by text element id
