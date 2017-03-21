@@ -207,7 +207,8 @@ var array_factory = (function(){
       deemphasize:deemphasize,
       setLabelFill:setLabelFill,
       setLabels:setLabels,
-      getRects:getRects
+      getRects:getRects,
+      getSlots:getSlots
     }
   }
 
