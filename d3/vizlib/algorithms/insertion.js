@@ -27,6 +27,7 @@ var insertion = (function(elems, svgW, svgH) {
    * the boundary line will be drawn.
    */
   var _setBoundPos = function(elem) {
+    console.log("setting boundary pos to element with val: " + elem.getLabel().getVal());
     var x1 = elem.getPosX() + elem.getWidth();
     var y1 = elem.getPosY() - 1/4 * elem.getHeight();
     var x2 = x1;
@@ -67,8 +68,7 @@ var insertion = (function(elems, svgW, svgH) {
    */
   var setBoundPos = function(index) {
     redraw.addOp(function() {
-      _setBoundPos(_array.getRects()[index]);
-    });
+      _setBoundPos(_array.getSlots()[index]);    });
   }
 
   /**
