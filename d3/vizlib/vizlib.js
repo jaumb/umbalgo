@@ -1,4 +1,4 @@
-// depencies: all algorithm files
+// dependencies: all algorithm files
 
 var vizlib = (function() {
   //////////////////////////////////////////////////////////////////////////////
@@ -63,9 +63,6 @@ var vizlib = (function() {
     var l = [];
     // collect argument elements and elements from argument array in one array
     lines.forEach(function(e) {
-      console.log('found line: ' + e);
-      console.log('has classname: ' + e.className);
-      console.log('className(): ' + e.className());
       if (e.className && e.className() === 'line') { l.push(e); }
       else if ( Array.isArray(e) ) { l = l.concat(e); }
     });
@@ -73,8 +70,6 @@ var vizlib = (function() {
     l.sort(function(a, b) {
       return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
     });
-    console.log('getLines given argument ' + lines);
-    console.log('getLines returning ' + l);
     return l;
   }
 
