@@ -29,9 +29,9 @@ var vizlib = (function() {
      if (e.className && e.className() === 'rect') { r.push(e); }
      else if ( Array.isArray(e) ) { r = r.concat(e); }
    });
-   // sort the array by e.id
+   // sort the array by e.getID()
    r.sort(function(a, b) {
-     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+     return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
    });
    return r;
   }
@@ -49,9 +49,9 @@ var vizlib = (function() {
      if (e.className && e.className() === 'circle') { c.push(e); }
      else if ( Array.isArray(e) ) { c = c.concat(e); }
    });
-   // sort the array by e.id
+   // sort the array by e.getID()
    c.sort(function(a, b) {
-     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+     return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
    });
    return c;
   }
@@ -68,7 +68,7 @@ var vizlib = (function() {
     });
     // sort the array by line id
     l.sort(function(a, b) {
-      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+      return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
     });
     return l;
   }
@@ -83,9 +83,9 @@ var vizlib = (function() {
       if (e.className && e.className() === 'text') { t.push(e); }
       else if ( Array.isArray(e) ) { t = t.concat(e); }
     });
-    // sort the array by text e.id
+    // sort the array by text e.getID()
     t.sort(function(a, b) {
-      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+      return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
     });
     return t;
   }
