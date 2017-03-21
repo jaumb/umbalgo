@@ -219,23 +219,22 @@ var redraw = (function() {
    * Add a function to the queue. Any changes this function makes to the
    * visualization's elements will be reflected the next time redraw() is
    * called.
-   * @param {Object} operation - A function object to be added to the queue.
+   * @param {Object} op - A function object to be added to the queue.
    */
-  function addOp(operation) {
-    _q.push(operation);
+  function addOp(op) {
+    _q.push(op);
   }
 
   /**
-   * Bundle multiple operations together that will all be executed before
-   * redraw() is called.
-   * @param {Object[]} ops - A list of functions to be added to the queue.
+   * Add a function to the queue and immediately redraw the canvas.
+   * This is a convenience function.
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Duration of the entire redraw in milliseconds.
+   * @param {Object} op - A function object to be added to the queue.
    */
-  function bundleOps(...ops) {
-    _q.push(function() {
-      ops.forEach(function(op) {
-        op();
-      });
-    });
+  function addOpAndDraw(viz, dur, op) {
+    _q.push(op);
+    draw(viz, dur);
   }
 
   /**
@@ -279,7 +278,7 @@ var redraw = (function() {
   return {
     draw:draw,
     addOp:addOp,
-    bundleOps:bundleOps,
+    addOpAndDraw:addOpAndDraw,
     removeElem:removeElem,
     initialize:initialize
   };

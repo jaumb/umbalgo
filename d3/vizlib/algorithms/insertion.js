@@ -66,8 +66,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align boundary with.
    */
   var setBoundPos = function(index) {
-    redraw.addOp(function() {
-      _setBoundPos(_array.getSlots()[index]);    });
+    _setBoundPos(_array.getSlots()[index]);
   }
 
   /**
@@ -76,9 +75,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    redraw.addOp(function() {
-      _array.swap(index1, index2);
-    });
+    _array.swap(index1, index2);
   }
 
   /**
@@ -87,9 +84,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    redraw.addOp(function() {
-      _array.setFill(indices, color);
-    });
+    _array.setFill(indices, color);
   }
 
   /**
@@ -98,9 +93,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    redraw.addOp(function(){
-      _array.setLabels(indices, val);
-    });
+    _array.setLabels(indices, val);
   }
 
   /**
@@ -108,9 +101,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to emphasize.
    */
   var emphasize = function(indices) {
-    redraw.addOp(function(){
-      _array.emphasize(indices);
-    });
+    _array.emphasize(indices);
   }
 
   /**
@@ -119,9 +110,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} j - The index of the slot to emphasize.
    */
   var moveEmphasis = function(i, j) {
-    redraw.addOp(function(){
-      _array.moveEmphasis(i, j);
-    });
+    _array.moveEmphasis(i, j);
   }
 
   /**
@@ -129,9 +118,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to de-emphasize.
    */
   var deemphasize = function(indices) {
-    redraw.addOp(function(){
-      _array.deemphasize(indices);
-    });
+    _array.deemphasize(indices);
   }
 
 
