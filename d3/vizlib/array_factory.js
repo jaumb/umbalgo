@@ -86,13 +86,15 @@ var array_factory = (function(){
      * @param {number} j - The index of element 2.
      */
     function swap(i, j) {
-      _elems[i].getLabel().setPosX(_elems[j].getPosX() + 1/2 * _boxSize);
-      _elems[j].getLabel().setPosX(_elems[i].getPosX() + 1/2 * _boxSize);
-      _elems[i].getLabel().setPosY(_elems[j].getPosY() + .72 * _boxSize);
-      _elems[j].getLabel().setPosY(_elems[i].getPosY() + .72 * _boxSize);
-      var tmp = _elems[i].getLabel();
-      _elems[i].setLabel(_elems[j].getLabel());
-      _elems[j].setLabel(tmp);
+      var rect1 = _elems[i];
+      var rect2 = _elems[j];
+      rect1.getLabel().setPosX(rect2.getPosX() + 1/2 * _boxSize);
+      rect2.getLabel().setPosX(rect1.getPosX() + 1/2 * _boxSize);
+      rect1.getLabel().setPosY(rect2.getPosY() + .72 * _boxSize);
+      rect2.getLabel().setPosY(rect1.getPosY() + .72 * _boxSize);
+      var tmp = rect1.getLabel();
+      rect1.setLabel(rect2.getLabel());
+      rect2.setLabel(tmp);
     }
 
     /**
@@ -169,7 +171,7 @@ var array_factory = (function(){
      * Get a deep copy of the underlying array.
      * @param {number[]=} indices - The indices of the slots to retrieve.
      */
-    function getArray(indices) {
+    function getSlots(indices) {
       var copy = [];
       if (indices) {
         indices.forEach(function(i) {

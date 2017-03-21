@@ -356,19 +356,7 @@ var element_factory = (function() {
     }
 
     function setLabel(new_label) {
-      label.setFill(new_label.getFill());
-      label.setFillOpacity(new_label.getFillOpacity());
-      label.setStroke(new_label.getStroke());
-      label.setStrokeWidth(new_label.getStrokeWidth());
-      label.setStrokeOpacity(new_label.getStrokeOpacity());
-      label.setPosX(new_label.getPosX());
-      label.setPosY(new_label.getPosY());
-      label.setSpX(new_label.getSpX());
-      label.setSpY(new_label.getSpY());
-      label.setFont(new_label.getFont());
-      label.setFontSize(new_label.getFontSize());
-      label.setTextAnchor(new_label.getTextAnchor());
-      label.setVal(new_label.getVal());
+      label = new_label;
     }
 
     // return public functions
@@ -526,19 +514,7 @@ var element_factory = (function() {
     }
 
     function setLabel(new_label) {
-      label.setFill(new_label.getFill());
-      label.setFillOpacity(new_label.getFillOpacity());
-      label.setStroke(new_label.getStroke());
-      label.setStrokeWidth(new_label.getStrokeWidth());
-      label.setStrokeOpacity(new_label.getStrokeOpacity());
-      label.setPosX(new_label.getPosX());
-      label.setPosY(new_label.getPosY());
-      label.setSpX(new_label.getSpX());
-      label.setSpY(new_label.getSpY());
-      label.setFont(new_label.getFont());
-      label.setFontSize(new_label.getFontSize());
-      label.setTextAnchor(new_label.getTextAnchor());
-      label.setVal(new_label.getVal());
+      label = new_label;
     }
 
     // return public functions
