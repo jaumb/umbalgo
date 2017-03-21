@@ -359,37 +359,53 @@ var element_factory = (function() {
       label = new_label;
     }
 
+    function copy() {
+      var cp = new Rect(_newID());
+      cp.setFill(fill);
+      cp.setFillOpacity(fill_opacity);
+      cp.setStroke(stroke);
+      cp.setStrokeWidth(stroke_width);
+      cp.setStrokeOpacity(stroke_opacity);
+      cp.setPos(pos.x, pos.y);
+      cp.setSp(sp.x, sp.y);
+      cp.setWidth(width);
+      cp.setHeight(height);
+      cp.setLabel(label);
+      return cp;
+    }
+
     // return public functions
     return {
-     getID:getID,
-     getFill:getFill,
-     setFill:setFill,
-     getFillOpacity:getFillOpacity,
-     setFillOpacity:setFillOpacity,
-     getStroke:getStroke,
-     setStroke:setStroke,
-     getStrokeWidth:getStrokeWidth,
-     setStrokeWidth:setStrokeWidth,
-     getStrokeOpacity:getStrokeOpacity,
-     setStrokeOpacity:setStrokeOpacity,
-     getPosX:getPosX,
-     setPosX:setPosX,
-     getPosY:getPosY,
-     setPosY:setPosY,
-     getSpX:getSpX,
-     setSpX:setSpX,
-     getSpY:getSpY,
-     setSpY:setSpY,
-     getPos:getPos,
-     setPos:setPos,
-     getSp:getSp,
-     setSp:setSp,
-     getWidth:getWidth,
-     setWidth:setWidth,
-     getHeight:getHeight,
-     setHeight:setHeight,
-     getLabel:getLabel,
-     setLabel:setLabel
+      getID:getID,
+      getFill:getFill,
+      setFill:setFill,
+      getFillOpacity:getFillOpacity,
+      setFillOpacity:setFillOpacity,
+      getStroke:getStroke,
+      setStroke:setStroke,
+      getStrokeWidth:getStrokeWidth,
+      setStrokeWidth:setStrokeWidth,
+      getStrokeOpacity:getStrokeOpacity,
+      setStrokeOpacity:setStrokeOpacity,
+      getPosX:getPosX,
+      setPosX:setPosX,
+      getPosY:getPosY,
+      setPosY:setPosY,
+      getSpX:getSpX,
+      setSpX:setSpX,
+      getSpY:getSpY,
+      setSpY:setSpY,
+      getPos:getPos,
+      setPos:setPos,
+      getSp:getSp,
+      setSp:setSp,
+      getWidth:getWidth,
+      setWidth:setWidth,
+      getHeight:getHeight,
+      setHeight:setHeight,
+      getLabel:getLabel,
+      setLabel:setLabel,
+      copy:copy
     }
   }
 
