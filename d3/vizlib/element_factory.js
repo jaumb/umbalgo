@@ -53,8 +53,13 @@ var element_factory = (function() {
     var font_size = _font_size;
     var text_anchor = _text_anchor;
     var val = '';
+    var class_name = 'text';
 
     // getters and setters
+
+    function className() {
+      return class_name;
+    }
 
     function getID() {
       return id;
@@ -216,7 +221,8 @@ var element_factory = (function() {
       getTextAnchor:getTextAnchor,
       setTextAnchor:setTextAnchor,
       getVal:getVal,
-      setVal:setVal
+      setVal:setVal,
+      className:className
     }
   }
 
@@ -236,8 +242,13 @@ var element_factory = (function() {
     var width = _size;
     var height = _size;
     var label = new Text(_newID());
+    var class_name = 'rect';
 
     // getters and setters
+
+    function className() {
+      return class_name;
+    }
 
     function getID() {
      return id;
@@ -405,7 +416,8 @@ var element_factory = (function() {
       setHeight:setHeight,
       getLabel:getLabel,
       setLabel:setLabel,
-      copy:copy
+      copy:copy,
+      className:className
     }
   }
 
@@ -420,8 +432,13 @@ var element_factory = (function() {
     var pos = {cx:_pos.x, cy:_pos.y};
     var r = _size;
     var label = new Text(_newID());
+    var class_name = 'circle';
 
     // getters and setters
+
+    function className() {
+      return class_name;
+    }
 
     function getID() {
       return id;
@@ -561,7 +578,8 @@ var element_factory = (function() {
       getR:getR,
       setR:setR,
       getLabel:getLabel,
-      setLabel:setLabel
+      setLabel:setLabel,
+      className:className
     }
   };
 
@@ -582,8 +600,13 @@ var element_factory = (function() {
       x2:_line_pos.x2,
       y2:_line_pos.y2
     };
+    var class_name = 'line';
 
     // getters and setters
+
+    function className() {
+      return class_name;
+    }
 
     function getID() {
       return id;
@@ -737,7 +760,8 @@ var element_factory = (function() {
       getPosY2:getPosY2,
       setPosY2:setPosY2,
       getPos:getPos,
-      setPos:setPos
+      setPos:setPos,
+      className:className
     }
 
   };

@@ -25,11 +25,11 @@ var vizlib = (function() {
   var getRects = function(...rects) {
    var r = [];
    // collect argument elements and elements from argument array in one array
-   rects.forEach(function(element) {
-     if (element.constructor.name == 'Rect') { r.push(element); }
-     else if ( Array.isArray(element) ) { r = r.concat(element); }
+   rects.forEach(function(e) {
+     if (e.className && e.className() === 'rect') { r.push(e); }
+     else if ( Array.isArray(e) ) { r = r.concat(e); }
    });
-   // sort the array by element.id
+   // sort the array by e.id
    r.sort(function(a, b) {
      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
    });
@@ -45,11 +45,11 @@ var vizlib = (function() {
   var getCircles = function(...circles) {
    var c = [];
    // collect argument elements and elements from argument array in one array
-   circles.forEach(function(element) {
-     if (element.constructor.name == 'Circle') { c.push(element); }
-     else if ( Array.isArray(element) ) { c = c.concat(element); }
+   circles.forEach(function(e) {
+     if (e.className && e.className() === 'circle') { c.push(e); }
+     else if ( Array.isArray(e) ) { c = c.concat(e); }
    });
-   // sort the array by element.id
+   // sort the array by e.id
    c.sort(function(a, b) {
      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
    });
@@ -63,13 +63,18 @@ var vizlib = (function() {
     var l = [];
     // collect argument elements and elements from argument array in one array
     lines.forEach(function(e) {
-      if (e.constructor.name == 'Line') { l.push(e); }
+      console.log('found line: ' + e);
+      console.log('has classname: ' + e.className);
+      console.log('className(): ' + e.className());
+      if (e.className && e.className() === 'line') { l.push(e); }
       else if ( Array.isArray(e) ) { l = l.concat(e); }
     });
     // sort the array by line id
     l.sort(function(a, b) {
       return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
     });
+    console.log('getLines given argument ' + lines);
+    console.log('getLines returning ' + l);
     return l;
   }
 
@@ -80,10 +85,10 @@ var vizlib = (function() {
     var t = [];
     // collect argument elements and elements from argument array in one array
     text.forEach(function(e) {
-      if (e.constructor.name == 'Text') { t.push(e); }
+      if (e.className && e.className() === 'text') { t.push(e); }
       else if ( Array.isArray(e) ) { t = t.concat(e); }
     });
-    // sort the array by text element id
+    // sort the array by text e.id
     t.sort(function(a, b) {
       return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
     });
