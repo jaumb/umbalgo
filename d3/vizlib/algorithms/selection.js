@@ -16,7 +16,6 @@ var selection = (function(elems, bounding_box) {
 
   var _initializeMin = function() {
     var first = array.getSlots()[0];
-    console.log("y pos of first: " + first.getPosY() + " height of first: " + first.getHeight());
     min.setPosX(first.getPosX());
     min.setPosY(first.getPosY() + first.getHeight());
     min.setSpX(min.getPosX());
