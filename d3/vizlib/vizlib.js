@@ -67,7 +67,10 @@ var vizlib = (function() {
       else if ( Array.isArray(e) ) { l = l.concat(e); }
     });
     // sort the array by line id
-    return l.sort(function(a, b) { return a.id - b.id; });
+    l.sort(function(a, b) {
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    });
+    return l;
   }
 
   /**
@@ -81,7 +84,10 @@ var vizlib = (function() {
       else if ( Array.isArray(e) ) { t = t.concat(e); }
     });
     // sort the array by text element id
-    return t.sort(function(a, b) { return a.id - b.id; });
+    t.sort(function(a, b) {
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    });
+    return t;
   }
 
   var get_selection = function(elements, bounding_box) {
