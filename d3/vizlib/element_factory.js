@@ -37,7 +37,7 @@ var element_factory = (function() {
   //////////////////////////////////////////////////////////////////////////////
   var _newID = function() {
     return ++_id;
-  }
+  };
 
 
   function Text(new_id) {
@@ -223,7 +223,7 @@ var element_factory = (function() {
       getVal:getVal,
       setVal:setVal,
       className:className
-    }
+    };
   }
 
   /**
@@ -418,7 +418,7 @@ var element_factory = (function() {
       setLabel:setLabel,
       copy:copy,
       className:className
-    }
+    };
   }
 
   function Circle(new_id) {
@@ -580,8 +580,8 @@ var element_factory = (function() {
       getLabel:getLabel,
       setLabel:setLabel,
       className:className
-    }
-  };
+    };
+  }
 
   function Line(new_id) {
     var id = new_id;
@@ -762,9 +762,9 @@ var element_factory = (function() {
       getPos:getPos,
       setPos:setPos,
       className:className
-    }
+    };
 
-  };
+  }
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -798,5 +798,5 @@ var element_factory = (function() {
     getCircle:getCircle,
     getText:getText,
     getLine:getLine
-  }
+  };
 })();
