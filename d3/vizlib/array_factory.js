@@ -32,9 +32,9 @@ var array_factory = (function(){
       rect.setHeight(_boxSize);
       rect.setStrokeWidth('.3vw');
       rect.getLabel().setVal(e);
-      rect.getLabel().setFontSize((.7 * _boxSize) + 'px');
-      rect.getLabel().setPosX(rect.getPosX() + 1/2 * _boxSize);
-      rect.getLabel().setPosY(rect.getPosY() + .72 * _boxSize);
+      rect.getLabel().setFontSize((0.7 * _boxSize) + 'px');
+      rect.getLabel().setPosX(rect.getPosX() + 0.5 * _boxSize);
+      rect.getLabel().setPosY(rect.getPosY() + 0.72 * _boxSize);
       rect.getLabel().setSpX(rect.getLabel().getPosX());
       rect.getLabel().setSpY(rect.getLabel().getPosY());
       _elems.push(rect);
@@ -88,10 +88,10 @@ var array_factory = (function(){
     function swap(i, j) {
       var rect1 = _elems[i];
       var rect2 = _elems[j];
-      rect1.getLabel().setPosX(rect2.getPosX() + 1/2 * _boxSize);
-      rect2.getLabel().setPosX(rect1.getPosX() + 1/2 * _boxSize);
-      rect1.getLabel().setPosY(rect2.getPosY() + .72 * _boxSize);
-      rect2.getLabel().setPosY(rect1.getPosY() + .72 * _boxSize);
+      rect1.getLabel().setPosX(rect2.getPosX() + 0.5 * _boxSize);
+      rect2.getLabel().setPosX(rect1.getPosX() + 0.5 * _boxSize);
+      rect1.getLabel().setPosY(rect2.getPosY() + 0.72 * _boxSize);
+      rect2.getLabel().setPosY(rect1.getPosY() + 0.72 * _boxSize);
       var tmp = rect1.getLabel();
       rect1.setLabel(rect2.getLabel());
       rect2.setLabel(tmp);
@@ -105,14 +105,14 @@ var array_factory = (function(){
       indices.forEach(function(i) {
         if (_elems[i].emphasis) {
           _elems[i].emphasis.setStroke(colors.EMPHASIZE);
-          _elems[i].emphasis.setStrokeOpacity(.5);
+          _elems[i].emphasis.setStrokeOpacity(0.5);
         } else {
           var rect = element_factory.getRect();
           _fitEmphasis(rect, _elems[i]);
           rect.setSpX(rect.getPosX());
           rect.setSpY(rect.getPosY());
           rect.setStroke(colors.EMPHASIZE);
-          rect.setStrokeOpacity(.5);
+          rect.setStrokeOpacity(0.5);
           rect.setFillOpacity(0);
           _elems[i].emphasis = rect;
         }
@@ -209,7 +209,7 @@ var array_factory = (function(){
       setLabels:setLabels,
       getRects:getRects,
       getSlots:getSlots
-    }
+    };
   }
 
 
@@ -228,6 +228,6 @@ var array_factory = (function(){
   // return public Array_viz methods
   return {
     get_array:get_array
-  }
+  };
 
 })();
