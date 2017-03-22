@@ -5,3 +5,5 @@
 *.swp
 *.*#
 *.gitignore
+*.tgz
+*.zip
