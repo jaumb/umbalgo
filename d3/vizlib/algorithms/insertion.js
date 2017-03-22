@@ -66,7 +66,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align boundary with.
    */
   var setBoundPos = function(index) {
-    _setBoundPos(_array.getSlots()[index]);
+    return function() { _setBoundPos(_array.getSlots()[index]) };
   }
 
   /**
@@ -75,7 +75,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    _array.swap(index1, index2);
+    return function() { _array.swap(index1, index2) };
   }
 
   /**
@@ -84,7 +84,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    _array.setFill(indices, color);
+    return function() { _array.setFill(indices, color) };
   }
 
   /**
@@ -93,7 +93,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    _array.setLabels(indices, val);
+    return function() { _array.setLabels(indices, val) };
   }
 
   /**
@@ -101,7 +101,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to emphasize.
    */
   var emphasize = function(indices) {
-    _array.emphasize(indices);
+    return function() { _array.emphasize(indices) };
   }
 
   /**
@@ -110,7 +110,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} j - The index of the slot to emphasize.
    */
   var moveEmphasis = function(i, j) {
-    _array.moveEmphasis(i, j);
+    return function() { _array.moveEmphasis(i, j) };
   }
 
   /**
@@ -118,7 +118,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to de-emphasize.
    */
   var deemphasize = function(indices) {
-    _array.deemphasize(indices);
+    return function() { _array.deemphasize(indices) };
   }
 
 

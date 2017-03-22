@@ -52,44 +52,32 @@
       var viz = vizlib.get_insertion(l, svgW, svgH);
       redraw.draw(viz, dur); // draw initial canvas
 
-      redraw.addOpAndDraw(viz, dur, function() {
-        viz.setBoundPos(0);
-      });
+      redraw.addOpsAndDraw(viz, dur, viz.setBoundPos(0));
 
       // insertion sort implementation
       for (var i = 1; i < l.length; i++) {
         for (var j = i; j > 0; j--) {
-          redraw.addOpAndDraw(viz, dur, function() {
-            viz.emphasize([j]);
-            viz.setFill([j - 1, j], colors.COMPARE);
-          });
+          redraw.addOpsAndDraw(viz, dur, viz.emphasize([j]),
+                              viz.setFill([j - 1, j], colors.COMPARE));
           if (l[j] < l[j - 1]) {
             var tmp = l[j - 1];
             l[j - 1] = l[j];
             l[j] = tmp;
-            redraw.addOpAndDraw(viz, dur, function() {
-              viz.swap(j-1,j);
-              viz.moveEmphasis(j,j-1);
-            });
-            redraw.addOpAndDraw(viz, dur, function() {
-              viz.setFill([j - 1, j], colors.BACKGROUND);
-            });
+            redraw.addOpsAndDraw(viz, dur, viz.swap(j-1,j),
+                                              viz.moveEmphasis(j,j-1));
+            redraw.addOpsAndDraw(viz, dur,
+                                viz.setFill([j - 1, j], colors.BACKGROUND));
             if (j === 1) {
-              redraw.addOpAndDraw(viz, dur, function() {
-                viz.deemphasize([j - 1]);
-              });
+              redraw.addOpsAndDraw(viz, dur, viz.deemphasize([j - 1]));
             }
           } else {
-            redraw.addOpAndDraw(viz, dur, function() {
-              viz.setFill([j - 1, j], colors.BACKGROUND);
-              viz.deemphasize([j]);
-            });
+            redraw.addOpsAndDraw(viz, dur,
+                                viz.setFill([j - 1, j], colors.BACKGROUND),
+                                viz.deemphasize([j]));
             break;
           }
         }
-        redraw.addOpAndDraw(viz, dur, function() {
-          viz.setBoundPos(i);
-        });
+        redraw.addOpsAndDraw(viz, dur, viz.setBoundPos(i));
       }
 
     </script>

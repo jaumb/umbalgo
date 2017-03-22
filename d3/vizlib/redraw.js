@@ -221,8 +221,10 @@ var redraw = (function() {
    * called.
    * @param {Object} op - A function object to be added to the queue.
    */
-  function addOp(op) {
-    _q.push(op);
+  function addOps(...ops) {
+    _q.push(function() {
+      ops.forEach(function(f) { f(); });
+    });
   }
 
   /**
@@ -232,8 +234,10 @@ var redraw = (function() {
    * @param {number} dur - Duration of the entire redraw in milliseconds.
    * @param {Object} op - A function object to be added to the queue.
    */
-  function addOpAndDraw(viz, dur, op) {
-    _q.push(op);
+  function addOpsAndDraw(viz, dur, ...ops) {
+    _q.push(function() {
+      ops.forEach(function(f) { f(); });
+    });
     draw(viz, dur);
   }
 
@@ -277,8 +281,8 @@ var redraw = (function() {
    ****************************************************************************/
   return {
     draw:draw,
-    addOp:addOp,
-    addOpAndDraw:addOpAndDraw,
+    addOps:addOps,
+    addOpsAndDraw:addOpsAndDraw,
     removeElem:removeElem,
     initialize:initialize
   };
