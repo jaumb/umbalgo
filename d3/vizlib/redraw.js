@@ -242,11 +242,87 @@ var redraw = (function() {
   }
 
   /**
+   * Get an svg element by its id.
+   * @param {number} id - The id of the element to get.
+   */
+  function getElem(id) {
+    return d3.select('#elem_' + id);
+  }
+
+  /**
    * Remove an svg element from the canvas.
    * @param {number} id - The id of the element to remove.
    */
   function removeElem(id) {
-    d3.select('#elem_' + id).remove();
+    getElem(id).remove();
+  }
+
+  /**
+   * Add an svg element to the canvas.
+   * This is just a helper method (used by getBBox())for now.
+   * @param {Object} e - The element to add.
+   */
+  function addElem(e) {
+    var selection = d3.select('svg' + id).append(e.className());
+    if (e.className() === 'text') {
+      selection
+        .attr('id', e.getID())
+        .attr('x', e.getPosX())
+        .attr('y', e.getPosY())
+        .attr('fill', e.getFill())
+        .attr('fill-opacity', e.getFillOpacity())
+        .attr('font', e.getFont())
+        .attr('font-size', e.getFontSize())
+        .attr('text-anchor', e.getTextAnchor());
+    } else if (e.className() === 'rect') {
+      selection
+        .attr('id', e.getID())
+        .attr('x', e.getPosX())
+        .attr('y', e.getPosY())
+        .attr('width', e.getWidth())
+        .attr('height', e.getHeight())
+        .attr('stroke', e.getStroke())
+        .attr('stroke-width', e.getStrokeWidth())
+        .attr('stroke-opacity', e.getStrokeOpacity())
+        .attr('fill', e.getFill())
+        .attr('fill-opacity', e.getFillOpacity());
+    } else if (e.className() === 'circle') {
+      selection
+        .attr('id', e.getID())
+        .attr('cx', e.getPosCX())
+        .attr('cy', e.getPosCY())
+        .attr('fill', e.getFill())
+        .attr('fill-opacity', e.getFillOpacity())
+        .attr('r', e.getR())
+        .attr('stroke', e.getStroke())
+        .attr('stroke-width', e.getStrokeWidth())
+        .attr('stroke-opacity', e.getStrokeOpacity());
+    } else {
+      selection
+        .attr('id', e.getID())
+        .attr('x1', e.getPosX1())
+        .attr('y1', e.getPosY1())
+        .attr('x2', e.getPosX2())
+        .attr('y2', e.getPosY2())
+        .attr('stroke', e.getStroke())
+        .attr('stroke-width', e.getStrokeWidth())
+        .attr('stroke-opacity', e.getStrokeOpacity());
+    }
+  }
+
+  /**
+   * Get the bounding box of an svg element. 
+   * @param {number|Object} id_elem - The id or element.
+   */
+  function getBBox(id_elem) {
+    if (id_elem.className) {
+      addElem(id_elem);
+      var bbox = getElem(id_elem.getID()).node().getBBox();
+      removeElem(id_elem.getID());
+      return bbox;
+    } else {
+      return getElem(id_elem).node().getBBox();
+    }
   }
 
   /**
@@ -284,6 +360,7 @@ var redraw = (function() {
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
     removeElem:removeElem,
+    getBBox:getBBox,
     initialize:initialize
   };
 

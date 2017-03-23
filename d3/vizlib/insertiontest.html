@@ -56,9 +56,11 @@
 
       // insertion sort implementation
       for (var i = 1; i < l.length; i++) {
+        redraw.addOpsAndDraw(viz, dur, viz.setI(i));
         for (var j = i; j > 0; j--) {
+        redraw.addOpsAndDraw(viz, dur, viz.setJ(j));
           redraw.addOpsAndDraw(viz, dur, viz.emphasize([j]),
-                              viz.setFill([j - 1, j], colors.COMPARE));
+                        viz.setFill([j - 1, j], colors.COMPARE));
           if (l[j] < l[j - 1]) {
             var tmp = l[j - 1];
             l[j - 1] = l[j];
