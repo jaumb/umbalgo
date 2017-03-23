@@ -14,6 +14,7 @@ var selection = (function(elems, svgW, svgH) {
     p2:{x:svgW, y:svgH}
   };
   var min = element_factory.getRect();
+  var minCaption = element_factory.getText();
   var array = array_factory.get_array(elems, _boundingBox);
 
   //////////////////////////////////////////////////////////////////////////////
@@ -38,6 +39,13 @@ var selection = (function(elems, svgW, svgH) {
     minLabel.setFontSize(0.7 * first.getWidth() + 'px');
     minLabel.setPosX(min.getPosX() + 0.5 * min.getWidth());
     minLabel.setPosY(min.getPosY() + 0.72 * min.getWidth());
+
+    // initialize min caption
+    minCaption.setVal('min');
+    minCaption.setFontSize(0.25 * minLabel.getFontSize().split('p')[0] + 'px');
+    minCaption.setTextAnchor('end');
+    minCaption.setPosX(min.getPosX() + 0.9 * min.getWidth());
+    minCaption.setPosY(min.getPosY() + 0.9 * min.getHeight());
   };
 
   /**
@@ -56,6 +64,8 @@ var selection = (function(elems, svgW, svgH) {
     var elem = array.getSlots()[array_index];
     min.setPosX(elem.getPosX());
     min.getLabel().setPosX(elem.getPosX() + 0.5 * min.getWidth());
+    minCaption.setPosX(min.getPosX() + 0.9 * min.getWidth());
+    minCaption.setPosY(min.getPosY() + 0.9 * min.getHeight());
   };
 
   /**
@@ -130,7 +140,9 @@ var selection = (function(elems, svgW, svgH) {
   };
 
   var getText = function() {
-    return vizlib.getText(array.getText().concat(min.getLabel()));
+    return vizlib.getText(array.getText()
+                          .concat(min.getLabel())
+                          .concat(minCaption));
   };
   //end of element array getters////////////////////////////////////////////////
 
