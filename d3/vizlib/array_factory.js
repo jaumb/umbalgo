@@ -42,7 +42,7 @@ var array_factory = (function(){
       // index labels
       var index = element_factory.getText();
       index.setVal(i);
-      index.setFontSize(0.25 * rect.getLabel().getFontSize() + 'px');
+      index.setFontSize(0.25 * rect.getLabel().getFontSize().split('p')[0] + 'px');
       index.setTextAnchor('end');
       index.setPosX(rect.getPosX() + 0.9 * rect.getWidth());
       index.setPosY(rect.getPosY() + 0.9 * rect.getHeight());
