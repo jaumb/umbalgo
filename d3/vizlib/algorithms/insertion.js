@@ -21,7 +21,7 @@ var insertion = (function(elems, svgW, svgH) {
   index_i.setVal('i');
   index_i.setFont(_array.getSlots()[0].getLabel().getFont());
   var font_sz = _array.getSlots()[0].getLabel().getFontSize().split('p')[0];
-  index_i.setFontSize(0.7 * font_sz);
+  index_i.setFontSize(0.7 * parseFloat(font_sz));
   index_j.setVal('j');
   index_j.setFont(index_i.getFont());
   index_j.setFontSize(index_i.getFontSize());
