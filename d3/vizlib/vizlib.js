@@ -90,8 +90,8 @@ var vizlib = (function() {
     return t;
   };
 
-  var get_selection = function(elements, bounding_box) {
-    return selection(elements, bounding_box);
+  var get_selection = function(elements, svgW, svgH) {
+    return selection(elements, svgW, svgH);
   };
 
   var get_insertion = function(elements, svgW, svgH) {
