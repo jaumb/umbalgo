@@ -1,9 +1,9 @@
 
 var array_factory = (function(){
 
-  /****************************************************************************
-   *  private array_factory methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  private array_factory methods
+  //////////////////////////////////////////////////////////////////////////////
   /**
    * Create a new array visualization on the canvas.
    * @param {number[]|string[]} elems - Elements occupying array slots
@@ -49,9 +49,9 @@ var array_factory = (function(){
       _indexLabels.push(index);
     });
 
-    /**************************************************************************
-     *  private Array_viz methods
-     **************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////
+    //  private Array_viz methods
+    ////////////////////////////////////////////////////////////////////////////
     /**
      * Fit the emphasis box around an array slot.
      * @param {Object} emphasis - The emphasis rect element.
@@ -64,9 +64,9 @@ var array_factory = (function(){
       emphasis.setHeight(slot.getHeight() + 1/5 * slot.getHeight());
     }
 
-    /**************************************************************************
-     *  public Array_viz methods
-     **************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////
+    //  public Array_viz methods
+    ////////////////////////////////////////////////////////////////////////////
     /**
      * Set the fill attribute of an array slot.
      * @param {number[]} indices - The indices of the slots to modify.
@@ -256,9 +256,9 @@ var array_factory = (function(){
   }
 
 
-  /****************************************************************************
-   *  public Array_viz methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  public Array_viz methods
+  //////////////////////////////////////////////////////////////////////////////
   /**
    * Get a new array visualization object.
    * @param {number[]|string[]} elems - Elements occupying array slots
