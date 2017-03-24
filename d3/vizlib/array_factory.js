@@ -1,9 +1,9 @@
 
 var array_factory = (function(){
 
-  /****************************************************************************
-   *  private array_factory methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  private array_factory methods
+  //////////////////////////////////////////////////////////////////////////////
   /**
    * Create a new array visualization on the canvas.
    * @param {number[]|string[]} elems - Elements occupying array slots
@@ -17,6 +17,7 @@ var array_factory = (function(){
     var _W = _X2 - _X1;
     var _H = _Y2 - _Y1;
     var _elems = [];
+    var _indexLabels = [];
 
     var _boxSize = _W / (elems.length + 2);
     var _firstPos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
@@ -38,11 +39,19 @@ var array_factory = (function(){
       rect.getLabel().setSpX(rect.getLabel().getPosX());
       rect.getLabel().setSpY(rect.getLabel().getPosY());
       _elems.push(rect);
+      // index labels
+      var index = element_factory.getText();
+      index.setVal(i);
+      index.setFontSize(0.25 * rect.getLabel().getFontSize().split('p')[0] + 'px');
+      index.setTextAnchor('end');
+      index.setPosX(rect.getPosX() + 0.9 * rect.getWidth());
+      index.setPosY(rect.getPosY() + 0.9 * rect.getHeight());
+      _indexLabels.push(index);
     });
 
-    /**************************************************************************
-     *  private Array_viz methods
-     **************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////
+    //  private Array_viz methods
+    ////////////////////////////////////////////////////////////////////////////
     /**
      * Fit the emphasis box around an array slot.
      * @param {Object} emphasis - The emphasis rect element.
@@ -55,9 +64,9 @@ var array_factory = (function(){
       emphasis.setHeight(slot.getHeight() + 1/5 * slot.getHeight());
     }
 
-    /**************************************************************************
-     *  public Array_viz methods
-     **************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////
+    //  public Array_viz methods
+    ////////////////////////////////////////////////////////////////////////////
     /**
      * Set the fill attribute of an array slot.
      * @param {number[]} indices - The indices of the slots to modify.
@@ -185,16 +194,47 @@ var array_factory = (function(){
       return copy;
     }
 
+    // element gathering functions /////////////////////////////////////////////
+
     /**
-     * Gather all rectangles used in this visualization.
+     * Gather all rectangles used in this array..
      * Used to get a list of all rectangles to draw on the canvas.
      */
     function getRects() {
       var emphasis = [];
-      _elems.forEach(function(e){
+      _elems.forEach(function(e) {
         if (e.emphasis) { emphasis.push(e.emphasis); }
       });
       return _elems.concat(emphasis);
+    }
+
+    /**
+     * Gather all text elements used in this array.
+     * Used to get a list of all text to draw on the canvas.
+     * TODO: Do the text elements need to be copies?
+     */
+    function getText() {
+      var labels = [];
+      _elems.forEach(function(e) {
+        labels.push(e.getLabel());
+      });
+      return _indexLabels.concat(labels);
+    }
+
+    /**
+     * Gather all circles used in this array.
+     * Used to get a list of all circles to draw on the canvas.
+     */
+    function getCircles() {
+      return [];
+    }
+
+    /**
+     * Gather all lines used in this array.
+     * Used to get a list of all lines to draw on the canvas.
+     */
+    function getLines() {
+      return [];
     }
 
     // return public functions
@@ -208,14 +248,17 @@ var array_factory = (function(){
       setLabelFill:setLabelFill,
       setLabels:setLabels,
       getRects:getRects,
+      getText:getText,
+      getCircles:getCircles,
+      getLines:getLines,
       getSlots:getSlots
     };
   }
 
 
-  /****************************************************************************
-   *  public Array_viz methods
-   ****************************************************************************/
+  //////////////////////////////////////////////////////////////////////////////
+  //  public Array_viz methods
+  //////////////////////////////////////////////////////////////////////////////
   /**
    * Get a new array visualization object.
    * @param {number[]|string[]} elems - Elements occupying array slots

@@ -34,7 +34,7 @@ var vizlib = (function() {
      return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
    });
    return r;
-  }
+ };
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +54,7 @@ var vizlib = (function() {
      return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
    });
    return c;
-  }
+ };
 
   /**
   * Return an ordered array of all line elements.
@@ -71,7 +71,7 @@ var vizlib = (function() {
       return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
     });
     return l;
-  }
+  };
 
   /**
   * Return an ordered array of all text elements.
@@ -88,15 +88,15 @@ var vizlib = (function() {
       return a.getID() < b.getID() ? -1 : a.getID() > b.getID() ? 1 : 0;
     });
     return t;
-  }
+  };
 
-  var get_selection = function(elements, bounding_box) {
-    return selection(elements, bounding_box);
-  }
+  var get_selection = function(elements, svgW, svgH) {
+    return selection(elements, svgW, svgH);
+  };
 
   var get_insertion = function(elements, svgW, svgH) {
     return insertion(elements, svgW, svgH);
-  }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   //  return public methods
