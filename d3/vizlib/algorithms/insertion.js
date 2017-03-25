@@ -20,9 +20,11 @@ var insertion = (function(elems, svgW, svgH) {
   var index_j = element_factory.getText();
   index_i.setVal('i');
   index_i.setFont(_array.getSlots()[0].getLabel().getFont());
+  index_i.setVisibility('hidden');
   var font_sz = _array.getSlots()[0].getLabel().getFontSize().split('p')[0];
   index_i.setFontSize(0.7 * parseFloat(font_sz));
   index_j.setVal('j');
+  index_j.setVisibility('hidden');
   index_j.setFont(index_i.getFont());
   index_j.setFontSize(index_i.getFontSize());
 
@@ -80,10 +82,12 @@ var insertion = (function(elems, svgW, svgH) {
       var pos = slot.getPos();
       var w = slot.getWidth();
       var h = slot.getHeight();
+      var bb = redraw.getBBox(index_i);
       index_i.setSpX(pos.x + 1 / 2 * w);
-      index_i.setSpY(pos.y + h + 1 / 10 * h);
+      index_i.setSpY(pos.y + h + 1 / 10 * h + 1 / 2 * bb.height);
       index_i.setPosX(index_i.getSpX());
       index_i.setPosY(index_i.getSpY());
+      index_i.setVisibility('visible');
     };
   }
 
@@ -97,10 +101,12 @@ var insertion = (function(elems, svgW, svgH) {
       var pos = slot.getPos();
       var w = slot.getWidth();
       var h = slot.getHeight();
+      var bb = redraw.getBBox(index_j);
       index_j.setSpX(pos.x + 1 / 2 * w);
-      index_j.setSpY(pos.y + 1 / 10 * h);
+      index_j.setSpY(pos.y - 1 / 4 * bb.height);
       index_j.setPosX(index_j.getSpX());
       index_j.setPosY(index_j.getSpY());
+      index_j.setVisibility('visible');
     };
   }
 
