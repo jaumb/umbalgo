@@ -83,24 +83,43 @@ function followRoute() {
   };
 
   try {
-    var navLevels = uriParams()["page"].split(',');
+    // A list of levels in the navigational hierarchy as specified by the uri,
+    // in descending order.
+    var route = uriParams()["page"].split(',');
+    // An array of html strings that will be appended to the body. Each imports
+    // a script that provides common content for a level of the navigational
+    // hierarchy.
     var scripts = [];
-    var levelTrace = [];
-    var route = routes;
-    for (var i = 0; i < navLevels.length - 1; ++i) {
-      route = route[navLevels[i]];
-      levelTrace.push(navLevels[i]);
-      scripts.push("<script src=\"js/content/" + levelTrace.join("/") + "/"
-                   + navLevels[i] + "-inherit.js\"></script>");
+    // A list of the levels of the navigational hierarchy that have already been
+    // traversed.
+    var trace = [];
+
+    // Iterate over the requested route level-by-level, stopping at the parent
+    // of the destination.
+    for (var i = 0, level = routes;
+         i < route.length - 1;
+         level = level[route[i++]]) {
+      // Add the current level to the trace
+      trace.push(route[i]);
+      // Add html to import the script that populates content common to all
+      // pages at this level.
+      scripts.push("<script src=\"js/content/" + trace.join("/") + "/"
+                   + route[i] + "-inherit.js\"></script>");
     }
-    if (!route.has(navLevels[navLevels.length - 1])) {
+    // Check that the destination page exists.
+    if (!level.has(route[route.length - 1])) {
       throw 'Invalid route';
     }
-    scripts.push("<script src=\"js/content/" + levelTrace.join("/") + "/"
-                 + navLevels[navLevels.length - 1] + ".js\"></script>");
+    // Load its page specific content.
+    scripts.push("<script src=\"js/content/"
+                 + trace.slice(0, trace.length).join("/") + "/"
+                 + route[route.length - 1] + ".js\"></script>");
   } catch(e) {
+    // If an invalid route was requested, we'll end up here. Load the home page
+    // instead.
     scripts = ["<script src=\"js/content/index.js\"></script>"]
   }
+  // Append the html to load the necessary scripts to the body.
   document.body.innerHTML += scripts.join("");
 }
 
