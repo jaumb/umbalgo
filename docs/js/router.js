@@ -25,11 +25,60 @@ function followRoute() {
   // The hierarchy of recognized routes
   var routes = {
     "algorithms": {
-      "chapter-2-sorting": {
-        "2.1-elementary-sorts": new Set([
-          "insertion-sort"
-        ])
-      }
+      "fundamentals":new Set([
+        "shuffle",
+        "search",
+        "bag-linked-list",
+        "bag-array",
+        "queue-linked-list",
+        "queue-array",
+        "stack-linked-list",
+        "stack-array",
+        "union-find-quickfind",
+        "union-find-quickunion",
+        "union-find-weightedquickunion"
+      ]),
+      "sorting": new Set([
+        "selection-sort",
+        "insertion-sort",
+        "shell-sort",
+        "merge-sort",
+        "quick-sort",
+        "quick-3way-sort",
+        "heap-sort",
+        "maxpq",
+        "minpq"
+      ]),
+      "searching": new Set([
+        "basic-unordered-symbol-table",
+        "binary-symbol-table",
+        "ordered-symbol-table-bst",
+        "ordered-symbol-table-red-black-bst",
+        "separate-chaining-hash-table",
+        "graph-undirected",
+        "depth-first-search-undirected",
+        "breadth-first-search-undirected",
+        "connected-components",
+        "graph-directed",
+        "cycle-detection",
+        "depth-first-search-directed",
+        "reverse-postorder-vertex-ordering",
+        "kosarajus-strongly-connected-components",
+        "edge-weighted-graph",
+        "kruskals-minimum-spanning-tree",
+        "edge-weighted-directed-graph",
+        "dijkstras-shortest-paths",
+        "shorted-paths-edge-weighted-directed-acyclic-graphs"
+      ]),
+      "strings": new Set([
+        "lsd-string-sort",
+        "msd-string-sort",
+        "trie-symbol-table",
+        "knuth-morris-pratt-substring-search",
+        "non-deterministic-finite-state-automata",
+        "run-length-encoding",
+        "huffman-compression"
+      ])
     }
   };
 
