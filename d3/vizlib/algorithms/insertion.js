@@ -111,6 +111,24 @@ var insertion = (function(elems, svgW, svgH) {
   }
 
   /**
+   * Remove i from the canvas.
+   */
+  var removeI = function() {
+    return function() {
+      index_i.setVisibility('hidden');
+    };
+  }
+
+  /**
+   * Remove j from the canvas.
+   */
+  var removeJ = function() {
+    return function() {
+      index_j.setVisibility('hidden');
+    };
+  }
+
+  /**
    * Set the coordinates of the boundary element.
    * @param {number} index - Array element index to align boundary with.
    */
@@ -184,6 +202,8 @@ var insertion = (function(elems, svgW, svgH) {
     deemphasize:deemphasize,
     setI:setI,
     setJ:setJ,
+    removeI:removeI,
+    removeJ:removeJ,
     getRects:getRects,
     getCircles:getCircles,
     getLines:getLines,
