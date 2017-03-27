@@ -16,6 +16,17 @@ var insertion = (function(elems, svgW, svgH) {
   var _bound = element_factory.getLine();
   _bound.setStroke(colors.BLUE);
   var _array = array_factory.get_array(elems, _boundingBox);
+  var index_i = element_factory.getText();
+  var index_j = element_factory.getText();
+  index_i.setVal('i');
+  index_i.setFont(_array.getSlots()[0].getLabel().getFont());
+  index_i.setVisibility('hidden');
+  var font_sz = _array.getSlots()[0].getLabel().getFontSize().split('p')[0];
+  index_i.setFontSize(0.7 * parseFloat(font_sz));
+  index_j.setVal('j');
+  index_j.setVisibility('hidden');
+  index_j.setFont(index_i.getFont());
+  index_j.setFontSize(index_i.getFontSize());
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
@@ -57,9 +68,65 @@ var insertion = (function(elems, svgW, svgH) {
   var getText = function() {
     var text = [];
     _array.getRects().forEach(function(e) { text.push(e.getLabel()); });
-    return vizlib.getText(text);
+    return vizlib.getText(text, index_i, index_j);
   }
   //end of element array getters////////////////////////////////////////////////
+
+  /**
+   * Set the position of i with respect to an array index.
+   * @param {number} index - Array element index to align i with.
+   */
+  var setI = function(index) {
+    return function() {
+      var slot = _array.getSlots()[index];
+      var pos = slot.getPos();
+      var w = slot.getWidth();
+      var h = slot.getHeight();
+      var bb = redraw.getBBox(index_i);
+      index_i.setSpX(pos.x + 1 / 2 * w);
+      index_i.setSpY(pos.y + h + 1 / 10 * h + 1 / 2 * bb.height);
+      index_i.setPosX(index_i.getSpX());
+      index_i.setPosY(index_i.getSpY());
+      index_i.setVisibility('visible');
+    };
+  }
+
+  /**
+   * Set the position of j with respect to an array index.
+   * @param {number} index - Array element index to align j with.
+   */
+  var setJ = function(index) {
+    return function() {
+      var slot = _array.getSlots()[index];
+      var pos = slot.getPos();
+      var w = slot.getWidth();
+      var h = slot.getHeight();
+      var bb = redraw.getBBox(index_j);
+      index_j.setSpX(pos.x + 1 / 2 * w);
+      index_j.setSpY(pos.y - 1 / 4 * bb.height);
+      index_j.setPosX(index_j.getSpX());
+      index_j.setPosY(index_j.getSpY());
+      index_j.setVisibility('visible');
+    };
+  }
+
+  /**
+   * Remove i from the canvas.
+   */
+  var removeI = function() {
+    return function() {
+      index_i.setVisibility('hidden');
+    };
+  }
+
+  /**
+   * Remove j from the canvas.
+   */
+  var removeJ = function() {
+    return function() {
+      index_j.setVisibility('hidden');
+    };
+  }
 
   /**
    * Set the coordinates of the boundary element.
@@ -133,6 +200,10 @@ var insertion = (function(elems, svgW, svgH) {
     emphasize:emphasize,
     moveEmphasis:moveEmphasis,
     deemphasize:deemphasize,
+    setI:setI,
+    setJ:setJ,
+    removeI:removeI,
+    removeJ:removeJ,
     getRects:getRects,
     getCircles:getCircles,
     getLines:getLines,

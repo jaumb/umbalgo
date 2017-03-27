@@ -14,6 +14,7 @@ var element_factory = (function() {
   var _stroke = colors.BLACK;     // the color of an outline
   var _stroke_width = '.3vw';          // thickness of outline
   var _stroke_opacity = 1;
+  var _visibility = 'visible';
 
   // all elements but line
   var _sp = {x:null, y:null}; // if we want default rect/text starting pos
@@ -54,6 +55,7 @@ var element_factory = (function() {
     var text_anchor = _text_anchor;
     var val = '';
     var class_name = 'text';
+    var visibility = _visibility;
 
     // getters and setters
 
@@ -189,6 +191,14 @@ var element_factory = (function() {
       val = newVal;
     }
 
+    function getVisibility() {
+     return visibility;
+    }
+
+    function setVisibility(value) {
+     visibility = value;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -222,7 +232,9 @@ var element_factory = (function() {
       setTextAnchor:setTextAnchor,
       getVal:getVal,
       setVal:setVal,
-      className:className
+      className:className,
+      getVisibility:getVisibility,
+      setVisibility:setVisibility
     };
   }
 
@@ -243,6 +255,7 @@ var element_factory = (function() {
     var height = _size;
     var label = new Text(_newID());
     var class_name = 'rect';
+    var visibility = _visibility;
 
     // getters and setters
 
@@ -385,6 +398,14 @@ var element_factory = (function() {
       return cp;
     }
 
+    function getVisibility() {
+     return visibility;
+    }
+
+    function setVisibility(value) {
+     visibility = value;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -417,7 +438,9 @@ var element_factory = (function() {
       getLabel:getLabel,
       setLabel:setLabel,
       copy:copy,
-      className:className
+      className:className,
+      getVisibility:getVisibility,
+      setVisibility:setVisibility
     };
   }
 
@@ -433,6 +456,7 @@ var element_factory = (function() {
     var r = _size;
     var label = new Text(_newID());
     var class_name = 'circle';
+    var visibility = _visibility;
 
     // getters and setters
 
@@ -550,6 +574,14 @@ var element_factory = (function() {
       label = new_label;
     }
 
+    function getVisibility() {
+     return visibility;
+    }
+
+    function setVisibility(value) {
+     visibility = value;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -579,7 +611,9 @@ var element_factory = (function() {
       setR:setR,
       getLabel:getLabel,
       setLabel:setLabel,
-      className:className
+      className:className,
+      getVisibility:getVisibility,
+      setVisibility:setVisibility
     };
   }
 
@@ -601,6 +635,7 @@ var element_factory = (function() {
       y2:_line_pos.y2
     };
     var class_name = 'line';
+    var visibility = _visibility;
 
     // getters and setters
 
@@ -732,6 +767,14 @@ var element_factory = (function() {
      setPosY2(posY2);
     }
 
+    function getVisibility() {
+     return visibility;
+    }
+
+    function setVisibility(value) {
+     visibility = value;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -761,7 +804,9 @@ var element_factory = (function() {
       setPosY2:setPosY2,
       getPos:getPos,
       setPos:setPos,
-      className:className
+      className:className,
+      getVisibility:getVisibility,
+      setVisibility:setVisibility
     };
 
   }
