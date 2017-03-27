@@ -17,7 +17,7 @@ var tree_factory = (function() {
               tree.nodes[i - 1].fill = 'white';
           });
       });
-  }
+  };
 
   // display the next element to be added to the tree
   tree.displayNextElem = function(elem) {
@@ -29,7 +29,7 @@ var tree_factory = (function() {
               rc:null
           });
       });
-  }
+  };
 
   // add root element to the tree
   tree.addRoot = function(e) {
@@ -37,7 +37,7 @@ var tree_factory = (function() {
 
           tree.size++;
       });
-  }
+  };
 
   // add e1 to the tree to the right of e2
   tree.addRightChild = function(e1, e2) {
@@ -50,7 +50,7 @@ var tree_factory = (function() {
           tree.reposition();
           tree.size++;
       });
-  }
+  };
 
   // add e1 to the tree to the left of e2
   tree.addLeftChild = function(e1, e2) {
@@ -63,7 +63,7 @@ var tree_factory = (function() {
           tree.reposition();
           tree.size++;
       });
-  }
+  };
 
   // get the height of the tree
   tree.getHeight = function() {
@@ -77,7 +77,7 @@ var tree_factory = (function() {
           }
       }
       return getHeight(tree.root);
-  }
+  };
 
   // get a list of all nodes in the tree
   tree.getNodes = function() {
@@ -93,7 +93,7 @@ var tree_factory = (function() {
           getNodes(tree.root);
       }
       return nodes.sort(function(a, b) { return a.seq - b.seq; });
-  }
+  };
 
   // get a list of all edges in the tree
   tree.getEdges = function() {
@@ -113,7 +113,7 @@ var tree_factory = (function() {
       }
       getEdges(tree.root);
       return edges.sort(function(a, b) { return a.seq - b.seq; });
-  }
+  };
 
   // adjust the position of all nodes on the tree
   tree.reposition = function(node) {
@@ -126,7 +126,7 @@ var tree_factory = (function() {
           } else {
               return getLeafCount(node.lc) + getLeafCount(node.rc);
           }
-      }
+      };
 
       if (!node) { return; }
 
@@ -141,7 +141,7 @@ var tree_factory = (function() {
                   (tree.getHeight() - node.rc.l) * tree.w*(lCount-1)/2;
           tree.reposition(node.rc);
       }
-  }
+  };
 
   // reset the tree
   tree.reset = function() {
@@ -155,7 +155,7 @@ var tree_factory = (function() {
       tree.root = null;
       tree.size = 0;
       redraw();
-  }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   //  public methods
