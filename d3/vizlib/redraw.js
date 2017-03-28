@@ -355,24 +355,24 @@ var redraw = (function() {
    * Initialize the visualization layout by appending group elements to the
    * svg canvas for each type of element (rect, circle, line, text).
    */
-  function initialize() {
+  function initCanvas() {
     // append group element for rectangles
-    d3.select("#svgcanvas")
+    d3.select("#svg_canvas")
         .append('g')
         .attr('id','g_rects');
 
     // append group element for circles
-    d3.select("#svgcanvas")
+    d3.select("#svg_canvas")
         .append('g')
         .attr('id','g_circles');
 
     // append group element for lines
-    d3.select("#svgcanvas")
+    d3.select("#svg_canvas")
         .append('g')
         .attr('id','g_lines');
 
     // append group element for text elements
-    d3.select("#svgcanvas")
+    d3.select("#svg_canvas")
       .append('g')
       .attr('id','g_text');
   }
@@ -388,7 +388,7 @@ var redraw = (function() {
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
-    initialize:initialize
+    initCanvas:initCanvas
   };
 
 })();

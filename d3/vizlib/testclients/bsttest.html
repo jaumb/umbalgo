@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/tree_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/selection.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id','svg_canvas');
+
+      redraw.initCanvas();
+
+      var dur = 15000;
+
+      // example of a client using the tree visualization
+      var tree = {root:null};
+      var treeViz = bst(1000);
+
+      // get 10 randomly ordered integers
+      elements = d3.range(1,11);
+      d3.shuffle(elements);
+
+      // function to add a new element to the tree
+      function addNode(currNode, newNode) {
+          if (!currNode) {
+              return newNode;
+          } else if (newNode.val > currNode.val) {
+              newNode.pos = {x:currNode.pos.x + dx, y:currNode.pos.y + dy};
+              currNode.rc = addNode(currNode.rc, newNode);
+              currNode.size++;
+          } else if (newNode.val < currNode.val) {
+              newNode.pos = {x:currNode.pos.x - dx, y:currNode.pos.y + dy};
+              currNode.lc = addNode(currNode.lc, newNode);
+              currNode.size++;
+          }
+          newNode.l += 1;
+          return currNode;
+      }
+
+    </script>
+  </body>
+</html>

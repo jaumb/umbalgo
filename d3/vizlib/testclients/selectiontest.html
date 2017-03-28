@@ -24,22 +24,7 @@
         .attr("height", svgH)
         .attr('id','svg_canvas');
 
-      d3.select("#svg_canvas")
-        .append('g')
-        .attr('id','g_rects');
-
-      d3.select("#svg_canvas")
-        .append('g')
-        .attr('id','g_circles');
-
-      d3.select("#svg_canvas")
-        .append('g')
-        .attr('id','g_lines');
-
-      d3.select("#svg_canvas")
-        .append('g')
-        .attr('id','g_text');
-
+      redraw.initCanvas();
 
       var dur = 15000;
 
