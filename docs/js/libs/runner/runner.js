@@ -181,6 +181,9 @@ var VirtualMachine = function () {
       }
       this.redrawVariablePanes();
     }
+
+    // Deprecated. Set result directly on frame instead.
+
   }, {
     key: "setResult",
     value: function setResult(result) {

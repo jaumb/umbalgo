@@ -26,16 +26,16 @@ sort(a) {
     that.locals["j"]--;
   }
   if (that.locals["j"] > 0) {
-    that.vm.visualization.highlight([that.locals["j"] - 1, that.locals["j"]]);
-    that.vm.visualization.stepall();
+    //that.vm.visualization.highlight([that.locals["j"] - 1, that.locals["j"]]);
+    //that.vm.visualization.stepall();
     that.vm.invokeFunc(
       "less",
       function(result) {
         if (result) {
           that.nextLineNumber = 5;
         } else {
-          that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
-          that.vm.visualization.stepall();
+          //that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
+          //that.vm.visualization.stepall();
           that.nextLineNumber = 7;
           that.locals["j"] = undefined;
           that.cache["4__firstIteration"] = undefined;
@@ -44,16 +44,16 @@ sort(a) {
       that.args["a"][that.locals["j"]],
       that.args["a"][that.locals["j"] - 1]);
   } else {
-    that.vm.visualization.updateBoundary(that.locals["i"]);
-    that.vm.visualization.stepall();
+    //that.vm.visualization.updateBoundary(that.locals["i"]);
+    //that.vm.visualization.stepall();
     that.nextLineNumber = 7;
     that.locals["j"] = undefined;
     that.cache["4__firstIteration"] = undefined;
   }
 // Code:      exch(a, j, j - 1);
-  that.vm.visualization.swap(that.locals["j"] - 1, that.locals["j"]);
-  that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
-  that.vm.visualization.stepall();
+  //that.vm.visualization.swap(that.locals["j"] - 1, that.locals["j"]);
+  //that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
+  //that.vm.visualization.stepall();
   that.vm.invokeFunc(
     "exch",
     undefined,

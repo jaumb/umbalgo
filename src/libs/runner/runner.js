@@ -115,6 +115,7 @@ class VirtualMachine {
     this.redrawVariablePanes();
   }
 
+  // Deprecated. Set result directly on frame instead.
   setResult(result) {
     this.getFrame().result = result;
   }

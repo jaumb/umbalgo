@@ -1,4 +1,22 @@
 /**
+ * Load an array of scripts asynchronously, in order.
+ */
+var loadScripts = function(scripts, callback) {
+  var recurse = function(scripts, callback, i) {
+    if (i < scripts.length) {
+      var j = i++;
+      $.getScript(scripts[j], function() {
+        console.log("Loaded " + scripts[j]);
+        recurse(scripts, callback, i);
+      });
+    } else if (callback) {
+      callback();
+    }
+  }
+  recurse(scripts, callback, 0);
+};
+
+/**
  * Decode the uri, and append scripts to the body of the page that populate the
  * appropriate content.
  * The content of the requested page is populated by a script of the same name
@@ -285,12 +303,12 @@
     for (var i = 0, level = makeRoutes(content);
          i < route.length - 1;
          level = level["children"][route[i++]]) {
-      // Add the current level to the trace
+      // Add the current level to the trace.
       trace.push(route[i]);
-      // Add html to import the script that populates content common to all
-      // pages at this level.
-      scripts.push("<script src=\"js/content/" + trace.join("/") + "/"
-                   + route[i] + "-inherit.js\"></script>");
+      // Add the script that populates content common to all pages at this level
+      // to the list of scripts to be loaded.
+      scripts.push("js/content/" + trace.join("/") + "/" + route[i]
+                   + "-inherit.js");
       // Add a breadcrumb to the navbar for this level.
       nav.push("<li><a href=\"index.html?page=" + trace.join(",") + "\">"
                + level["children"][route[i]]["displayName"] + "</a></li>");
@@ -299,10 +317,10 @@
     if ([route[route.length - 1]] === undefined) {
       throw 'Invalid route';
     }
-    // Add html to import a script that poulates its page specific content.
-    scripts.push("<script src=\"js/content/"
-                 + trace.slice(0, trace.length).join("/") + "/"
-                 + route[route.length - 1] + ".js\"></script>");
+    // Add the script that populates content specific to this page to the list
+    // of scripts to be loaded.
+    scripts.push("js/content/" + trace.slice(0, trace.length).join("/") + "/"
+                + route[route.length - 1] + ".js");
     // Add a breadcrumb to the navbar for this level.
     var title = level["children"][route[i]]["displayName"];
     nav.push("<li class=\"active\"><a href=\"index.html?page=" + routeJoined
@@ -310,13 +328,17 @@
   } catch(e) {
     // If an invalid route was requested, we'll end up here. Load the home page
     // instead.
-    scripts = ["<script src=\"js/content/index.js\"></script>"];
+    scripts = ["js/content/index.js"];
     nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
+    // TODO: Remove
+    console.log("error: " + e);
   }
-  // Append the html to load the necessary scripts to the body.
-  document.body.innerHTML += scripts.join("");
+  // Load the scripts in order.
+  loadScripts(scripts);
   // Populate the nav bar.
   document.getElementById("nav").innerHTML = nav.join("");
-  // Populate the page title.
-  document.getElementById("title").innerHTML = title;
-})();
+  // Populate the page title (if it has one).
+  try {
+    document.getElementById("title").innerHTML = title;
+  } catch (e) {}
+}());
