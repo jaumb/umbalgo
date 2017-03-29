@@ -199,6 +199,22 @@ var element_factory = (function() {
      visibility = value;
     }
 
+    function copy() {
+      var cp = new Text(_newID());
+      cp.setFill(fill);
+      cp.setFillOpacity(fill_opacity);
+      cp.setStroke(stroke);
+      cp.setStrokeWidth(stroke_width);
+      cp.setStrokeOpacity(stroke_opacity);
+      cp.setPos(pos.x, pos.y);
+      cp.setSp(sp.x, sp.y);
+      cp.setFont(font);
+      cp.setFontSize(font_size);
+      cp.setTextAnchor(text_anchor);
+      cp.setVal(val);
+      return cp;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -234,7 +250,8 @@ var element_factory = (function() {
       setVal:setVal,
       className:className,
       getVisibility:getVisibility,
-      setVisibility:setVisibility
+      setVisibility:setVisibility,
+      copy:copy
     };
   }
 
@@ -394,7 +411,7 @@ var element_factory = (function() {
       cp.setSp(sp.x, sp.y);
       cp.setWidth(width);
       cp.setHeight(height);
-      cp.setLabel(label);
+      cp.setLabel(label.copy());
       return cp;
     }
 
@@ -582,6 +599,20 @@ var element_factory = (function() {
      visibility = value;
     }
 
+    function copy() {
+      var cp = new Circle(_newID());
+      cp.setFill(fill);
+      cp.setFillOpacity(fill_opacity);
+      cp.setStroke(stroke);
+      cp.setStrokeWidth(stroke_width);
+      cp.setStrokeOpacity(stroke_opacity);
+      cp.setPos(pos.cx, pos.cy);
+      cp.setSp(sp.cx, sp.cy);
+      cp.setR(r);
+      cp.setLabel(label.copy());
+      return cp;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -613,7 +644,8 @@ var element_factory = (function() {
       setLabel:setLabel,
       className:className,
       getVisibility:getVisibility,
-      setVisibility:setVisibility
+      setVisibility:setVisibility,
+      copy:copy
     };
   }
 
@@ -775,6 +807,16 @@ var element_factory = (function() {
      visibility = value;
     }
 
+    function copy() {
+      var cp = new Line(_newID());
+      cp.setStroke(stroke);
+      cp.setStrokeWidth(stroke_width);
+      cp.setStrokeOpacity(stroke_opacity);
+      cp.setPos(pos.x1, pos.y1, pos.x2, pos.y2);
+      cp.setSp(sp.x, sp.y, sp.x2, sp.y2);
+      return cp;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -806,7 +848,8 @@ var element_factory = (function() {
       setPos:setPos,
       className:className,
       getVisibility:getVisibility,
-      setVisibility:setVisibility
+      setVisibility:setVisibility,
+      copy:copy
     };
 
   }
