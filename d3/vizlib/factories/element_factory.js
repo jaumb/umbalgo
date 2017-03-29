@@ -887,4 +887,5 @@ var element_factory = (function() {
     getText:getText,
     getLine:getLine
   };
+
 })();

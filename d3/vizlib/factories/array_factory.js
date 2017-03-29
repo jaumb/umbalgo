@@ -10,6 +10,10 @@ var array_factory = (function(){
    * @param {Object} bounding_box - The box inside of which to center the array
    */
   function Array_viz(elems, bounding_box) {
+
+    ////////////////////////////////////////////////////////////////////////////
+    //  private variables
+    ////////////////////////////////////////////////////////////////////////////
     var _X1 = bounding_box.p1.x;
     var _Y1 = bounding_box.p1.y;
     var _X2 = bounding_box.p2.x;
@@ -158,7 +162,7 @@ var array_factory = (function(){
     /**
      * Create or change slots' text label.
      * @param {number[]} indices - The indices of the slots to modify.
-     * @param {number|string} new_label - The slots' new text label(s).
+     * @param {number|string} new_label - The slots' new text label.
      */
     function setLabels(indices, new_label) {
       indices.forEach(function(i) {
@@ -258,7 +262,7 @@ var array_factory = (function(){
 
 
   //////////////////////////////////////////////////////////////////////////////
-  //  public Array_viz methods
+  //  public array_factory methods
   //////////////////////////////////////////////////////////////////////////////
   /**
    * Get a new array visualization object.
@@ -269,7 +273,7 @@ var array_factory = (function(){
     return new Array_viz(elems, bounding_box);
   }
 
-  // return public Array_viz methods
+  // return public array_factory methods
   return {
     get_array:get_array
   };
