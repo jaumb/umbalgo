@@ -15,26 +15,90 @@ var tree_factory = (function() {
     ////////////////////////////////////////////////////////////////////////////
     //  private variables
     ////////////////////////////////////////////////////////////////////////////
+
     var _X1 = bounding_box.p1.x;
     var _Y1 = bounding_box.p1.y;
     var _X2 = bounding_box.p2.x;
     var _Y2 = bounding_box.p2.y;
     var _W = _X2 - _X1;
     var _H = _Y2 - _Y1;
+    var map = {};
+    var _radius = 1 / 2 * _W / 16;
     var _root = null;
+    var _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
+    var _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create a new binary tree visualization on the canvas.
-     * Returns height of tree rooted at _root if node is not defined.
+     * Create a new node based on a client node.
+     * Client node is expected to have the following methods
+     * clientNode.id() - Unique identifier
+     * clientNode.lChild() - Left child in the client's tree
+     * clientNode.rChild() - Right child in the client's tree
+     * clientNode.val() - Value with which to label the node
+     * @param {Object} clientNode - Node created by client.
+     */
+    function _createNewNode(clientNode, cx, cy) {
+      var newNode = element_factory.getCircle();
+      newNode.setR(_radius);
+      map[clientNode.id()] = newNode;
+      newNode.setStrokeWidth('.3vw');
+      newNode.getLabel().setVal(clientNode.val());
+      newNode.getLabel().setFontSize((1.2 * _radius) + 'px');
+      newNode.setPos(cx, cy);
+      newNode.setSpCX(newNode.getPosCX());
+      newNode.setSpCY(newNode.getPosCY());
+      var labelBbox = redraw.getBBox(newNode.getLabel());
+      newNode.getLabel().setPosX(newNode.getPosCX());
+      newNode.getLabel().setPosY(newNode.getPosCY() + 1/2 * labelBbox.height);
+      newNode.getLabel().setSpX(newNode.getLabel().getPosX());
+      newNode.getLabel().setSpY(newNode.getLabel().getPosY());
+      return newNode;
+    }
+
+    /**
+     * Create a new binary tree given the root of a subtree.
+     * @param {Object} clientNode - Root of the subtree.
+     * @param {Object} vizParentNode - Parent node of the root of this subtree.
+     */
+    function _buildTree(clientNode, vizParentNode) {
+      var root = map[clientNode.id()];
+      if (root) {
+        root = _createNode(clientNode);
+        if (vizParentNode) {
+          root.setPosCX(vizParentNode.getPosCX() + xOffset);
+          root.setPosCY(vizParentNode.getPosCY() + 3 * _radius);
+        } else {
+          root.setPosCX(_rootPos.cx);
+          root.setPosCY(_rootPos.cy);
+        }
+        if (clientNode.lChild && clientNode.lChild()) {
+          root.lChild = _buildTree(clientNode.lChild(), root, -2 * _radius);
+        }
+        if (clientNode.rChild && clientNode.rChild()) {
+          root.rChild = _buildTree(clientNode.rChild(), root, 2 * _radius);
+        }
+      } else if (!vizParentNode) {
+
+      } else {
+        root = _createNewNode(clientNode, vizParentNode.getPosCX());
+      }
+      return root;
+    }
+
+    /**
+     * Get the height of the tree rooted at node.
      * @param {undefined|Object} node - Root of the subtree.
      */
     function _getHeight(node) {
-      if (!node && _root) { node = _root; }
-      else { return 0; }
+      var height = 0;
+      if (node) {
+        height = _getHeight(node.lChild) + _getHeight(node.rChild);
+      }
+      return height;
     }
 
     /**
@@ -42,8 +106,13 @@ var tree_factory = (function() {
      * @param {undefined|Object} node - The root of the subtree.
      */
     function _getLeafCount(node) {
-      if (!node && _root) { node = _root; }
-      else { return 0; }
+      if (!node) {
+        return 0;
+      } else if (!node.lChild && !node.rChild) {
+        return 1;
+      } else {
+        return _getLeafCount(node.lChild) + _getLeafCount(node.rChild);
+      }
     }
 
     /**
@@ -55,16 +124,16 @@ var tree_factory = (function() {
     function _reposition(node) {
       if (!node) { return; }
 
-      var lCount = _getLeafCount(node);
-      if (node.lChild()) {
-        node.lc.pos.x = (node.pos.x - dx) -
-          (tree.getHeight() - node.lc.l) * tree.w*(lCount-1)/2;
-        tree.reposition(node.lc);
+      var leafCount = _getLeafCount(node);
+      if (node.lChild) {
+        node.lChild.setPosCX((node.getPosX() - _radius) -
+        (_getHeight(_root) - _getHeight(node.lChild)) * _W * (leafCount-1)/2);
+        _reposition(node.lChild);
       }
-      if (node.rChild()) {
-        node.rc.pos.x = (node.pos.x + dx) +
-          (tree.getHeight() - node.rc.l) * tree.w*(lCount-1)/2;
-        tree.reposition(node.rc);
+      if (node.rChild) {
+        node.rChild.setPosCX((node.getPosX() + _radius) +
+        (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
+        _reposition(node.rChild);
       }
     }
 
@@ -74,36 +143,38 @@ var tree_factory = (function() {
     ////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Make node the root of the tree.
-     * Does nothing if tree already has a root.
-     * @param {Object} node - The node to make the root of the tree.
+     * Build a tree given a node to be treated as the root of the tree.
+     * Does nothing if this tree already has a root.
+     * @param {Object} clientNode - The node to make the root of the tree.
      */
-    function addRoot(node) {
+    function addRoot(clientNode) {
       if (!_root) {
+        _root = _buildTree(clientNode);
       }
     }
 
     /**
      * Make child the right child of node.
-     * @param {Object} node - The node getting a child.
-     * @param {Object} child - The child node to add.
+     * @param {Object} clientNode - The node getting a child.
+     * @param {Object} clientChildNode - The child node to add.
      */
-    function addRChild(node, child) {
+    function addRChild(clientNode, clientChildNode) {
+      if 
     }
 
     /**
      * Make child the left child of node.
-     * @param {Object} node - The node getting a child.
-     * @param {Object} child - The child node to add.
+     * @param {Object} clientNode - The node getting a child.
+     * @param {Object} clientChildNode - The child node to add.
      */
-    function addLChild(node, child) {
+    function addLChild(clientNode, clientChildNode) {
     }
 
     /**
      * Display the next node being added to the tree.
-     * @param {Object} node - The node being added to the tree.
+     * @param {Object} clientNode - The node being added to the tree.
      */
-    function dispNextNode(node) {
+    function dispNextNode(clientNode) {
     }
 
     /**
@@ -112,7 +183,7 @@ var tree_factory = (function() {
      * @param {string} color - The new fill color of the nodes.
      */
     function setFill(nodes, color) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 
@@ -122,7 +193,7 @@ var tree_factory = (function() {
      * @param {string} color - The new outline color of the nodes.
      */
     function setOutline(nodes, color) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 
@@ -131,7 +202,7 @@ var tree_factory = (function() {
      * @param {Object[]} nodes - The nodes to emphasize.
      */
     function emphasize(nodes) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 
@@ -148,7 +219,7 @@ var tree_factory = (function() {
      * @param {Object[]} nodes - The nodes to de-emphasize.
      */
     function deemphasize(nodes) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 
@@ -176,7 +247,7 @@ var tree_factory = (function() {
      * @param {number|string} new_label - The nodes' new text label.
      */
     function setLabels(nodes, new_label) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 
@@ -186,7 +257,7 @@ var tree_factory = (function() {
      * @param {string} color - The new text color for these nodes.
      */
     function setLabelFill(nodes, color) {
-      nodes.forEach(function(node) {
+      nodes.forEach(function(clientNode) {
       });
     }
 

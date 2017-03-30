@@ -275,11 +275,13 @@ var redraw = (function() {
    * @param {Object} e - The element to add.
    */
   function addElem(e) {
-    var selection = d3.select('svg').append(e.className());
-    if (e.className() === 'text') {
+    var svgType = e.className();
+    var selection = d3.select('svg').append(svgType);
+    if (svgType === 'text') {
       selection
+        .text(e.getVal())
         .attr('id', _idPrefix + e.getID())
-        .attr('visibility', function(d) { return d.getVisibility(); })
+        .attr('visibility', function(d) { return 'hidden'; })
         .attr('x', e.getPosX())
         .attr('y', e.getPosY())
         .attr('fill', e.getFill())
@@ -287,10 +289,10 @@ var redraw = (function() {
         .attr('font', e.getFont())
         .attr('font-size', e.getFontSize())
         .attr('text-anchor', e.getTextAnchor());
-    } else if (e.className() === 'rect') {
+    } else if (svgType === 'rect') {
       selection
         .attr('id', _idPrefix + e.getID())
-        .attr('visibility', function(d) { return d.getVisibility(); })
+        .attr('visibility', function(d) { return 'hidden'; })
         .attr('x', e.getPosX())
         .attr('y', e.getPosY())
         .attr('width', e.getWidth())
@@ -300,10 +302,10 @@ var redraw = (function() {
         .attr('stroke-opacity', e.getStrokeOpacity())
         .attr('fill', e.getFill())
         .attr('fill-opacity', e.getFillOpacity());
-    } else if (e.className() === 'circle') {
+    } else if (svgType === 'circle') {
       selection
         .attr('id', _idPrefix + e.getID())
-        .attr('visibility', function(d) { return d.getVisibility(); })
+        .attr('visibility', function(d) { return 'hidden'; })
         .attr('cx', e.getPosCX())
         .attr('cy', e.getPosCY())
         .attr('fill', e.getFill())
@@ -312,10 +314,10 @@ var redraw = (function() {
         .attr('stroke', e.getStroke())
         .attr('stroke-width', e.getStrokeWidth())
         .attr('stroke-opacity', e.getStrokeOpacity());
-    } else {
+    } else if (svgType === 'line') {
       selection
         .attr('id', _idPrefix + e.getID())
-        .attr('visibility', function(d) { return d.getVisibility(); })
+        .attr('visibility', function(d) { return 'hidden'; })
         .attr('x1', e.getPosX1())
         .attr('y1', e.getPosY1())
         .attr('x2', e.getPosX2())
@@ -337,7 +339,7 @@ var redraw = (function() {
                               id_elem.className() === 'circle' ||
                               id_elem.className() === 'rect')) {
       var addedToCanvas = false;
-      if (!getElem(id_elem.getID())) {
+      if (!getElem(id_elem.getID()).node()) {
         addedToCanvas = true;
         addElem(id_elem);
       }
@@ -355,24 +357,24 @@ var redraw = (function() {
    * Initialize the visualization layout by appending group elements to the
    * svg canvas for each type of element (rect, circle, line, text).
    */
-  function initCanvas() {
+  function initCanvas(canvasID) {
     // append group element for rectangles
-    d3.select("#svg_canvas")
+    d3.select("#" + canvasID)
         .append('g')
         .attr('id','g_rects');
 
     // append group element for circles
-    d3.select("#svg_canvas")
+    d3.select("#" + canvasID)
         .append('g')
         .attr('id','g_circles');
 
     // append group element for lines
-    d3.select("#svg_canvas")
+    d3.select("#" + canvasID)
         .append('g')
         .attr('id','g_lines');
 
     // append group element for text elements
-    d3.select("#svg_canvas")
+    d3.select("#" + canvasID)
       .append('g')
       .attr('id','g_text');
   }

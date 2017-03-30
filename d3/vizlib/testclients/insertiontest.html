@@ -18,13 +18,15 @@
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
 
+      var svgCanvasName = 'svg_canvas';
+
       d3.select(".chart-container")
         .append("svg")
         .attr("width", svgW)
         .attr("height", svgH)
-        .attr('id','svg_canvas');
+        .attr('id', svgCanvasName);
 
-      redraw.initCanvas();
+      redraw.initCanvas(svgCanvasName);
 
       // example of a client using the insertion visualization
       var dur = 10000;
