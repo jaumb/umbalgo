@@ -1,180 +1,219 @@
-"use strict";
+// this functions creates and returns an insertion sort
+// visualization object
+// list is the list of elements to be sorted
+function insertionSortViz(list) {
+  var dur = 200; // animation transition duration
+  var boxSize = 80; // size of each array slot
+  var fontSize = 50; // array element font size
+  var svgW = 958, svgH = 460; // svg canvas size
+  var insertion = {}; // insertion sort visualization
+  var intervalID = undefined; // for storing interval timer's ID
+  var q = []; // queue for storing actions on the visualization
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var lastReturn = undefined;
-var callStack = [];
-
-var trigger = function trigger(msg) {
-  console.log(msg);
-};
-
-var invoke = function invoke() {
-  var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
-  sort(a);
-};
-
-var step = function step() {
-  if (callStack.length === 0) {
-    // If the stack is empty, we're done.
-    console.log("Done");
+  // default to 10 elements if no list is provided
+  if (!list || list.length < 1 || list.length > 10) {
+    insertion.N = 10;
+    list = d3.range(1,insertion.N);
+    d3.shuffle(list);
   } else {
-    // Otherwise, execute the next line.
-    callStack[callStack.length - 1].next();
-    if (callStack[callStack.length - 1].next === undefined) {
-      // If execution of the current frame is complete, pop it and return the
-      // result.
-      return callStack.pop().result;
+    insertion.N = list.length;
+  }
+
+  // create lists of array slots and elements
+  insertion.slots = [];
+  insertion.X = (svgW - insertion.N * boxSize + boxSize) / 2;
+  insertion.Y = (svgH - boxSize) / 2;
+  list.forEach(function(e, i) {
+    insertion.slots.push({
+      pos:{x:insertion.X + i * boxSize, y:insertion.Y},
+      elem:{val:e, seq:i,
+            pos:{x:insertion.X + i * boxSize, y:insertion.Y},
+            sp:{x:insertion.X + i * boxSize, y:insertion.Y}
+           },
+      fill:'white'
+    });
+  });
+
+  // initialize boundary marking sorted elements
+  insertion.bound = {
+    pos:{x1:insertion.X - boxSize / 2,
+         y1:insertion.Y - boxSize / 2 - 20,
+         x2:insertion.X - boxSize / 2,
+         y2:insertion.Y + boxSize / 2 + 20}
+  };
+
+  // highlight elements at indices
+  insertion.highlight = function(indices) {
+    q.push(function() {
+      indices.forEach(function(i) {
+        insertion.slots[i].fill = 'lime';
+      });
+    });
+  }
+
+  // clear the highlighting of elements at indices
+  insertion.unhighlight = function(indices) {
+    q.push(function() {
+      indices.forEach(function(i) {
+        insertion.slots[i].fill = 'white';
+      });
+    });
+  }
+
+  // swap elements at specified indices
+  insertion.swap = function(i, j) {
+    q.push(function() {
+      // ensure starting position is current position
+      insertion.slots[i].elem.sp.x = insertion.slots[i].pos.x;
+      insertion.slots[j].elem.sp.x = insertion.slots[j].pos.x;
+      // update position to new position
+      insertion.slots[i].elem.pos.x = insertion.slots[j].pos.x;
+      insertion.slots[j].elem.pos.x = insertion.slots[i].pos.x;
+      var tmp = insertion.slots[i].elem;
+      insertion.slots[i].elem = insertion.slots[j].elem;
+      insertion.slots[j].elem = tmp;
+    });
+  }
+
+  // update sorted boundary to the right of index i
+  insertion.updateBoundary = function(i) {
+    q.push(function() {
+      insertion.bound.pos.x1 = insertion.X - boxSize / 2 +
+        boxSize * (i + 1);
+      insertion.bound.pos.x2 = insertion.bound.pos.x1;
+    });
+  }
+
+  // take the next step in the algorithm
+  // (executes every dur milliseconds)
+  insertion.step = function() {
+    if (q.length > 0) {
+      var callback = q.shift();
+      callback();
+      redraw();
     }
   }
-};
 
-var sort = function sort(a) {
-  console.log(a);
-  callStack.push(new Sort(a));
-  return step();
-};
-
-var less = function less(v, w) {
-  callStack.push(new Less(v, w));
-  return step();
-};
-
-var exch = function exch(a, i, j) {
-  callStack.push(new Exch(a, i, j));
-  return step();
-};
-
-var Sort = function Sort(a) {
-  _classCallCheck(this, Sort);
-
-  this.params = {
-    "a": a
-  };
-  this.locals = {
-    "N": undefined,
-    "i": undefined,
-    "j": undefined
-  };
-  this.helpers = {
-    predicate_for_1: undefined,
-    is_first_iteration_for_1: true,
-    predicate_for_2: undefined,
-    is_first_iteration_for_2: true
-  };
-  this.result = undefined;
-
-  this.line = [function () {
-    // 01:int N = a.length;
-    this.locals["N"] = this.params["a"].length;
-    this.next = this.line[1];
-    trigger("Sort():1");
-  }, function () {
-    // 02:for (int i = 1; i < N; i++) {
-    if (this.helpers["is_first_iteration_for_1"] === true) {
-      // Initialize for loop if this is the first iteration
-      this.locals["i"] = 1;
-      this.helpers["is_first_iteration_for_1"] = false;
+  // take all queued steps in the algorithm
+  // (executes every dur milliseconds)
+  insertion.stepall = function() {
+    while (q.length > 0) {
+      var callback = q.shift();
+      callback();
+      redraw();
     }
-    if (this.locals["i"] < this.locals["N"]) {
-      this.next = this.line[2];
-    } else {
-      // If we're done with this loop, reset it's state
-      this.locals["i"] = undefined;
-      this.helpers["is_first_iteration_for_1"] = true;
-      // The bottom of this loop is the end of the program, so set next to
-      // undefined to indicate we're done executing this function.
-      this.next = undefined;
-    }
-    trigger("Sort():2");
-  }, function () {
-    // 03:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
-    if (this.helpers["is_first_iteration_for_2"] === true) {
-      // Initialize for loop if this is the first iteration
-      this.locals["j"] = this.locals["i"];
-      this.helpers["is_first_iteration_for_2"] = false;
-    }
-    if (this.locals["j"] > 0 && less(this.params["a"][this.locals["j"]], this.params["a"][this.locals["j"] - 1])) {
-      this.next = this.line[3];
-    } else {
-      // If we're done with this loop, reset it's state
-      this.locals["j"] = undefined;
-      this.helpers["is_first_iteration_for_2"] = true;
-      this.next = this.line[5];
-    }
-    trigger("Sort():3");
-  }, function () {
-    // 04:        exch(a, j, j - 1);
-    exch(this.params["a"], this.locals["j"], this.locals["j"] - 1);
-    this.next = this.line[4];
-    trigger("Sort():4");
-  }, function () {
-    // 05:    } // conditionally jump back to top of loop here
-    this.locals["j"]--;
-    this.next = this.line[2];
-    trigger("Sort():5");
-  }, function () {
-    // 06:}
-    this.locals["i"]++;
-    this.next = this.line[1];
-    trigger("Sort():6");
-  }];
+  }
 
-  this.next = this.line[0];
-};
+  // get the list of elements in original sequence order
+  var getAllElems = function() {
+    elements = [];
+    insertion.slots.forEach(function(slot) {
+      elements.push(slot.elem);
+    });
+    return elements.sort(function(a, b) { return a.seq - b.seq; });
+  }
 
-var Less = function Less(v, w) {
-  _classCallCheck(this, Less);
+  // draw the array and its elements
+  redraw = function() {
+    // draw all array slots
+    var rects = d3.select("#g_arrelems")
+        .selectAll('rect')
+        .data(insertion.slots);
 
-  console.log("Invoke: less");
-  this.params = {
-    "v": v,
-    "w": w
-  };
-  this.locals = {};
-  this.helpers = {};
+    rects.transition().duration(dur)
+      .attr('x', function(d) { return d.pos.x - boxSize / 2; })
+      .attr('y', function(d) { return d.pos.y - boxSize / 2; })
+      .attr('width', function(d) { return boxSize; })
+      .attr('height', function(d) { return boxSize; })
+      .attr('fill', function(d) { return d.fill; });
 
-  this.result = undefined;
+    rects.enter()
+      .append('rect')
+      .attr('x', function(d) { return d.pos.x - boxSize / 2; })
+      .attr('y', function(d) { return d.pos.y - boxSize / 2; })
+      .attr('width', function(d) { return boxSize; })
+      .attr('height', function(d) { return boxSize; })
+      .attr('fill', 'white')
+      .transition().duration(dur)
+      .attr('fill', function(d) { return d.fill; })
+      .attr('x', function(d) { return d.pos.x - boxSize / 2; })
+      .attr('y', function(d) { return d.pos.y - boxSize / 2; });
 
-  this.line = [function () {
-    // 01:return v.compareTo(w) < 0;
-    this.result = v < w;
-    this.next = undefined;
-    trigger("Less():1");
-  }];
-  this.next = this.line[0];
-};
+    // draw all elements
+    var elems = d3.select("#g_labels")
+        .selectAll('text')
+        .data(getAllElems());
 
-var Exch = function Exch(a, i, j) {
-  _classCallCheck(this, Exch);
+    elems.text(function(d) { return d.val; })
+      .transition().duration(dur)
+      .attr('x', function(d) { return d.pos.x; })
+      .attr('y', function(d) { return d.pos.y + 1/3 * fontSize; });
 
-  console.log("Invoke: exch");
-  this.params = {
-    "a": a,
-    "i": i,
-    "j": j
-  };
-  this.locals = {
-    "t": undefined
-  };
-  this.helpers = {};
-  this.result = undefined;
+    elems.enter()
+      .append('text')
+      .attr('x', function(d) { return d.sp.x; })
+      .attr('y', function(d) { return d.sp.y + 1/3 * fontSize; })
+      .attr('fill', 'blue')
+      .attr('font-size', fontSize)
+      .text(function(d) { return d.val; })
+      .transition().duration(dur)
+      .attr('x', function(d) { return d.pos.x; })
+      .attr('y', function(d) { return d.pos.y + 1/3 * fontSize; });
 
-  this.line = [function () {
-    // 01:Comparable t = a[i];
-    this.locals["t"] = this.params["a"][this.params["i"]];
-    this.next = this.line[1];
-    trigger("Exch():1");
-  }, function () {
-    // 02:a[i] = a[j];
-    this.params["a"][this.params["i"]] = this.params["a"][this.params["j"]];
-    this.next = this.line[2];
-    trigger("Exch():2");
-  }, function () {
-    // 03:a[j] = t;
-    this.params["a"][this.params["j"]] = this.locals["t"];
-    this.next = undefined;
-    trigger("Exch():3; a=" + a);
-  }];
-  this.next = this.line[0];
-};
+    // draw sorted boundary
+    d3.select("#g_boundary")
+      .transition().duration(dur)
+      .attr('x1', insertion.bound.pos.x1)
+      .attr('x2', insertion.bound.pos.x2)
+      .attr('y1', insertion.bound.pos.y1)
+      .attr('y2', insertion.bound.pos.y2);
+  }
+
+  // initialize the visualization layout
+  initialize = function() {
+    // append svg header bar
+    /*
+    d3.select("body")
+      .append("div")
+      .attr('id','navdiv');
+    */
+    d3.select("#visualization")
+      .append("div")
+      .attr('id','navdiv');
+
+    // append the svg canvas
+    /*
+    d3.select("body")
+      .append("svg")
+      .attr("width", svgW)
+      .attr("height", svgH)
+      .attr('id','insertionsvg');
+      */
+    d3.select("#visualization")
+      .append("svg")
+      .attr("width", svgW)
+      .attr("height", svgH)
+      .attr('id','insertionsvg');
+
+    // append element for holding array elements
+    d3.select("#insertionsvg")
+      .append('g')
+      .attr('id','g_arrelems');
+
+    // append element for holding array element labels
+    d3.select("#insertionsvg")
+      .append('g')
+      .attr('id','g_labels');
+
+    // append element for holding sorted boundary line
+    d3.select("#insertionsvg")
+      .append('line')
+      .attr('id','g_boundary')
+      .attr('stroke','black');
+
+    // display initial array
+    redraw();
+  }
+  initialize();
+  return insertion;
+}

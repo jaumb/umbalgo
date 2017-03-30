@@ -1,6 +1,7 @@
 /**
  * Load an array of scripts asynchronously, in order.
  */
+/*
 var loadScripts = function(scripts, callback) {
   var recurse = function(scripts, callback, i) {
     if (i < scripts.length) {
@@ -15,7 +16,33 @@ var loadScripts = function(scripts, callback) {
   }
   recurse(scripts, callback, 0);
 };
-
+*/
+var loadScripts = function(scripts, callback) {
+  var recurse = function(scripts, callback, i) {
+    if (i < scripts.length) {
+      var xhr = new XMLHttpRequest;
+      console.log("Loading " + scripts[i] + "...");
+      xhr.open("GET", scripts[i]);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            var s = document.createElement('script');
+            s.innerHTML = xhr.responseText;
+            document.body.appendChild(s);
+            console.log("Loaded " + scripts[i]);
+            recurse(scripts, callback, ++i);
+          } else {
+            console.log("Error loading " + scripts[i]);
+          }
+        }
+      };
+      xhr.send();
+    } else if (callback) {
+      callback();
+    }
+  }
+  recurse(scripts, callback, 0);
+};
 /**
  * Decode the uri, and append scripts to the body of the page that populate the
  * appropriate content.
@@ -37,6 +64,11 @@ var loadScripts = function(scripts, callback) {
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
+      "depends": [
+        "js/libs/ext/highlight.pack.js",
+        "http://d3js.org/d3.v3.min.js",
+        "js/libs/runner/runner.js",
+      ],
       "children": [
         {
           "uriName": "fundamentals",
@@ -98,7 +130,8 @@ var loadScripts = function(scripts, callback) {
             },
             {
               "uriName": "insertion-sort",
-              "displayName": "Insertion Sort"
+              "displayName": "Insertion Sort",
+              "depends": ["js/insertion.js"]
             },
             {
               "uriName": "shell-sort",
@@ -270,7 +303,10 @@ var loadScripts = function(scripts, callback) {
       if (content) {
         for (var i = 0; i < content.length; ++i) {
           var c = content[i];
-          routes[c["uriName"]] = { "displayName": c["displayName"] };
+          routes[c["uriName"]] = {
+            "displayName": c["displayName"],
+            "depends": c["depends"]
+          };
           if (c.hasOwnProperty("children")) {
             routes[c["uriName"]]["children"] = {}
             recurse(c["children"], routes[c["uriName"]]["children"]);
@@ -300,25 +336,34 @@ var loadScripts = function(scripts, callback) {
 
     // Iterate over the requested route level-by-level, stopping at the parent
     // of the destination.
-    for (var i = 0, level = makeRoutes(content);
-         i < route.length - 1;
-         level = level["children"][route[i++]]) {
+    var level = makeRoutes(content);
+    for (var i = 0; i < route.length - 1; ++i) {
       // Add the current level to the trace.
       trace.push(route[i]);
-      // Add the script that populates content common to all pages at this level
-      // to the list of scripts to be loaded.
+      // Load dependencies for the script that populates content common to all
+      // pages at this level.
+      levelDepends = level["children"][route[i]]["depends"]
+      if (levelDepends !== undefined) {
+        scripts.push.apply(scripts, levelDepends);
+      }
+      // Then load the script itself
       scripts.push("js/content/" + trace.join("/") + "/" + route[i]
                    + "-inherit.js");
       // Add a breadcrumb to the navbar for this level.
       nav.push("<li><a href=\"index.html?page=" + trace.join(",") + "\">"
                + level["children"][route[i]]["displayName"] + "</a></li>");
+      level = level["children"][route[i]];
     }
     // Check that the destination page exists.
     if ([route[route.length - 1]] === undefined) {
       throw 'Invalid route';
     }
-    // Add the script that populates content specific to this page to the list
-    // of scripts to be loaded.
+    // Load dependencies for the current page.
+    levelDepends = level["children"][route[route.length - 1]]["depends"];
+    if (levelDepends !== undefined) {
+      scripts.push.apply(scripts, levelDepends);
+    }
+    // Then load the script that populates it.
     scripts.push("js/content/" + trace.slice(0, trace.length).join("/") + "/"
                 + route[route.length - 1] + ".js");
     // Add a breadcrumb to the navbar for this level.
@@ -333,6 +378,7 @@ var loadScripts = function(scripts, callback) {
     // TODO: Remove
     console.log("error: " + e);
   }
+  console.log(scripts);
   // Load the scripts in order.
   loadScripts(scripts);
   // Populate the nav bar.

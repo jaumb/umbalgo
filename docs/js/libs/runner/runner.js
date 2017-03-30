@@ -346,3 +346,5 @@ var StackFrame = function () {
 
   return StackFrame;
 }();
+
+console.log("runner.js executed");
