@@ -22,7 +22,8 @@ var tree_factory = (function() {
     var _Y2 = bounding_box.p2.y;
     var _W = _X2 - _X1;
     var _H = _Y2 - _Y1;
-    var map = {};
+    var nodeMap = {};
+    var edgeMap = {};
     var _radius = 1 / 2 * _W / 16;
     var _root = null;
     var _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
@@ -46,7 +47,6 @@ var tree_factory = (function() {
     function _createNewNode(clientNode, cx, cy) {
       var newNode = element_factory.getCircle();
       newNode.setR(_radius);
-      map[clientNode.id()] = newNode;
       newNode.setStrokeWidth('.3vw');
       newNode.getLabel().setVal(clientNode.val());
       newNode.getLabel().setFontSize((1.2 * _radius) + 'px');
@@ -58,7 +58,40 @@ var tree_factory = (function() {
       newNode.getLabel().setPosY(newNode.getPosCY() + 1/2 * labelBbox.height);
       newNode.getLabel().setSpX(newNode.getLabel().getPosX());
       newNode.getLabel().setSpY(newNode.getLabel().getPosY());
+      _addVizNode(clientNode, newNode);
       return newNode;
+    }
+
+    /**
+     * Create a new edge from client visualization node to child
+     * visualization node.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     */
+    function _createNewEdge(vizParent, vizChild) {
+      var newEdge = element_factory.getLine();
+      newEdge.setStroke(colors.BLACK);
+      newEdge.setStrokeWidth('.3vw');
+      _positionEdge(vizParent, vizChild, newEdge);
+      _addEdge(vizParent, vizChild, newEdge);
+      return newEdge;
+    }
+
+    /**
+     * Set the x1,y1,x2,y2 position of the edge from vizParent to
+     * vizChild.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     * @param {Object} edge - Edge to position.
+     */
+    function _positionEdge(vizParent, vizChild, edge) {
+      var x1 = vizParent.getPosCX();
+      var y1 = vizParent.getPosCY();
+      var x2 = vizChild.getPosCX();
+      var y2 = vizChild.getPosCY();
+      if (!edge) { edge = _getEdge(vizParent, vizChild); }
+      edge.setPos(x1,y1,x2,y2);
+      edge.setSp(x1,y1,x2,y2);
     }
 
     /**
@@ -69,21 +102,30 @@ var tree_factory = (function() {
      */
     function _buildTree(clientNode, vizParentNode, dir) {
       if (!clientNode) { return null; }
-      var vizNode = map[clientNode.id()];
+      var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         if (vizParentNode) {
           vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
           vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
+          _positionEdge(vizParentNode, vizNode);
+        } else if (vizNode.isDisplayNode && !_root) {
+          vizNode.setPosCX(_rootPos.x);
+          vizNode.setPosCY(_rootPos.y);
+          _root = vizNode;
         }
       } else {
-        var nodeX = _rootPos.x;
-        var nodeY = _rootPos.y;
+        vizNode = _createNewNode(clientNode, _rootPos.x, _rootPos.y);
         if (vizParentNode) {
-          nodeX = vizParentNode.getPosCX() + dir * xOffset;
-          nodeY = vizParentNode.getPosCY() + yOffset;
+          vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
+          vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
+          _createNewEdge(vizParentNode, vizNode);
+        } else {
+          _root = vizNode;
         }
-        vizNode = _createNewNode(clientNode, nodeX, nodeY);
+        vizNode.setSpCX(vizNode.getPosCX());
+        vizNode.setSpCY(vizNode.getPosCX());
       }
+      vizNode.isDisplayNode = false;
       vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
       vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
       return vizNode;
@@ -102,6 +144,79 @@ var tree_factory = (function() {
     }
 
     /**
+     * Add a visualization node to the visualization's tree that
+     * corresponds to a client's node.
+     * @param {Object} clientNode - Client's tree node object.
+     * @param {Object} vizNode - A visualization node.
+     */
+    function _addVizNode(clientNode, vizNode) {
+      nodeMap[clientNode.id()] = vizNode;
+    }
+
+    /**
+     * Get the visualization node corresponding to the client
+     * node.
+     * @param {Object} clientNode - Client's tree node object.
+     * @return vizNode - Visualization node.
+     */
+    function _getVizNode(clientNode) {
+      return nodeMap[clientNode.id()];
+    }
+
+    /**
+     * Remove a node from the visualization.
+     * @param {Object} clientNode - Client's tree node object.
+     */
+    function _removeVizNode(clientNode) {
+      delete nodeMap[clientNode.id()];
+    }
+
+    /**
+     * Get or create an id for the edge between the parent and child nodes.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     * @return id - Id of the edge.
+     */
+    function _edgeID(vizParent, vizChild) {
+      var n1 = vizParent.getID();
+      var n2 = vizChild.getID();
+      if (n2 < n1) {
+        n1 = vizChild.getID();
+        n2 = vizParent.getID();
+      }
+      return n1 + '-' + n2;
+    }
+
+    /**
+     * Add a visualization edge to the tree.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     * @param {Object} edge - Visualization edge.
+     */
+    function _addEdge(vizParent, vizChild, edge) {
+      edgeMap[_edgeID(vizParent, vizChild)] = edge;
+    }
+
+    /**
+     * Get the visualization edge between the parent and child nodes.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     * @return edge - Visualization edge between parent and child.
+     */
+    function _getEdge(vizParent, vizChild) {
+      return edgeMap[_edgeID(vizParent, vizChild)];
+    }
+
+    /**
+     * Remove an edge from the tree visualization.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     */
+    function _removeEdge(vizParent, vizChild) {
+      delete edgeMap[_edgeID(vizParent, vizChild)];
+    }
+
+    /**
      * Get the number of leaves in the tree rooted at node.
      * @param {undefined|Object} node - The root of the subtree.
      */
@@ -116,6 +231,31 @@ var tree_factory = (function() {
     }
 
     /**
+     * Reposition all nodes in the tree.
+     * @param {undefined|Object} root - The root of the subtree to reposition.
+     */
+    function _repositionNodes(node) {
+      var leafCount = _getLeafCount(node);
+      if (node.lChild) {
+        node.lChild.setPosCX((node.getPosX() - _radius) -
+        (_getHeight(_root) - _getHeight(node.lChild)) * _W * (leafCount-1)/2);
+        _repositionNodes(node.lChild);
+      }
+      if (node.rChild) {
+        node.rChild.setPosCX((node.getPosX() + _radius) +
+        (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
+        _repositionNodes(node.rChild);
+      }
+    }
+
+    /**
+     * Reposition all edges in the tree.
+     * @param {undefined|Object} root - The root of the subtree to reposition.
+     */
+    function _repositionEdges(node, vizParentNode) {
+    }
+
+    /**
      * Reposition the tree based on the size of the canvas, height of
      * the tree, number of nodes in the tree, and the number of leaves
      * in the tree.
@@ -123,18 +263,8 @@ var tree_factory = (function() {
      */
     function _reposition(node) {
       if (!node) { return; }
-
-      var leafCount = _getLeafCount(node);
-      if (node.lChild) {
-        node.lChild.setPosCX((node.getPosX() - _radius) -
-        (_getHeight(_root) - _getHeight(node.lChild)) * _W * (leafCount-1)/2);
-        _reposition(node.lChild);
-      }
-      if (node.rChild) {
-        node.rChild.setPosCX((node.getPosX() + _radius) +
-        (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
-        _reposition(node.rChild);
-      }
+      _repositionNodes(node);
+      _repositionEdges(node);
     }
 
 
@@ -147,10 +277,10 @@ var tree_factory = (function() {
      * @param {Object} clientNode - The node to make the root of the tree.
      */
     function buildTree(clientNode) {
-      var vizNode = map[clientNode.id()];
+      var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         _buildTree(clientNode);
-        _reposition(vizNode);
+        _reposition(_root);
       } else if (!_root) {
         _root = _buildTree(clientNode);
       }
@@ -160,12 +290,25 @@ var tree_factory = (function() {
     }
 
     /**
-     * Set the color of the edge between the parent and child node.
-     * @param {Object} clientParent - The parent node.
-     * @param {Object} clientChild - The child node.
+     * Set the color of the edge between parent and child nodes.
+     *
+     * This function expects clientParentChildPairs to be a list where
+     * the first two nodes in the list (i.e. pairsList[0] and pairsList[1])
+     * are a parent-child pair where the parent appears first and the child
+     * appears second. All subsequent pairs follow the same pattern.
+     * @param {Object} clientParentChildPairs - Pairs of client nodes [par,chi]
      * @param {String} color - Desired edge color.
      */
-    function setEdgeColor(clientParent, clientChild, color) {
+    function setEdgesColor(clientParentChildPairs, color) {
+      while (clientParentChildPairs.length > 0) {
+        var clientParent = clientParentChildPairs.shift();
+        var clientChild = clientParentChildPairs.shift();
+        var vizParent = _getVizNode(clientParent);
+        var vizChild = _getVizNode(clientChild);
+        if (vizParent && vizChild) {
+
+        }
+      }
     }
 
     /**
@@ -299,7 +442,7 @@ var tree_factory = (function() {
     ////////////////////////////////////////////////////////////////////////////
     return {
       buildTree:buildTree,
-      setEdgeColor:setEdgeColor,
+      setEdgesColor:setEdgesColor,
       dispNextNode:dispNextNode,
       setFill:setFill,
       setOutline:setOutline,
