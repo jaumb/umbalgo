@@ -115,7 +115,7 @@ var insertion = (function(elems, svgW, svgH) {
    */
   var removeI = function() {
     return function() {
-      index_i.setVisibility('hidden');
+      index_i.setFillOpacity(0);
     };
   }
 
@@ -124,7 +124,7 @@ var insertion = (function(elems, svgW, svgH) {
    */
   var removeJ = function() {
     return function() {
-      index_j.setVisibility('hidden');
+      index_j.setFillOpacity(0);
     };
   }
 

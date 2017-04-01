@@ -27,6 +27,8 @@ var tree_factory = (function() {
     var _root = null;
     var _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
     var _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
+    var xOffset = 2 * _radius;
+    var yOffset = 3 * _radius;
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -63,30 +65,28 @@ var tree_factory = (function() {
      * Create a new binary tree given the root of a subtree.
      * @param {Object} clientNode - Root of the subtree.
      * @param {Object} vizParentNode - Parent node of the root of this subtree.
+     * @param {number} dir - Direction of x axis offset (-1 | 1).
      */
-    function _buildTree(clientNode, vizParentNode) {
-      var root = map[clientNode.id()];
-      if (root) {
-        root = _createNode(clientNode);
+    function _buildTree(clientNode, vizParentNode, dir) {
+      if (!clientNode) { return null; }
+      var vizNode = map[clientNode.id()];
+      if (vizNode) {
         if (vizParentNode) {
-          root.setPosCX(vizParentNode.getPosCX() + xOffset);
-          root.setPosCY(vizParentNode.getPosCY() + 3 * _radius);
-        } else {
-          root.setPosCX(_rootPos.cx);
-          root.setPosCY(_rootPos.cy);
+          vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
+          vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
         }
-        if (clientNode.lChild && clientNode.lChild()) {
-          root.lChild = _buildTree(clientNode.lChild(), root, -2 * _radius);
-        }
-        if (clientNode.rChild && clientNode.rChild()) {
-          root.rChild = _buildTree(clientNode.rChild(), root, 2 * _radius);
-        }
-      } else if (!vizParentNode) {
-
       } else {
-        root = _createNewNode(clientNode, vizParentNode.getPosCX());
+        var nodeX = _rootPos.x;
+        var nodeY = _rootPos.y;
+        if (vizParentNode) {
+          nodeX = vizParentNode.getPosCX() + dir * xOffset;
+          nodeY = vizParentNode.getPosCY() + yOffset;
+        }
+        vizNode = _createNewNode(clientNode, nodeX, nodeY);
       }
-      return root;
+      vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
+      vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
+      return vizNode;
     }
 
     /**
@@ -144,30 +144,28 @@ var tree_factory = (function() {
 
     /**
      * Build a tree given a node to be treated as the root of the tree.
-     * Does nothing if this tree already has a root.
      * @param {Object} clientNode - The node to make the root of the tree.
      */
-    function addRoot(clientNode) {
-      if (!_root) {
+    function buildTree(clientNode) {
+      var vizNode = map[clientNode.id()];
+      if (vizNode) {
+        _buildTree(clientNode);
+        _reposition(vizNode);
+      } else if (!_root) {
         _root = _buildTree(clientNode);
       }
+      // if clientNode does not have a corresponding node on the svg
+      // canvas and there is already a root node on the canvas then
+      // we ignore this call (we don't want to draw two root nodes)
     }
 
     /**
-     * Make child the right child of node.
-     * @param {Object} clientNode - The node getting a child.
-     * @param {Object} clientChildNode - The child node to add.
+     * Set the color of the edge between the parent and child node.
+     * @param {Object} clientParent - The parent node.
+     * @param {Object} clientChild - The child node.
+     * @param {String} color - Desired edge color.
      */
-    function addRChild(clientNode, clientChildNode) {
-      if 
-    }
-
-    /**
-     * Make child the left child of node.
-     * @param {Object} clientNode - The node getting a child.
-     * @param {Object} clientChildNode - The child node to add.
-     */
-    function addLChild(clientNode, clientChildNode) {
+    function setEdgeColor(clientParent, clientChild, color) {
     }
 
     /**
@@ -179,30 +177,30 @@ var tree_factory = (function() {
 
     /**
      * Set the fill attribute of a node.
-     * @param {Object[]} nodes - The nodes to modify.
+     * @param {Object[]} clientNodes - The nodes to modify.
      * @param {string} color - The new fill color of the nodes.
      */
-    function setFill(nodes, color) {
-      nodes.forEach(function(clientNode) {
+    function setFill(clientNodes, color) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
     /**
      * Set the outline attribute of an node.
-     * @param {Object[]} nodes - The nodes to modify.
+     * @param {Object[]} clientNodes - The nodes to modify.
      * @param {string} color - The new outline color of the nodes.
      */
-    function setOutline(nodes, color) {
-      nodes.forEach(function(clientNode) {
+    function setOutline(clientNodes, color) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
     /**
      * Emphasize nodes.
-     * @param {Object[]} nodes - The nodes to emphasize.
+     * @param {Object[]} clientNodes - The nodes to emphasize.
      */
-    function emphasize(nodes) {
-      nodes.forEach(function(clientNode) {
+    function emphasize(clientNodes) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
@@ -216,10 +214,10 @@ var tree_factory = (function() {
 
     /**
      * De-emphasize nodes.
-     * @param {Object[]} nodes - The nodes to de-emphasize.
+     * @param {Object[]} clientNodes - The nodes to de-emphasize.
      */
-    function deemphasize(nodes) {
-      nodes.forEach(function(clientNode) {
+    function deemphasize(clientNodes) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
@@ -243,21 +241,21 @@ var tree_factory = (function() {
 
     /**
      * Create or change a nodes' labels.
-     * @param {Object[]} nodes - The nodes to modify.
+     * @param {Object[]} clientNodes - The nodes to modify.
      * @param {number|string} new_label - The nodes' new text label.
      */
-    function setLabels(nodes, new_label) {
-      nodes.forEach(function(clientNode) {
+    function setLabels(clientNodes, new_label) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
     /**
      * Set nodes' text label fill colors.
-     * @param {Object[]} nodes - The nodes to modify.
+     * @param {Object[]} clientNodes - The nodes to modify.
      * @param {string} color - The new text color for these nodes.
      */
-    function setLabelFill(nodes, color) {
-      nodes.forEach(function(clientNode) {
+    function setLabelFill(clientNodes, color) {
+      clientNodes.forEach(function(clientNode) {
       });
     }
 
@@ -300,9 +298,8 @@ var tree_factory = (function() {
     //  return public methods
     ////////////////////////////////////////////////////////////////////////////
     return {
-      addRoot:addRoot,
-      addRChild:addRChild,
-      addLChild:addLChild,
+      buildTree:buildTree,
+      setEdgeColor:setEdgeColor,
       dispNextNode:dispNextNode,
       setFill:setFill,
       setOutline:setOutline,
