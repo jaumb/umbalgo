@@ -58,6 +58,7 @@ var tree_factory = (function() {
       newNode.getLabel().setPosY(newNode.getPosCY() + 1/2 * labelBbox.height);
       newNode.getLabel().setSpX(newNode.getLabel().getPosX());
       newNode.getLabel().setSpY(newNode.getLabel().getPosY());
+      newNode.isDisplayNode = false;
       _addVizNode(clientNode, newNode);
       return newNode;
     }
@@ -125,7 +126,7 @@ var tree_factory = (function() {
         vizNode.setSpCX(vizNode.getPosCX());
         vizNode.setSpCY(vizNode.getPosCX());
       }
-      vizNode.isDisplayNode = false;
+      newNode.isDisplayNode = false;
       vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
       vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
       return vizNode;
@@ -253,6 +254,12 @@ var tree_factory = (function() {
      * @param {undefined|Object} root - The root of the subtree to reposition.
      */
     function _repositionEdges(node, vizParentNode) {
+      if (!node) { return; }
+      else if (vizParentNode) { _positionEdge(vizParentNode, node); }
+      else {
+        _repositionEdges(node.lChild, node);
+        _repositionEdges(node.rChild, node);
+      }
     }
 
     /**
@@ -301,12 +308,10 @@ var tree_factory = (function() {
      */
     function setEdgesColor(clientParentChildPairs, color) {
       while (clientParentChildPairs.length > 0) {
-        var clientParent = clientParentChildPairs.shift();
-        var clientChild = clientParentChildPairs.shift();
-        var vizParent = _getVizNode(clientParent);
-        var vizChild = _getVizNode(clientChild);
+        var vizParent = _getVizNode(clientParentChildPairs.shift());
+        var vizChild = _getVizNode(clientParentChildPairs.shift());
         if (vizParent && vizChild) {
-
+          _getEdge(vizParent, vizChild).setStroke(color);
         }
       }
     }
@@ -316,6 +321,11 @@ var tree_factory = (function() {
      * @param {Object} clientNode - The node being added to the tree.
      */
     function dispNextNode(clientNode) {
+      var node = _getVizNode(clientNode);
+      if (!node) {
+        node = _createNewNode(clientNode, _nextNodePos.x, _nextNodePos.y);
+      }
+      node.isDisplayNode = true;
     }
 
     /**
@@ -325,6 +335,7 @@ var tree_factory = (function() {
      */
     function setFill(clientNodes, color) {
       clientNodes.forEach(function(clientNode) {
+        _getVizNode(clientNode).setFill(color);
       });
     }
 
@@ -335,6 +346,7 @@ var tree_factory = (function() {
      */
     function setOutline(clientNodes, color) {
       clientNodes.forEach(function(clientNode) {
+        _getVizNode(clientNode).setStroke(color);
       });
     }
 
@@ -344,15 +356,35 @@ var tree_factory = (function() {
      */
     function emphasize(clientNodes) {
       clientNodes.forEach(function(clientNode) {
+        var vizNode = _getVizNode(clientNode);
+        var emphasis = element_factory.getCircle();
+        emphasis.setR(1.3 * vizNode.getR())
+        emphasis.setStroke(colors.EMPHASIZE);
+        emphasis.setStrokeOpacity(75);
+        emphasis.setFill(colors.WHITE);
+        emphasis.setFillOpacity(0);
+        emphasis.setPosCX(vizNode.getCX());
+        emphasis.setPosCY(vizNode.getCY());
+        emphasis.setSpCX(vizNode.getCX());
+        emphasis.setSpCY(vizNode.getCY());
+        vizNode.emphasis = emphasis;
       });
     }
 
     /**
      * Move emphasis circle.
-     * @param {Object} node1 - The currently emphasized node.
-     * @param {Object} node2 - The next node to emphasize.
+     * @param {Object} clientNode1 - The currently emphasized node.
+     * @param {Object} clientNode2 - The next node to emphasize.
      */
-    function moveEmphasis(node1, node2) {
+    function moveEmphasis(clientNode1, clientNode2) {
+      var vizNode1 = _getVizNode(clientNode1);
+      var vizNode2 = _getVizNode(clientNode2);
+      var emphasis = vizNode1.emphasis;
+      if (emphasis) {
+        vizNode1.emphasis = null;
+        emphasis.setPosCX(vizNode2.getPosCX());
+        emphasis.setPosCY(vizNode2.getPosCY());
+      }
     }
 
     /**
@@ -361,34 +393,23 @@ var tree_factory = (function() {
      */
     function deemphasize(clientNodes) {
       clientNodes.forEach(function(clientNode) {
+        var vizNode = _getVizNode(clientNode);
+        var emphasis = vizNode.emphasis;
+        if (emphasis) {
+          redraw.removeElem(emphasis.getID());
+          vizNode.emphasis = null;
+        }
       });
     }
 
     /**
-     * Get a list of nodes in the tree.
-     * The nodes returned are deep copies.
-     */
-    function getNodes() {
-      var nodes = [];
-      return nodes;
-    }
-
-    /**
-     * Get a list of edges in the tree.
-     * The edges returned are deep copies.
-     */
-    function getEdges() {
-      var edges = [];
-      return edges;
-    }
-
-    /**
-     * Create or change a nodes' labels.
+     * Create or change nodes' labels.
      * @param {Object[]} clientNodes - The nodes to modify.
-     * @param {number|string} new_label - The nodes' new text label.
+     * @param {number|string} newLabel - The nodes' new text label.
      */
-    function setLabels(clientNodes, new_label) {
+    function setLabels(clientNodes, newLabel) {
       clientNodes.forEach(function(clientNode) {
+        _getVizNode(clientNode).getLabel().setVal(newLabel);
       });
     }
 
@@ -399,7 +420,36 @@ var tree_factory = (function() {
      */
     function setLabelFill(clientNodes, color) {
       clientNodes.forEach(function(clientNode) {
+        _getVizNode(clientNode).getLabel().setFill(color);
       });
+    }
+
+    /**
+     * Get a list of nodes in the tree.
+     * The nodes returned are deep copies.
+     */
+    function getNodes() {
+      var nodes = [];
+      for (var key in nodeMap) {
+        if (nodeMap.hasOwnProperty(key)) {
+          nodes.push(nodeMap[key].copy());
+        }
+      }
+      return nodes;
+    }
+
+    /**
+     * Get a list of edges in the tree.
+     * The edges returned are deep copies.
+     */
+    function getEdges() {
+      var edges = [];
+      for (var key in edgeMap) {
+        if (edgeMap.hasOwnProperty(key)) {
+          edges.push(edgeMap[key].copy());
+        }
+      }
+      return edges;
     }
 
     /**
@@ -416,6 +466,11 @@ var tree_factory = (function() {
      */
     function getText() {
       var text = [];
+      for (var key in nodeMap) {
+        if (nodeMap.hasOwnProperty(key)) {
+          text.push(nodeMap[key].getLabel());
+        }
+      }
       return text;
     }
 
@@ -425,6 +480,14 @@ var tree_factory = (function() {
      */
     function getCircles() {
       var circs = [];
+      for (var key in nodeMap) {
+        if (nodeMap.hasOwnProperty(key)) {
+          circs.push(nodeMap[key]);
+          if (nodeMap[key].emphasis) {
+            circs.push(nodeMap[key].emphasis);
+          }
+        }
+      }
       return circs;
     }
 
@@ -434,6 +497,11 @@ var tree_factory = (function() {
      */
     function getLines() {
       var lines = [];
+      for (var key in edgeMap) {
+        if (edgeMap.hasOwnProperty(key)) {
+          lines.push(edgeMap[key]);
+        }
+      }
       return lines;
     }
 

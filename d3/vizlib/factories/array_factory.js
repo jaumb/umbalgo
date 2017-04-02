@@ -162,11 +162,11 @@ var array_factory = (function(){
     /**
      * Create or change slots' text label.
      * @param {number[]} indices - The indices of the slots to modify.
-     * @param {number|string} new_label - The slots' new text label.
+     * @param {number|string} newLabel - The slots' new text label.
      */
-    function setLabels(indices, new_label) {
+    function setLabels(indices, newLabel) {
       indices.forEach(function(i) {
-        _elems[i].getLabel().setVal(new_label);
+        _elems[i].getLabel().setVal(newLabel);
       });
     }
 
