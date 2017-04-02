@@ -24,6 +24,9 @@ var element_factory = (function() {
   // svg line elements only
   var _line_sp  = {x1:null, y1:null, x2:null, y2:null}; // default line starting pos
   var _line_pos = {x1:null, y1:null, x2:null, y2:null}; // default line pos
+  var _marker_start = 'url(#marker_circle)';
+  var _marker_end   = 'url(#marker_arrow)';
+  var _opacity = 1;
 
   // svg text elements
   var _font = 'courier new';
@@ -406,6 +409,10 @@ var element_factory = (function() {
      visibility = value;
     }
 
+    function getCenter() {
+      return {x:pos.x + 0.5 * width, y:pos.y + 0.5 * height};
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -440,7 +447,8 @@ var element_factory = (function() {
       copy:copy,
       className:className,
       getVisibility:getVisibility,
-      setVisibility:setVisibility
+      setVisibility:setVisibility,
+      getCenter:getCenter
     };
   }
 
@@ -622,6 +630,7 @@ var element_factory = (function() {
     var stroke = _stroke;
     var stroke_width = _stroke_width;
     var stroke_opacity = _stroke_opacity;
+    var opacity = _opacity;
     var sp = {
       x1:_line_sp.x1,
       y1:_line_sp.y1,
@@ -636,6 +645,8 @@ var element_factory = (function() {
     };
     var class_name = 'line';
     var visibility = _visibility;
+    var marker_start = _marker_start;
+    var marker_end = _marker_end;
 
     // getters and setters
 
@@ -669,6 +680,14 @@ var element_factory = (function() {
 
     function setStrokeOpacity(opacity) {
       stroke_opacity = opacity;
+    }
+
+    function getOpacity() {
+      return opacity;
+    }
+
+    function setOpacity(val) {
+      opacity = val;
     }
 
     function getSpX1() {
@@ -775,6 +794,22 @@ var element_factory = (function() {
      visibility = value;
     }
 
+    function getMarkerStart() {
+      return marker_start;
+    }
+
+    function setMarkerStart(marker) {
+      marker_start = marker;
+    }
+
+    function getMarkerEnd() {
+      return marker_end;
+    }
+
+    function setMarkerEnd(marker) {
+      marker_end = marker;
+    }
+
     // return public functions
     return {
       getID:getID,
@@ -784,6 +819,8 @@ var element_factory = (function() {
       setStrokeWidth:setStrokeWidth,
       getStrokeOpacity:getStrokeOpacity,
       setStrokeOpacity:setStrokeOpacity,
+      getOpacity:getOpacity,
+      setOpacity:setOpacity,
       getSpX1:getSpX1,
       setSpX1:setSpX1,
       getSpX2:getSpX2,
@@ -806,7 +843,11 @@ var element_factory = (function() {
       setPos:setPos,
       className:className,
       getVisibility:getVisibility,
-      setVisibility:setVisibility
+      setVisibility:setVisibility,
+      getMarkerStart:getMarkerStart,
+      setMarkerStart:setMarkerStart,
+      getMarkerEnd:getMarkerEnd,
+      setMarkerEnd:setMarkerEnd
     };
 
   }
