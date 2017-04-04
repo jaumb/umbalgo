@@ -536,7 +536,8 @@ var tree_factory = (function() {
   /**
    * Get a new binary tree visualization object.
    * @param {undefined|Object} treeRoot - Root of the existing binary tree.
-   * @param {Object} bounding_box - The box inside of which to center the tree.
+   * @param {Object} bounding_box - The box inside of which to center the tree,
+   *                                should be of the form {p1:{x,y}, p2:{x,y}}
    */
   function get_binary_tree(treeRoot, bounding_box) {
     return new Binary_Tree(treeRoot, bounding_box);

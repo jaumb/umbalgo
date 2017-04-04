@@ -66,9 +66,7 @@ var insertion = (function(elems, svgW, svgH) {
   }
 
   var getText = function() {
-    var text = [];
-    _array.getRects().forEach(function(e) { text.push(e.getLabel()); });
-    return vizlib.getText(text, index_i, index_j, _array.getText());
+    return vizlib.getText(index_i, index_j, _array.getText());
   }
   //end of element array getters////////////////////////////////////////////////
 
