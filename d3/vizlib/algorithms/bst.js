@@ -5,7 +5,7 @@
  * @param {number} svgW - Width of the svg canvas.
  * @param {number} svgH - Height of the svg canvas.
  */
-var BST = (function(root, svgW, svgH) {
+var bst = (function(root, svgW, svgH) {
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ var BST = (function(root, svgW, svgH) {
     p2:{x:svgW, y:svgH}
   }
 
-  var _tree = tree_factory.get_binary_tree();
+  var _tree = tree_factory.get_binary_tree(root, _boundingBox);
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods

@@ -34,7 +34,7 @@
       var ids = 1;
 
       // get the BST visualization
-      var viz = vizlib.getBST(1000, svgW, svgH);
+      var viz = vizlib.get_bst(root, svgW, svgH);
 
       // get 5 randomly ordered integers
       elements = d3.range(1,6);
@@ -70,6 +70,13 @@
         var val = function() { return _val; }
         var lChild = function() {return _lc; }
         var rChild = function() {return _rc; }
+
+        return {
+          id:id,
+          val:val,
+          lChild:lChild,
+          rChild:rChild
+        };
       }
 
     </script>

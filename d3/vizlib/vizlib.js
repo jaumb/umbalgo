@@ -98,6 +98,10 @@ var vizlib = (function() {
     return insertion(elements, svgW, svgH);
   };
 
+  var get_bst = function(root, svgW, svgH) {
+    return bst(root, svgW, svgH);
+  };
+
   //////////////////////////////////////////////////////////////////////////////
   //  return public methods
   //////////////////////////////////////////////////////////////////////////////
@@ -107,7 +111,8 @@ var vizlib = (function() {
     getLines:getLines,
     getText:getText,
     get_selection:get_selection,
-    get_insertion:get_insertion
+    get_insertion:get_insertion,
+    get_bst:get_bst
   };
 
 })();
