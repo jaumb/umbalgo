@@ -11,7 +11,7 @@ class VirtualMachine {
 
   loadFunc(filename) {
     const xhr = new XMLHttpRequest;
-    xhr.open("GET", "js/libs/algo/" + filename);
+    xhr.open("GET", "js/algo/" + filename);
     let cached_this = this;
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {

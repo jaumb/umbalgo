@@ -23,7 +23,7 @@ var VirtualMachine = function () {
     key: "loadFunc",
     value: function loadFunc(filename) {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "js/libs/algo/" + filename);
+      xhr.open("GET", "js/algo/" + filename);
       var cached_this = this;
       xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -346,5 +346,3 @@ var StackFrame = function () {
 
   return StackFrame;
 }();
-
-console.log("runner.js executed");

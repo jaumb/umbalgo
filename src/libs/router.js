@@ -65,9 +65,9 @@ var loadScripts = function(scripts, callback) {
       "uriName": "algorithms",
       "displayName": "Algorithms",
       "depends": [
-        "js/libs/ext/highlight.pack.js",
+        "js/libs/highlight.pack.js",
         "http://d3js.org/d3.v3.min.js",
-        "js/libs/runner/runner.js",
+        "js/libs/runner.js",
       ],
       "children": [
         {
@@ -130,8 +130,7 @@ var loadScripts = function(scripts, callback) {
             },
             {
               "uriName": "insertion-sort",
-              "displayName": "Insertion Sort",
-              "depends": ["js/insertion.js"]
+              "displayName": "Insertion Sort"
             },
             {
               "uriName": "shell-sort",
@@ -333,7 +332,7 @@ var loadScripts = function(scripts, callback) {
     var scripts = [];
     // An array of html that comprises the nav bar.
     var nav = [];
-
+    var levelDepends;
     // Iterate over the requested route level-by-level, stopping at the parent
     // of the destination.
     var level = makeRoutes(content);
