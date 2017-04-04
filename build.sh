@@ -26,3 +26,4 @@ popd
 cp src/html/*.html docs
 mkdir -p docs/css
 cp src/css/*.css docs/css
+cp -r d3/vizlib docs/js/libs
