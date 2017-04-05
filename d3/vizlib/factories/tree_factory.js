@@ -50,12 +50,13 @@ var tree_factory = (function() {
       newNode.setStrokeWidth('.3vw');
       newNode.getLabel().setVal(clientNode.val());
       newNode.getLabel().setFontSize((1.2 * _radius) + 'px');
-      newNode.setPos(cx, cy);
+      newNode.setPosCX(cx);
+      newNode.setPosCY(cy);
       newNode.setSpCX(newNode.getPosCX());
       newNode.setSpCY(newNode.getPosCY());
       var labelBbox = redraw.getBBox(newNode.getLabel());
       newNode.getLabel().setPosX(newNode.getPosCX());
-      newNode.getLabel().setPosY(newNode.getPosCY() + 1/2 * labelBbox.height);
+      newNode.getLabel().setPosY(newNode.getPosCY() + 1/4 * labelBbox.height);
       newNode.getLabel().setSpX(newNode.getLabel().getPosX());
       newNode.getLabel().setSpY(newNode.getLabel().getPosY());
       newNode.isDisplayNode = false;
@@ -103,6 +104,9 @@ var tree_factory = (function() {
      */
     function _buildTree(clientNode, vizParentNode, dir) {
       if (!clientNode) { return null; }
+      console.log('id: ' + clientNode.id());
+      console.log('lChild: ' + clientNode.lChild());
+      console.log('rChild: ' + clientNode.rChild());
       var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         if (vizParentNode) {
@@ -110,25 +114,29 @@ var tree_factory = (function() {
           vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
           _positionEdge(vizParentNode, vizNode);
         } else if (vizNode.isDisplayNode && !_root) {
-          vizNode.setPosCX(_rootPos.x);
-          vizNode.setPosCY(_rootPos.y);
+          vizNode.setPosCX(_rootPos.cx);
+          vizNode.setPosCY(_rootPos.cy);
           _root = vizNode;
         }
       } else {
-        vizNode = _createNewNode(clientNode, _rootPos.x, _rootPos.y);
+        vizNode = _createNewNode(clientNode, _rootPos.cx, _rootPos.cy);
         if (vizParentNode) {
           vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
           vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
+          vizNode.setSpCX(vizNode.getPosCX());
+          vizNode.setSpCY(vizNode.getPosCY());
           _createNewEdge(vizParentNode, vizNode);
         } else {
           _root = vizNode;
         }
-        vizNode.setSpCX(vizNode.getPosCX());
-        vizNode.setSpCY(vizNode.getPosCX());
       }
-      newNode.isDisplayNode = false;
+      vizNode.isDisplayNode = false;
       vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
       vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
+      console.log('pos.cx' + vizNode.getPosCX());
+      console.log('pos.cy' + vizNode.getPosCY());
+      console.log('sp.cx' + vizNode.getSpCX());
+      console.log('sp.cy' + vizNode.getSpCY());
       return vizNode;
     }
 
