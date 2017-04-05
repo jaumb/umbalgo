@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/array_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/selection.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id','svg_canvas');
+
+      redraw.initCanvas();
+
+      var dur = 15000;
+
+      var l = [];
+      for (var i = 1; i <= 5; i++) {
+        l.push(i);
+      }
+      d3.shuffle(l);
+
+      var viz = vizlib.get_selection(l, svgW, svgH);
+      redraw.addOpsAndDraw(viz, dur, viz.initializeMin());
+
+      var n = l.length;
+      for (var i = 0; i < n; i++) {
+        redraw.addOpsAndDraw(viz, dur,
+                             viz.emphasize([i]),
+                             viz.setMinPos(i));
+        for (var j = i + 1; j < n; j++) {
+          var min = i;
+          redraw.addOpsAndDraw(viz, dur,
+                               viz.setMinLabel(l[i]),
+                               viz.setMinPos(j),
+                               viz.setFill([j], colors.COMPARE),
+                               viz.setMinFill(colors.ACTIVE));
+          if (l[j] < l[min]) {
+            min = j;
+            redraw.addOpsAndDraw(viz, dur,
+                                 viz.setFill([min], colors.ACTIVE),
+                                 viz.setMinLabel(l[min]));
+          }
+          var tmp = l[i];
+          l[i] = l[min];
+          l[min] = tmp;
+          redraw.addOpsAndDraw(viz, dur,
+                               viz.swap(i, min),
+                               viz.setFill([j], colors.BACKGROUND));
+        }
+        redraw.addOpsAndDraw(viz, dur,
+                             viz.setFill([i], colors.FINISHED),
+                             viz.deemphasize([i]));
+      }
+      redraw.addOpsAndDraw(viz, dur, viz.setMinLabel(''));
+
+    </script>
+  </body>
+</html>

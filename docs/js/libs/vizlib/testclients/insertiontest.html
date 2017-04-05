@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/array_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/insertion.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id','svg_canvas');
+
+      redraw.initCanvas();
+
+      // example of a client using the insertion visualization
+      var dur = 10000;
+
+      var l = [];
+      for (var i = 1; i <= 5; i++) {
+        l.push(i);
+      }
+      d3.shuffle(l);
+
+      var viz = vizlib.get_insertion(l, svgW, svgH);
+      redraw.draw(viz, dur); // draw initial canvas
+
+      redraw.addOpsAndDraw(viz, dur, viz.setBoundPos(0));
+
+      // insertion sort implementation
+      for (var i = 1; i < l.length; i++) {
+        redraw.addOpsAndDraw(viz, dur, viz.setI(i));
+        for (var j = i; j > 0; j--) {
+          redraw.addOpsAndDraw(viz, dur, viz.setJ(j));
+          redraw.addOpsAndDraw(viz, dur, viz.emphasize([j]),
+                        viz.setFill([j - 1, j], colors.COMPARE));
+          if (l[j] < l[j - 1]) {
+            var tmp = l[j - 1];
+            l[j - 1] = l[j];
+            l[j] = tmp;
+            redraw.addOpsAndDraw(viz, dur, viz.swap(j-1,j),
+                                              viz.moveEmphasis(j,j-1));
+            redraw.addOpsAndDraw(viz, dur,
+                                viz.setFill([j - 1, j], colors.BACKGROUND));
+            if (j === 1) {
+              redraw.addOpsAndDraw(viz, dur, viz.deemphasize([j - 1]));
+            }
+          } else {
+            redraw.addOpsAndDraw(viz, dur,
+                                viz.setFill([j - 1, j], colors.BACKGROUND),
+                                viz.deemphasize([j]));
+            break;
+          }
+        }
+        redraw.addOpsAndDraw(viz, dur, viz.setBoundPos(i));
+      }
+      redraw.addOpsAndDraw(viz, dur, viz.removeI(), viz.removeJ());
+
+    </script>
+  </body>
+</html>

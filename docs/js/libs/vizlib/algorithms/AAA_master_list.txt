@@ -1,0 +1,188 @@
+//////////////////////////////////////////////////////////////////////////////
+// CHAPTER 1
+//////////////////////////////////////////////////////////////////////////////
+
+// Knuth.java
+var knuth = (function() {
+  // needs:
+  // 1 array (array of strings to shuffle)
+  // 2 elements (track i and r)
+})();
+
+// BinarySearch.java
+var binary_search = (function() {
+  // needs:
+  // 1 array (sorted array of ints)
+  // 4 elements (lo, hi, mid, int searching for)
+  //   can be done with color, but should have labels
+})();
+
+// LinkedBag.java
+var linked_bag = (function() {
+  // needs:
+  //
+});
+
+// ResizingArrrayBag.java
+var resizing_array_bag = (function() {
+  // needs:
+  //
+});
+
+// LinkedQueue.java
+var linked_queue = (function() {
+  // needs:
+  //
+});
+
+// ResizingArrrayQueue.java
+var resizing_array_queue = (function() {
+  // needs:
+  //
+});
+
+// LinkedStack.java
+var linked_stack = (function() {
+  // needs:
+  //
+});
+
+// ResizingArrrayStack.java
+var resizing_array_stack = (function() {
+  // needs:
+  //
+});
+
+// QuickFindUF.java
+var quickfindUF = (function() {
+  // needs:
+  //
+});
+
+// QuickUnionUF.java
+var quickunionUF = (function() {
+  // needs:
+  //
+});
+
+// WeightedQuickUnionUF.java
+var weighted_quickunionUF = (function() {
+  // needs:
+  //
+});
+
+//////////////////////////////////////////////////////////////////////////////
+// CHAPTER 2
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Selection.java
+ * Selection Sort visualization object.
+ * @param {Object} input - Object containing data and canvas constraints.
+ */
+var selection = (function(input) {
+  // private variables
+  var min = element_factory.rect();
+  var array = array_factory.(input.data, input.size);
+
+  // private methods
+
+  // public methods
+
+  var getRects = function() {
+    return _getRects(array, min);
+  }
+
+  // exposed methods
+  return {
+    getRects:getRects,
+  }
+});
+
+// Insertion.java
+var insertion = (function() {
+  // needs:
+  // 1 array of elements to be sorted
+  //
+});
+
+// Shell.java
+var shell = (function() {
+  // needs:
+  //
+});
+
+// Merge.java
+var merge = (function() {
+  // needs:
+  //
+});
+
+// Quick.java
+var quick = (function() {
+  // needs:
+  //
+});
+
+// Quick3way.java
+var quick_3way = (function() {
+  // needs:
+  //
+});
+
+// Heap.java
+var heap = (function() {
+  // needs:
+  //
+});
+
+// MaxPQ.java
+var maxPQ = (function() {
+  // needs:
+  //
+});
+
+// MinPQ.java
+var minPQ = (function() {
+  // needs:
+  //
+});
+
+//////////////////////////////////////////////////////////////////////////////
+// CHAPTER 3
+//////////////////////////////////////////////////////////////////////////////
+
+// SequentialSearchST.java
+// BinarySearchST.java
+// BST.java
+// RedBlackBST.java
+// SeparateChainingHashST.java
+
+//////////////////////////////////////////////////////////////////////////////
+// CHAPTER 4
+//////////////////////////////////////////////////////////////////////////////
+// Graph.java
+// DepthFirstPaths.java
+// BreadthFirstPaths.java
+// CC.java
+// Digraph.java
+// DirectedCycle.java
+// DepthFirstOrder.java
+// Topological.java
+// KosarajuSharirSCC.java
+// EdgeWeightedGraph.java
+// KruskalMST.java
+// EdgeWeightedDigraph.java
+// DijkstraSP.java
+// AcyclicSP.java
+
+//////////////////////////////////////////////////////////////////////////////
+// CHAPTER 5
+//////////////////////////////////////////////////////////////////////////////
+// LSD.java
+// MSD.java
+// TrieST.java
+// KMP.java
+// NFA.java
+// RunLength.java
+// Huffman.java

@@ -68,6 +68,10 @@ var loadScripts = function(scripts, callback) {
         "js/libs/highlight.pack.js",
         "http://d3js.org/d3.v3.min.js",
         "js/libs/runner.js",
+        "js/libs/vizlib/common.js",
+        "js/libs/vizlib/factories/element_factory.js",
+        "js/libs/vizlib/vizlib.js",
+        "js/libs/vizlib/redraw.js"
       ],
       "children": [
         {
