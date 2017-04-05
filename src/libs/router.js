@@ -60,7 +60,7 @@ var loadScripts = function(scripts, callback) {
    * that each level of the hierarchy's collection of children is ordered. This
    * is required to generate the index pages.
    */
-  var content = [
+  const content = [
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
@@ -302,6 +302,27 @@ var loadScripts = function(scripts, callback) {
    * lookups.
    */
   var makeRoutes = function(content) {
+    var makeRoutes = function(content) {
+      if (content !== undefined) {
+        var routes = {};
+        for (var c of content) {
+          let children = makeRoutes(c["children"]);
+          routes[c["uriName"]] = {
+            "displayName": c["displayName"],
+            "uriName": c["uriName"],
+            "depends": c["depends"],
+            "index": children === undefined,
+            "children": c.hasOwnProperty("children")
+              ? children : undefined
+          };
+        }
+        return routes;
+      }
+    }
+    return {"children": makeRoutes(content)};
+  }
+  /*
+  var makeRoutes = function(content) {
     var recurse = function(content, routes) {
       if (content) {
         for (var i = 0; i < content.length; ++i) {
@@ -321,7 +342,7 @@ var loadScripts = function(scripts, callback) {
     recurse(content, routes["children"]);
     return routes;
   };
-
+*/
   try {
     // The comma-joined route, as extracted from the uri.
     var routeJoined = uriParams()["page"];
@@ -333,53 +354,47 @@ var loadScripts = function(scripts, callback) {
     var trace = [];
     // An array of html that will be appended to the body. Each imports a script
     // that provides common content for a level of the navigational hierarchy.
-    var scripts = [];
+    var scripts = ["js/content/index-inherit.js"];
     // An array of html that comprises the nav bar.
     var nav = [];
-    var levelDepends;
-    // Iterate over the requested route level-by-level, stopping at the parent
-    // of the destination.
-    var level = makeRoutes(content);
-    for (var i = 0; i < route.length - 1; ++i) {
+    // Iterate over the requested route level-by-level.
+    var routes = makeRoutes(content);
+    console.log(routes);
+    for (var i = 0; i < route.length; ++i) {
+      routes = routes["children"][route[i]];
       // Add the current level to the trace.
       trace.push(route[i]);
-      // Load dependencies for the script that populates content common to all
-      // pages at this level.
-      levelDepends = level["children"][route[i]]["depends"]
-      if (levelDepends !== undefined) {
-        scripts.push.apply(scripts, levelDepends);
+      // Load dependencies (if any).
+      if (routes["index"] === false && routes["depends"] !== undefined) {
+        scripts.push.apply(scripts, routes["depends"]);
       }
-      // Then load the script itself
-      scripts.push("js/content/" + trace.join("/") + "/" + route[i]
-                   + "-inherit.js");
-      // Add a breadcrumb to the navbar for this level.
-      nav.push("<li><a href=\"index.html?page=" + trace.join(",") + "\">"
-               + level["children"][route[i]]["displayName"] + "</a></li>");
-      level = level["children"][route[i]];
+
+      if (i == route.length - 1) {
+        // If this is the bottom level of the route, load the script that
+        // populates page-specific content and its dependencies.
+        scripts.push.apply(scripts, routes["depends"]);
+        scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
+                     + ".js");
+        // Add an active breadcrumb to the navbar.
+        nav.push("<li class=\"active\"" + "><a href=\"index.html?page="
+                 + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+      } else {
+        // Load a script that populates all content common to pages that descend
+        // from this one.
+        scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
+                     + "-inherit.js");
+        // Add an inactive breadcrumb to the navbar.
+        nav.push("<li class=\"active\"" + "><a href=\"index.html?page="
+                 + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+      }
     }
-    // Check that the destination page exists.
-    if ([route[route.length - 1]] === undefined) {
-      throw 'Invalid route';
-    }
-    // Load dependencies for the current page.
-    levelDepends = level["children"][route[route.length - 1]]["depends"];
-    if (levelDepends !== undefined) {
-      scripts.push.apply(scripts, levelDepends);
-    }
-    // Then load the script that populates it.
-    scripts.push("js/content/" + trace.slice(0, trace.length).join("/") + "/"
-                + route[route.length - 1] + ".js");
-    // Add a breadcrumb to the navbar for this level.
-    var title = level["children"][route[i]]["displayName"];
-    nav.push("<li class=\"active\"><a href=\"index.html?page=" + routeJoined
-             + "\">" + title + "</a></li>");
   } catch(e) {
     // If an invalid route was requested, we'll end up here. Load the home page
     // instead.
-    scripts = ["js/content/index.js"];
-    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
+    //    scripts = ["js/content/index.js"];
+    //    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
     // TODO: Remove
-    console.log("error: " + e);
+    //    console.log("error: " + e);
   }
   console.log(scripts);
   // Load the scripts in order.
