@@ -22,14 +22,14 @@ var tree_factory = (function() {
     var _Y2 = bounding_box.p2.y;
     var _W = _X2 - _X1;
     var _H = _Y2 - _Y1;
-    var nodeMap = {};
-    var edgeMap = {};
+    var _nodeMap = {};
+    var _edgeMap = {};
     var _radius = 1 / 2 * _W / 16;
     var _root = null;
     var _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
     var _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
-    var xOffset = 2 * _radius;
-    var yOffset = 3 * _radius;
+    var _xOffset = 2 * _radius;
+    var _yOffset = 3 * _radius;
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -56,7 +56,7 @@ var tree_factory = (function() {
       newNode.setSpCY(newNode.getPosCY());
       var labelBbox = redraw.getBBox(newNode.getLabel());
       newNode.getLabel().setPosX(newNode.getPosCX());
-      newNode.getLabel().setPosY(newNode.getPosCY() + 1/4 * labelBbox.height);
+      newNode.getLabel().setPosY(newNode.getPosCY() + .30 * labelBbox.height);
       newNode.getLabel().setSpX(newNode.getLabel().getPosX());
       newNode.getLabel().setSpY(newNode.getLabel().getPosY());
       newNode.isDisplayNode = false;
@@ -110,8 +110,8 @@ var tree_factory = (function() {
       var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         if (vizParentNode) {
-          vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
-          vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
+          vizNode.setPosCX(vizParentNode.getPosCX() + dir * _xOffset);
+          vizNode.setPosCY(vizParentNode.getPosCY() + _yOffset);
           _positionEdge(vizParentNode, vizNode);
         } else if (vizNode.isDisplayNode && !_root) {
           vizNode.setPosCX(_rootPos.cx);
@@ -121,8 +121,8 @@ var tree_factory = (function() {
       } else {
         vizNode = _createNewNode(clientNode, _rootPos.cx, _rootPos.cy);
         if (vizParentNode) {
-          vizNode.setPosCX(vizParentNode.getPosCX() + dir * xOffset);
-          vizNode.setPosCY(vizParentNode.getPosCY() + yOffset);
+          vizNode.setPosCX(vizParentNode.getPosCX() + dir * _xOffset);
+          vizNode.setPosCY(vizParentNode.getPosCY() + _yOffset);
           vizNode.setSpCX(vizNode.getPosCX());
           vizNode.setSpCY(vizNode.getPosCY());
           _createNewEdge(vizParentNode, vizNode);
@@ -133,10 +133,6 @@ var tree_factory = (function() {
       vizNode.isDisplayNode = false;
       vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
       vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
-      console.log('pos.cx' + vizNode.getPosCX());
-      console.log('pos.cy' + vizNode.getPosCY());
-      console.log('sp.cx' + vizNode.getSpCX());
-      console.log('sp.cy' + vizNode.getSpCY());
       return vizNode;
     }
 
@@ -159,7 +155,7 @@ var tree_factory = (function() {
      * @param {Object} vizNode - A visualization node.
      */
     function _addVizNode(clientNode, vizNode) {
-      nodeMap[clientNode.id()] = vizNode;
+      _nodeMap[clientNode.id()] = vizNode;
     }
 
     /**
@@ -169,7 +165,7 @@ var tree_factory = (function() {
      * @return vizNode - Visualization node.
      */
     function _getVizNode(clientNode) {
-      return nodeMap[clientNode.id()];
+      return _nodeMap[clientNode.id()];
     }
 
     /**
@@ -177,7 +173,7 @@ var tree_factory = (function() {
      * @param {Object} clientNode - Client's tree node object.
      */
     function _removeVizNode(clientNode) {
-      delete nodeMap[clientNode.id()];
+      delete _nodeMap[clientNode.id()];
     }
 
     /**
@@ -203,7 +199,7 @@ var tree_factory = (function() {
      * @param {Object} edge - Visualization edge.
      */
     function _addEdge(vizParent, vizChild, edge) {
-      edgeMap[_edgeID(vizParent, vizChild)] = edge;
+      _edgeMap[_edgeID(vizParent, vizChild)] = edge;
     }
 
     /**
@@ -213,7 +209,7 @@ var tree_factory = (function() {
      * @return edge - Visualization edge between parent and child.
      */
     function _getEdge(vizParent, vizChild) {
-      return edgeMap[_edgeID(vizParent, vizChild)];
+      return _edgeMap[_edgeID(vizParent, vizChild)];
     }
 
     /**
@@ -222,7 +218,7 @@ var tree_factory = (function() {
      * @param {Object} vizChild - Visualization child node.
      */
     function _removeEdge(vizParent, vizChild) {
-      delete edgeMap[_edgeID(vizParent, vizChild)];
+      delete _edgeMap[_edgeID(vizParent, vizChild)];
     }
 
     /**
@@ -371,10 +367,10 @@ var tree_factory = (function() {
         emphasis.setStrokeOpacity(75);
         emphasis.setFill(colors.WHITE);
         emphasis.setFillOpacity(0);
-        emphasis.setPosCX(vizNode.getCX());
-        emphasis.setPosCY(vizNode.getCY());
-        emphasis.setSpCX(vizNode.getCX());
-        emphasis.setSpCY(vizNode.getCY());
+        emphasis.setPosCX(vizNode.getPosCX());
+        emphasis.setPosCY(vizNode.getPosCY());
+        emphasis.setSpCX(vizNode.getPosCX());
+        emphasis.setSpCY(vizNode.getPosCY());
         vizNode.emphasis = emphasis;
       });
     }
@@ -438,9 +434,9 @@ var tree_factory = (function() {
      */
     function getNodes() {
       var nodes = [];
-      for (var key in nodeMap) {
-        if (nodeMap.hasOwnProperty(key)) {
-          nodes.push(nodeMap[key].copy());
+      for (var key in _nodeMap) {
+        if (_nodeMap.hasOwnProperty(key)) {
+          nodes.push(_nodeMap[key].copy());
         }
       }
       return nodes;
@@ -452,9 +448,9 @@ var tree_factory = (function() {
      */
     function getEdges() {
       var edges = [];
-      for (var key in edgeMap) {
-        if (edgeMap.hasOwnProperty(key)) {
-          edges.push(edgeMap[key].copy());
+      for (var key in _edgeMap) {
+        if (_edgeMap.hasOwnProperty(key)) {
+          edges.push(_edgeMap[key].copy());
         }
       }
       return edges;
@@ -474,9 +470,9 @@ var tree_factory = (function() {
      */
     function getText() {
       var text = [];
-      for (var key in nodeMap) {
-        if (nodeMap.hasOwnProperty(key)) {
-          text.push(nodeMap[key].getLabel());
+      for (var key in _nodeMap) {
+        if (_nodeMap.hasOwnProperty(key)) {
+          text.push(_nodeMap[key].getLabel());
         }
       }
       return text;
@@ -488,11 +484,11 @@ var tree_factory = (function() {
      */
     function getCircles() {
       var circs = [];
-      for (var key in nodeMap) {
-        if (nodeMap.hasOwnProperty(key)) {
-          circs.push(nodeMap[key]);
-          if (nodeMap[key].emphasis) {
-            circs.push(nodeMap[key].emphasis);
+      for (var key in _nodeMap) {
+        if (_nodeMap.hasOwnProperty(key)) {
+          circs.push(_nodeMap[key]);
+          if (_nodeMap[key].emphasis) {
+            circs.push(_nodeMap[key].emphasis);
           }
         }
       }
@@ -505,9 +501,9 @@ var tree_factory = (function() {
      */
     function getLines() {
       var lines = [];
-      for (var key in edgeMap) {
-        if (edgeMap.hasOwnProperty(key)) {
-          lines.push(edgeMap[key]);
+      for (var key in _edgeMap) {
+        if (_edgeMap.hasOwnProperty(key)) {
+          lines.push(_edgeMap[key]);
         }
       }
       return lines;

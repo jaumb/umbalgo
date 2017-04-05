@@ -534,7 +534,7 @@ var element_factory = (function() {
     }
 
     function getSpCY() {
-      return sp.cx;
+      return sp.cy;
     }
 
     function setSpCY(newY) {
