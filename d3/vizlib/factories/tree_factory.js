@@ -30,6 +30,7 @@ var tree_factory = (function() {
     var _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
     var _xOffset = 2 * _radius;
     var _yOffset = 3 * _radius;
+    var _labelBbox = null;
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -54,15 +55,7 @@ var tree_factory = (function() {
       newNode.setPosCY(cy);
       newNode.setSpCX(newNode.getPosCX());
       newNode.setSpCY(newNode.getPosCY());
-      var labelBbox = redraw.getBBox(newNode.getLabel());
-      newNode.getLabel().setPosX(newNode.getPosCX());
-      newNode.getLabel().setPosY(newNode.getPosCY() + .30 * labelBbox.height);
-      newNode.getLabel().setSpX(newNode.getLabel().getPosX());
-      newNode.getLabel().setSpY(newNode.getLabel().getPosY());
-      console.log('newNode id: ' + newNode.getID());
-      console.log('newNode label id: ' + newNode.getLabel().getID());
-      console.log('newNode pos cx,cy: ' + newNode.getPosCX() + ', ' + newNode.getPosCY());
-      console.log('newNode label pos x,y: ' + newNode.getLabel().getPosX() + ', ' + newNode.getLabel().getPosY());
+      _positionNodeLabel(newNode);
       newNode.isDisplayNode = false;
       _addVizNode(clientNode, newNode);
       return newNode;
@@ -109,6 +102,7 @@ var tree_factory = (function() {
           vizNode.setPosCY(vizParentNode.getPosCY() + _yOffset);
           vizNode.setSpCX(vizNode.getPosCX());
           vizNode.setSpCY(vizNode.getPosCY());
+          _positionNodeLabel(vizNode);
           _createNewEdge(vizParentNode, vizNode);
         } else {
           _root = vizNode;
@@ -220,6 +214,19 @@ var tree_factory = (function() {
     }
 
     /**
+     * Set the position of the visualization node's label.
+     * @param {Object} vizNode - Visualization node.
+     */
+    function _positionNodeLabel(vizNode) {
+      if (_labelBbox === null)
+        _labelBbox = redraw.getBBox(vizNode.getLabel());
+      vizNode.getLabel().setPosX(vizNode.getPosCX());
+      vizNode.getLabel().setPosY(vizNode.getPosCY() + .30 * _labelBbox.height);
+      vizNode.getLabel().setSpX(vizNode.getLabel().getPosX());
+      vizNode.getLabel().setSpY(vizNode.getLabel().getPosY());
+    }
+
+    /**
      * Set the x1,y1,x2,y2 position of the edge from vizParent to
      * vizChild.
      * @param {Object} vizParent - Visualization parent node.
@@ -256,6 +263,7 @@ var tree_factory = (function() {
         (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
         _repositionNodes(node.rChild);
       }
+      _positionNodeLabel(node);
     }
 
     /**
