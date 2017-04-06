@@ -59,6 +59,10 @@ var tree_factory = (function() {
       newNode.getLabel().setPosY(newNode.getPosCY() + .30 * labelBbox.height);
       newNode.getLabel().setSpX(newNode.getLabel().getPosX());
       newNode.getLabel().setSpY(newNode.getLabel().getPosY());
+      console.log('newNode id: ' + newNode.getID());
+      console.log('newNode label id: ' + newNode.getLabel().getID());
+      console.log('newNode pos cx,cy: ' + newNode.getPosCX() + ', ' + newNode.getPosCY());
+      console.log('newNode label pos x,y: ' + newNode.getLabel().getPosX() + ', ' + newNode.getLabel().getPosY());
       newNode.isDisplayNode = false;
       _addVizNode(clientNode, newNode);
       return newNode;
@@ -80,23 +84,6 @@ var tree_factory = (function() {
     }
 
     /**
-     * Set the x1,y1,x2,y2 position of the edge from vizParent to
-     * vizChild.
-     * @param {Object} vizParent - Visualization parent node.
-     * @param {Object} vizChild - Visualization child node.
-     * @param {Object} edge - Edge to position.
-     */
-    function _positionEdge(vizParent, vizChild, edge) {
-      var x1 = vizParent.getPosCX();
-      var y1 = vizParent.getPosCY();
-      var x2 = vizChild.getPosCX();
-      var y2 = vizChild.getPosCY();
-      if (!edge) { edge = _getEdge(vizParent, vizChild); }
-      edge.setPos(x1,y1,x2,y2);
-      edge.setSp(x1,y1,x2,y2);
-    }
-
-    /**
      * Create a new binary tree given the root of a subtree.
      * @param {Object} clientNode - Root of the subtree.
      * @param {Object} vizParentNode - Parent node of the root of this subtree.
@@ -104,9 +91,6 @@ var tree_factory = (function() {
      */
     function _buildTree(clientNode, vizParentNode, dir) {
       if (!clientNode) { return null; }
-      console.log('id: ' + clientNode.id());
-      console.log('lChild: ' + clientNode.lChild());
-      console.log('rChild: ' + clientNode.rChild());
       var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         if (vizParentNode) {
@@ -189,7 +173,7 @@ var tree_factory = (function() {
         n1 = vizChild.getID();
         n2 = vizParent.getID();
       }
-      return n1 + '-' + n2;
+      return n1 + '->' + n2;
     }
 
     /**
@@ -236,18 +220,39 @@ var tree_factory = (function() {
     }
 
     /**
+     * Set the x1,y1,x2,y2 position of the edge from vizParent to
+     * vizChild.
+     * @param {Object} vizParent - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
+     * @param {Object} edge - Edge to position.
+     */
+    function _positionEdge(vizParent, vizChild, edge) {
+      var x1 = vizParent.getPosCX();
+      var y1 = vizParent.getPosCY();
+      var x2 = vizChild.getPosCX();
+      var y2 = vizChild.getPosCY();
+      var theta1 = Math.atan2(y2 - y1, x2 - x1);
+      var theta2 = Math.atan2(y1 - y2, x1 - x2);
+      x1 += Math.cos(theta1);
+      y1 += Math.sin(theta1);
+      if (!edge) { edge = _getEdge(vizParent, vizChild); }
+      edge.setPos(x1,y1,x2,y2);
+      edge.setSp(x1,y1,x2,y2);
+    }
+
+    /**
      * Reposition all nodes in the tree.
      * @param {undefined|Object} root - The root of the subtree to reposition.
      */
     function _repositionNodes(node) {
       var leafCount = _getLeafCount(node);
       if (node.lChild) {
-        node.lChild.setPosCX((node.getPosX() - _radius) -
+        node.lChild.setPosCX((node.getPosCX() - _radius) -
         (_getHeight(_root) - _getHeight(node.lChild)) * _W * (leafCount-1)/2);
         _repositionNodes(node.lChild);
       }
       if (node.rChild) {
-        node.rChild.setPosCX((node.getPosX() + _radius) +
+        node.rChild.setPosCX((node.getPosCX() + _radius) +
         (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
         _repositionNodes(node.rChild);
       }

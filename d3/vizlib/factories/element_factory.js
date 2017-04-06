@@ -462,7 +462,7 @@ var element_factory = (function() {
   }
 
   function Circle(new_id) {
-    id = new_id;
+    var id = new_id;
     var fill = _fill;
     var fill_opacity = _fill_opacity;
     var stroke = _stroke;

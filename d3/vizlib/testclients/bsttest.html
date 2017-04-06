@@ -40,23 +40,25 @@
       elements = d3.range(1,6);
       d3.shuffle(elements);
 
+      ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
         root = addNode(root, newElem);
         redraw.addOpsAndDraw(viz, dur, viz.buildTree(root));
-
-        function addNode(currNode, newNode) {
-          if (!currNode) {
-              return newNode;
-          } else if (newNode.val() > currNode.val()) {
-              currNode._rc = addNode(currNode._rc, newNode);
-          } else if (newNode.val() < currNode.val()) {
-              currNode._lc = addNode(currNode._lc, newNode);
-          }
-          return newNode;
-        }
       });
+
+      // add a node to the tree rooted at root
+      function addNode(root, newNode) {
+        if (!root) {
+            return newNode;
+        } else if (newNode.val() > root.val()) {
+            root.setRChild(addNode(root._rc, newNode));
+        } else if (newNode.val() < root.val()) {
+            root.setLChild(addNode(root._lc, newNode));
+        }
+        return root;
+      }
 
       // tree node representation
       // id(), val(), lChild(), and rChild() are expected by tree visualizations
@@ -68,14 +70,18 @@
 
         var id = function() { return _id; }
         var val = function() { return _val; }
-        var lChild = function() {return _lc; }
-        var rChild = function() {return _rc; }
+        var lChild = function() { return _lc; }
+        var rChild = function() { return _rc; }
+        var setLChild = function(node) { _lc = node; }
+        var setRChild = function(node) { _rc = node; }
 
         return {
           id:id,
           val:val,
           lChild:lChild,
-          rChild:rChild
+          rChild:rChild,
+          setLChild:setLChild,
+          setRChild:setRChild
         };
       }
 
