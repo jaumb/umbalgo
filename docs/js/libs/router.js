@@ -333,20 +333,20 @@ var loadScripts = function loadScripts(scripts, callback) {
         scripts.push.apply(scripts, routes["depends"]);
         scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"] + ".js");
         // Add an active breadcrumb to the navbar.
-        nav.push("<li class=\"active\"" + "><a href=\"index.html?page=" + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+        nav.push("<li class=\"active\"><a href=\"index.html?page=" + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
       } else {
         // Load a script that populates all content common to pages that descend
         // from this one.
         scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"] + "-inherit.js");
         // Add an inactive breadcrumb to the navbar.
-        nav.push("<li class=\"active\"" + "><a href=\"index.html?page=" + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+        nav.push("<li><a href=\"index.html?page=" + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
       }
     }
   } catch (e) {
     // If an invalid route was requested, we'll end up here. Load the home page
     // instead.
-    //    scripts = ["js/content/index.js"];
-    //    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
+    scripts = ["js/content/index.js"];
+    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
     // TODO: Remove
     //    console.log("error: " + e);
   }

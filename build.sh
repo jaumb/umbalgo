@@ -26,4 +26,7 @@ popd
 cp src/html/*.html docs
 mkdir -p docs/css
 cp src/css/*.css docs/css
+mkdir -p docs/images
+cp src/images/* docs/images
 cp -r d3/vizlib docs/js/libs
+cp src/libs/modernizr.js docs/js/libs
