@@ -24,8 +24,8 @@ var element_factory = (function() {
   // svg line elements only
   var _line_sp  = {x1:null, y1:null, x2:null, y2:null}; // default line starting pos
   var _line_pos = {x1:null, y1:null, x2:null, y2:null}; // default line pos
-  var _marker_start = 'url(#marker_circle)';
-  var _marker_end   = 'url(#marker_arrow)';
+  var _marker_start = 'url(#marker_none)';
+  var _marker_end   = 'url(#marker_none)';
   var _opacity = 1;
 
   // svg text elements

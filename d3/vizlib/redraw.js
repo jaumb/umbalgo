@@ -136,7 +136,9 @@ var redraw = (function() {
       .attr('stroke', function(d) { return d.getStroke(); })
       .attr('stroke-width', function(d) { return d.getStrokeWidth(); })
       .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); })
-      .attr('opacity', function(d) { return d.getOpacity(); });
+      .attr('opacity', function(d) { return d.getOpacity(); })
+      .attr('marker-start', function(d) { return d.getMarkerStart(); })
+      .attr('marker-end', function(d) { return d.getMarkerEnd(); });
 
     lines.enter()
       .append('line')
@@ -404,7 +406,10 @@ var redraw = (function() {
         viewbox: '-5 -5 10 10'},
       { name: 'stub',
         path: 'M 0,0 m -1,-5 L 1,-5 L 1,5 L -1,5 Z',
-        viewbox: '-1 -5 2 10'}
+        viewbox: '-1 -5 2 10'},
+      { name: 'none',
+        path: '',
+        viewbox: '0 0 0 0'}
     ];
 
     d3.select('#svg_defs')
