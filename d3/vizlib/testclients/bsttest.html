@@ -42,22 +42,23 @@
 
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
-      elements.forEach(function(e) {
-        var newElem = new node(ids++, e, null, null);
+      for (var i = 0; i < elements.length; i++) {
+        var newElem = new node(ids++, elements[i], null, null);
+        redraw.addOpsAndDraw(viz, dur, viz.dispNextNode(newElem));
         root = addNode(root, newElem);
         redraw.addOpsAndDraw(viz, dur, viz.buildTree(root));
-      });
+      };
 
-      // add a node to the tree rooted at root
-      function addNode(root, newNode) {
-        if (!root) {
+      // add a node to the tree rooted at rootNode
+      function addNode(rootNode, newNode) {
+        if (!rootNode) {
             return newNode;
-        } else if (newNode.val() > root.val()) {
-            root.setRChild(addNode(root._rc, newNode));
-        } else if (newNode.val() < root.val()) {
-            root.setLChild(addNode(root._lc, newNode));
+        } else if (newNode.val() > rootNode.val()) {
+            rootNode.setRChild(addNode(rootNode.rChild(), newNode));
+        } else if (newNode.val() < rootNode.val()) {
+            rootNode.setLChild(addNode(rootNode.lChild(), newNode));
         }
-        return root;
+        return rootNode;
       }
 
       // tree node representation
@@ -72,8 +73,8 @@
         var val = function() { return _val; }
         var lChild = function() { return _lc; }
         var rChild = function() { return _rc; }
-        var setLChild = function(node) { _lc = node; }
-        var setRChild = function(node) { _rc = node; }
+        var setLChild = function(child) { _lc = child; }
+        var setRChild = function(child) { _rc = child; }
 
         return {
           id:id,

@@ -31,6 +31,7 @@ var tree_factory = (function() {
     var _xOffset = 2 * _radius;
     var _yOffset = 3 * _radius;
     var _labelBbox = null;
+    var _someSpace = .1 * _radius;
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -240,8 +241,10 @@ var tree_factory = (function() {
       var y2 = vizChild.getPosCY();
       var theta1 = Math.atan2(y2 - y1, x2 - x1);
       var theta2 = Math.atan2(y1 - y2, x1 - x2);
-      x1 += Math.cos(theta1);
-      y1 += Math.sin(theta1);
+      x1 += Math.cos(theta1) * vizParent.getR();
+      y1 += Math.sin(theta1) * vizParent.getR();
+      x2 += Math.cos(theta2) * vizChild.getR();
+      y2 += Math.sin(theta2) * vizChild.getR();
       if (!edge) { edge = _getEdge(vizParent, vizChild); }
       edge.setPos(x1,y1,x2,y2);
       edge.setSp(x1,y1,x2,y2);
@@ -251,18 +254,21 @@ var tree_factory = (function() {
      * Reposition all nodes in the tree.
      * @param {undefined|Object} root - The root of the subtree to reposition.
      */
-    function _repositionNodes(node) {
+    function _repositionNodes(node, dir) {
       var leafCount = _getLeafCount(node);
       if (node.lChild) {
-        node.lChild.setPosCX((node.getPosCX() - _radius) -
-        (_getHeight(_root) - _getHeight(node.lChild)) * _W * (leafCount-1)/2);
-        _repositionNodes(node.lChild);
+        node.lChild.setPosCX((node.getPosCX() - _radius - _someSpace) -
+                      ((_getHeight(_root) - _getHeight(node.lChild)) *
+                                  _W * (leafCount-1)/2));
+        _repositionNodes(node.lChild, -1);
       }
       if (node.rChild) {
-        node.rChild.setPosCX((node.getPosCX() + _radius) +
-        (_getHeight(_root) - _getHeight(node.rChild)) * _W * (leafCount-1)/2);
-        _repositionNodes(node.rChild);
+        node.rChild.setPosCX((node.getPosCX() + _radius + _someSpace) +
+                      ((_getHeight(_root) - _getHeight(node.rChild)) *
+                                  _W * (leafCount-1)/2));
+        _repositionNodes(node.rChild, 1);
       }
+      node.setSpCX(node.getPosCX());
       _positionNodeLabel(node);
     }
 
@@ -273,10 +279,8 @@ var tree_factory = (function() {
     function _repositionEdges(node, vizParentNode) {
       if (!node) { return; }
       else if (vizParentNode) { _positionEdge(vizParentNode, node); }
-      else {
-        _repositionEdges(node.lChild, node);
-        _repositionEdges(node.rChild, node);
-      }
+      _repositionEdges(node.lChild, node);
+      _repositionEdges(node.rChild, node);
     }
 
     /**
@@ -304,10 +308,10 @@ var tree_factory = (function() {
       var vizNode = _getVizNode(clientNode);
       if (vizNode) {
         _buildTree(clientNode);
-        _reposition(_root);
       } else if (!_root) {
         _root = _buildTree(clientNode);
       }
+      _reposition(_root);
       // if clientNode does not have a corresponding node on the svg
       // canvas and there is already a root node on the canvas then
       // we ignore this call (we don't want to draw two root nodes)
@@ -340,7 +344,7 @@ var tree_factory = (function() {
     function dispNextNode(clientNode) {
       var node = _getVizNode(clientNode);
       if (!node) {
-        node = _createNewNode(clientNode, _nextNodePos.x, _nextNodePos.y);
+        node = _createNewNode(clientNode, _nextNodePos.cx, _nextNodePos.cy);
       }
       node.isDisplayNode = true;
     }
