@@ -29,7 +29,7 @@
       redraw.initCanvas(svgCanvasName);
 
       // duration for visualization
-      var dur = 15000;
+      var dur = 4000;
       var root = null;
       var ids = 1;
 
@@ -42,12 +42,17 @@
 
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
-      for (var i = 0; i < elements.length; i++) {
-        var newElem = new node(ids++, elements[i], null, null);
-        redraw.addOpsAndDraw(viz, dur, viz.dispNextNode(newElem));
+      elements.forEach(function(e, i) {
+        setTimeout(next, i * dur, e);
+      });
+
+      // execute next step in the algorithm
+      function next(elem) {
+        var newElem = new node(ids++, elem, null, null);
+        redraw.addOpsAndDraw(viz, dur/2, viz.dispNextNode(newElem));
         root = addNode(root, newElem);
-        redraw.addOpsAndDraw(viz, dur, viz.buildTree(root));
-      };
+        redraw.addOpsAndDraw(viz, dur/2, viz.buildTree(root));
+      }
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {

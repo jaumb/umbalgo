@@ -245,9 +245,12 @@ var tree_factory = (function() {
       y1 += Math.sin(theta1) * vizParent.getR();
       x2 += Math.cos(theta2) * vizChild.getR();
       y2 += Math.sin(theta2) * vizChild.getR();
-      if (!edge) { edge = _getEdge(vizParent, vizChild); }
+      if (!edge) {
+        edge = _getEdge(vizParent, vizChild);
+        if (!edge) { edge = _createNewEdge(vizParent, vizChild); }
+      }
       edge.setPos(x1,y1,x2,y2);
-      edge.setSp(x1,y1,x2,y2);
+      edge.setSp(x1,y1,x1,y1);
     }
 
     /**
