@@ -9,6 +9,7 @@ var redraw = (function() {
   var _intervalID = null;
   var _idPrefix = 'elem_';
   var _callback = null;
+  var _args = null;
 
 
   /****************************************************************************
@@ -28,9 +29,9 @@ var redraw = (function() {
       clearInterval(_intervalID);
       _intervalID = null;
       if (_callback) {
-        var clbk = _callback;
+        var callback = _callback;
         _callback = null;
-        clbk();
+        callback.apply(null, _args);
       }
     }
   }
@@ -263,8 +264,11 @@ var redraw = (function() {
    * Add a callback function to invoke once the animation queue is empty.
    * @param {function} callback - Function to invoke when animation ends.
    */
-  function onAnimationEnd(callback) {
-    _callback = callback;
+  function onAnimationEnd(callback, ...args) {
+    if (!_callback) {
+      _callback = callback;
+      _args = args;
+    }
   }
 
   /**

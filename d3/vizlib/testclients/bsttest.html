@@ -52,17 +52,15 @@
       function insertElem(elem) {
         if (!elem) { return; }
         var newElem = new node(ids++, elem, null, null);
+        redraw.onAnimationEnd(function() { addNodeAndDraw(newElem); });
         redraw.addOpsAndDraw(viz, stepDur, viz.dispNextNode(newElem));
-        //setTimeout(function() { addNodeAndDraw(newElem); }, stepDur);
-        addNodeAndDraw(newElem);
       }
 
       // add a node to the tree and update tree visualization
       function addNodeAndDraw(newElem) {
         root = addNode(root, newElem);
+        redraw.onAnimationEnd(next);
         redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
-        //setTimeout(function() { next(); }, stepDur);
-        next();
       }
 
       // add a node to the tree rooted at rootNode
@@ -78,6 +76,8 @@
       }
 
       function highlight(n1,n2) {
+        redraw.onAnimationEnd(function() { unhighlight(n1,n2); });
+        redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
       }
 
       function unhighlight(n1,n2) {
