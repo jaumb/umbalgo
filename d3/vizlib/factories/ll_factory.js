@@ -88,7 +88,10 @@ var ll_factory = (function() {
     //    >= 5 : # elements + first + spaces between and on ends
     var _boxSize = _size < 5 ? _W / 11 : _W / (_size * 2 + 1);
 
-    // create default node ref labels
+    // create default node ref labels objects
+    //    name  : text element for the ref's label
+    //    arrow : line element for the ref's arrow
+    //    target: node ID this ref currently points to (or null) 
     var _first    =  {name:element_factory.getText(),
                       arrow:element_factory.getLine(),
                       target:null};
@@ -102,9 +105,10 @@ var ll_factory = (function() {
                       arrow:element_factory.getLine(),
                       target:null};
     var _refs     =  [_first, _oldfirst, _last, _oldlast];
-    // update node refs and hide all but first
-    _initNodeRefs();
-    _hideRefs(_oldfirst, _last, _oldlast);
+    // initialize the reference variable representations
+    _updateRefs();                         // set pos. of label / arrow start
+    _pointRefsAt(null, _refs);             // all refs initially point to null
+    _hideRefs(_oldfirst, _last, _oldlast); // only first visible at start
 
     // calculate coordinates of first node
     var _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
@@ -153,12 +157,13 @@ var ll_factory = (function() {
 
 
     /**
-     * Acquire and set the coordinates for the ref nodes. Ref nodes include
-     * first, oldfirst, last, and oldlast. They are all initially set to
-     * point to null, symbolized by a horizontal pointer to the right, ending
-     * in a stub.
+     * Acquire and set the coordinates for the ref nodes.
+     * Ref nodes include: first, oldfirst, last, and oldlast.
+     * This function sets the position of each ref's label and the start point
+     * of its arrow. These positions are always the same (relative to the
+     * linked list).
      */
-    function _initNodeRefs() {
+    function _updateRefs() {
       var coords = {
         first:{x:_X1 + 1.5 * _boxSize,
                y:_Y1 + (_H - _boxSize) / 2 - 1 * _boxSize},
@@ -175,52 +180,32 @@ var ll_factory = (function() {
       _first.name.setPosY(coords.first.y);
       _first.name.setVal("first");
       _first.name.setFontSize((0.7 * _boxSize) + 'px');
-      // position first arrow
-      _first.arrow.setMarkerStart("url(#marker_circle)");
-      _first.arrow.setMarkerEnd("url(#marker_stub)");
       _first.arrow.setPosX1(coords.first.x);
       _first.arrow.setPosY1(coords.first.y + 0.25 * _boxSize);
-      _first.arrow.setPosX2(_first.arrow.getPosX1() + _boxSize);
-      _first.arrow.setPosY2(_first.arrow.getPosY1());
 
-      // position oldfirst
+      // initialize _oldfirst
       _oldfirst.name.setPosX(coords.oldfirst.x);
       _oldfirst.name.setPosY(coords.oldfirst.y);
       _oldfirst.name.setVal("oldfirst");
       _oldfirst.name.setFontSize((0.7 * _boxSize) + 'px');
-      // position oldFirst arrow
-      _oldfirst.arrow.setMarkerStart("url(#marker_circle)");
-      _oldfirst.arrow.setMarkerEnd("url(#marker_stub)");
       _oldfirst.arrow.setPosX1(coords.oldfirst.x);
       _oldfirst.arrow.setPosY1(coords.oldfirst.y - 0.5 * _boxSize);
-      _oldfirst.arrow.setPosX2(_oldfirst.arrow.getPosX1() + _boxSize);
-      _oldfirst.arrow.setPosY2(_oldfirst.arrow.getPosY1());
 
-      // position last
+      // initialize _last
       _last.name.setPosX(coords.last.x);
       _last.name.setPosY(coords.last.y);
       _last.name.setVal("last");
       _last.name.setFontSize((0.7 * _boxSize) + 'px');
-      // position last arrow
-      _last.arrow.setMarkerStart("url(#marker_circle)");
-      _last.arrow.setMarkerEnd("url(#marker_stub)");
       _last.arrow.setPosX1(coords.last.x);
       _last.arrow.setPosY1(coords.last.y + 0.25 * _boxSize);
-      _last.arrow.setPosX2(_last.arrow.getPosX1() + _boxSize);
-      _last.arrow.setPosY2(_last.arrow.getPosY1());
 
-      // position oldlast
+      // initialize _oldlast
       _oldlast.name.setPosX(coords.oldlast.x);
       _oldlast.name.setPosY(coords.oldlast.y);
       _oldlast.name.setVal("oldlast");
       _oldlast.name.setFontSize((0.7 * _boxSize) + 'px');
-      // position oldlast arrow
-      _oldlast.arrow.setMarkerStart("url(#marker_circle)");
-      _oldlast.arrow.setMarkerEnd("url(#marker_stub)");
       _oldlast.arrow.setPosX1(coords.oldlast.x);
       _oldlast.arrow.setPosY1(coords.oldlast.y - 0.5 * _boxSize);
-      _oldlast.arrow.setPosX2(_oldlast.arrow.getPosX1() + _boxSize);
-      _oldlast.arrow.setPosY2(_oldlast.arrow.getPosY1());
     }
 
 
@@ -479,28 +464,30 @@ var ll_factory = (function() {
     /**
      * Adjust the reference arrow associated with a ref variable. reference
      * variables include first, last, oldfirst, and oldlast.
-     * @param {number} target - The node the specified refs should point to.
-     * This node is specified by it's index position starting from 1.
+     * @param {number} target - The unique ID of the object to point at.
      * @param {...Object} refs - One or more ref objects (first, last, etc.).
      */
     function _pointRefsAt(target, ...refs) {
       if (target === null) {
-        refs.forEach(function(r) {
-          r.arrow.setMarkerEnd("url(#marker_stub)");
-          r.arrow.setPosX2(r.arrow.getPosX1() + _boxSize);
-          r.arrow.setPosY2(r.arrow.getPosY1());
-          r.target = null;
+        refs.forEach(function(ref) {
+          ref.arrow.setMarkerStart("url(#marker_circle)");
+          ref.arrow.setMarkerEnd("url(#marker_stub)");
+          ref.arrow.setPosX2(r.arrow.getPosX1() + _boxSize);
+          ref.arrow.setPosY2(r.arrow.getPosY1());
+          ref.target = null;
         });
       } else {
-        refs.forEach(function(r) {
-          r.arrow.setMarkerEnd("url(#marker_arrow)");
-          r.arrow.setPosX2(_firstNodePos.x + (2 * target - 1.5) * _boxSize);
-          r.arrow.setPosY2(
-            (r === _oldfirst || r === _oldlast) ?
+        refs.forEach(function(ref) {
+          var tNode = _nodeMap.get(target);
+          ref.arrow.setMarkerStart("url(#marker_circle)");
+          ref.arrow.setMarkerEnd("url(#marker_arrow)");
+          ref.arrow.setPosX2(tNode.contentBox.getPosX() + 0.5 * _boxSize);
+          ref.arrow.setPosY2(
+            (ref === _oldfirst || ref === _oldlast) ?
             (_firstNodePos.y + 1.5 * _boxSize) :
             _firstNodePos.y
           );
-          r.target = target;
+          ref.target = target;
         });
       }
     }
