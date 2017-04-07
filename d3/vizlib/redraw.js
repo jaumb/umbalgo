@@ -8,6 +8,7 @@ var redraw = (function() {
   var _q = [];
   var _intervalID = null;
   var _idPrefix = 'elem_';
+  var _callback = null;
 
 
   /****************************************************************************
@@ -26,6 +27,11 @@ var redraw = (function() {
     if (_q.length <= 0) {
       clearInterval(_intervalID);
       _intervalID = null;
+      if (_callback) {
+        var clbk = _callback;
+        _callback = null;
+        clbk();
+      }
     }
   }
 
@@ -254,6 +260,14 @@ var redraw = (function() {
   }
 
   /**
+   * Add a callback function to invoke once the animation queue is empty.
+   * @param {function} callback - Function to invoke when animation ends.
+   */
+  function onAnimationEnd(callback) {
+    _callback = callback;
+  }
+
+  /**
    * Get an svg element by its id.
    * @param {number} id - The id of the element to get.
    */
@@ -390,6 +404,7 @@ var redraw = (function() {
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
+    onAnimationEnd:onAnimationEnd,
     initCanvas:initCanvas
   };
 

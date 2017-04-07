@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>D3 Test</title>
-    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="../common.js"></script>
     <script type="text/javascript" src="../factories/element_factory.js">
     </script>
@@ -29,7 +29,7 @@
       redraw.initCanvas(svgCanvasName);
 
       // duration for visualization
-      var dur = 4000;
+      var stepDur = 500;
       var root = null;
       var ids = 1;
 
@@ -42,28 +42,51 @@
 
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
-      elements.forEach(function(e, i) {
-        setTimeout(next, i * dur, e);
-      });
+      next();
+
+      function next() {
+        insertElem(elements.shift());
+      };
 
       // execute next step in the algorithm
-      function next(elem) {
+      function insertElem(elem) {
+        if (!elem) { return; }
         var newElem = new node(ids++, elem, null, null);
-        redraw.addOpsAndDraw(viz, dur/2, viz.dispNextNode(newElem));
+        redraw.addOpsAndDraw(viz, stepDur, viz.dispNextNode(newElem));
+        //setTimeout(function() { addNodeAndDraw(newElem); }, stepDur);
+        addNodeAndDraw(newElem);
+      }
+
+      // add a node to the tree and update tree visualization
+      function addNodeAndDraw(newElem) {
         root = addNode(root, newElem);
-        redraw.addOpsAndDraw(viz, dur/2, viz.buildTree(root));
+        redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
+        //setTimeout(function() { next(); }, stepDur);
+        next();
       }
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {
         if (!rootNode) {
-            return newNode;
+          return newNode;
         } else if (newNode.val() > rootNode.val()) {
-            rootNode.setRChild(addNode(rootNode.rChild(), newNode));
+          rootNode.setRChild(addNode(rootNode.rChild(), newNode, rootNode));
         } else if (newNode.val() < rootNode.val()) {
-            rootNode.setLChild(addNode(rootNode.lChild(), newNode));
+          rootNode.setLChild(addNode(rootNode.lChild(), newNode, rootNode));
         }
         return rootNode;
+      }
+
+      function highlight(n1,n2) {
+      }
+
+      function unhighlight(n1,n2) {
+      }
+
+      function emph(n1) {
+      }
+
+      function movemph(n1,n2) {
       }
 
       // tree node representation
