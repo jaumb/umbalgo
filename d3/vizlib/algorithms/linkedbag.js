@@ -135,6 +135,10 @@ var linkedbag = (function(elems, svgW, svgH) {
     return function() { _LL.pointFirstAt(nodeID); };
   };
 
+  var pointOldFirstAtFirst = function(nodeID) {
+    return function() { _LL.pointOldFirstAtFirst(); };
+  };
+
   var showNodeLabel = function(nodeID) {
     return function() { _LL.showNodeLabel(nodeID); };
   };
@@ -166,6 +170,7 @@ var linkedbag = (function(elems, svgW, svgH) {
     showNodeLabel:showNodeLabel,
     pointNodeAtOldfirst:pointNodeAtOldfirst,
     pointFirstAt:pointFirstAt,
+    pointOldFirstAtFirst:pointOldFirstAtFirst,
     showOldFirst:showOldFirst,
     hideOldFirst:hideOldFirst,
     hideNLabel:hideNLabel,

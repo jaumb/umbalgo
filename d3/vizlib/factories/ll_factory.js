@@ -1,3 +1,51 @@
+// linked node factory definition ////////////////////////////////////////
+var linkedNode_factory = (function() {
+  var _ID = 1;
+
+  function LinkedNode(val, next) {
+    var _id = _ID++;
+    var _val = val;
+    var _next = next;
+
+    var getID = function() {
+      return _id;
+    };
+
+    var getVal = function() {
+      return _val;
+    };
+
+    var setVal = function(newVal) {
+      _val = newVal;
+    };
+
+    var getNext = function() {
+      return _next;
+    };
+
+    var setNext = function (newNext) {
+      _next = newNext;
+    };
+
+    return {
+      getID:getID,
+      getVal:getVal,
+      setVal:setVal,
+      getNext:getNext,
+      setNext:setNext
+    };
+  }
+
+  var getNode = function(id, val, next) {
+    return new LinkedNode(id, val, next);
+  };
+
+  return {
+    getNode:getNode
+  };
+})();
+// end linked node factory definition ////////////////////////////////////
+
 
 var ll_factory = (function() {
 
@@ -65,10 +113,6 @@ var ll_factory = (function() {
     console.log("canvas width: " + _W);
     console.log("number of elements: " + _size);
     console.log("box size: " + _boxSize);
-    console.log("first position: x = " + _first.name.getPosX() + ", y = " + _first.name.getPosY());
-
-    // size information for the box holding the reference arrow
-    var _nextRefHeight = 0.5 * _boxSize;
 
     // initialize nodes
     _initNodes();
@@ -86,14 +130,27 @@ var ll_factory = (function() {
     //  private Array_viz methods
     ////////////////////////////////////////////////////////////////////////////
 
-    function _resize() {
-      _size = _nodeMap.size;
-      _boxSize = _size < 5 ? _W / 11 : _W / (_size * 2 + 1);
-      _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
-
-      _initNBox();
-      _updateNodes();
+    /**
+     * Get the number of nodes in root by following getNext() until it is null.
+     * Also populates the _nodeArray with the nodes reached in the above manner.
+     * @param {Object} root - A node object.
+     */
+    function _numNodes(root) {
+      var count = 0;
+      console.log("root is: " + root);
+      var next = root;
+      if (root) {
+        count++;
+        _nodeArray.push(root);
+        while (next.getNext()) {
+          count++;
+          next = next.getNext();
+          _nodeArray.push(next);
+        }
+      }
+      return count;
     }
+
 
     /**
      * Acquire and set the coordinates for the ref nodes. Ref nodes include
@@ -166,26 +223,6 @@ var ll_factory = (function() {
       _oldlast.arrow.setPosY2(_oldlast.arrow.getPosY1());
     }
 
-    /**
-     * Get the number of nodes in root by following getNext() until it is null.
-     * Also populates the _nodeArray with the nodes reached in the above manner.
-     * @param {Object} root - A node object.
-     */
-    function _numNodes(root) {
-      var count = 0;
-      console.log("root is: " + root);
-      var next = root;
-      if (root) {
-        count++;
-        _nodeArray.push(root);
-        while (next.getNext()) {
-          count++;
-          next = next.getNext();
-          _nodeArray.push(next);
-        }
-      }
-      return count;
-    }
 
     /**
      * Initializes the display of the n box, which displays the current
@@ -223,6 +260,7 @@ var ll_factory = (function() {
       _n.getLabel().setStrokeOpacity(1);
     }
 
+
     /**
      * Create the initial set of nodes, ref boxes, and arrows.
      */
@@ -256,7 +294,7 @@ var ll_factory = (function() {
         refBox.setSpX(refBox.getPosX());
         refBox.setSpY(refBox.getPosY());
         refBox.setWidth(_boxSize);
-        refBox.setHeight(_nextRefHeight);
+        refBox.setHeight(0.5 * _boxSize);
         refBox.setStrokeWidth('.3vw');
         refBox.getLabel().setVisibility('hidden');
 
@@ -288,6 +326,27 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Recalculate the size of a content box based on the current number of
+     * nodes and update the sizing/positioning information for all page
+     * elements:
+     *   - references (first, last, oldfirst, oldlast)
+     *   - nodes (all nodes in the linked list)
+     *   - the n box and its label
+     */
+    function _resize() {
+      _size = _nodeMap.size;
+      _boxSize = _size < 5 ? _W / 11 : _W / (_size * 2 + 1);
+      _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
+
+      _initNBox();
+      _updateNodes();
+    }
+
+    /**
+     * Assumes _boxSize has been updated and resizes/repositions all nodes
+     * in the linked list.
+     */
     function _updateNodes() {
       var i = 0;
       var next = _root;
@@ -312,7 +371,7 @@ var ll_factory = (function() {
         node.refBox.setSpX(node.refBox.getPosX());
         node.refBox.setSpY(node.refBox.getPosY());
         node.refBox.setWidth(_boxSize);
-        node.refBox.setHeight(_nextRefHeight);
+        node.refBox.setHeight(0.5 * _boxSize);
         node.refBox.setStrokeWidth('.3vw');
         node.refBox.getLabel().setVisibility('hidden');
 
@@ -403,6 +462,20 @@ var ll_factory = (function() {
       });
     }
 
+    function _hideArrows(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.refArrow.setOpacity(0);
+      });
+    }
+
+    function _showArrows(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.refArrow.setOpacity(1);
+      });
+    }
+
     /**
      * Adjust the reference arrow associated with a ref variable. reference
      * variables include first, last, oldfirst, and oldlast.
@@ -410,7 +483,7 @@ var ll_factory = (function() {
      * This node is specified by it's index position starting from 1.
      * @param {...Object} refs - One or more ref objects (first, last, etc.).
      */
-    function _pointRefs(target, ...refs) {
+    function _pointRefsAt(target, ...refs) {
       if (target === null) {
         refs.forEach(function(r) {
           r.arrow.setMarkerEnd("url(#marker_stub)");
@@ -435,8 +508,14 @@ var ll_factory = (function() {
     function _pointNodeAtRef(nodeID, ref) {
       var node = _nodeMap.get(nodeID);
       if (ref.target !== null) {
-        node.refArrow.setPosX2(_nodeMap.get(ref.target).refBox.getPosX());
-        node.refArrow.setPosY2(_nodeMap.get(ref.target).refBox.getPosY());
+        node.refArrow.setPosX2(_firstNodePos.x + (2 * ref.target - 1.5) * _boxSize);
+        node.refArrow.setPosY2(
+          (ref === _oldfirst || ref === _oldlast) ?
+          (_firstNodePos.y + 1.5 * _boxSize) :
+          _firstNodePos.y
+        );
+        // node.refArrow.setPosX2(_nodeMap.get(ref.target).refBox.getPosX());
+        // node.refArrow.setPosY2(_nodeMap.get(ref.target).refBox.getPosY());
         node.refArrow.setMarkerEnd("url(#marker_arrow)");
       } else {
         node.refArrow.setPosX2(node.refArrow.getPosX1() + _boxSize);
@@ -494,7 +573,7 @@ var ll_factory = (function() {
           v.refArrow.setPosY2(v.refArrow.getPosY2() + vert);
 
           _refs.forEach(function(ref) {
-            if (ref.target === v.getID()) {
+            if (ref.target === v.id) {
               ref.arrow.setPosX2(ref.arrow.getPosX2() + horiz);
             }
           });
@@ -528,7 +607,7 @@ var ll_factory = (function() {
       refBox.setSpX(refBox.getPosX());
       refBox.setSpY(refBox.getPosY());
       refBox.setWidth(_boxSize);
-      refBox.setHeight(_nextRefHeight);
+      refBox.setHeight(0.5 * _boxSize);
       refBox.setStrokeWidth('.3vw');
       refBox.getLabel().setVisibility('hidden');
 
@@ -560,6 +639,7 @@ var ll_factory = (function() {
       _nodeMap.set(newNode.getID(), LLnode);
 
       _hideNodes(newNode.getID());
+      _moveNodes(2 * _boxSize, 0);
     }
 
 
@@ -583,7 +663,7 @@ var ll_factory = (function() {
 
     function showOldFirst() {
       _showRefs(_oldfirst);
-      _pointRefs(null, _oldfirst);
+      _pointRefsAt(null, _oldfirst);
     }
 
     function hideOldFirst() {
@@ -609,7 +689,12 @@ var ll_factory = (function() {
     }
 
     function pointFirstAt(position) {
-      _pointRefs(position, _first);
+      _pointRefsAt(position, _first);
+    }
+
+    function pointOldFirstAtFirst() {
+
+      _pointRefsAt(_first.target, _oldfirst);
     }
 
     function pointNodeAtOldfirst(nodeID) {
@@ -831,6 +916,7 @@ var ll_factory = (function() {
       showNLabel:showNLabel,
       updateN:updateN,
       pointFirstAt:pointFirstAt,
+      pointOldFirstAtFirst:pointOldFirstAtFirst,
       setFill:setFill,
       setOutline:setOutline,
       emphasize:emphasize,
