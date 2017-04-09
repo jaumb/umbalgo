@@ -26,7 +26,7 @@
       redraw.initialize();
 
       // example of a client using the insertion visualization
-      var dur = 40000;
+      var dur = 60000;
 
       // // linked node factory definition ////////////////////////////////////////
       // var linkedNode_factory = (function() {
@@ -87,16 +87,18 @@
         nodes.push(linkedNode_factory.getNode(l[i-1], null));
       }
       for (var i = 0; i <= size - 2; i++) {
-        nodes[i].setNext(nodes[i + 1])
+        nodes[i].setNext(nodes[i + 1].getID());
       }
       var root = nodes[0];
 
-      var viz = vizlib.get_linkedbag(root, svgW, svgH);
+      var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      // var viz = vizlib.get_linkedbag(root, svgW, svgH);
 
       // var viz = vizlib.get_linkedbag(n, svgW, svgH);
-      redraw.draw(viz, dur); // draw initial canvas
+      // redraw.draw(viz, dur); // draw initial canvas
 
-      var first = root;
+      var first = null;
+      // var first = root;
 
 
       function add(val) {
@@ -110,15 +112,27 @@
                              viz.pointOldFirstAtFirst());
 
         // java: first = new Node();
-        var newNode = linkedNode_factory.getNode(val, first);
+        var first_id = first ? first.getID() : null;
+        console.log("first_id = " + first_id);
+        var newNode = linkedNode_factory.getNode(val, first_id);
         // add a node to front, resize elements, show node box (label hidden),
         // point first ref's arrow at new node
+        if (first) {
+          redraw.addOpsAndDraw(viz, dur,
+                              viz.shiftRight(),
+                              viz.pointFirstAt(first.getID()));
+        } else {
+          redraw.addOpsAndDraw(viz, dur,
+                              viz.shiftRight(),
+                              viz.pointFirstAt(null));
+        }
+
         redraw.addOpsAndDraw(viz, dur,
-                            viz.shiftRight());
-        redraw.addOpsAndDraw(viz, dur,
+                            // viz.shiftRight(),
                             viz.addNodeFront(newNode),
-                            viz.showNodeBox(newNode.getID()),
-                            viz.pointFirstAt(1));
+                            viz.pointFirstAt(newNode.getID()));
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.showNodeBox(newNode.getID()));
 
         // java: first.item = item;
         // fade label of new element into view
@@ -128,7 +142,8 @@
         // java: first.next = oldfirst;
         // new element points to whatever oldfirst references
         redraw.addOpsAndDraw(viz, dur,
-                            viz.pointNodeAtOldfirst(newNode.getID()));
+                            viz.pointNodeAtOldfirst(newNode.getID()),
+                            viz.showNodeArrow(newNode.getID()));
 
         // java: n++;
         redraw.addOpsAndDraw(viz, dur,
@@ -138,9 +153,12 @@
                               viz.showNLabel());
 
         redraw.addOpsAndDraw(viz, dur,
+                              viz.pointOldFirstAt(null),
                               viz.hideOldFirst());
 
         first = newNode;
+        console.log("first = newNode. first.getID() = " + first.getID()
+                    + ", first.getNext() = " + first.getNext());
       }
 
       add(1);

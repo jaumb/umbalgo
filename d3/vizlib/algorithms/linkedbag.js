@@ -59,9 +59,7 @@ var linkedbag = (function(elems, svgW, svgH) {
 
   var shiftRight = function() {
     return function() {
-      _LL.moveNodes(2 * _boxSize, 0);
-      firstNode.refArrow.setPosX2(firstNode.refArrow.getPosX2() + 2 * _boxSize);
-      oldfirstNode.refArrow.setPosX2(oldfirstNode.refArrow.getPosX2() + 2 * _boxSize);
+      _LL.moveAllNodes(2, 0);
     };
   };
 
@@ -135,12 +133,20 @@ var linkedbag = (function(elems, svgW, svgH) {
     return function() { _LL.pointFirstAt(nodeID); };
   };
 
+  var pointOldFirstAt = function(nodeID) {
+    return function() { _LL.pointOldFirstAt(nodeID); };
+  };
+
   var pointOldFirstAtFirst = function(nodeID) {
     return function() { _LL.pointOldFirstAtFirst(); };
   };
 
   var showNodeLabel = function(nodeID) {
     return function() { _LL.showNodeLabel(nodeID); };
+  };
+
+  var showNodeArrow = function(nodeID) {
+    return function() { _LL.showNodeArrow(nodeID); };
   };
 
   var pointNodeAtOldfirst = function(nodeID) {
@@ -168,8 +174,10 @@ var linkedbag = (function(elems, svgW, svgH) {
     showNode:showNode,
     showNodeBox:showNodeBox,
     showNodeLabel:showNodeLabel,
+    showNodeArrow:showNodeArrow,
     pointNodeAtOldfirst:pointNodeAtOldfirst,
     pointFirstAt:pointFirstAt,
+    pointOldFirstAt:pointOldFirstAt,
     pointOldFirstAtFirst:pointOldFirstAtFirst,
     showOldFirst:showOldFirst,
     hideOldFirst:hideOldFirst,
