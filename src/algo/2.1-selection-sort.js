@@ -6,7 +6,7 @@ sort(a) {
   // conditional construct of some sort, we may need to jump over a block or
   // back to the top of a loop. This was a simple assignment statement, so we
   // just want to proceed to the next line.
-  that.nextLine = that.funcModel.getLine(3)
+  that.nextLineNumber = 3;
 // Code:  for (int i = 0; i < N; i++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
@@ -23,10 +23,10 @@ sort(a) {
   if (that.locals["i"] < that.locals["N"]) {
     // If so, proceed to the next line, which is the first line of the body of
     // the loop.
-    that.nextLine = that.funcModel.getLine(4);
+    that.nextLineNumber = 4;
   } else {
     // Otherwise, jump past the loop body
-    that.nextLine = undefined;
+    that.nextLineNumber = undefined;
     // Cleanup helper map entries in case this is a nested loop and they get
     // used again.
     that.locals["i"] = undefined;
@@ -34,7 +34,7 @@ sort(a) {
   }
 // Code:    int min = i;
   that.locals["min"] = that.locals["i"];
-  that.nextLine = that.funcModel.getLine(5);
+  that.nextLineNumber = 5;
 // Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
@@ -51,10 +51,10 @@ sort(a) {
   if (that.locals["j"] < that.locals["N"]) {
     // If so, proceed to the next line, which is the first line of the body of
     // the loop.
-    that.nextLine = that.funcModel.getLine(6);
+    that.nextLineNumber = 6;
   } else {
     // Otherwise, jump to past the loop body
-    that.nextLine = that.funcModel.getLine(9);
+    that.nextLineNumber = 9;
     // Cleanup helper map entries in case this is a nested loop and they get
     // used again.
     that.locals["j"] = undefined;
@@ -67,18 +67,18 @@ sort(a) {
   // passed on as parameters to the function being invoked.
   that.vm.invokeFunc(
     "less",
-    function(result) { that.nextLine = that.funcModel.getLine(result ? 7 : 8) },
+    function(result) { that.nextLineNumber = result ? 7 : 8 },
     that.args["a"][that.locals["j"]],
     that.args["a"][that.locals["min"]]);
 // Code:        min = j;
   // This is a simple assignment.
   that.locals["min"] = that.locals["j"];
   // Then advance to the next line.
-  that.nextLine = that.funcModel.getLine(8);
+  that.nextLineNumber = 8;
 // Code:    }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
-  that.nextLine = that.funcModel.getLine(5);
+  that.nextLineNumber = 5;
 // Code:    exch(a, i, min);
   // Invoke exch. exch() is a function that was registered with the runner
   // and is looked up by it's name as a string (the first argument to invoke()).
@@ -93,10 +93,10 @@ sort(a) {
     that.locals["i"],
     that.locals["min"]);
 
-  that.nextLine = that.funcModel.getLine(10);
+  that.nextLineNumber = 10;
 // Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
-  that.nextLine = that.funcModel.getLine(3);
+  that.nextLineNumber = 3;
 // Code:}
 }
