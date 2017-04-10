@@ -10,7 +10,7 @@
     <script type="text/javascript" src="../factories/tree_factory.js"></script>
     <script type="text/javascript" src="../algorithms/bst.js"></script>
     <script type="text/javascript" src="../vizlib.js"></script>
-    <script type="text/javascript" src="../redraw.js"></script>
+    <script type="text/javascript" src="../redrawII.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -42,51 +42,24 @@
 
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
-      next();
 
-      function next() {
-        insertElem(elements.shift());
-      };
-
-      // execute next step in the algorithm
-      function insertElem(elem) {
-        if (!elem) { return; }
-        var newElem = new node(ids++, elem, null, null);
-        redraw.onAnimationEnd(function() { addNodeAndDraw(newElem); });
+      elements.forEach(function(e) {
+        var newElem = new node(ids++, e, null, null);
         redraw.addOpsAndDraw(viz, stepDur, viz.dispNextNode(newElem));
-      }
-
-      // add a node to the tree and update tree visualization
-      function addNodeAndDraw(newElem) {
         root = addNode(root, newElem);
-        redraw.onAnimationEnd(next);
         redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
-      }
+      });
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {
         if (!rootNode) {
           return newNode;
         } else if (newNode.val() > rootNode.val()) {
-          rootNode.setRChild(addNode(rootNode.rChild(), newNode, rootNode));
-        } else if (newNode.val() < rootNode.val()) {
-          rootNode.setLChild(addNode(rootNode.lChild(), newNode, rootNode));
+          rootNode.setRChild(addNode(rootNode.rChild(), newNode));
+        } else {
+          rootNode.setLChild(addNode(rootNode.lChild(), newNode));
         }
         return rootNode;
-      }
-
-      function highlight(n1,n2) {
-        redraw.onAnimationEnd(function() { unhighlight(n1,n2); });
-        redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
-      }
-
-      function unhighlight(n1,n2) {
-      }
-
-      function emph(n1) {
-      }
-
-      function movemph(n1,n2) {
       }
 
       // tree node representation

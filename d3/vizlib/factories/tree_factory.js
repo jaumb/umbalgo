@@ -548,7 +548,7 @@ var tree_factory = (function() {
       getRects:getRects,
       getText:getText,
       getCircles:getCircles,
-      getLines:getLines,
+      getLines:getLines
     };
 
   }

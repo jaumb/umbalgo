@@ -115,7 +115,22 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object[]} nodes - The nodes to de-emphasize.
    */
   var deemphasize = function(nodes) {
-    return function() { _tree.deemphasize(nodes); };
+    redraw.addOps(function() { _tree.deemphasize(nodes); });
+  }
+
+  /**
+   * Update the canvas with the previously called visualization steps.
+   * @param {number} duration - Duration per step (in millis).
+   */
+  function updateCanvas(duration) {
+    redraw.draw(this, duration);
+  }
+
+  /**
+   * Start the animation.
+   */
+  function start() {
+    redraw.beginAnimation();
   }
 
 
@@ -135,6 +150,8 @@ var bst = (function(root, svgW, svgH) {
     getText:getText,
     getCircles:getCircles,
     getLines:getLines,
+    updateCanvas:updateCanvas,
+    start:start
   }
 
 });
