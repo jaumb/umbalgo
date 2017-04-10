@@ -1,7 +1,9 @@
 let buildIndex = function() {
   let indexHtml = "";
-  console.log
 
+  // Traverse the content tree until we've reached the current page's entry
+  // (the variable `route` is an array of the comma-separated `uriNames`
+  // that were entered with the uri).
   let contentCursor = content.slice();
   for (let i = 0; i < route.length; ++i) {
     for (let j = 0; j < contentCursor.length; ++j) {
@@ -12,6 +14,7 @@ let buildIndex = function() {
     }
   }
 
+  // Print a link to each child page.
   for (let i = 0; i < contentCursor.length; ++i) {
     let child = contentCursor[i];
     indexHtml += `<li><a href="?page=` + route.join(",") + ","
@@ -20,8 +23,7 @@ let buildIndex = function() {
   return indexHtml;
 }
 
-console.log("ROUTES");
-console.log(routes);
+// Print the list of child pages.
 document.getElementById("container").innerHTML += `
 <h2 style="text-align:center" id="title">` + routes["displayName"] + `</h2>
 <ol>` + buildIndex() + `</ol>`;
