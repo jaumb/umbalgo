@@ -18,6 +18,10 @@ sort(a) {
   } else {
     // This isn't the first iteration, so perform the update instead.
     that.locals["i"]++;
+    // Update visualization
+    redraw.addOpsAndDraw(that.viz, dur,
+                         that.viz.emphasize([i]),
+                         that.viz.setMinPos(i));
   }
   // Check if the condition is true
   if (that.locals["i"] < that.locals["N"]) {
@@ -31,10 +35,18 @@ sort(a) {
     // used again.
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
+    // Udapte visualization
+    redraw.addOpsAndDraw(viz, dur, viz.setMinLabel(''));
   }
 // Code:    int min = i;
   that.locals["min"] = that.locals["i"];
   that.nextLineNumber = 5;
+  // Udapte visualization
+  redraw.addOpsAndDraw(that.viz, dur,
+                       that.viz.setMinLabel(l[i]),
+                       that.viz.setMinPos(j),
+                       that.viz.setFill([j], colors.COMPARE),
+                       that.viz.setMinFill(colors.ACTIVE));
 // Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
@@ -67,7 +79,17 @@ sort(a) {
   // passed on as parameters to the function being invoked.
   that.vm.invokeFunc(
     "less",
-    function(result) { that.nextLineNumber = result ? 7 : 8 },
+    function(result) {
+      if (result) {
+        that.nextLineNumber = 7;
+        // Udapte visualization
+        redraw.addOpsAndDraw(viz, dur,
+                             viz.setFill([min], colors.ACTIVE),
+                             viz.setMinLabel(l[min]));
+      } else {
+        that.nextLineNumber = 8
+      }
+    },
     that.args["a"][that.locals["j"]],
     that.args["a"][that.locals["min"]]);
 // Code:        min = j;
@@ -94,9 +116,17 @@ sort(a) {
     that.locals["min"]);
 
   that.nextLineNumber = 10;
+// Udapte visualization
+  redraw.addOpsAndDraw(viz, dur,
+                       viz.swap(i, min),
+                       viz.setFill([j], colors.BACKGROUND));
 // Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 3;
+  // Udapte visualization
+  redraw.addOpsAndDraw(viz, dur,
+                       viz.setFill([i], colors.FINISHED),
+                       viz.deemphasize([i]));
 // Code:}
 }

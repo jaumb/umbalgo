@@ -53,6 +53,9 @@ var loadScripts = function(scripts, callback) {
  * addition to their own script). If the uri doesn't decode to a recognized
  * page, the user is directed to the home page.
  */
+var routes;
+var route;
+var content;
 (function() {
   /**
    * The content's navigational hierarchy. This is used to validate page
@@ -60,7 +63,7 @@ var loadScripts = function(scripts, callback) {
    * that each level of the hierarchy's collection of children is ordered. This
    * is required to generate the index pages.
    */
-  const content = [
+  content = [
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
@@ -348,7 +351,7 @@ var loadScripts = function(scripts, callback) {
     var routeJoined = uriParams()["page"];
     // A list of levels in the navigational hierarchy as specified by the uri,
     // in descending order.
-    var route = routeJoined.split(',');
+    route = routeJoined.split(',');
     // A list of the levels of the navigational hierarchy that have already been
     // traversed.
     var trace = [];
@@ -358,7 +361,7 @@ var loadScripts = function(scripts, callback) {
     // An array of html that comprises the nav bar.
     var nav = [];
     // Iterate over the requested route level-by-level.
-    var routes = makeRoutes(content);
+    routes = makeRoutes(content);
     console.log(routes);
     for (var i = 0; i < route.length; ++i) {
       routes = routes["children"][route[i]];
@@ -372,9 +375,16 @@ var loadScripts = function(scripts, callback) {
       if (i == route.length - 1) {
         // If this is the bottom level of the route, load the script that
         // populates page-specific content and its dependencies.
-        scripts.push.apply(scripts, routes["depends"]);
-        scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
-                     + ".js");
+        if (routes["children"] === undefined ) {
+          scripts.push.apply(scripts, routes["depends"]);
+          scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
+                       + ".js");
+        } else {
+          scripts = [
+            "js/content/index-inherit.js",
+            "js/content/" + trace.join("/") + "/" + routes["uriName"] + "-index.js"
+          ];
+        }
         // Add an active breadcrumb to the navbar.
         nav.push("<li class=\"active\"><a href=\"index.html?page="
                  + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
@@ -391,10 +401,8 @@ var loadScripts = function(scripts, callback) {
   } catch(e) {
     // If an invalid route was requested, we'll end up here. Load the home page
     // instead.
-        scripts = ["js/content/index.js"];
-        nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
-    // TODO: Remove
-    //    console.log("error: " + e);
+    scripts = ["js/content/index.js"];
+    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
   }
   console.log(scripts);
   // Load the scripts in order.

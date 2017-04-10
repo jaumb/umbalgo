@@ -1,9 +1,7 @@
-console.log("algorithms-inherit");
-
 document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
   <div>
-    <h2 style="text-align:center" id="title"></h2>
+    <h2 style="text-align:center" id="title">` + routes["displayName"] + `</h2>
   </div>
   <div id="codeNote">
   </div>
