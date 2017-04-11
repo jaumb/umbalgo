@@ -35,24 +35,27 @@ sort(a) {
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
     // Udapte visualization
-    redraw.addOpsAndDraw(viz, that.vm.dur, viz.setMinLabel(''));
+    redraw.addOpsAndDraw(that.vm.viz, that.vm.dur, that.vm.viz.setMinLabel(''));
   }
 // Code:    int min = i;
   that.locals["min"] = that.locals["i"];
   that.nextLineNumber = 5;
   redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
-                       that.vm.viz.setMinLabel(that.args["a"][that.locals["i"]]));
+                       that.vm.viz.setMinLabel(that.args["a"][that.locals["i"]]),
+                       that.vm.viz.setMinFill(colors.ACTIVE));
 // Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
   if (that.cache["5__firstIteration"] === undefined) {
     // This is the first iteration, so perform the initialization.
     that.locals["j"] = that.locals["i"] + 1;
+    that.cache["lastJ"] = that.locals["j"];
     // Add entry to helpers map so that next time we know not to reinitialize.
     that.cache["5__firstIteration"] = false;
   } else {
     // This isn't the first iteration, so perform the update instead.
     that.locals["j"]++;
+    that.cache["lastJ"] = that.locals["j"];
   }
   // Check if the condition is true
   if (that.locals["j"] < that.locals["N"]) {
@@ -61,11 +64,13 @@ sort(a) {
     that.nextLineNumber = 6;
     redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
                          that.vm.viz.setMinPos(that.locals["j"]),
-                         that.vm.viz.setFill([that.locals["j"]], colors.COMPARE),
-                         that.vm.viz.setMinFill(colors.ACTIVE));
+                         that.vm.viz.setFill([that.locals["j"]], colors.COMPARE));
   } else {
     // Otherwise, jump to past the loop body
     that.nextLineNumber = 9;
+    redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                         that.vm.viz.setFill([that.locals["i"]], colors.FINISHED),
+                         that.vm.viz.deemphasize([that.locals["i"]]));
     // Cleanup helper map entries in case this is a nested loop and they get
     // used again.
     that.locals["j"] = undefined;
@@ -81,9 +86,6 @@ sort(a) {
     function(result) {
       if (result) {
         that.nextLineNumber = 7;
-        redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
-                             that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE),
-                             that.vm.viz.setMinLabel(that.args["a"][that.locals["min"]]));
       } else {
         that.nextLineNumber = 8
       }
@@ -93,6 +95,10 @@ sort(a) {
 // Code:        min = j;
   // This is a simple assignment.
   that.locals["min"] = that.locals["j"];
+  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                       that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE),
+                       that.vm.viz.setMinLabel(that.args["a"][that.locals["min"]]));
+
   // Then advance to the next line.
   that.nextLineNumber = 8;
 // Code:    }
@@ -108,22 +114,18 @@ sort(a) {
   // is provided as exch() is a void function.
   that.vm.invokeFunc(
     "exch",
-    undefined,
+    function(result) {
+      that.nextLineNumber = 10;
+      redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                           that.vm.viz.swap(that.locals["i"], that.locals["min"]),
+                           that.vm.viz.setFill([that.cache["lastJ"]], colors.BACKGROUND));
+    },
     that.args["a"],
     that.locals["i"],
     that.locals["min"]);
-
-  that.nextLineNumber = 10;
-  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
-                       that.vm.viz.swap(that.locals["i"], that.locals["min"]),
-                       that.vm.viz.setFill([that.locals["j"]], colors.BACKGROUND));
 // Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 3;
-  // Udapte visualization
-  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
-                       that.vm.viz.setFill([that.locals["i"]], colors.FINISHED),
-                       that.vm.viz.deemphasize([that.locals["i"]]));
 // Code:}
 }

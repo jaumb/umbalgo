@@ -69,7 +69,7 @@
 
       redraw.initCanvas();
 
-      vm.dur = 1500;
+      vm.dur = 15;
       //var a = [0, 86, 71, 10, 75, 73, 64, 87, 23, 41];
       var a = [4, 8, 0, 1, 5, 7, 6, 2, 3];
       vm.viz = vizlib.get_selection(a, svgW, svgH);
@@ -118,6 +118,7 @@
         //let a = [0, 86, 71, 10, 75, 73, 64, 87, 23, 41];
         console.log("Input: " + a);
         vm.invokeFunc("sort", function(result) { console.log("Result: " + a); }, a);
+        //for (var i = 0; i < 100; ++i) { vm.next(); }
       };
 
       const onNext = function() {
