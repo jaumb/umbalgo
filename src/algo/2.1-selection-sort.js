@@ -18,16 +18,15 @@ sort(a) {
   } else {
     // This isn't the first iteration, so perform the update instead.
     that.locals["i"]++;
-    // Update visualization
-    redraw.addOpsAndDraw(that.viz, dur,
-                         that.viz.emphasize([i]),
-                         that.viz.setMinPos(i));
   }
   // Check if the condition is true
   if (that.locals["i"] < that.locals["N"]) {
     // If so, proceed to the next line, which is the first line of the body of
     // the loop.
     that.nextLineNumber = 4;
+    redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                         that.vm.viz.emphasize([that.locals["i"]]),
+                         that.vm.viz.setMinPos(that.locals["i"]));
   } else {
     // Otherwise, jump past the loop body
     that.nextLineNumber = undefined;
@@ -36,17 +35,13 @@ sort(a) {
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
     // Udapte visualization
-    redraw.addOpsAndDraw(viz, dur, viz.setMinLabel(''));
+    redraw.addOpsAndDraw(viz, that.vm.dur, viz.setMinLabel(''));
   }
 // Code:    int min = i;
   that.locals["min"] = that.locals["i"];
   that.nextLineNumber = 5;
-  // Udapte visualization
-  redraw.addOpsAndDraw(that.viz, dur,
-                       that.viz.setMinLabel(l[i]),
-                       that.viz.setMinPos(j),
-                       that.viz.setFill([j], colors.COMPARE),
-                       that.viz.setMinFill(colors.ACTIVE));
+  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                       that.vm.viz.setMinLabel(that.args["a"][that.locals["i"]]));
 // Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
@@ -64,6 +59,10 @@ sort(a) {
     // If so, proceed to the next line, which is the first line of the body of
     // the loop.
     that.nextLineNumber = 6;
+    redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                         that.vm.viz.setMinPos(that.locals["j"]),
+                         that.vm.viz.setFill([that.locals["j"]], colors.COMPARE),
+                         that.vm.viz.setMinFill(colors.ACTIVE));
   } else {
     // Otherwise, jump to past the loop body
     that.nextLineNumber = 9;
@@ -82,10 +81,9 @@ sort(a) {
     function(result) {
       if (result) {
         that.nextLineNumber = 7;
-        // Udapte visualization
-        redraw.addOpsAndDraw(viz, dur,
-                             viz.setFill([min], colors.ACTIVE),
-                             viz.setMinLabel(l[min]));
+        redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                             that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE),
+                             that.vm.viz.setMinLabel(that.args["a"][that.locals["min"]]));
       } else {
         that.nextLineNumber = 8
       }
@@ -116,17 +114,16 @@ sort(a) {
     that.locals["min"]);
 
   that.nextLineNumber = 10;
-// Udapte visualization
-  redraw.addOpsAndDraw(viz, dur,
-                       viz.swap(i, min),
-                       viz.setFill([j], colors.BACKGROUND));
+  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                       that.vm.viz.swap(that.locals["i"], that.locals["min"]),
+                       that.vm.viz.setFill([that.locals["j"]], colors.BACKGROUND));
 // Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 3;
   // Udapte visualization
-  redraw.addOpsAndDraw(viz, dur,
-                       viz.setFill([i], colors.FINISHED),
-                       viz.deemphasize([i]));
+  redraw.addOpsAndDraw(that.vm.viz, that.vm.dur,
+                       that.vm.viz.setFill([that.locals["i"]], colors.FINISHED),
+                       that.vm.viz.deemphasize([that.locals["i"]]));
 // Code:}
 }
