@@ -81,7 +81,9 @@ var ll_factory = (function() {
     // get the number of nodes
     var _size = _numNodes(root);
 
-    var _root;
+    // root node is initialized to null -- if LL is created nonempty, it will
+    // be set to the first node in _initNodes
+    var _root = null;
 
     // calculate box size based on number of nodes:
     //     < 5 : 5 elements + spaces between and on ends _-_-_-_-_-_
@@ -250,67 +252,72 @@ var ll_factory = (function() {
      * Create the initial set of nodes, ref boxes, and arrows.
      */
     function _initNodes(root) {
-      var i = 0;
-      while(root) {
-        console.log("[_initNodes] root.getID = " + root.getID());
-        // the content box
-        var contentBox = element_factory.getRect();
-        contentBox.setPosX(_firstNodePos.x + i * 2 * _boxSize);
-        contentBox.setPosY(_firstNodePos.y);
-        contentBox.setSpX(contentBox.getPosX());
-        contentBox.setSpY(contentBox.getPosY());
-        contentBox.setWidth(_boxSize);
-        contentBox.setHeight(_boxSize);
-        contentBox.setStrokeWidth('.3vw');
-        contentBox.getLabel().setVal(root.getVal());
-        contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
-        contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
-        contentBox.getLabel().setPosY(contentBox.getPosY() + 0.72 * _boxSize);
-        contentBox.getLabel().setSpX(contentBox.getLabel().getPosX());
-        contentBox.getLabel().setSpY(contentBox.getLabel().getPosY());
+      var i = 0;  // counter used for node positioning
 
-        // the ref arrow box
-        var refBox = element_factory.getRect();
-        refBox.setPosX(contentBox.getPosX());
-        refBox.setPosY(_firstNodePos.y + _boxSize);
-        refBox.setSpX(refBox.getPosX());
-        refBox.setSpY(refBox.getPosY());
-        refBox.setWidth(_boxSize);
-        refBox.setHeight(0.5 * _boxSize);
-        refBox.setStrokeWidth('.3vw');
-        refBox.getLabel().setVisibility('hidden');
+      if (root === null) {
+        return;
+      } else {
+        while(root) {
+          // the content box
+          var contentBox = element_factory.getRect();
+          contentBox.setPosX(_firstNodePos.x + i * 2 * _boxSize);
+          contentBox.setPosY(_firstNodePos.y);
+          contentBox.setSpX(contentBox.getPosX());
+          contentBox.setSpY(contentBox.getPosY());
+          contentBox.setWidth(_boxSize);
+          contentBox.setHeight(_boxSize);
+          contentBox.setStrokeWidth('.3vw');
+          contentBox.getLabel().setVal(root.getVal());
+          contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
+          contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
+          contentBox.getLabel().setPosY(contentBox.getPosY() + 0.72 * _boxSize);
+          contentBox.getLabel().setSpX(contentBox.getLabel().getPosX());
+          contentBox.getLabel().setSpY(contentBox.getLabel().getPosY());
 
-        // the ref arrow
-        var refArrow = element_factory.getLine();
-        refArrow.setPosX1(refBox.getCenter().x);
-        refArrow.setPosY1(refBox.getCenter().y);
-        refArrow.setSpX1(refArrow.getPosX1());
-        refArrow.setSpY1(refArrow.getPosY1());
-        if (root.getNext()) {
-          refArrow.setPosX2(refBox.getPosX() + 2 * _boxSize);
-          refArrow.setPosY2(refBox.getPosY());
-          refArrow.setMarkerStart("url(#marker_circle)");
-          refArrow.setMarkerEnd("url(#marker_arrow)");
-        } else {
-          refArrow.setPosX2(refArrow.getPosX1() + _boxSize);
-          refArrow.setPosY2(refArrow.getPosY1());
-          refArrow.setMarkerStart("url(#marker_circle)");
-          refArrow.setMarkerEnd("url(#marker_stub)");
+          // the ref arrow box
+          var refBox = element_factory.getRect();
+          refBox.setPosX(contentBox.getPosX());
+          refBox.setPosY(_firstNodePos.y + _boxSize);
+          refBox.setSpX(refBox.getPosX());
+          refBox.setSpY(refBox.getPosY());
+          refBox.setWidth(_boxSize);
+          refBox.setHeight(0.5 * _boxSize);
+          refBox.setStrokeWidth('.3vw');
+          refBox.getLabel().setVisibility('hidden');
+
+          // the ref arrow
+          var refArrow = element_factory.getLine();
+          refArrow.setPosX1(refBox.getCenter().x);
+          refArrow.setPosY1(refBox.getCenter().y);
+          refArrow.setSpX1(refArrow.getPosX1());
+          refArrow.setSpY1(refArrow.getPosY1());
+          if (root.getNext()) {
+            refArrow.setPosX2(refBox.getPosX() + 2 * _boxSize);
+            refArrow.setPosY2(refBox.getPosY());
+            refArrow.setMarkerStart("url(#marker_circle)");
+            refArrow.setMarkerEnd("url(#marker_arrow)");
+          } else {
+            refArrow.setPosX2(refArrow.getPosX1() + _boxSize);
+            refArrow.setPosY2(refArrow.getPosY1());
+            refArrow.setMarkerStart("url(#marker_circle)");
+            refArrow.setMarkerEnd("url(#marker_stub)");
+          }
+
+          var newNode = { id:root.getID(),
+                          val:root.getVal(),
+                          next:root.getNext(),
+                          contentBox:contentBox,
+                          refBox:refBox,
+                          refArrow:refArrow };
+          _nodeMap.set(newNode.id, newNode);
+
+          if (i === 0) {
+            _root = newNode;
+          }
+          root = root.getNext();
         }
-
-        var newNode = { id:root.getID(),
-                        val:root.getVal(),
-                        next:root.getNext(),
-                        contentBox:contentBox,
-                        refBox:refBox,
-                        refArrow:refArrow };
-        _nodeMap.set(newNode.id, newNode);
-
-        if (i === 0) {
-          _root = newNode;
-        }
-        root = root.getNext();
       }
+
     }
 
 
@@ -365,18 +372,10 @@ var ll_factory = (function() {
 
         i++;
 
-        // next = _nodeMap.get(node.next.id);
-        // next = node.next ? _nodeMap.get(node.next.id) : null;
-        // next = node.next;
         if (node.next) {
           next = _nodeMap.get(node.next);
         } else {
           next = null;
-        }
-        if (next) {
-          console.log("[_updateNodes] next.id = " + next.id +
-                      ", next.val = " + next.val +
-                      ", next.next = " + next.next);
         }
       }
     }

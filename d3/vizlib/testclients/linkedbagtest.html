@@ -91,14 +91,20 @@
       }
       var root = nodes[0];
 
-      var viz = vizlib.get_linkedbag(null, svgW, svgH);
+
+      // var first = null;
+      // for (i = 4; i >= 0; i--) {
+      //   var node = linkedNode_factory.getNode(nodes[i], null);
+      //   first = node;
+      // }
       // var viz = vizlib.get_linkedbag(root, svgW, svgH);
-
-      // var viz = vizlib.get_linkedbag(n, svgW, svgH);
-      // redraw.draw(viz, dur); // draw initial canvas
-
-      var first = null;
       // var first = root;
+
+      // uncomment to start with an empty bag
+      var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      var first = null;
+
+      redraw.draw(viz, dur); // draw initial canvas
 
 
       function add(val) {
