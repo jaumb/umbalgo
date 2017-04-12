@@ -11,7 +11,11 @@ sort(a) {
     that.locals["i"]++;
   }
   if (that.locals["i"] < that.locals["N"]) {
-    that.nextLineNumber = 6;
+    // TW NOTE 4/12/17: This appears to be an error that I just happened to
+    // notice, but I can't test the fix without a front end. So if this is
+    // broken, it's probably that this fix broke it.
+    that.nextLineNumber = 4;
+//    that.nextLineNumber = 6;
   } else {
     that.nextLineNumber = undefined;
     that.locals["i"] = undefined;
