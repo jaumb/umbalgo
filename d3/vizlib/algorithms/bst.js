@@ -132,10 +132,24 @@ var bst = (function(root, svgW, svgH) {
   }
 
   /**
-   * Start the animation.
+   * Play the animation.
    */
-  function start() {
-    redraw.beginAnimation();
+  function play() {
+    redraw.playAnimation();
+  }
+
+  /**
+   * Pause the animation.
+   */
+  function pause() {
+    redraw.pauseAnimation();
+  }
+
+  /**
+   * Take the next step in the animation.
+   */
+  function step() {
+    redraw.stepAnimation();
   }
 
 
@@ -156,7 +170,9 @@ var bst = (function(root, svgW, svgH) {
     getCircles:getCircles,
     getLines:getLines,
     updateCanvas:updateCanvas,
-    start:start
+    play:play,
+    pause:pause,
+    step:step
   }
 
 });

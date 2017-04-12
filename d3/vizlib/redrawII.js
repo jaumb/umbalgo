@@ -17,11 +17,10 @@ var redraw = (function() {
    ****************************************************************************/
 
   /**
-   * Execute the next function on the queue.
-   * @param {Object} viz - The visualization object for a specific algorithm.
-   * @param {number} dur - Duration of the function's execution in milliseconds.
+   * Play the animation.
    */
-  function _next() {
+  function _play() {
+    _intervalID = null;
     while (_q.length > 0 && !(_q[0].isRedraw)) {
       var f = _q.shift();
       f();
@@ -35,7 +34,21 @@ var redraw = (function() {
     } else if (_q.length > 0) {
       var f = _q.shift();
       f();
-      setTimeout(_next, f.duration);
+      _intervalID = setTimeout(_play, f.duration);
+    }
+  }
+
+  /**
+   * Execute the next visualization step.
+   */
+  function _step() {
+    while (_q.length > 0 && !(_q[0].isRedraw)) {
+      var f = _q.shift();
+      f();
+    }
+    if (_q.length > 0) {
+      var f = _q.shift();
+      f();
     }
   }
 
@@ -267,11 +280,26 @@ var redraw = (function() {
   }
 
   /**
-   * Begin the animation.
-   * @param {function} callback - Function to invoke when animation ends.
+   * Play the animation.
    */
-  function beginAnimation() {
-    _next();
+  function playAnimation() {
+    _play();
+  }
+
+  /**
+   * Pause the animation.
+   */
+  function pauseAnimation() {
+    if (_intervalID) {
+      clearInterval(_intervalID);
+      _intervalID = null;
+    }
+  }
+
+  /**
+   * Draw the next step in the visualization.
+   */
+  function stepAnimation() {
   }
 
   /**
@@ -408,7 +436,9 @@ var redraw = (function() {
     addDraw:addDraw,
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
-    beginAnimation:beginAnimation,
+    playAnimation:playAnimation,
+    pauseAnimation:pauseAnimation,
+    stepAnimation:stepAnimation,
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
