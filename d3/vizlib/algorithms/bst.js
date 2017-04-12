@@ -6,6 +6,10 @@
  * @param {number} svgH - Height of the svg canvas.
  */
 var bst = (function(root, svgW, svgH) {
+
+  // initialize the svg canvas with groups for svg elements
+  redraw.initCanvas(svgCanvasName);
+
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
@@ -49,7 +53,8 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object} root - Root node of the client tree.
    */
   var buildTree = function(root) {
-    return function() { _tree.buildTree(root); };
+    var rootNode = _tree.saveTreeState(root);
+    redraw.addOps(function() { _tree.buildTree(rootNode); });
   }
 
   /**
@@ -63,7 +68,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - Color to set the edges.
    */
   var setEdgesColor = function(nodePairs, color) {
-    return function() { _tree.setEdgesColor(nodePairs, color); };
+    redraw.addOps(function() { _tree.setEdgesColor(nodePairs, color); });
   }
 
   /**
@@ -72,7 +77,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object} node - Node to display.
    */
   var dispNextNode = function(node) {
-    return function() { _tree.dispNextNode(node); };
+    redraw.addOps(function() { _tree.dispNextNode(node); });
   }
 
   /**
@@ -81,7 +86,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - New color of nodes.
    */
   var setFill = function(nodes, color) {
-    return function() { _tree.setFill(nodes, color); };
+    redraw.addOps(function() { _tree.setFill(nodes, color); });
   }
 
   /**
@@ -90,7 +95,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - New color of nodes.
    */
   var setOutline = function(nodes) {
-    return function() { _tree.setOutline(nodes, color); };
+    redraw.addOps(function() { _tree.setOutline(nodes, color); });
   }
 
   /**
@@ -98,7 +103,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object[]} nodes - The nodes to emphasize.
    */
   var emphasize = function(nodes) {
-    return function() { _tree.emphasize(nodes); };
+    redraw.addOps(function() { _tree.emphasize(nodes); });
   }
 
   /**
@@ -107,7 +112,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object} node2 - The next node to emphasize.
    */
   var moveEmphasis = function(node1, node2) {
-    return function() { _tree.moveEmphasis(node1, node2); };
+    redraw.addOps(function() { _tree.moveEmphasis(node1, node2); });
   }
 
   /**
@@ -123,7 +128,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {number} duration - Duration per step (in millis).
    */
   function updateCanvas(duration) {
-    redraw.draw(this, duration);
+    redraw.addDraw(this, duration);
   }
 
   /**

@@ -26,10 +26,8 @@
         .attr("height", svgH)
         .attr('id',svgCanvasName);
 
-      redraw.initCanvas(svgCanvasName);
-
       // duration for visualization
-      var stepDur = 500;
+      var dur = 500;
       var root = null;
       var ids = 1;
 
@@ -45,18 +43,47 @@
 
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
-        redraw.addOpsAndDraw(viz, stepDur, viz.dispNextNode(newElem));
+        viz.dispNextNode(newElem);
+        viz.updateCanvas(dur);
         root = addNode(root, newElem);
-        redraw.addOpsAndDraw(viz, stepDur, viz.buildTree(root));
+        viz.buildTree(root);
+        viz.updateCanvas(dur);
       });
+
+      // start the visualization once we finish building the tree
+      viz.start();
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {
         if (!rootNode) {
           return newNode;
         } else if (newNode.val() > rootNode.val()) {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          if (rootNode.rChild()) {
+            viz.moveEmphasis(rootNode, rootNode.rChild());
+          } else {
+            viz.deemphasize([rootNode]);
+          }
+          viz.updateCanvas(dur);
           rootNode.setRChild(addNode(rootNode.rChild(), newNode));
         } else {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          if (rootNode.lChild()) {
+            viz.moveEmphasis(rootNode, rootNode.lChild());
+          } else {
+            viz.deemphasize([rootNode]);
+          }
+          viz.updateCanvas(dur);
           rootNode.setLChild(addNode(rootNode.lChild(), newNode));
         }
         return rootNode;

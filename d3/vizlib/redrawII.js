@@ -22,26 +22,20 @@ var redraw = (function() {
    * @param {number} dur - Duration of the function's execution in milliseconds.
    */
   function _next() {
-    while (_q.length > 0) {
+    while (_q.length > 0 && !(_q[0].isRedraw)) {
       var f = _q.shift();
-      if (f.duration) {
-        f();
-        setTimeout(_next, f.duration);
-        break;
-      } else {
-        f();
-      }
+      f();
     }
-    if (_intervalID) {
-      clearInterval(_intervalID);
-      _intervalID = null;
-    }
-    if (_q.length == 0 && _callback) {
+    if (_q.length <= 0 && _callback) {
       var clbk = _callback;
       var args = _args;
       _callback = null;
       _args = null;
       clbk.apply(null, args);
+    } else if (_q.length > 0) {
+      var f = _q.shift();
+      f();
+      setTimeout(_next, f.duration);
     }
   }
 
@@ -231,6 +225,7 @@ var redraw = (function() {
   function addDraw(viz, dur) {
     var f = function() { _draw(viz, dur); };
     f.duration = dur;
+    f.isRedraw = 1;
     _q.push(f);
   }
 

@@ -128,6 +128,41 @@ var tree_factory = (function() {
     }
 
     /**
+     * Representation of a client node (used to store local copies).
+     */
+    function _clientNode(uid, nodeVal, lc, rc) {
+      var _id = uid;
+      var _val = nodeVal;
+      var _lc = lc;
+      var _rc = rc;
+
+      var id = function() { return _id; }
+      var val = function() { return _val; }
+      var lChild = function() { return _lc; }
+      var rChild = function() { return _rc; }
+      var setLChild = function(child) { _lc = child; }
+      var setRChild = function(child) { _rc = child; }
+
+      return {
+        id:id,
+        val:val,
+        lChild:lChild,
+        rChild:rChild,
+        setLChild:setLChild,
+        setRChild:setRChild
+      };
+    }
+
+    /**
+     * Make a copy of the client node.
+     * @param {Object} clientNode - Client node to copy.
+     * @return {Object} nodeCopy - Copy of client node.
+     */
+    function _copyClientNode(clientNode) {
+      return new _clientNode(clientNode.id(), clientNode.val(), null, null);
+    }
+
+    /**
      * Add a visualization node to the visualization's tree that
      * corresponds to a client's node.
      * @param {Object} clientNode - Client's tree node object.
@@ -529,6 +564,33 @@ var tree_factory = (function() {
       return lines;
     }
 
+    /**
+     * Copy the state of the tree rooted at clientNode.
+     * @param {Object} clientNode - Client root node of subtree.
+     * @return {Object} treeCopy - Copy of subtree.
+     */
+    function saveTreeState(clientNode) {
+      var treeCopy = _copyClientNode(clientNode);
+      var localQ = [treeCopy];
+      var clientQ = [clientNode];
+      while (clientQ.length > 0) {
+        var currNode = clientQ.shift();
+        var currLocal = localQ.shift();
+        if (currNode.lChild()) {
+          currLocal.setLChild(_copyClientNode(currNode.lChild()));
+          clientQ.push(currNode.lChild());
+          localQ.push(currLocal.lChild());
+        }
+        if (currNode.rChild()) {
+          currLocal.setRChild(_copyClientNode(currNode.rChild()));
+          clientQ.push(currNode.rChild());
+          localQ.push(currLocal.rChild());
+        }
+      }
+      return treeCopy;
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////
     //  return public methods
     ////////////////////////////////////////////////////////////////////////////
@@ -548,7 +610,8 @@ var tree_factory = (function() {
       getRects:getRects,
       getText:getText,
       getCircles:getCircles,
-      getLines:getLines
+      getLines:getLines,
+      saveTreeState:saveTreeState
     };
 
   }
