@@ -6,6 +6,9 @@ var linkedNode_factory = (function() {
     var _id = _ID++;
     var _val = val;
     var _next = next;
+    var _contentBox = null;
+    var _refBox = null;
+    var _refArrow = null;
 
     var getID = function() {
       return _id;
@@ -27,12 +30,43 @@ var linkedNode_factory = (function() {
       _next = newNext;
     };
 
+    var getContentBox = function() {
+      return _contentBox;
+    };
+
+    var setContentBox = function (newContentBox) {
+      _contentBox = newContentBox;
+    };
+
+    var getRefBox = function() {
+      return _refBox;
+    };
+
+    var setRefBox = function (newRefBox) {
+      _refBox = newRefBox;
+    };
+
+    var getRefArrow = function() {
+      return _refArrow;
+    };
+
+    var setRefArrow = function (newRefArrow) {
+      _refArrow = newRefArrow;
+    };
+
+
     return {
       getID:getID,
       getVal:getVal,
       setVal:setVal,
       getNext:getNext,
-      setNext:setNext
+      setNext:setNext,
+      getContentBox:getContentBox,
+      setContentBox:setContentBox,
+      getRefBox:getRefBox,
+      setRefBox:setRefBox,
+      getRefArrow:getRefArrow,
+      setRefArrow:setRefArrow
     };
   }
 
@@ -144,7 +178,6 @@ var ll_factory = (function() {
      */
     function _numNodes(root) {
       var count = 0;
-      console.log("root is: " + root);
       var next = root;
       if (root) {
         count++;
@@ -154,6 +187,7 @@ var ll_factory = (function() {
           _nodeArray.push(next);
         }
       }
+      console.log("number of nodes is: " + count);
       return count;
     }
 
@@ -303,18 +337,25 @@ var ll_factory = (function() {
             refArrow.setMarkerEnd("url(#marker_stub)");
           }
 
-          var newNode = { id:root.getID(),
-                          val:root.getVal(),
-                          next:root.getNext(),
-                          contentBox:contentBox,
-                          refBox:refBox,
-                          refArrow:refArrow };
-          _nodeMap.set(newNode.id, newNode);
+          root.setContentBox(contentBox);
+          root.setRefBox(refBox);
+          root.setRefArrow(refArrow);
+
+          // var newNode = { id:root.getID(),
+          //                 val:root.getVal(),
+          //                 next:root.getNext(),
+          //                 contentBox:contentBox,
+          //                 refBox:refBox,
+          //                 refArrow:refArrow };
+          // _nodeMap.set(newNode.id, newNode);
+
+          _nodeMap.set(root.getID(), root);
 
           if (i === 0) {
-            _root = newNode;
+            _root = root;
           }
           root = root.getNext();
+          i++;
         }
       }
 
@@ -330,44 +371,44 @@ var ll_factory = (function() {
       var next = _root;
 
       while (next) {
-        var node = _nodeMap.get(next.id);
-        node.contentBox.setPosX(_firstNodePos.x + i * 2 * _boxSize);
-        node.contentBox.setPosY(_firstNodePos.y);
-        node.contentBox.setSpX(node.contentBox.getPosX());
-        node.contentBox.setSpY(node.contentBox.getPosY());
-        node.contentBox.setWidth(_boxSize);
-        node.contentBox.setHeight(_boxSize);
-        node.contentBox.setStrokeWidth('.3vw');
-        node.contentBox.getLabel().setVal(node.val);
-        node.contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
-        node.contentBox.getLabel().setPosX(node.contentBox.getPosX() + 0.5 * _boxSize);
-        node.contentBox.getLabel().setPosY(node.contentBox.getPosY() + 0.72 * _boxSize);
-        node.contentBox.getLabel().setSpX(node.contentBox.getLabel().getPosX());
-        node.contentBox.getLabel().setSpY(node.contentBox.getLabel().getPosY());
+        var node = _nodeMap.get(next.getID());
+        node.getContentBox().setPosX(_firstNodePos.x + i * 2 * _boxSize);
+        node.getContentBox().setPosY(_firstNodePos.y);
+        node.getContentBox().setSpX(node.getContentBox().getPosX());
+        node.getContentBox().setSpY(node.getContentBox().getPosY());
+        node.getContentBox().setWidth(_boxSize);
+        node.getContentBox().setHeight(_boxSize);
+        node.getContentBox().setStrokeWidth('.3vw');
+        node.getContentBox().getLabel().setVal(node.val);
+        node.getContentBox().getLabel().setFontSize((0.7 * _boxSize) + 'px');
+        node.getContentBox().getLabel().setPosX(node.getContentBox().getPosX() + 0.5 * _boxSize);
+        node.getContentBox().getLabel().setPosY(node.getContentBox().getPosY() + 0.72 * _boxSize);
+        node.getContentBox().getLabel().setSpX(node.getContentBox().getLabel().getPosX());
+        node.getContentBox().getLabel().setSpY(node.getContentBox().getLabel().getPosY());
 
-        node.refBox.setPosX(node.contentBox.getPosX());
-        node.refBox.setPosY(_firstNodePos.y + _boxSize);
-        node.refBox.setSpX(node.refBox.getPosX());
-        node.refBox.setSpY(node.refBox.getPosY());
-        node.refBox.setWidth(_boxSize);
-        node.refBox.setHeight(0.5 * _boxSize);
-        node.refBox.setStrokeWidth('.3vw');
-        node.refBox.getLabel().setVisibility('hidden');
+        node.getRefBox().setPosX(node.getContentBox().getPosX());
+        node.getRefBox().setPosY(_firstNodePos.y + _boxSize);
+        node.getRefBox().setSpX(node.getRefBox().getPosX());
+        node.getRefBox().setSpY(node.getRefBox().getPosY());
+        node.getRefBox().setWidth(_boxSize);
+        node.getRefBox().setHeight(0.5 * _boxSize);
+        node.getRefBox().setStrokeWidth('.3vw');
+        node.getRefBox().getLabel().setVisibility('hidden');
 
-        node.refArrow.setPosX1(node.refBox.getCenter().x);
-        node.refArrow.setPosY1(node.refBox.getCenter().y);
-        node.refArrow.setSpX1(node.refArrow.getPosX1());
-        node.refArrow.setSpY1(node.refArrow.getPosY1());
+        node.getRefArrow().setPosX1(node.getRefBox().getCenter().x);
+        node.getRefArrow().setPosY1(node.getRefBox().getCenter().y);
+        node.getRefArrow().setSpX1(node.getRefArrow().getPosX1());
+        node.getRefArrow().setSpY1(node.getRefArrow().getPosY1());
         if (node.next) {
-          node.refArrow.setPosX2(node.refBox.getPosX() + 2 * _boxSize);
-          node.refArrow.setPosY2(node.refBox.getPosY());
-          node.refArrow.setMarkerStart("url(#marker_circle)");
-          node.refArrow.setMarkerEnd("url(#marker_arrow)");
+          node.getRefArrow().setPosX2(node.getRefBox().getPosX() + 2 * _boxSize);
+          node.getRefArrow().setPosY2(node.getRefBox().getPosY());
+          node.getRefArrow().setMarkerStart("url(#marker_circle)");
+          node.getRefArrow().setMarkerEnd("url(#marker_arrow)");
         } else {
-          node.refArrow.setPosX2(node.refArrow.getPosX1() + _boxSize);
-          node.refArrow.setPosY2(node.refArrow.getPosY1());
-          node.refArrow.setMarkerStart("url(#marker_circle)");
-          node.refArrow.setMarkerEnd("url(#marker_stub)");
+          node.getRefArrow().setPosX2(node.getRefArrow().getPosX1() + _boxSize);
+          node.getRefArrow().setPosY2(node.getRefArrow().getPosY1());
+          node.getRefArrow().setMarkerStart("url(#marker_circle)");
+          node.getRefArrow().setMarkerEnd("url(#marker_stub)");
         }
 
         i++;
@@ -437,56 +478,56 @@ var ll_factory = (function() {
     function _hideNodes(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.contentBox.setFillOpacity(0);
-        node.contentBox.setStrokeOpacity(0);
-        node.contentBox.getLabel().setFillOpacity(0);
-        node.contentBox.getLabel().setStrokeOpacity(0);
-        node.refBox.setFillOpacity(0);
-        node.refBox.setStrokeOpacity(0);
-        node.refArrow.setOpacity(0);
+        node.getContentBox().setFillOpacity(0);
+        node.getContentBox().setStrokeOpacity(0);
+        node.getContentBox().getLabel().setFillOpacity(0);
+        node.getContentBox().getLabel().setStrokeOpacity(0);
+        node.getRefBox().setFillOpacity(0);
+        node.getRefBox().setStrokeOpacity(0);
+        node.getRefArrow().setOpacity(0);
       });
     }
 
     function _showNodes(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.contentBox.setFillOpacity(1);
-        node.contentBox.setStrokeOpacity(1);
-        node.contentBox.getLabel().setFillOpacity(1);
-        node.contentBox.getLabel().setStrokeOpacity(1);
-        node.refBox.setFillOpacity(1);
-        node.refBox.setStrokeOpacity(1);
-        node.refArrow.setOpacity(1);
+        node.getContentBox().setFillOpacity(1);
+        node.getContentBox().setStrokeOpacity(1);
+        node.getContentBox().getLabel().setFillOpacity(1);
+        node.getContentBox().getLabel().setStrokeOpacity(1);
+        node.getRefBox().setFillOpacity(1);
+        node.getRefBox().setStrokeOpacity(1);
+        node.getRefArrow().setOpacity(1);
       });
     }
 
     function _hideLabels(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.contentBox.getLabel().setFillOpacity(0);
-        node.contentBox.getLabel().setStrokeOpacity(0);
+        node.getContentBox().getLabel().setFillOpacity(0);
+        node.getContentBox().getLabel().setStrokeOpacity(0);
       });
     }
 
     function _showLabels(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.contentBox.getLabel().setFillOpacity(1);
-        node.contentBox.getLabel().setStrokeOpacity(1);
+        node.getContentBox().getLabel().setFillOpacity(1);
+        node.getContentBox().getLabel().setStrokeOpacity(1);
       });
     }
 
     function _hideArrows(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.refArrow.setOpacity(0);
+        node.getRefArrow().setOpacity(0);
       });
     }
 
     function _showArrows(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        node.refArrow.setOpacity(1);
+        node.getRefArrow().setOpacity(1);
       });
     }
 
@@ -525,7 +566,7 @@ var ll_factory = (function() {
           var tNode = _nodeMap.get(nodeID);
           ref.arrow.setMarkerStart("url(#marker_circle)");
           ref.arrow.setMarkerEnd("url(#marker_arrow)");
-          ref.arrow.setPosX2(tNode.contentBox.getPosX() + 0.5 * _boxSize);
+          ref.arrow.setPosX2(tNode.getContentBox().getPosX() + 0.5 * _boxSize);
           ref.arrow.setPosY2(
             (ref === _oldfirst || ref === _oldlast) ?
             (_firstNodePos.y + 1.5 * _boxSize) :
@@ -540,19 +581,19 @@ var ll_factory = (function() {
       var node = _nodeMap.get(nodeID);
       if (ref.target !== null) {
         var tNode = _nodeMap.get(ref.target);
-        node.refArrow.setPosX2(tNode.refBox.getPosX());
-        node.refArrow.setPosY2(
+        node.getRefArrow().setPosX2(tNode.getRefBox().getPosX());
+        node.getRefArrow().setPosY2(
           (ref === _oldfirst || ref === _oldlast) ?
           (_firstNodePos.y + _boxSize) :
           _firstNodePos.y
         );
-        // node.refArrow.setPosX2(_nodeMap.get(ref.target).refBox.getPosX());
-        // node.refArrow.setPosY2(_nodeMap.get(ref.target).refBox.getPosY());
-        node.refArrow.setMarkerEnd("url(#marker_arrow)");
+        // node.getRefArrow().setPosX2(_nodeMap.get(ref.target).getRefBox().getPosX());
+        // node.getRefArrow().setPosY2(_nodeMap.get(ref.target).getRefBox().getPosY());
+        node.getRefArrow().setMarkerEnd("url(#marker_arrow)");
       } else {
-        node.refArrow.setPosX2(node.refArrow.getPosX1() + _boxSize);
-        node.refArrow.setPosY2(node.refArrow.getPosY1());
-        node.refArrow.setMarkerEnd("url(#marker_stub)");
+        node.getRefArrow().setPosX2(node.getRefArrow().getPosX1() + _boxSize);
+        node.getRefArrow().setPosY2(node.getRefArrow().getPosY1());
+        node.getRefArrow().setMarkerEnd("url(#marker_stub)");
       }
     }
 
@@ -573,17 +614,17 @@ var ll_factory = (function() {
         nodeIDs.forEach(function(id) {
           var node = _nodeMap.get(id);
           // horizontal movement
-          node.contentBox.setPosX(node.contentBox.getPosX() + horiz);
-          node.contentBox.getLabel().setPosX(node.contentBox.getPosX() + horiz);
-          node.refBox.setPosX(node.refBox.getPosX() + horiz);
-          node.refArrow.setPosX1(node.refArrow.getPosX1() + horiz);
-          node.refArrow.setPosX2(node.refArrow.getPosX2() + horiz);
+          node.getContentBox().setPosX(node.getContentBox().getPosX() + horiz);
+          node.getContentBox().getLabel().setPosX(node.getContentBox().getPosX() + horiz);
+          node.getRefBox().setPosX(node.getRefBox().getPosX() + horiz);
+          node.getRefArrow().setPosX1(node.getRefArrow().getPosX1() + horiz);
+          node.getRefArrow().setPosX2(node.getRefArrow().getPosX2() + horiz);
           // vertical movement
-          node.contentBox.setPosY(node.contentBox.getPosY() + vert);
-          node.contentBox.getLabel().setPosY(node.contentBox.getPosY() + vert);
-          node.refBox.setPosY(node.refBox.getPosY() + vert);
-          node.refArrow.setPosY1(node.refArrow.getPosY1() + vert);
-          node.refArrow.setPosY2(node.refArrow.getPosY2() + vert);
+          node.getContentBox().setPosY(node.getContentBox().getPosY() + vert);
+          node.getContentBox().getLabel().setPosY(node.getContentBox().getPosY() + vert);
+          node.getRefBox().setPosY(node.getRefBox().getPosY() + vert);
+          node.getRefArrow().setPosY1(node.getRefArrow().getPosY1() + vert);
+          node.getRefArrow().setPosY2(node.getRefArrow().getPosY2() + vert);
 
           _refs.forEach(function(ref) {
             if (ref.target === id) {
@@ -594,17 +635,17 @@ var ll_factory = (function() {
       } else {
         _nodeMap.forEach(function(v,k,m) {
           // horizontal movement
-          v.contentBox.setPosX(v.contentBox.getPosX() + horiz);
-          v.contentBox.getLabel().setPosX(v.contentBox.getLabel().getPosX() + horiz);
-          v.refBox.setPosX(v.refBox.getPosX() + horiz);
-          v.refArrow.setPosX1(v.refArrow.getPosX1() + horiz);
-          v.refArrow.setPosX2(v.refArrow.getPosX2() + horiz);
+          v.getContentBox().setPosX(v.getContentBox().getPosX() + horiz);
+          v.getContentBox().getLabel().setPosX(v.getContentBox().getLabel().getPosX() + horiz);
+          v.getRefBox().setPosX(v.getRefBox().getPosX() + horiz);
+          v.getRefArrow().setPosX1(v.getRefArrow().getPosX1() + horiz);
+          v.getRefArrow().setPosX2(v.getRefArrow().getPosX2() + horiz);
           // vertical movement
-          v.contentBox.setPosY(v.contentBox.getPosY() + vert);
-          v.contentBox.getLabel().setPosY(v.contentBox.getLabel().getPosY() + vert);
-          v.refBox.setPosY(v.refBox.getPosY() + vert);
-          v.refArrow.setPosY1(v.refArrow.getPosY1() + vert);
-          v.refArrow.setPosY2(v.refArrow.getPosY2() + vert);
+          v.getContentBox().setPosY(v.getContentBox().getPosY() + vert);
+          v.getContentBox().getLabel().setPosY(v.getContentBox().getLabel().getPosY() + vert);
+          v.getRefBox().setPosY(v.getRefBox().getPosY() + vert);
+          v.getRefArrow().setPosY1(v.getRefArrow().getPosY1() + vert);
+          v.getRefArrow().setPosY2(v.getRefArrow().getPosY2() + vert);
 
           _refs.forEach(function(ref) {
             if (ref.target === v.id) {
@@ -663,14 +704,25 @@ var ll_factory = (function() {
         refArrow.setPosY2(refBox.getPosY());
       }
 
-      var LLnode = {id:newNode.getID(),
-                    val:newNode.getVal(),
-                    next:newNode.getNext(),
-                    contentBox:contentBox,
-                    refBox:refBox,
-                    refArrow:refArrow};
-      _nodeMap.set(newNode.getID(), LLnode);
-      _root = LLnode;
+      // var LLnode = {id:newNode.getID(),
+      //               val:newNode.getVal(),
+      //               next:newNode.getNext(),
+      //               contentBox:contentBox,
+      //               refBox:refBox,
+      //               refArrow:refArrow};
+
+      newNode.setNext(_root);
+      newNode.setContentBox(contentBox);
+      newNode.setRefBox(refBox);
+      newNode.setRefArrow(refArrow);
+
+      // _nodeMap.set(newNode.getID(), LLnode);
+      // _root = LLnode;
+
+      _nodeMap.set(newNode.getID(), newNode);
+      _root = newNode;
+
+      _size = _numNodes(_root);
 
       _hideNodes(newNode.getID());
       // _moveNodes(2 * _boxSize, 0);
@@ -780,8 +832,8 @@ var ll_factory = (function() {
      */
     function setFill(nodeIDs, color) {
       nodeIDs.forEach(function(id) {
-        _nodeMap.get(id).contentBox.setFill(color);
-        _nodeMap.get(id).refBox.setFill(color);
+        _nodeMap.get(id).getContentBox().setFill(color);
+        _nodeMap.get(id).getRefBox().setFill(color);
       });
     }
 
@@ -792,8 +844,8 @@ var ll_factory = (function() {
      */
     function setOutline(nodeIDs, color) {
       nodeIDs.forEach(function(id) {
-        _nodeMap.get(id).contentBox.setStroke(color);
-        _nodeMap.get(id).refBox.setStroke(color);
+        _nodeMap.get(id).getContentBox().setStroke(color);
+        _nodeMap.get(id).getRefBox().setStroke(color);
       });
     }
 
@@ -913,9 +965,9 @@ var ll_factory = (function() {
     function getRects() {
       var rects = [];
       _nodeMap.forEach(function(v,k,m) {
-        if (v.contentBox.emphasis) { rects.push(v.contentBox.emphasis); }
-        rects.push(v.contentBox);
-        rects.push(v.refBox);
+        if (v.getContentBox().emphasis) { rects.push(v.contentBox.emphasis); }
+        rects.push(v.getContentBox());
+        rects.push(v.getRefBox());
       });
       rects.push(_n);
       return rects;
@@ -928,7 +980,7 @@ var ll_factory = (function() {
     function getText() {
       var labels = [];
       _nodeMap.forEach(function(v,k,m) {
-        labels.push(v.contentBox.getLabel());
+        labels.push(v.getContentBox().getLabel());
       });
       labels.push(_first.name);
       labels.push(_oldfirst.name);
@@ -954,7 +1006,7 @@ var ll_factory = (function() {
     function getLines() {
       var lines = [];
       _nodeMap.forEach(function(v,k,m) {
-        lines.push(v.refArrow);
+        lines.push(v.getRefArrow());
       });
       lines.push(_first.arrow);
       lines.push(_oldfirst.arrow);
