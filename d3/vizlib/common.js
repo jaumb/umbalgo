@@ -1,6 +1,7 @@
+
 /*
-Color palette.
-*/
+ * Color palette.
+ */
 var colors = {
   BLACK: '#000',
   WHITE: '#ffffff',
@@ -12,3 +13,8 @@ var colors = {
   FINISHED: '#a0c9e4',
   EMPHASIZE: '#f44242'
 }
+
+/*
+ * Name of the svg canvas
+ */
+var svgCanvasName = "svg_canvas";

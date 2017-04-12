@@ -300,6 +300,7 @@ var redraw = (function() {
    * Draw the next step in the visualization.
    */
   function stepAnimation() {
+    _step();
   }
 
   /**

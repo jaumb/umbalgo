@@ -6,6 +6,10 @@
  * @param {number} svgH - Height of the svg canvas.
  */
 var insertion = (function(elems, svgW, svgH) {
+
+  // initialize the canvas with element groups
+  redraw.initCanvas(svgCanvasName);
+
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
