@@ -841,6 +841,24 @@ var element_factory = (function() {
     function setMarkerEnd(marker) {
       marker_end = marker;
     }
+    function copy() {
+      var cp = new Line(_newID());
+      cp.setStroke(stroke);
+      cp.setStrokeWidth(stroke_width);
+      cp.setStrokeOpacity(stroke_opacity);
+      cp.setPos(pos.x1, pos.y1, pos.x2, pos.y2);
+      cp.setSp(sp.x1, sp.y1, sp.x2, sp.y2);
+      cp.setOpacity(opacity);
+      cp.setVisibility(visibility);
+      cp.setMarkerStart(marker_start);
+      cp.setMarkerEnd(marker_end);
+      return cp;
+    }
+
+
+    var visibility = _visibility;
+    var marker_start = _marker_start;
+    var marker_end = _marker_end;
 
     // return public functions
     return {
@@ -879,7 +897,8 @@ var element_factory = (function() {
       getMarkerStart:getMarkerStart,
       setMarkerStart:setMarkerStart,
       getMarkerEnd:getMarkerEnd,
-      setMarkerEnd:setMarkerEnd
+      setMarkerEnd:setMarkerEnd,
+      copy:copy
     };
 
   }
