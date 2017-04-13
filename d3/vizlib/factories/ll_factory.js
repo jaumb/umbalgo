@@ -1,4 +1,6 @@
-// linked node factory definition ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// linked node factory definition //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 var linkedNode_factory = (function() {
   var _ID = 1;
 
@@ -78,9 +80,16 @@ var linkedNode_factory = (function() {
     getNode:getNode
   };
 })();
-// end linked node factory definition ////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// end linked node factory definition //////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 
+
+/**
+ * Create the linked list factory singleton. This is an IIFE (immediately
+ * invoked function expression).
+ */
 var ll_factory = (function() {
 
   //////////////////////////////////////////////////////////////////////////////
@@ -89,12 +98,14 @@ var ll_factory = (function() {
   /**
    * Create a new array visualization on the canvas.
    * @param {Object} root - root element for the linked list.
-   * The root element is expected to be an object with the following functions:
-   *   getID: returns a unique id for this node
-   *   getVal: returns the content value of this node
-   *   setVal: sets a new content value for this node
-   *   getNext: returns the node that this node's "next" points to
-   *   setNext: sets a new node that this node points to
+   * The root element is expected to be an object with getters and setters for
+   * the following fields:
+   *   ID        : a unique id for this node (getter only)
+   *   Val       : the content value of this node
+   *   Next      : the node that this node's "next" points to
+   *   ContentBox: rect that holds the node's value (null in client)
+   *   RefBox    : rect that holds the node's pointer (null in client)
+   *   RefArrow  : line that represent's node's pointer arrow (null in client)
    * Note that root can be null if starting from an empty linked list.
    * @param {Object} bounding_box - The box inside of which to center the array
    */
@@ -109,11 +120,8 @@ var ll_factory = (function() {
     // map to map node IDs to node objects
     var _nodeMap = new Map();
 
-    // create node array
-    var _nodeArray = [];
-
     // get the number of nodes
-    var _size = _numNodes(root);
+    var _nodeCount = _numNodes(root);
 
     // root node is initialized to null -- if LL is created nonempty, it will
     // be set to the first node in _initNodes
@@ -122,7 +130,7 @@ var ll_factory = (function() {
     // calculate box size based on number of nodes:
     //     < 5 : 5 elements + spaces between and on ends _-_-_-_-_-_
     //    >= 5 : # elements + first + spaces between and on ends
-    var _boxSize = _size < 5 ? _W / 11 : _W / (_size * 2 + 1);
+    var _boxSize = _nodeCount < 5 ? _W / 11 : _W / (_nodeCount * 2 + 1);
 
     // create default node ref labels objects
     //    name  : text element for the ref's label
@@ -152,7 +160,7 @@ var ll_factory = (function() {
 
     // logging TODO: remove
     console.log("canvas width: " + _W);
-    console.log("number of elements: " + _size);
+    console.log("number of elements: " + _nodeCount);
     console.log("box size: " + _boxSize);
 
     // initialize nodes
@@ -162,7 +170,7 @@ var ll_factory = (function() {
     var _n = element_factory.getRect();
     var _nLabel = element_factory.getText();
     _initNBox();
-    _setN(parseInt(_size));
+    _setN(parseInt(_nodeCount));
 
 
 
@@ -173,7 +181,6 @@ var ll_factory = (function() {
 
     /**
      * Get the number of nodes in root by following getNext() until it is null.
-     * Also populates the _nodeArray with the nodes reached in the above manner.
      * @param {Object} root - A node object.
      */
     function _numNodes(root) {
@@ -184,7 +191,6 @@ var ll_factory = (function() {
         while (next.getNext()) {
           count++;
           next = next.getNext();
-          _nodeArray.push(next);
         }
       }
       console.log("number of nodes is: " + count);
@@ -205,9 +211,9 @@ var ll_factory = (function() {
                y:_Y1 + (_H - _boxSize) / 2 - 1 * _boxSize},
         oldfirst:{x:_X1 + 1.5 * _boxSize,
                   y:_Y1 + (_H - _boxSize) / 2 + 3 * _boxSize},
-        last:{x:_X1 + ((_size < 5 ? 5 : _size) * 2 - 0.5) * _boxSize,
+        last:{x:_X1 + ((_nodeCount < 5 ? 5 : _nodeCount) * 2 - 0.5) * _boxSize,
               y:_Y1 + (_H - _boxSize) / 2 - 1 * _boxSize},
-        oldlast: {x:_X1 + ((_size < 5 ? 5 : _size) * 2 - 0.5) * _boxSize,
+        oldlast: {x:_X1 + ((_nodeCount < 5 ? 5 : _nodeCount) * 2 - 0.5) * _boxSize,
                   y:_Y1 + (_H - _boxSize) / 2 + 3 * _boxSize}
       };
 
@@ -267,7 +273,6 @@ var ll_factory = (function() {
       _n.setHeight(_boxSize);
       _n.getLabel().setPosX(_n.getPosX() + 0.5 * _boxSize);
       _n.getLabel().setPosY(_n.getPosY() + 0.72 * _boxSize);
-      // _n.getLabel().setVal(parseInt(_size));
       _n.getLabel().setFontSize((0.7 * _boxSize) + 'px');
 
       _nLabel.setPosX(_n.getPosX() - 0.5 * _boxSize);
@@ -276,6 +281,10 @@ var ll_factory = (function() {
       _nLabel.setVal('n');
     }
 
+    /**
+     * Change the label value in the n box.
+     * @param {number} n - The number to display in the n box.
+     */
     function _setN(n) {
       _n.getLabel().setVal(n);
     }
@@ -379,7 +388,6 @@ var ll_factory = (function() {
         node.getContentBox().setWidth(_boxSize);
         node.getContentBox().setHeight(_boxSize);
         node.getContentBox().setStrokeWidth('.3vw');
-        node.getContentBox().getLabel().setVal(node.val);
         node.getContentBox().getLabel().setFontSize((0.7 * _boxSize) + 'px');
         node.getContentBox().getLabel().setPosX(node.getContentBox().getPosX() + 0.5 * _boxSize);
         node.getContentBox().getLabel().setPosY(node.getContentBox().getPosY() + 0.72 * _boxSize);
@@ -399,7 +407,7 @@ var ll_factory = (function() {
         node.getRefArrow().setPosY1(node.getRefBox().getCenter().y);
         node.getRefArrow().setSpX1(node.getRefArrow().getPosX1());
         node.getRefArrow().setSpY1(node.getRefArrow().getPosY1());
-        if (node.next) {
+        if (node.getNext()) {
           node.getRefArrow().setPosX2(node.getRefBox().getPosX() + 2 * _boxSize);
           node.getRefArrow().setPosY2(node.getRefBox().getPosY());
           node.getRefArrow().setMarkerStart("url(#marker_circle)");
@@ -413,8 +421,8 @@ var ll_factory = (function() {
 
         i++;
 
-        if (node.next) {
-          next = _nodeMap.get(node.next);
+        if (node.getNext()) {
+          next = _nodeMap.get(node.getNext().getID());
         } else {
           next = null;
         }
@@ -429,23 +437,23 @@ var ll_factory = (function() {
      *   - references (first, last, oldfirst, oldlast)
      *   - nodes (all nodes in the linked list)
      *   - the n box and its label
-     * _size variable is always set to the actual number of nodes in _nodeMap
+     * _nodeCount variable is always set to the actual number of nodes in _nodeMap
      * before returning.
-     * @param{number} size_override - manually set the number of nodes to size
+     * @param{number} override - manually set the number of nodes to size
      * the linked list nodes according to. Defaults to current number of nodes
      * if not provided.
      */
-    function _resize(size_override) {
-      _size = size_override ? size_override : _nodeMap.size;
-      // _size = _nodeMap.size;
-      _boxSize = _size < 5 ? _W / 11 : _W / (_size * 2 + 1);
+    function _resize(override) {
+      _nodeCount = override ? override : _nodeMap.size;
+      // _nodeCount = _nodeMap.size;
+      _boxSize = _nodeCount < 5 ? _W / 11 : _W / (_nodeCount * 2 + 1);
       _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
 
       _initNBox();
       _updateNodes();
       _updateRefs();
       _updateRefArrows();
-      _size = _nodeMap.size;
+      _nodeCount = _nodeMap.size;
     }
 
 
@@ -512,6 +520,13 @@ var ll_factory = (function() {
     function _showLabels(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
+        console.log("NODE ID IS : " + nodeID);
+        console.log("IN SHOW LABELS: label = " + node.getContentBox().getLabel().getVal());
+        // console.log("in show labels: " +
+        //             "\n  id     : " + node.getID() +
+        //             "\n  val    : " + node.getVal() +
+        //             "\n  next ID: " + node.getNext().getID() +
+        //             "\n  content: " + node.getContentBox().getLabel().getPosX());
         node.getContentBox().getLabel().setFillOpacity(1);
         node.getContentBox().getLabel().setStrokeOpacity(1);
       });
@@ -582,13 +597,12 @@ var ll_factory = (function() {
       if (ref.target !== null) {
         var tNode = _nodeMap.get(ref.target);
         node.getRefArrow().setPosX2(tNode.getRefBox().getPosX());
-        node.getRefArrow().setPosY2(
-          (ref === _oldfirst || ref === _oldlast) ?
-          (_firstNodePos.y + _boxSize) :
-          _firstNodePos.y
-        );
-        // node.getRefArrow().setPosX2(_nodeMap.get(ref.target).getRefBox().getPosX());
-        // node.getRefArrow().setPosY2(_nodeMap.get(ref.target).getRefBox().getPosY());
+        node.getRefArrow().setPosY2(tNode.getRefBox().getPosY());
+        // node.getRefArrow().setPosY2(
+        //   (ref === _oldfirst || ref === _oldlast) ?
+        //   (_firstNodePos.y + _boxSize) :
+        //   _firstNodePos.y
+        // );
         node.getRefArrow().setMarkerEnd("url(#marker_arrow)");
       } else {
         node.getRefArrow().setPosX2(node.getRefArrow().getPosX1() + _boxSize);
@@ -656,6 +670,16 @@ var ll_factory = (function() {
       }
     }
 
+
+    /**
+     * Add a new node to the front (left side) of the linked list. Generates
+     * a content box, ref box, and ref arrow for the new node and adds it to
+     * the node map. Also increments the node count by one. The new node is
+     * hidden upon creation and can be faded into view using the show functions.
+     * @param {Object} newNode - The node object to add to the linked list.
+     * When this function is invoked, newNode's contentBox, refBox, and
+     * refArrow are null.
+     */
     function _addNodeFront(newNode) {
       var contentBox = element_factory.getRect();
       contentBox.setPosX(_firstNodePos.x);
@@ -689,43 +713,28 @@ var ll_factory = (function() {
       refArrow.setPosY1(refBox.getCenter().y);
       refArrow.setSpX1(refArrow.getPosX1());
       refArrow.setSpY1(refArrow.getPosY1());
-      refArrow.setPosX2(refArrow.getPosX1() + _boxSize);
-      refArrow.setPosY2(refArrow.getPosY1());
+      refArrow.setMarkerStart("url(#marker_circle)");
+      if (newNode.getNext()) {
+        refArrow.setPosX2(newNode.getNext().getRefBox().getPosX());
+        refArrow.setPosY2(newNode.getNext().getRefBox().getPosY());
+        refArrow.setMarkerEnd("url(#marker_arrow)");
+      } else {
+        refArrow.setPosX2(refArrow.getPosX1() + _boxSize);
+        refArrow.setPosY2(refArrow.getPosY1());
+        refArrow.setMarkerEnd("url(#marker_stub)");
+      }
       refArrow.setSpX2(refArrow.getPosX2());
       refArrow.setSpY2(refArrow.getPosY2());
-      refArrow.setMarkerStart("url(#marker_circle)");
-      refArrow.setMarkerEnd("url(#marker_stub)");
-
-
-      if (newNode.getNext() !== null) {
-        // var next = _nodeMap.get(newNode.getNext().getID());
-        var next = _nodeMap.get(newNode.getNext());
-        refArrow.setPosX2(refBox.getPosX() + 2 * _boxSize);
-        refArrow.setPosY2(refBox.getPosY());
-      }
-
-      // var LLnode = {id:newNode.getID(),
-      //               val:newNode.getVal(),
-      //               next:newNode.getNext(),
-      //               contentBox:contentBox,
-      //               refBox:refBox,
-      //               refArrow:refArrow};
 
       newNode.setNext(_root);
       newNode.setContentBox(contentBox);
       newNode.setRefBox(refBox);
       newNode.setRefArrow(refArrow);
 
-      // _nodeMap.set(newNode.getID(), LLnode);
-      // _root = LLnode;
-
       _nodeMap.set(newNode.getID(), newNode);
       _root = newNode;
 
-      _size = _numNodes(_root);
-
       _hideNodes(newNode.getID());
-      // _moveNodes(2 * _boxSize, 0);
     }
 
 
@@ -816,13 +825,16 @@ var ll_factory = (function() {
     }
 
     function updateN() {
-      _setN(parseInt(_size));
+      _setN(parseInt(_nodeCount));
     }
 
 
 
     function moveAllNodes(horiz, vert) {
       _moveNodes(horiz * _boxSize, vert * _boxSize);
+      if (_nodeCount >= 5) {
+        _resize();
+      }
     }
 
     /**
@@ -856,7 +868,7 @@ var ll_factory = (function() {
      */
     function setLabels(nodeIDs, new_label) {
       nodeIDs.forEach(function(id) {
-        _nodeMap.get(id).contentBox.getLabel().setVal(new_label);
+        _nodeMap.get(id).getContentBox().getLabel().setVal(new_label);
       });
     }
 

@@ -26,7 +26,7 @@
       redraw.initialize();
 
       // example of a client using the insertion visualization
-      var dur = 60000;
+      var dur = 5000;
 
       var size = 5;
       var l = [];
@@ -36,22 +36,22 @@
       d3.shuffle(l);
 
 
-      var nodes = [];
-      for (var i = 1; i <= size; i++) {
-        nodes.push(linkedNode_factory.getNode(l[i-1], null));
-      }
-      for (var i = 0; i <= size - 2; i++) {
-        nodes[i].setNext(nodes[i + 1]);
-      }
-      var root = nodes[0];
-
-      var first = root;
-      var viz = vizlib.get_linkedbag(root, svgW, svgH);
+      // var nodes = [];
+      // for (var i = 1; i <= size; i++) {
+      //   nodes.push(linkedNode_factory.getNode(l[i-1], null));
+      // }
+      // for (var i = 0; i <= size - 2; i++) {
+      //   nodes[i].setNext(nodes[i + 1]);
+      // }
+      // var root = nodes[0];
+      //
+      // var first = root;
+      // var viz = vizlib.get_linkedbag(root, svgW, svgH);
 
 
       // uncomment to start with an empty bag
-      // var viz = vizlib.get_linkedbag(null, svgW, svgH);
-      // var first = null;
+      var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      var first = null;
 
       redraw.draw(viz, dur); // draw initial canvas
 
@@ -67,9 +67,18 @@
                              viz.pointOldFirstAtFirst());
 
         // java: first = new Node();
-        var first_id = first ? first.getID() : null;
-        console.log("first_id = " + first_id + "\nfirst_val = " + first.getVal());
-        var newNode = linkedNode_factory.getNode(val, first_id);
+        // var first_id = first ? first.getID() : null;
+        // console.log("first_id = " + first_id + "\nfirst_val = " + first.getVal());
+        // console.log("first info: " +
+        //             "\n  id     : " + first.getID() +
+        //             "\n  val    : " + first.getVal() +
+        //             "\n  next ID: " + first.getNext().getID() +
+        //             "\n  contentBox: " + first.getContentBox());
+        var newNode = linkedNode_factory.getNode(val, first);
+        // console.log("new node info: " +
+        //             "\n  id     : " + newNode.getID() +
+        //             "\n  val    : " + newNode.getVal() +
+        //             "\n  next ID: " + newNode.getNext().getID());
         // add a node to front, resize elements, show node box (label hidden),
         // point first ref's arrow at new node
         if (first) {
@@ -85,9 +94,10 @@
         redraw.addOpsAndDraw(viz, dur,
                             // viz.shiftRight(),
                             viz.addNodeFront(newNode),
+                            viz.showNodeBox(newNode.getID()),
                             viz.pointFirstAt(newNode.getID()));
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.showNodeBox(newNode.getID()));
+        // redraw.addOpsAndDraw(viz, dur,
+        //                     viz.showNodeBox(newNode.getID()));
 
         // java: first.item = item;
         // fade label of new element into view
@@ -112,9 +122,23 @@
                               viz.hideOldFirst());
 
         first = newNode;
-        console.log("first = newNode. first.getID() = " + first.getID()
-                    + ", first.getNext() = " + first.getNext());
       }
+
+      // function add(val) {
+      //   // first is visible by default, it begins pointed to null by default
+      //
+      //   // java: Node oldfirst = first;
+      //   // Fade oldfirst into view. It should begin pointed at null.
+      //
+      //
+      //   // java: first = new Node();
+      //
+      //   // java: first.item = item;
+      //
+      //   // java: first.next = oldfirst;
+      //
+      //   // java: n++;
+      // }
 
       add(1);
       add(2);
@@ -125,6 +149,8 @@
       add(7);
       add(8);
       add(9);
+
+
 
 
 
