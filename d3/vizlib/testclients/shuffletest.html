@@ -39,7 +39,7 @@
       for (var i = 0; i < l.length; i++) {
         viz.emphasize([i]);
         viz.updateCanvas(dur);
-        var r = i + d3.randomUniform(l.length - i);
+        var r = i + Math.floor(d3.randomUniform(l.length - i)());
         viz.setFill([r], colors.COMPARE);
         viz.updateCanvas(dur);
         var tmp = l[i];
@@ -48,7 +48,9 @@
         viz.swap(i, r);
         viz.updateCanvas(dur);
         viz.setFill([r], colors.BACKGROUND);
-        viz.moveEmphasis(i, i+1);
+        viz.setFill([i], colors.FINISHED);
+        if (i < l.length - 1) { viz.moveEmphasis(i, i+1); }
+        else { viz.deemphasize([i]); }
         viz.updateCanvas(dur);
       }
 
