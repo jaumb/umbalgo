@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>D3 Test</title>
-    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="../common.js"></script>
     <script type="text/javascript" src="../factories/element_factory.js">
     </script>
     <script type="text/javascript" src="../factories/tree_factory.js"></script>
-    <script type="text/javascript" src="../algorithms/selection.js"></script>
+    <script type="text/javascript" src="../algorithms/bst.js"></script>
     <script type="text/javascript" src="../vizlib.js"></script>
-    <script type="text/javascript" src="../redraw.js"></script>
+    <script type="text/javascript" src="../redrawII.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -22,35 +22,94 @@
         .append("svg")
         .attr("width", svgW)
         .attr("height", svgH)
-        .attr('id','svg_canvas');
+        .attr('id',svgCanvasName);
 
-      redraw.initCanvas();
+      // duration for visualization
+      var dur = 500;
+      var root = null;
+      var ids = 1;
 
-      var dur = 15000;
+      // get the BST visualization
+      var viz = vizlib.get_bst(root, svgW, svgH);
 
-      // example of a client using the tree visualization
-      var tree = {root:null};
-      var treeViz = bst(1000);
-
-      // get 10 randomly ordered integers
-      elements = d3.range(1,11);
+      // get 5 randomly ordered integers
+      elements = d3.range(1,6);
       d3.shuffle(elements);
 
-      // function to add a new element to the tree
-      function addNode(currNode, newNode) {
-          if (!currNode) {
-              return newNode;
-          } else if (newNode.val > currNode.val) {
-              newNode.pos = {x:currNode.pos.x + dx, y:currNode.pos.y + dy};
-              currNode.rc = addNode(currNode.rc, newNode);
-              currNode.size++;
-          } else if (newNode.val < currNode.val) {
-              newNode.pos = {x:currNode.pos.x - dx, y:currNode.pos.y + dy};
-              currNode.lc = addNode(currNode.lc, newNode);
-              currNode.size++;
+      ////////////////////////// MAIN LOOP ////////////////////////////////////
+      // visualize inserting elements one at a time
+
+      elements.forEach(function(e) {
+        var newElem = new node(ids++, e, null, null);
+        viz.dispNextNode(newElem);
+        viz.updateCanvas(dur);
+        root = addNode(root, newElem);
+        viz.buildTree(root);
+        viz.updateCanvas(dur);
+      });
+
+      // start the visualization once we finish building the tree
+      viz.play();
+
+      // add a node to the tree rooted at rootNode
+      function addNode(rootNode, newNode) {
+        if (!rootNode) {
+          return newNode;
+        } else if (newNode.val() > rootNode.val()) {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          if (rootNode.rChild()) {
+            viz.moveEmphasis(rootNode, rootNode.rChild());
+          } else {
+            viz.deemphasize([rootNode]);
           }
-          newNode.l += 1;
-          return currNode;
+          viz.updateCanvas(dur);
+          rootNode.setRChild(addNode(rootNode.rChild(), newNode));
+        } else {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          if (rootNode.lChild()) {
+            viz.moveEmphasis(rootNode, rootNode.lChild());
+          } else {
+            viz.deemphasize([rootNode]);
+          }
+          viz.updateCanvas(dur);
+          rootNode.setLChild(addNode(rootNode.lChild(), newNode));
+        }
+        return rootNode;
+      }
+
+      // tree node representation
+      // id(), val(), lChild(), and rChild() are expected by tree visualizations
+      function node(uid, nodeVal, lc, rc) {
+        var _id = uid;
+        var _val = nodeVal;
+        var _lc = lc;
+        var _rc = rc;
+
+        var id = function() { return _id; }
+        var val = function() { return _val; }
+        var lChild = function() { return _lc; }
+        var rChild = function() { return _rc; }
+        var setLChild = function(child) { _lc = child; }
+        var setRChild = function(child) { _rc = child; }
+
+        return {
+          id:id,
+          val:val,
+          lChild:lChild,
+          rChild:rChild,
+          setLChild:setLChild,
+          setRChild:setRChild
+        };
       }
 
     </script>

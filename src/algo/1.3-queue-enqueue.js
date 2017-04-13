@@ -6,7 +6,7 @@ enqueue(item) {
 // Code:  last = new Node();
   that.locals["last"] = {
     "item": null,
-    "next": null:
+    "next": null
   };
   that.nextLineNumber = 4;
 // Code:  last.item = item;

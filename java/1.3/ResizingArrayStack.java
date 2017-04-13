@@ -23,7 +23,7 @@ public class ResizingArrayStack<Item> implements StackApi<Item>, Iterable<Item> 
 
   public void push(Item item) {
     if (N == a.length) {
-      resize(2*a.length);
+      resize(2 * a.length);
     }
     a[N++] = item;
   }

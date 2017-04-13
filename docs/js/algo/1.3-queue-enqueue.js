@@ -9,7 +9,7 @@
   },
   {
     "code": "  last = new Node();",
-    "impl": "(function(that) {\n    that.locals[\"last\"] = {\n      \"item\": null,\n      \"next\": null:\n    };\n    that.nextLineNumber = 4;\n})"
+    "impl": "(function(that) {\n    that.locals[\"last\"] = {\n      \"item\": null,\n      \"next\": null\n    };\n    that.nextLineNumber = 4;\n})"
   },
   {
     "code": "  last.item = item;",

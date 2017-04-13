@@ -17,22 +17,38 @@ var redraw = (function() {
    ****************************************************************************/
 
   /**
-   * Execute the next function on the queue.
-   * @param {Object} viz - The visualization object for a specific algorithm.
-   * @param {number} dur - Duration of the function's execution in milliseconds.
+   * Play the animation.
    */
-  function _next(viz, dur) {
-    var f = _q.shift();
-    if ( f ) { f(); }
-    _draw(viz, dur);
-    if (_q.length <= 0) {
-      clearInterval(_intervalID);
-      _intervalID = null;
-      if (_callback) {
-        var callback = _callback;
-        _callback = null;
-        callback.apply(null, _args);
-      }
+  function _play() {
+    _intervalID = null;
+    while (_q.length > 0 && !(_q[0].isRedraw)) {
+      var f = _q.shift();
+      f();
+    }
+    if (_q.length <= 0 && _callback) {
+      var clbk = _callback;
+      var args = _args;
+      _callback = null;
+      _args = null;
+      clbk.apply(null, args);
+    } else if (_q.length > 0) {
+      var f = _q.shift();
+      f();
+      _intervalID = setTimeout(_play, f.duration);
+    }
+  }
+
+  /**
+   * Execute the next visualization step.
+   */
+  function _step() {
+    while (_q.length > 0 && !(_q[0].isRedraw)) {
+      var f = _q.shift();
+      f();
+    }
+    if (_q.length > 0) {
+      var f = _q.shift();
+      f();
     }
   }
 
@@ -219,19 +235,11 @@ var redraw = (function() {
    * @param {Object} viz - The visualization object for a specific algorithm.
    * @param {number} dur - Duration of the entire redraw in milliseconds.
    */
-  function draw(viz, dur) {
-    // TODO: Revisit how to allocate time per redraw component.
-    if ( _q.length ) {
-      
-      var durPerFunction = dur / _q.length;
-      if (_intervalID) { clearInterval(_intervalID); }
-      _intervalID = setInterval(_next,
-                               durPerFunction,
-                               viz,               // next arg 1
-                               durPerFunction);   // next arg 2
-    } else {
-      _draw(viz, dur);
-    }
+  function addDraw(viz, dur) {
+    var f = function() { _draw(viz, dur); };
+    f.duration = dur;
+    f.isRedraw = 1;
+    _q.push(f);
   }
 
   /**
@@ -257,7 +265,7 @@ var redraw = (function() {
     _q.push(function() {
       ops.forEach(function(f) { f(); });
     });
-    draw(viz, dur);
+    addDraw(viz, dur);
   }
 
   /**
@@ -269,6 +277,30 @@ var redraw = (function() {
       _callback = callback;
       _args = args;
     }
+  }
+
+  /**
+   * Play the animation.
+   */
+  function playAnimation() {
+    _play();
+  }
+
+  /**
+   * Pause the animation.
+   */
+  function pauseAnimation() {
+    if (_intervalID) {
+      clearInterval(_intervalID);
+      _intervalID = null;
+    }
+  }
+
+  /**
+   * Draw the next step in the visualization.
+   */
+  function stepAnimation() {
+    _step();
   }
 
   /**
@@ -402,13 +434,15 @@ var redraw = (function() {
    *  return public methods
    ****************************************************************************/
   return {
-    draw:draw,
+    addDraw:addDraw,
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
+    playAnimation:playAnimation,
+    pauseAnimation:pauseAnimation,
+    stepAnimation:stepAnimation,
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
-    onAnimationEnd:onAnimationEnd,
     initCanvas:initCanvas
   };
 
