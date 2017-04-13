@@ -22,6 +22,7 @@ var redraw = (function() {
    * @param {number} dur - Duration of the function's execution in milliseconds.
    */
   function _next(viz, dur) {
+    console.log('redrawing with ' + _q.length + ' functions');
     var f = _q.shift();
     if ( f ) { f(); }
     _draw(viz, dur);
