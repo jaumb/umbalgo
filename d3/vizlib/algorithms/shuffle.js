@@ -18,6 +18,12 @@ var shuffle = (function(elems, svgW, svgH) {
     p2:{x:svgW, y:svgH}
   }
   var _array = array_factory.get_array(elems, _boundingBox);
+  var index_i = element_factory.getText();
+  index_i.setVal('i');
+  index_i.setFont(_array.getSlots()[0].getLabel().getFont());
+  index_i.setVisibility('hidden');
+  var font_sz = _array.getSlots()[0].getLabel().getFontSize().split('p')[0];
+  index_i.setFontSize(0.7 * parseFloat(font_sz));
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
@@ -47,6 +53,32 @@ var shuffle = (function(elems, svgW, svgH) {
     return vizlib.getText(_array.getText());
   }
   //end of element array getters////////////////////////////////////////////////
+
+  /**
+   * Set the position of i with respect to an array index.
+   * @param {number} index - Array element index to align i with.
+   */
+  var setI = function(index) {
+    redraw.addOps(function() {
+      var slot = _array.getSlots()[index];
+      var pos = slot.getPos();
+      var w = slot.getWidth();
+      var h = slot.getHeight();
+      var bb = redraw.getBBox(index_i);
+      index_i.setSpX(pos.x + 1 / 2 * w);
+      index_i.setSpY(pos.y + h + 1 / 10 * h + 1 / 2 * bb.height);
+      index_i.setPosX(index_i.getSpX());
+      index_i.setPosY(index_i.getSpY());
+      index_i.setVisibility('visible');
+    });
+  }
+
+  /**
+   * Remove i from the canvas.
+   */
+  var removeI = function() {
+    redraw.addOps(function() { index_i.setFillOpacity(0); });
+  }
 
   /**
    * Use array's swap function to swap two elements in the array.
@@ -126,6 +158,8 @@ var shuffle = (function(elems, svgW, svgH) {
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
+    setI:setI,
+    removeI:removeI,
     swap:swap,
     setFill:setFill,
     emphasize:emphasize,

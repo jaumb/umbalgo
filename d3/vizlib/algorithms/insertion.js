@@ -79,7 +79,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align i with.
    */
   var setI = function(index) {
-    return function() {
+    redraw.addOps(function() {
       var slot = _array.getSlots()[index];
       var pos = slot.getPos();
       var w = slot.getWidth();
@@ -90,7 +90,7 @@ var insertion = (function(elems, svgW, svgH) {
       index_i.setPosX(index_i.getSpX());
       index_i.setPosY(index_i.getSpY());
       index_i.setVisibility('visible');
-    };
+    });
   }
 
   /**
@@ -98,7 +98,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align j with.
    */
   var setJ = function(index) {
-    return function() {
+    redraw.addOpps(function() {
       var slot = _array.getSlots()[index];
       var pos = slot.getPos();
       var w = slot.getWidth();
@@ -109,25 +109,25 @@ var insertion = (function(elems, svgW, svgH) {
       index_j.setPosX(index_j.getSpX());
       index_j.setPosY(index_j.getSpY());
       index_j.setVisibility('visible');
-    };
+    });
   }
 
   /**
    * Remove i from the canvas.
    */
   var removeI = function() {
-    return function() {
+    redraw.addOps(function() {
       index_i.setFillOpacity(0);
-    };
+    });
   }
 
   /**
    * Remove j from the canvas.
    */
   var removeJ = function() {
-    return function() {
+    redraw.addOps(function() {
       index_j.setFillOpacity(0);
-    };
+    });
   }
 
   /**
