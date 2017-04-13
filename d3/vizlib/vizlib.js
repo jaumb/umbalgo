@@ -120,7 +120,7 @@ var vizlib = (function() {
     getText:getText,
     get_selection:get_selection,
     get_insertion:get_insertion,
-    get_linkedbag:get_linkedbag
+    get_linkedbag:get_linkedbag,
     get_bst:get_bst,
     get_shuffle:get_shuffle
   };
