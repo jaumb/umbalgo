@@ -30,7 +30,7 @@ var element_factory = (function() {
 
   // svg text elements
   var _font = 'courier new';
-  var _font_size = 'medium';
+  var _font_size = '.3vw';
   var _text_anchor = 'middle';
 
   // svg rect elements
@@ -470,7 +470,7 @@ var element_factory = (function() {
   }
 
   function Circle(new_id) {
-    id = new_id;
+    var id = new_id;
     var fill = _fill;
     var fill_opacity = _fill_opacity;
     var stroke = _stroke;
@@ -542,7 +542,7 @@ var element_factory = (function() {
     }
 
     function getSpCY() {
-      return sp.cx;
+      return sp.cy;
     }
 
     function setSpCY(newY) {
@@ -917,4 +917,5 @@ var element_factory = (function() {
     getText:getText,
     getLine:getLine
   };
+
 })();

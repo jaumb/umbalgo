@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v4.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/array_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/shuffle.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redrawII.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id', svgCanvasName);
+
+      // example of a client using the insertion visualization
+      var dur = 500;
+
+      var l = [];
+      for (var i = 1; i <= 5; i++) {
+        l.push(i);
+      }
+
+      var viz = vizlib.get_shuffle(l, svgW, svgH);
+      viz.updateCanvas(0); // draw initial canvas
+
+      // shuffle implementation
+      for (var i = 0; i < l.length; i++) {
+        viz.emphasize([i]);
+        viz.updateCanvas(dur);
+        var r = i + Math.floor(d3.randomUniform(l.length - i)());
+        viz.setFill([r], colors.COMPARE);
+        viz.updateCanvas(dur);
+        var tmp = l[i];
+        l[i] = l[r];
+        l[r] = tmp;
+        viz.swap(i, r);
+        viz.updateCanvas(dur);
+        viz.setFill([r], colors.BACKGROUND);
+        viz.setFill([i], colors.FINISHED);
+        if (i < l.length - 1) { viz.moveEmphasis(i, i+1); }
+        else { viz.deemphasize([i]); }
+        viz.updateCanvas(dur);
+      }
+
+      viz.play();
+
+    </script>
+  </body>
+</html>

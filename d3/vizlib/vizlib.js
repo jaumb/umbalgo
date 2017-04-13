@@ -100,6 +100,14 @@ var vizlib = (function() {
 
   var get_linkedbag = function(elements, svgW, svgH) {
     return linkedbag(elements, svgW, svgH);
+  }
+
+  var get_bst = function(root, svgW, svgH) {
+    return bst(root, svgW, svgH);
+  };
+
+  var get_shuffle = function(elements, svgW, svgH) {
+    return shuffle(elements, svgW, svgH);
   };
 
   //////////////////////////////////////////////////////////////////////////////
@@ -113,6 +121,8 @@ var vizlib = (function() {
     get_selection:get_selection,
     get_insertion:get_insertion,
     get_linkedbag:get_linkedbag
+    get_bst:get_bst,
+    get_shuffle:get_shuffle
   };
 
 })();

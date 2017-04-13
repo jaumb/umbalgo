@@ -1,19 +1,23 @@
+"use strict";
+
 console.log("insertion-sort");
 vm.loadFunc("exch.js");
 vm.loadFunc("less.js");
 vm.loadFunc("2.1-insertion-sort.js");
 
-var onInvoke = function() {
+var onInvoke = function onInvoke() {
   var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
   vm.visualization = insertionSortViz(a);
   vm.visualization.highlight([0]);
   vm.visualization.unhighlight([0]);
   vm.visualization.updateBoundary(0);
   console.log("Input: " + a);
-  vm.invokeFunc("sort", function(result) { console.log("Result: " + a); }, a);
+  vm.invokeFunc("sort", function (result) {
+    console.log("Result: " + a);
+  }, a);
 };
 
-var onNext = function() {
+var onNext = function onNext() {
   vm.next();
 };
 
