@@ -251,6 +251,10 @@ var ll_factory = (function() {
     }
 
 
+    /**
+     * Update the arrow on all references to point to the correct coordinates.
+     * This is used to readjust reference arrows after nodes have been resized.
+     */
     function _updateRefArrows() {
       _refs.forEach(function(ref){
         if (ref.target) {
@@ -301,7 +305,7 @@ var ll_factory = (function() {
         return;
       } else {
         while(root) {
-          // the content box
+          // create the content box
           var contentBox = element_factory.getRect();
           contentBox.setPosX(_firstNodePos.x + i * 2 * _boxSize);
           contentBox.setPosY(_firstNodePos.y);
@@ -317,7 +321,7 @@ var ll_factory = (function() {
           contentBox.getLabel().setSpX(contentBox.getLabel().getPosX());
           contentBox.getLabel().setSpY(contentBox.getLabel().getPosY());
 
-          // the ref arrow box
+          // create the ref arrow box
           var refBox = element_factory.getRect();
           refBox.setPosX(contentBox.getPosX());
           refBox.setPosY(_firstNodePos.y + _boxSize);
@@ -328,7 +332,7 @@ var ll_factory = (function() {
           refBox.setStrokeWidth('.3vw');
           refBox.getLabel().setVisibility('hidden');
 
-          // the ref arrow
+          // create the ref arrow
           var refArrow = element_factory.getLine();
           refArrow.setPosX1(refBox.getCenter().x);
           refArrow.setPosY1(refBox.getCenter().y);
@@ -346,23 +350,19 @@ var ll_factory = (function() {
             refArrow.setMarkerEnd("url(#marker_stub)");
           }
 
+          // associate the graphical elements with the current node
           root.setContentBox(contentBox);
           root.setRefBox(refBox);
           root.setRefArrow(refArrow);
 
-          // var newNode = { id:root.getID(),
-          //                 val:root.getVal(),
-          //                 next:root.getNext(),
-          //                 contentBox:contentBox,
-          //                 refBox:refBox,
-          //                 refArrow:refArrow };
-          // _nodeMap.set(newNode.id, newNode);
-
+          // add the fully-formed node to the node map
           _nodeMap.set(root.getID(), root);
 
+          // set the input root node as the visualization's root node
           if (i === 0) {
             _root = root;
           }
+
           root = root.getNext();
           i++;
         }
@@ -445,7 +445,6 @@ var ll_factory = (function() {
      */
     function _resize(override) {
       _nodeCount = override ? override : _nodeMap.size;
-      // _nodeCount = _nodeMap.size;
       _boxSize = _nodeCount < 5 ? _W / 11 : _W / (_nodeCount * 2 + 1);
       _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
 
@@ -483,6 +482,12 @@ var ll_factory = (function() {
       });
     }
 
+
+    /**
+     * Hide all graphical components (box, label, refbox, arrow) of one or
+     * more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs to hide.
+     */
     function _hideNodes(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
@@ -496,6 +501,11 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Show all graphical components (box, label, refbox, arrow) of one or
+     * more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs to show.
+     */
     function _showNodes(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
@@ -509,6 +519,10 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Hide the label of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose label to hide.
+     */
     function _hideLabels(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
@@ -517,21 +531,22 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Show the label of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose label to show.
+     */
     function _showLabels(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
-        console.log("NODE ID IS : " + nodeID);
-        console.log("IN SHOW LABELS: label = " + node.getContentBox().getLabel().getVal());
-        // console.log("in show labels: " +
-        //             "\n  id     : " + node.getID() +
-        //             "\n  val    : " + node.getVal() +
-        //             "\n  next ID: " + node.getNext().getID() +
-        //             "\n  content: " + node.getContentBox().getLabel().getPosX());
         node.getContentBox().getLabel().setFillOpacity(1);
         node.getContentBox().getLabel().setStrokeOpacity(1);
       });
     }
 
+    /**
+     * Hide the arrow of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose arrow to hide.
+     */
     function _hideArrows(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
@@ -539,6 +554,10 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Show the arrow of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose arrow to show.
+     */
     function _showArrows(...nodeIDs) {
       nodeIDs.forEach(function(nodeID) {
         var node = _nodeMap.get(nodeID);
@@ -546,11 +565,17 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Hide the label of the n counter.
+     */
     function _hideNLabel() {
       _n.getLabel().setFillOpacity(0);
       _n.getLabel().setStrokeOpacity(0);
     }
 
+    /**
+     * Show the label of the n counter.
+     */
     function _showNLabel() {
       _n.getLabel().setFillOpacity(1);
       _n.getLabel().setStrokeOpacity(1);
@@ -592,17 +617,19 @@ var ll_factory = (function() {
       }
     }
 
+
+    /**
+     * Adjust the reference arrow associated with a node to point at the
+     * current target of a reference.
+     * @param {number} nodeID - The unique ID of the node whose arrow to update.
+     * @param {Object} ref - The reference whose target the node will point at.
+     */
     function _pointNodeAtRef(nodeID, ref) {
       var node = _nodeMap.get(nodeID);
       if (ref.target !== null) {
         var tNode = _nodeMap.get(ref.target);
         node.getRefArrow().setPosX2(tNode.getRefBox().getPosX());
         node.getRefArrow().setPosY2(tNode.getRefBox().getPosY());
-        // node.getRefArrow().setPosY2(
-        //   (ref === _oldfirst || ref === _oldlast) ?
-        //   (_firstNodePos.y + _boxSize) :
-        //   _firstNodePos.y
-        // );
         node.getRefArrow().setMarkerEnd("url(#marker_arrow)");
       } else {
         node.getRefArrow().setPosX2(node.getRefArrow().getPosX1() + _boxSize);

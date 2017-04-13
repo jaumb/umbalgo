@@ -26,7 +26,7 @@
       redraw.initialize();
 
       // example of a client using the insertion visualization
-      var dur = 5000;
+      var dur = 50000;
 
       var size = 5;
       var l = [];
@@ -67,24 +67,15 @@
                              viz.pointOldFirstAtFirst());
 
         // java: first = new Node();
-        // var first_id = first ? first.getID() : null;
-        // console.log("first_id = " + first_id + "\nfirst_val = " + first.getVal());
-        // console.log("first info: " +
-        //             "\n  id     : " + first.getID() +
-        //             "\n  val    : " + first.getVal() +
-        //             "\n  next ID: " + first.getNext().getID() +
-        //             "\n  contentBox: " + first.getContentBox());
         var newNode = linkedNode_factory.getNode(val, first);
-        // console.log("new node info: " +
-        //             "\n  id     : " + newNode.getID() +
-        //             "\n  val    : " + newNode.getVal() +
-        //             "\n  next ID: " + newNode.getNext().getID());
+
         // add a node to front, resize elements, show node box (label hidden),
         // point first ref's arrow at new node
         if (first) {
           redraw.addOpsAndDraw(viz, dur,
                               viz.shiftRight(),
-                              viz.pointFirstAt(first.getID()));
+                              viz.pointFirstAt(first.getID()),
+                              viz.pointOldFirstAtFirst());
         } else {
           redraw.addOpsAndDraw(viz, dur,
                               viz.shiftRight(),
@@ -92,12 +83,11 @@
         }
 
         redraw.addOpsAndDraw(viz, dur,
-                            // viz.shiftRight(),
-                            viz.addNodeFront(newNode),
-                            viz.showNodeBox(newNode.getID()),
+                            viz.addNodeFront(newNode));
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.showNodeBox(newNode.getID()));
+        redraw.addOpsAndDraw(viz, dur,
                             viz.pointFirstAt(newNode.getID()));
-        // redraw.addOpsAndDraw(viz, dur,
-        //                     viz.showNodeBox(newNode.getID()));
 
         // java: first.item = item;
         // fade label of new element into view
