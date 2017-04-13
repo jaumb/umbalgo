@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/ll_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/linkedbag.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth - 50;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id','svg_canvas');
+      redraw.initialize();
+
+      // example of a client using the insertion visualization
+      var dur = 50000;
+
+      var size = 5;
+      var l = [];
+      for (var i = 1; i <= size; i++) {
+        l.push(i);
+      }
+      d3.shuffle(l);
+
+
+      // var nodes = [];
+      // for (var i = 1; i <= size; i++) {
+      //   nodes.push(linkedNode_factory.getNode(l[i-1], null));
+      // }
+      // for (var i = 0; i <= size - 2; i++) {
+      //   nodes[i].setNext(nodes[i + 1]);
+      // }
+      // var root = nodes[0];
+      //
+      // var first = root;
+      // var viz = vizlib.get_linkedbag(root, svgW, svgH);
+
+
+      // uncomment to start with an empty bag
+      var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      var first = null;
+
+      redraw.draw(viz, dur); // draw initial canvas
+
+
+      function add(val) {
+        // java: Node oldfirst = first;
+        var oldfirst = first;
+        // fade in oldfirst ref
+        redraw.addOpsAndDraw(viz, dur,
+                             viz.showOldFirst());
+        // point oldfirst at first
+        redraw.addOpsAndDraw(viz, dur,
+                             viz.pointOldFirstAtFirst());
+
+        // java: first = new Node();
+        var newNode = linkedNode_factory.getNode(val, first);
+
+        // add a node to front, resize elements, show node box (label hidden),
+        // point first ref's arrow at new node
+        if (first) {
+          redraw.addOpsAndDraw(viz, dur,
+                              viz.shiftRight(),
+                              viz.pointFirstAt(first.getID()),
+                              viz.pointOldFirstAtFirst());
+        } else {
+          redraw.addOpsAndDraw(viz, dur,
+                              viz.shiftRight(),
+                              viz.pointFirstAt(null));
+        }
+
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.addNodeFront(newNode));
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.showNodeBox(newNode.getID()));
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.pointFirstAt(newNode.getID()));
+
+        // java: first.item = item;
+        // fade label of new element into view
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.showNodeLabel(newNode.getID()));
+
+        // java: first.next = oldfirst;
+        // new element points to whatever oldfirst references
+        redraw.addOpsAndDraw(viz, dur,
+                            viz.pointNodeAtOldfirst(newNode.getID()),
+                            viz.showNodeArrow(newNode.getID()));
+
+        // java: n++;
+        redraw.addOpsAndDraw(viz, dur,
+                              viz.hideNLabel());
+        redraw.addOpsAndDraw(viz, dur,
+                              viz.updateN(),
+                              viz.showNLabel());
+
+        redraw.addOpsAndDraw(viz, dur,
+                              viz.pointOldFirstAt(null),
+                              viz.hideOldFirst());
+
+        first = newNode;
+      }
+
+      // function add(val) {
+      //   // first is visible by default, it begins pointed to null by default
+      //
+      //   // java: Node oldfirst = first;
+      //   // Fade oldfirst into view. It should begin pointed at null.
+      //
+      //
+      //   // java: first = new Node();
+      //
+      //   // java: first.item = item;
+      //
+      //   // java: first.next = oldfirst;
+      //
+      //   // java: n++;
+      // }
+
+      add(1);
+      add(2);
+      add(3);
+      add(4);
+      add(5);
+      add(6);
+      add(7);
+      add(8);
+      add(9);
+
+
+
+
+
+      // redraw.addOpsAndDraw(viz, dur,
+      //                      viz.setFill([1,3,5], colors.FINISHED),
+      //                      viz.setFirstFill(colors.ACTIVE));
+      //
+      // redraw.addOpsAndDraw(viz, 3000,
+      //                     viz.showOldFirst());
+      //
+      // redraw.addOpsAndDraw(viz, 3000,
+      //                     viz.shiftRight());
+
+    </script>
+  </body>
+</html>

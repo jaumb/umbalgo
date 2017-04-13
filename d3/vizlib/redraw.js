@@ -135,7 +135,10 @@ var redraw = (function() {
       .attr('y2', function(d) { return d.getPosY2(); })
       .attr('stroke', function(d) { return d.getStroke(); })
       .attr('stroke-width', function(d) { return d.getStrokeWidth(); })
-      .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); });
+      .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); })
+      .attr('opacity', function(d) { return d.getOpacity(); })
+      .attr('marker-start', function(d) { return d.getMarkerStart(); })
+      .attr('marker-end', function(d) { return d.getMarkerEnd(); });
 
     lines.enter()
       .append('line')
@@ -148,6 +151,9 @@ var redraw = (function() {
       .attr('stroke', function(d) { return d.getStroke(); })
       .attr('stroke-width', function(d) { return d.getStrokeWidth(); })
       .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); })
+      .attr('opacity', function(d) { return d.getOpacity(); })
+      .attr('marker-start', function(d) { return d.getMarkerStart(); })
+      .attr('marker-end', function(d) { return d.getMarkerEnd(); })
       .transition().duration(dur)
       .attr('id', function(d) { return _idPrefix + d.getID(); })
       .attr('visibility', function(d) { return d.getVisibility(); })
@@ -157,7 +163,10 @@ var redraw = (function() {
       .attr('y2', function(d) { return d.getPosY2(); })
       .attr('stroke', function(d) { return d.getStroke(); })
       .attr('stroke-width', function(d) { return d.getStrokeWidth(); })
-      .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); });
+      .attr('stroke-opacity', function(d) { return d.getStrokeOpacity(); })
+      .attr('opacity', function(d) { return d.getOpacity(); })
+      .attr('marker-start', function(d) { return d.getMarkerStart(); })
+      .attr('marker-end', function(d) { return d.getMarkerEnd(); });
 
     // draw all text elements
     var text = d3.select("#g_text")
@@ -215,7 +224,7 @@ var redraw = (function() {
   function draw(viz, dur) {
     // TODO: Revisit how to allocate time per redraw component.
     if ( _q.length ) {
-      
+
       var durPerFunction = dur / _q.length;
       if (_intervalID) { clearInterval(_intervalID); }
       _intervalID = setInterval(_next,
@@ -322,12 +331,14 @@ var redraw = (function() {
         .attr('y2', e.getPosY2())
         .attr('stroke', e.getStroke())
         .attr('stroke-width', e.getStrokeWidth())
-        .attr('stroke-opacity', e.getStrokeOpacity());
+        .attr('stroke-opacity', e.getStrokeOpacity())
+        .attr('marker-start', e.getMarkerStart())
+        .attr('marker-end', e.getMarkerEnd());
     }
   }
 
   /**
-   * Get the bounding box of an svg element. 
+   * Get the bounding box of an svg element.
    * @param {number|Object} id_elem - The id or element.
    */
   function getBBox(id_elem) {
@@ -361,6 +372,11 @@ var redraw = (function() {
         .append('g')
         .attr('id','g_rects');
 
+    // append defs item to store markers
+    d3.select("#svg_canvas")
+      .append('defs')
+      .attr('id', 'svg_defs');
+
     // append group element for circles
     d3.select("#svg_canvas")
         .append('g')
@@ -375,8 +391,44 @@ var redraw = (function() {
     d3.select("#svg_canvas")
       .append('g')
       .attr('id','g_text');
-  }
 
+    // append defs element and marker definitions
+
+    var marker_defs = [
+      { name: 'circle',
+        path: 'M 0,0 m -5,0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0',
+        viewbox: '-6 -6 12 12'},
+      { name: 'square',
+        path: 'M 0,0 m -5,-5 L 5,-5 L 5,5 L -5,5 Z',
+        viewbox: '-5 -5 10 10'},
+      { name: 'arrow',
+        path: 'M 0,0 m -5,-5 L 5,0 L -5,5 Z',
+        viewbox: '-5 -5 10 10'},
+      { name: 'stub',
+        path: 'M 0,0 m -1,-5 L 1,-5 L 1,5 L -1,5 Z',
+        viewbox: '-1 -5 2 10'},
+      { name: 'none',
+        path: '',
+        viewbox: '0 0 0 0'}
+    ];
+
+    d3.select('#svg_defs')
+      .selectAll('marker')
+      .data(marker_defs)
+      .enter()
+      .append('marker')
+      .attr('id', function(d){ return 'marker_' + d.name;})
+      .attr('markerHeight', 5)
+      .attr('markerWidth', 5)
+      .attr('markerUnits', 'strokeWidth')
+      .attr('orient', 'auto')
+      .attr('refX', 0)
+      .attr('refY', 0)
+      .attr('viewBox', function(d){ return d.viewbox;})
+      .append('path')
+        .attr('d', function(d){ return d.path; })
+        .attr('fill', function(d) { return colors.BLACK;});
+  }
 
   /****************************************************************************
    *  return public methods
