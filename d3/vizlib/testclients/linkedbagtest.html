@@ -22,8 +22,8 @@
         .append("svg")
         .attr("width", svgW)
         .attr("height", svgH)
-        .attr('id','svg_canvas');
-      redraw.initCanvas();
+        .attr('id',svgCanvasName);
+      redraw.initCanvas(svgCanvasName);
 
       // example of a client using the insertion visualization
       var dur = 50000;
