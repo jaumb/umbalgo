@@ -102,6 +102,10 @@ var vizlib = (function() {
     return bst(root, svgW, svgH);
   };
 
+  var get_shuffle = function(elements, svgW, svgH) {
+    return shuffle(elements, svgW, svgH);
+  };
+
   //////////////////////////////////////////////////////////////////////////////
   //  return public methods
   //////////////////////////////////////////////////////////////////////////////
@@ -112,7 +116,8 @@ var vizlib = (function() {
     getText:getText,
     get_selection:get_selection,
     get_insertion:get_insertion,
-    get_bst:get_bst
+    get_bst:get_bst,
+    get_shuffle:get_shuffle
   };
 
 })();
