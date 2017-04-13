@@ -9,7 +9,7 @@
   },
   {
     "code": "  for (int i = 1; i < N; i++) {",
-    "impl": "(function(that) {\n    if (that.cache[\"3__firstIteration\"] === undefined) {\n      that.locals[\"i\"] = 1;\n      that.cache[\"3__firstIteration\"] = false;\n    } else {\n      that.locals[\"i\"]++;\n    }\n    if (that.locals[\"i\"] < that.locals[\"N\"]) {\n      that.nextLineNumber = 6;\n    } else {\n      that.nextLineNumber = undefined;\n      that.locals[\"i\"] = undefined;\n      that.cache[\"3__firstIteration\"] = undefined;\n    }\n})"
+    "impl": "(function(that) {\n    if (that.cache[\"3__firstIteration\"] === undefined) {\n      that.locals[\"i\"] = 1;\n      that.cache[\"3__firstIteration\"] = false;\n    } else {\n      that.locals[\"i\"]++;\n    }\n    if (that.locals[\"i\"] < that.locals[\"N\"]) {\n      // TW NOTE 4/12/17: This appears to be an error that I just happened to\n      // notice, but I can't test the fix without a front end. So if this is\n      // broken, it's probably that this fix broke it.\n      that.nextLineNumber = 4;\n  //    that.nextLineNumber = 6;\n    } else {\n      that.nextLineNumber = undefined;\n      that.locals[\"i\"] = undefined;\n      that.cache[\"3__firstIteration\"] = undefined;\n    }\n})"
   },
   {
     "code": "    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {",

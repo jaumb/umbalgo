@@ -231,7 +231,7 @@ var content;
   var uriParams = function uriParams() {
     var params = {};
     var tokens;
-    var re = /[?&]?([^=]+)=([^&]*)/g;
+    var re = /[?&]?([^=]+)=([^&/]*)/g;
     while (tokens = re.exec(document.location.search.split('+').join(' '))) {
       params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
     }
