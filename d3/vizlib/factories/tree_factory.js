@@ -16,22 +16,25 @@ var tree_factory = (function() {
     //  private variables
     ////////////////////////////////////////////////////////////////////////////
 
-    var _X1 = bounding_box.p1.x;
-    var _Y1 = bounding_box.p1.y;
-    var _X2 = bounding_box.p2.x;
-    var _Y2 = bounding_box.p2.y;
-    var _W = _X2 - _X1;
-    var _H = _Y2 - _Y1;
-    var _nodeMap = {};
-    var _edgeMap = {};
-    var _radius = 1 / 2 * _W / 16;
+    var _X1 = null;
+    var _Y1 = null;
+    var _X2 = null;
+    var _Y2 = null;
+    var _W = null;
+    var _H = null;
+    var _nodeMap = new Map();
+    var _edgeMap = new Map();
+    var _radius = null;
     var _root = null;
-    var _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
-    var _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
-    var _xOffset = 2 * _radius;
-    var _yOffset = 3 * _radius;
+    var _rootPos = null;
+    var _nextNodePos = null;
+    var _xOffset = null;
+    var _yOffset = null;
     var _labelBbox = null;
-    var _someSpace = .1 * _radius;
+    var _someSpace = null;
+
+    // calculate initial size of tree nodes
+    resize(bounding_box);
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -169,7 +172,7 @@ var tree_factory = (function() {
      * @param {Object} vizNode - A visualization node.
      */
     function _addVizNode(clientNode, vizNode) {
-      _nodeMap[clientNode.id()] = vizNode;
+      _nodeMap.set(clientNode.id(), vizNode);
     }
 
     /**
@@ -179,7 +182,7 @@ var tree_factory = (function() {
      * @return vizNode - Visualization node.
      */
     function _getVizNode(clientNode) {
-      return _nodeMap[clientNode.id()];
+      return _nodeMap.get(clientNode.id());
     }
 
     /**
@@ -187,7 +190,7 @@ var tree_factory = (function() {
      * @param {Object} clientNode - Client's tree node object.
      */
     function _removeVizNode(clientNode) {
-      delete _nodeMap[clientNode.id()];
+      _nodeMap.delete(clientNode.id());
     }
 
     /**
@@ -254,8 +257,7 @@ var tree_factory = (function() {
      * @param {Object} vizNode - Visualization node.
      */
     function _positionNodeLabel(vizNode) {
-      if (_labelBbox === null)
-        _labelBbox = redraw.getBBox(vizNode.getLabel());
+      _labelBbox = redraw.getBBox(vizNode.getLabel());
       vizNode.getLabel().setPosX(vizNode.getPosCX());
       vizNode.getLabel().setPosY(vizNode.getPosCY() + .30 * _labelBbox.height);
       vizNode.getLabel().setSpX(vizNode.getLabel().getPosX());
@@ -329,14 +331,57 @@ var tree_factory = (function() {
      */
     function _reposition(node) {
       if (!node) { return; }
+      else if (node === _root) {
+
+      }
       _repositionNodes(node);
       _repositionEdges(node);
+    }
+
+    /**
+     * Resize all nodes and edges in the tree.
+     * Call this after the canvas size changes.
+     */
+    function _resize() {
+      _nodeMap.forEach(function(v, k) {
+        v.setR(_radius);
+        v.getLabel().setFontSize((1.2 * _radius) + 'px');
+        if (v.emphasis) {
+          v.emphasis.setPosCX(v.getPosCX());
+          v.emphasis.setPosCY(v.getPosCY());
+        }
+      });
+      if (_root) {
+        _root.setPosCX(_rootPos.cx);
+        _root.setPosCY(_rootPos.cy);
+      }
+      _reposition(_root);
     }
 
 
     ////////////////////////////////////////////////////////////////////////////
     //  public methods
     ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Resize the tree and all nodes and edges in the tree based on a new
+     * bounding box.
+     */
+    function resize(bounding_box) {
+      _X1 = bounding_box.p1.x;
+      _Y1 = bounding_box.p1.y;
+      _X2 = bounding_box.p2.x;
+      _Y2 = bounding_box.p2.y;
+      _W = _X2 - _X1;
+      _H = _Y2 - _Y1;
+      _radius = Math.min(.5 * _W / 16, .5 * _H / 10);
+      _rootPos = {cx:_W / 2, cy:_Y1 + 1.5 * _radius};
+      _nextNodePos = {cx:_X1 + 1.5 * _radius, cy:_Y1 + 1.5 * _radius};
+      _xOffset = 2 * _radius;
+      _yOffset = 3 * _radius;
+      _someSpace = .1 * _radius;
+      _resize();
+    }
 
     /**
      * Build a tree given a node to be treated as the root of the tree.
@@ -489,11 +534,9 @@ var tree_factory = (function() {
      */
     function getNodes() {
       var nodes = [];
-      for (var key in _nodeMap) {
-        if (_nodeMap.hasOwnProperty(key)) {
-          nodes.push(_nodeMap[key].copy());
-        }
-      }
+      _nodeMap.forEach(function(v, k) {
+        nodes.push(v.copy());
+      });
       return nodes;
     }
 
@@ -525,11 +568,9 @@ var tree_factory = (function() {
      */
     function getText() {
       var text = [];
-      for (var key in _nodeMap) {
-        if (_nodeMap.hasOwnProperty(key)) {
-          text.push(_nodeMap[key].getLabel());
-        }
-      }
+      _nodeMap.forEach(function(v, k) {
+        text.push(v.getLabel());
+      });
       return text;
     }
 
@@ -539,14 +580,12 @@ var tree_factory = (function() {
      */
     function getCircles() {
       var circs = [];
-      for (var key in _nodeMap) {
-        if (_nodeMap.hasOwnProperty(key)) {
-          circs.push(_nodeMap[key]);
-          if (_nodeMap[key].emphasis) {
-            circs.push(_nodeMap[key].emphasis);
-          }
+      _nodeMap.forEach(function(v, k) {
+        circs.push(v);
+        if (v.emphasis) {
+          circs.push(v.emphasis);
         }
-      }
+      });
       return circs;
     }
 
@@ -611,7 +650,8 @@ var tree_factory = (function() {
       getText:getText,
       getCircles:getCircles,
       getLines:getLines,
-      saveTreeState:saveTreeState
+      saveTreeState:saveTreeState,
+      resize:resize
     };
 
   }

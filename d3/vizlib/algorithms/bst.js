@@ -49,6 +49,19 @@ var bst = (function(root, svgW, svgH) {
   //end of element array getters////////////////////////////////////////////////
 
   /**
+   * Resize the visualization based on the svg canvas size.
+   * @param {number} root - Root node of the client tree.
+   * @param {number} root - Root node of the client tree.
+   */
+  var resize = function(svgW, svgH) {
+    _boundingBox = {
+      p1:{x:0, y:0},
+      p2:{x:svgW, y:svgH}
+    }
+    _tree.resize(_boundingBox);
+  }
+
+  /**
    * Build the tree rooted at root.
    * @param {Object} root - Root node of the client tree.
    */
@@ -157,6 +170,7 @@ var bst = (function(root, svgW, svgH) {
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
+    resize:resize,
     buildTree:buildTree,
     setEdgesColor:setEdgesColor,
     dispNextNode:dispNextNode,

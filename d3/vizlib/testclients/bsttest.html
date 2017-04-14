@@ -17,6 +17,7 @@
     <script type="text/javascript">
       var svgW = window.innerWidth;
       var svgH = window.innerHeight;
+      window.onresize = resize;
 
       d3.select(".chart-container")
         .append("svg")
@@ -110,6 +111,12 @@
           setLChild:setLChild,
           setRChild:setRChild
         };
+      }
+
+      function resize() {
+        svgW = window.innerWidth;
+        svgH = window.innerHeight;
+        viz.resize(svgW, svgH);
       }
 
     </script>
