@@ -6,6 +6,10 @@
  * @param {number} svgH - Canvas height for this visualization.
  */
 var selection = (function(elems, svgW, svgH) {
+
+  // initialize the canvas with element groups
+  redraw.initCanvas(svgCanvasName);
+
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
@@ -17,36 +21,35 @@ var selection = (function(elems, svgW, svgH) {
   var minCaption = element_factory.getText();
   var array = array_factory.get_array(elems, _boundingBox);
 
+  // initialize min box
+  var first = array.getSlots()[0];
+  min.setPosX(first.getPosX());
+  min.setPosY(first.getPosY() + first.getHeight());
+  min.setSpX(min.getPosX());
+  min.setSpY(min.getPosY());
+  min.setHeight(first.getHeight());
+  min.setWidth(first.getWidth());
+
+  // initialize min label
+  var minLabel = min.getLabel();
+  var firstLabel = first.getLabel();
+  minLabel.setVal(firstLabel.getVal());
+  minLabel.setSpX(minLabel.getPosX());
+  minLabel.setSpY(minLabel.getPosY());
+  minLabel.setFontSize(0.7 * first.getWidth() + 'px');
+  minLabel.setPosX(min.getPosX() + 0.5 * min.getWidth());
+  minLabel.setPosY(min.getPosY() + 0.72 * min.getWidth());
+
+  // initialize min caption
+  minCaption.setVal('min');
+  minCaption.setFontSize(0.25 * minLabel.getFontSize().split('p')[0] + 'px');
+  minCaption.setTextAnchor('end');
+  minCaption.setPosX(min.getPosX() + 0.9 * min.getWidth());
+  minCaption.setPosY(min.getPosY() + 0.9 * min.getHeight());
+
   //////////////////////////////////////////////////////////////////////////////
   // private methods
   //////////////////////////////////////////////////////////////////////////////
-
-  var _initializeMin = function() {
-    var first = array.getSlots()[0];
-    min.setPosX(first.getPosX());
-    min.setPosY(first.getPosY() + first.getHeight());
-    min.setSpX(min.getPosX());
-    min.setSpY(min.getPosY());
-    min.setHeight(first.getHeight());
-    min.setWidth(first.getWidth());
-
-    // initialize min label
-    var minLabel = min.getLabel();
-    var firstLabel = first.getLabel();
-    minLabel.setVal(firstLabel.getVal());
-    minLabel.setSpX(minLabel.getPosX());
-    minLabel.setSpY(minLabel.getPosY());
-    minLabel.setFontSize(0.7 * first.getWidth() + 'px');
-    minLabel.setPosX(min.getPosX() + 0.5 * min.getWidth());
-    minLabel.setPosY(min.getPosY() + 0.72 * min.getWidth());
-
-    // initialize min caption
-    minCaption.setVal('min');
-    minCaption.setFontSize(0.25 * minLabel.getFontSize().split('p')[0] + 'px');
-    minCaption.setTextAnchor('end');
-    minCaption.setPosX(min.getPosX() + 0.9 * min.getWidth());
-    minCaption.setPosY(min.getPosY() + 0.9 * min.getHeight());
-  };
 
   /**
    * Set the value of the min element's label.
@@ -151,7 +154,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {string} newVal - new
    */
   var setMinLabel = function(new_val) {
-    return function() { _setMinLabel(new_val); };
+    redraw.addOps(function() { _setMinLabel(new_val); });
   };
 
   /**
@@ -159,7 +162,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {object} array_element - Array element to align min with.
    */
   var setMinPos = function(array_element) {
-    return function() { _setMinPos(array_element); };
+    redraw.addOps(function() { _setMinPos(array_element); });
   };
 
   /**
@@ -167,7 +170,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {string} new_color - New fill color of min element.
    */
   var setMinFill = function(new_color) {
-    return function() { _setMinFill(new_color); };
+    redraw.addOps(function() { _setMinFill(new_color); });
   };
 
   /**
@@ -176,7 +179,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {string} color - Color for emphasis border.
    */
   var emphasize = function(indices, color) {
-    return function() { _emphasize(indices, color); };
+    redraw.addOps(function() { _emphasize(indices, color); });
   };
 
   /**
@@ -184,7 +187,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {number[]} indices - Array of indices to deemphasize.
    */
   var deemphasize = function(indices) {
-    return function() { _deemphasize(indices); };
+    redraw.addOps(function() { _deemphasize(indices); });
   };
 
   /**
@@ -193,7 +196,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {number} index2 - Index of second element to swap.
    */
   var swap = function(index1, index2) {
-    return function() { _swap(index1, index2); };
+    redraw.addOps(function() { _swap(index1, index2); });
   };
 
   /**
@@ -202,7 +205,7 @@ var selection = (function(elems, svgW, svgH) {
    * @param {string} new_color - New fill color for specified indices.
    */
   var setFill = function(indices, color) {
-    return function() { _setFill(indices, color); };
+    redraw.addOps(function() { _setFill(indices, color); });
   };
 
   /**
@@ -211,12 +214,39 @@ var selection = (function(elems, svgW, svgH) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    return function() { _setLabels(indices, val); };
+    redraw.addOps(function() { _setLabels(indices, val); });
   };
 
-  var initializeMin = function() {
-    return _initializeMin;
-  };
+
+  /**
+   * Update the canvas with the previously called visualization steps.
+   * @param {number} duration - Duration per step (in millis).
+   */
+  function updateCanvas(duration) {
+    redraw.addDraw(this, duration);
+  }
+
+  /**
+   * Play the animation.
+   */
+  function play() {
+    redraw.playAnimation();
+  }
+
+  /**
+   * Pause the animation.
+   */
+  function pause() {
+    redraw.pauseAnimation();
+  }
+
+  /**
+   * Take the next step in the animation.
+   */
+  function step() {
+    redraw.stepAnimation();
+  }
+
 
 
 
@@ -236,6 +266,9 @@ var selection = (function(elems, svgW, svgH) {
     swap:swap,
     setFill:setFill,
     setLabels:setLabels,
-    initializeMin: initializeMin
+    updateCanvas:updateCanvas,
+    play:play,
+    pause:pause,
+    step:step
   };
 });
