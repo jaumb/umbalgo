@@ -98,7 +98,7 @@ var insertion = (function(elems, svgW, svgH) {
    * @param {number} index - Array element index to align j with.
    */
   var setJ = function(index) {
-    redraw.addOpps(function() {
+    redraw.addOps(function() {
       var slot = _array.getSlots()[index];
       var pos = slot.getPos();
       var w = slot.getWidth();

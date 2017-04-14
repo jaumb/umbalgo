@@ -33,6 +33,7 @@
       }
 
       var viz = vizlib.get_shuffle(l, svgW, svgH);
+      viz.setI(0);
       viz.updateCanvas(0); // draw initial canvas
 
       // shuffle implementation
@@ -50,8 +51,10 @@
         viz.updateCanvas(dur);
         viz.setFill([r], colors.BACKGROUND);
         viz.setFill([i], colors.FINISHED);
-        if (i < l.length - 1) { viz.moveEmphasis(i, i+1); }
-        else {
+        if (i < l.length - 1) {
+          viz.moveEmphasis(i, i+1);
+          viz.setI(i + 1);
+        } else {
           viz.removeI(i);
           viz.deemphasize([i]);
         }

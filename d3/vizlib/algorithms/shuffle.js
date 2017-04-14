@@ -50,7 +50,7 @@ var shuffle = (function(elems, svgW, svgH) {
   }
 
   var getText = function() {
-    return vizlib.getText(_array.getText());
+    return vizlib.getText(index_i, _array.getText());
   }
   //end of element array getters////////////////////////////////////////////////
 
@@ -66,7 +66,7 @@ var shuffle = (function(elems, svgW, svgH) {
       var h = slot.getHeight();
       var bb = redraw.getBBox(index_i);
       index_i.setSpX(pos.x + 1 / 2 * w);
-      index_i.setSpY(pos.y + h + 1 / 10 * h + 1 / 2 * bb.height);
+      index_i.setSpY(pos.y + h + 1 / 5 * h + 1 / 2 * bb.height);
       index_i.setPosX(index_i.getSpX());
       index_i.setPosY(index_i.getSpY());
       index_i.setVisibility('visible');
