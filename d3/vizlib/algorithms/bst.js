@@ -66,8 +66,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object} root - Root node of the client tree.
    */
   var buildTree = function(root) {
-    var rootNode = _tree.saveTreeState(root);
-    redraw.addOps(function() { _tree.buildTree(rootNode); });
+    _tree.buildTree(root);
   }
 
   /**
@@ -81,7 +80,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - Color to set the edges.
    */
   var setEdgesColor = function(nodePairs, color) {
-    redraw.addOps(function() { _tree.setEdgesColor(nodePairs, color); });
+    _tree.setEdgesColor(nodePairs, color);
   }
 
   /**
@@ -90,7 +89,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object} node - Node to display.
    */
   var dispNextNode = function(node) {
-    redraw.addOps(function() { _tree.dispNextNode(node); });
+    _tree.dispNextNode(node);
   }
 
   /**
@@ -99,7 +98,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - New color of nodes.
    */
   var setFill = function(nodes, color) {
-    redraw.addOps(function() { _tree.setFill(nodes, color); });
+    _tree.setFill(nodes, color);
   }
 
   /**
@@ -108,7 +107,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {string} color - New color of nodes.
    */
   var setOutline = function(nodes) {
-    redraw.addOps(function() { _tree.setOutline(nodes, color); });
+    _tree.setOutline(nodes, color);
   }
 
   /**
@@ -116,7 +115,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object[]} nodes - The nodes to emphasize.
    */
   var emphasize = function(nodes) {
-    redraw.addOps(function() { _tree.emphasize(nodes); });
+    _tree.emphasize(nodes);
   }
 
   /**
@@ -126,14 +125,14 @@ var bst = (function(root, svgW, svgH) {
    * @param {-1|1} dir - Direction of x shift if node2 is undefined.
    */
   var moveEmphasis = function(node1, node2, dir) {
-    redraw.addOps(function() { _tree.moveEmphasis(node1, node2, dir); });
+    _tree.moveEmphasis(node1, node2, dir);
   }
 
   /**
    * Clear all emphases on tree nodes.
    */
   var clearEmphases = function() {
-    redraw.addOps(function() { _tree.clearEmphases(); });
+    _tree.clearEmphases();
   }
 
   /**
@@ -141,7 +140,7 @@ var bst = (function(root, svgW, svgH) {
    * @param {Object[]} nodes - The nodes to de-emphasize.
    */
   var deemphasize = function(nodes) {
-    redraw.addOps(function() { _tree.deemphasize(nodes); });
+    _tree.deemphasize(nodes);
   }
 
   /**

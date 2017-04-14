@@ -388,16 +388,19 @@ var tree_factory = (function() {
      * @param {Object} clientNode - The node to make the root of the tree.
      */
     function buildTree(clientNode) {
-      var vizNode = _getVizNode(clientNode);
-      if (vizNode) {
-        _buildTree(clientNode);
-      } else if (!_root) {
-        _root = _buildTree(clientNode);
-      }
-      _reposition(_root);
-      // if clientNode does not have a corresponding node on the svg
-      // canvas and there is already a root node on the canvas then
-      // we ignore this call (we don't want to draw two root nodes)
+      var savedRootNode = saveTreeState(clientNode);
+      redraw.addOps(function() {
+        var vizNode = _getVizNode(savedRootNode);
+        if (vizNode) {
+          _buildTree(savedRootNode);
+        } else if (!_root) {
+          _root = _buildTree(savedRootNode);
+        }
+        _reposition(_root);
+        // if clientNode does not have a corresponding node on the svg
+        // canvas and there is already a root node on the canvas then
+        // we ignore this call (we don't want to draw two root nodes)
+      });
     }
 
     /**
@@ -411,13 +414,15 @@ var tree_factory = (function() {
      * @param {String} color - Desired edge color.
      */
     function setEdgesColor(clientParentChildPairs, color) {
-      while (clientParentChildPairs.length > 0) {
-        var vizParent = _getVizNode(clientParentChildPairs.shift());
-        var vizChild = _getVizNode(clientParentChildPairs.shift());
-        if (vizParent && vizChild) {
-          _getEdge(vizParent, vizChild).setStroke(color);
+      redraw.addOps(function() {
+        while (clientParentChildPairs.length > 0) {
+          var vizParent = _getVizNode(clientParentChildPairs.shift());
+          var vizChild = _getVizNode(clientParentChildPairs.shift());
+          if (vizParent && vizChild) {
+            _getEdge(vizParent, vizChild).setStroke(color);
+          }
         }
-      }
+      });
     }
 
     /**
@@ -425,11 +430,13 @@ var tree_factory = (function() {
      * @param {Object} clientNode - The node being added to the tree.
      */
     function dispNextNode(clientNode) {
-      var node = _getVizNode(clientNode);
-      if (!node) {
-        node = _createNewNode(clientNode, _nextNodePos.cx, _nextNodePos.cy);
-      }
-      node.isDisplayNode = true;
+      redraw.addOps(function() {
+        var node = _getVizNode(clientNode);
+        if (!node) {
+          node = _createNewNode(clientNode, _nextNodePos.cx, _nextNodePos.cy);
+        }
+        node.isDisplayNode = true;
+      });
     }
 
     /**
@@ -438,8 +445,10 @@ var tree_factory = (function() {
      * @param {string} color - The new fill color of the nodes.
      */
     function setFill(clientNodes, color) {
-      clientNodes.forEach(function(clientNode) {
-        _getVizNode(clientNode).setFill(color);
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          _getVizNode(clientNode).setFill(color);
+        });
       });
     }
 
@@ -449,8 +458,10 @@ var tree_factory = (function() {
      * @param {string} color - The new outline color of the nodes.
      */
     function setOutline(clientNodes, color) {
-      clientNodes.forEach(function(clientNode) {
-        _getVizNode(clientNode).setStroke(color);
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          _getVizNode(clientNode).setStroke(color);
+        });
       });
     }
 
@@ -459,19 +470,21 @@ var tree_factory = (function() {
      * @param {Object[]} clientNodes - The nodes to emphasize.
      */
     function emphasize(clientNodes) {
-      clientNodes.forEach(function(clientNode) {
-        var vizNode = _getVizNode(clientNode);
-        var emphasis = element_factory.getCircle();
-        emphasis.setR(1.3 * vizNode.getR())
-        emphasis.setStroke(colors.EMPHASIZE);
-        emphasis.setStrokeOpacity(75);
-        emphasis.setFill(colors.WHITE);
-        emphasis.setFillOpacity(0);
-        emphasis.setPosCX(vizNode.getPosCX());
-        emphasis.setPosCY(vizNode.getPosCY());
-        emphasis.setSpCX(vizNode.getPosCX());
-        emphasis.setSpCY(vizNode.getPosCY());
-        vizNode.emphasis = emphasis;
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          var vizNode = _getVizNode(clientNode);
+          var emphasis = element_factory.getCircle();
+          emphasis.setR(1.3 * vizNode.getR())
+          emphasis.setStroke(colors.EMPHASIZE);
+          emphasis.setStrokeOpacity(75);
+          emphasis.setFill(colors.WHITE);
+          emphasis.setFillOpacity(0);
+          emphasis.setPosCX(vizNode.getPosCX());
+          emphasis.setPosCY(vizNode.getPosCY());
+          emphasis.setSpCX(vizNode.getPosCX());
+          emphasis.setSpCY(vizNode.getPosCY());
+          vizNode.emphasis = emphasis;
+        });
       });
     }
 
@@ -482,17 +495,19 @@ var tree_factory = (function() {
      * @param {-1|1} dir - Direction of xOffset, left or right of parent.
      */
     function moveEmphasis(clientNode1, clientNode2, dir) {
-      var vizNode1 = _getVizNode(clientNode1);
-      var emphasis = vizNode1.emphasis;
-      if (clientNode2) {
-        var vizNode2 = _getVizNode(clientNode2);
-        vizNode1.emphasis = null;
-        emphasis.setPosCX(vizNode2.getPosCX());
-        emphasis.setPosCY(vizNode2.getPosCY());
-      } else {
-        emphasis.setPosCX(vizNode1.getPosCX() + dir * _xOffset);
-        emphasis.setPosCY(vizNode1.getPosCY() + _yOffset);
-      }
+      redraw.addOps(function() {
+        var vizNode1 = _getVizNode(clientNode1);
+        var emphasis = vizNode1.emphasis;
+        if (clientNode2) {
+          var vizNode2 = _getVizNode(clientNode2);
+          vizNode1.emphasis = null;
+          emphasis.setPosCX(vizNode2.getPosCX());
+          emphasis.setPosCY(vizNode2.getPosCY());
+        } else {
+          emphasis.setPosCX(vizNode1.getPosCX() + dir * _xOffset);
+          emphasis.setPosCY(vizNode1.getPosCY() + _yOffset);
+        }
+      });
     }
 
     /**
@@ -500,13 +515,15 @@ var tree_factory = (function() {
      * @param {Object[]} clientNodes - The nodes to de-emphasize.
      */
     function deemphasize(clientNodes) {
-      clientNodes.forEach(function(clientNode) {
-        var vizNode = _getVizNode(clientNode);
-        var emphasis = vizNode.emphasis;
-        if (emphasis) {
-          redraw.removeElem(emphasis.getID());
-          vizNode.emphasis = null;
-        }
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          var vizNode = _getVizNode(clientNode);
+          var emphasis = vizNode.emphasis;
+          if (emphasis) {
+            redraw.removeElem(emphasis.getID());
+            vizNode.emphasis = null;
+          }
+        });
       });
     }
 
@@ -514,11 +531,15 @@ var tree_factory = (function() {
      * Clear all emphases on tree nodes.
      */
     function clearEmphases() {
-      _nodeMap.forEach(function(v, k) {
-        if (v.emphasis) {
-          redraw.removeElem(v.emphasis.getID());
-          v.emphasis = null;
-        }
+      redraw.addOps(function() {
+        _nodeMap.forEach(function(v, k) {
+          if (v.emphasis) {
+            v.emphasis.setFillOpacity(0);
+            v.emphasis.setStrokeOpacity(0);
+            redraw.onNextDrawEnd(redraw.removeElem, v.emphasis.getID());
+            redraw.onNextDrawEnd(function() { v.emphasis = null; });
+          }
+        });
       });
     }
 
@@ -528,8 +549,10 @@ var tree_factory = (function() {
      * @param {number|string} newLabel - The nodes' new text label.
      */
     function setLabels(clientNodes, newLabel) {
-      clientNodes.forEach(function(clientNode) {
-        _getVizNode(clientNode).getLabel().setVal(newLabel);
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          _getVizNode(clientNode).getLabel().setVal(newLabel);
+        });
       });
     }
 
@@ -539,8 +562,10 @@ var tree_factory = (function() {
      * @param {string} color - The new text color for these nodes.
      */
     function setLabelFill(clientNodes, color) {
-      clientNodes.forEach(function(clientNode) {
-        _getVizNode(clientNode).getLabel().setFill(color);
+      redraw.addOps(function() {
+        clientNodes.forEach(function(clientNode) {
+          _getVizNode(clientNode).getLabel().setFill(color);
+        });
       });
     }
 

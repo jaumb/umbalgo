@@ -8,8 +8,7 @@ var redraw = (function() {
   var _q = [];
   var _intervalID = null;
   var _idPrefix = 'elem_';
-  var _callback = null;
-  var _args = null;
+  var _callbacks = new Array();
 
 
   /****************************************************************************
@@ -21,19 +20,8 @@ var redraw = (function() {
    */
   function _play() {
     _intervalID = null;
-    while (_q.length > 0 && !(_q[0].isRedraw)) {
-      var f = _q.shift();
-      f();
-    }
-    if (_q.length <= 0 && _callback) {
-      var clbk = _callback;
-      var args = _args;
-      _callback = null;
-      _args = null;
-      clbk.apply(null, args);
-    } else if (_q.length > 0) {
-      var f = _q.shift();
-      f();
+    var f = _step();
+    if (f) {
       _intervalID = setTimeout(_play, f.duration);
     }
   }
@@ -43,13 +31,18 @@ var redraw = (function() {
    */
   function _step() {
     while (_q.length > 0 && !(_q[0].isRedraw)) {
-      var f = _q.shift();
-      f();
+      _q.shift()();
     }
     if (_q.length > 0) {
       var f = _q.shift();
       f();
+      _callbacks.forEach(function(callback) {
+        setTimeout(callback, f.duration);
+      });
+      _callbacks = new Array();
+      return f;
     }
+    return null;
   }
 
   /**
@@ -269,14 +262,13 @@ var redraw = (function() {
   }
 
   /**
-   * Add a callback function to invoke once the animation queue is empty.
+   * Add a callback function to invoke once the next redraw function added
+   * to the queue ends.
    * @param {function} callback - Function to invoke when animation ends.
+   * @param {Object} args - Arguments to pass to callback function.
    */
-  function onAnimationEnd(callback, ...args) {
-    if (!_callback) {
-      _callback = callback;
-      _args = args;
-    }
+  function onNextDrawEnd(callback, ...args) {
+    _callbacks.push(function() { callback.apply(null, args); });
   }
 
   /**
@@ -437,6 +429,7 @@ var redraw = (function() {
     addDraw:addDraw,
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
+    onNextDrawEnd:onNextDrawEnd,
     playAnimation:playAnimation,
     pauseAnimation:pauseAnimation,
     stepAnimation:stepAnimation,
