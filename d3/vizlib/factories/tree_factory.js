@@ -297,13 +297,13 @@ var tree_factory = (function() {
     function _repositionNodes(node, dir) {
       var leafCount = _getLeafCount(node);
       if (node.lChild) {
-        node.lChild.setPosCX((node.getPosCX() - _radius - _someSpace) -
+        node.lChild.setPosCX((node.getPosCX() - 2*_radius) -
                       ((_getHeight(_root) - _getHeight(node.lChild)) *
                                   _W * (leafCount-1)/2));
         _repositionNodes(node.lChild, -1);
       }
       if (node.rChild) {
-        node.rChild.setPosCX((node.getPosCX() + _radius + _someSpace) +
+        node.rChild.setPosCX((node.getPosCX() + 2*_radius) +
                       ((_getHeight(_root) - _getHeight(node.rChild)) *
                                   _W * (leafCount-1)/2));
         _repositionNodes(node.rChild, 1);
@@ -478,16 +478,20 @@ var tree_factory = (function() {
     /**
      * Move emphasis circle.
      * @param {Object} clientNode1 - The currently emphasized node.
-     * @param {Object} clientNode2 - The next node to emphasize.
+     * @param {Object|null} clientNode2 - The next node to emphasize.
+     * @param {-1|1} dir - Direction of xOffset, left or right of parent.
      */
-    function moveEmphasis(clientNode1, clientNode2) {
+    function moveEmphasis(clientNode1, clientNode2, dir) {
       var vizNode1 = _getVizNode(clientNode1);
-      var vizNode2 = _getVizNode(clientNode2);
       var emphasis = vizNode1.emphasis;
-      if (emphasis) {
+      if (clientNode2) {
+        var vizNode2 = _getVizNode(clientNode2);
         vizNode1.emphasis = null;
         emphasis.setPosCX(vizNode2.getPosCX());
         emphasis.setPosCY(vizNode2.getPosCY());
+      } else {
+        emphasis.setPosCX(vizNode1.getPosCX() + dir * _xOffset);
+        emphasis.setPosCY(vizNode1.getPosCY() + _yOffset);
       }
     }
 
@@ -502,6 +506,18 @@ var tree_factory = (function() {
         if (emphasis) {
           redraw.removeElem(emphasis.getID());
           vizNode.emphasis = null;
+        }
+      });
+    }
+
+    /**
+     * Clear all emphases on tree nodes.
+     */
+    function clearEmphases() {
+      _nodeMap.forEach(function(v, k) {
+        if (v.emphasis) {
+          redraw.removeElem(v.emphasis.getID());
+          v.emphasis = null;
         }
       });
     }
@@ -642,6 +658,7 @@ var tree_factory = (function() {
       emphasize:emphasize,
       moveEmphasis:moveEmphasis,
       deemphasize:deemphasize,
+      clearEmphases:clearEmphases,
       getNodes:getNodes,
       getEdges:getEdges,
       setLabelFill:setLabelFill,

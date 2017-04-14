@@ -47,6 +47,8 @@
         root = addNode(root, newElem);
         viz.buildTree(root);
         viz.updateCanvas(dur);
+        viz.clearEmphases();
+        viz.updateCanvas(dur);
       });
 
       // start the visualization once we finish building the tree
@@ -63,11 +65,7 @@
           viz.updateCanvas(dur);
           viz.setFill([rootNode, newNode], colors.BACKGROUND);
           viz.updateCanvas(dur);
-          if (rootNode.rChild()) {
-            viz.moveEmphasis(rootNode, rootNode.rChild());
-          } else {
-            viz.deemphasize([rootNode]);
-          }
+          viz.moveEmphasis(rootNode, rootNode.rChild(), 1);
           viz.updateCanvas(dur);
           rootNode.setRChild(addNode(rootNode.rChild(), newNode));
         } else {
@@ -77,11 +75,7 @@
           viz.updateCanvas(dur);
           viz.setFill([rootNode, newNode], colors.BACKGROUND);
           viz.updateCanvas(dur);
-          if (rootNode.lChild()) {
-            viz.moveEmphasis(rootNode, rootNode.lChild());
-          } else {
-            viz.deemphasize([rootNode]);
-          }
+          viz.moveEmphasis(rootNode, rootNode.lChild(), -1);
           viz.updateCanvas(dur);
           rootNode.setLChild(addNode(rootNode.lChild(), newNode));
         }

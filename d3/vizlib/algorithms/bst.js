@@ -123,9 +123,17 @@ var bst = (function(root, svgW, svgH) {
    * Move emphasis.
    * @param {Object} node1 - The node currently emphasized.
    * @param {Object} node2 - The next node to emphasize.
+   * @param {-1|1} dir - Direction of x shift if node2 is undefined.
    */
-  var moveEmphasis = function(node1, node2) {
-    redraw.addOps(function() { _tree.moveEmphasis(node1, node2); });
+  var moveEmphasis = function(node1, node2, dir) {
+    redraw.addOps(function() { _tree.moveEmphasis(node1, node2, dir); });
+  }
+
+  /**
+   * Clear all emphases on tree nodes.
+   */
+  var clearEmphases = function() {
+    redraw.addOps(function() { _tree.clearEmphases(); });
   }
 
   /**
@@ -179,6 +187,7 @@ var bst = (function(root, svgW, svgH) {
     emphasize:emphasize,
     moveEmphasis:moveEmphasis,
     deemphasize:deemphasize,
+    clearEmphases:clearEmphases,
     getRects:getRects,
     getText:getText,
     getCircles:getCircles,
