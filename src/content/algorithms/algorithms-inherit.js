@@ -9,7 +9,7 @@ document.getElementById("container").innerHTML += `
     <div class="col-xs-6" style="height:100%">
       <div class="panel panel-default" style="height:100%">
         <div class="panel-body" style="height:100%">
-          <div id="visualization">
+          <div id="visualization" class="visualization" style="width:100%; height:100%">
             <!-- Visualization will be inserted here -->
           </div>
         </div>

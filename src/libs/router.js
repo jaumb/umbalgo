@@ -1,22 +1,6 @@
 /**
  * Load an array of scripts asynchronously, in order.
  */
-/*
-var loadScripts = function(scripts, callback) {
-  var recurse = function(scripts, callback, i) {
-    if (i < scripts.length) {
-      var j = i++;
-      $.getScript(scripts[j], function() {
-        console.log("Loaded " + scripts[j]);
-        recurse(scripts, callback, i);
-      });
-    } else if (callback) {
-      callback();
-    }
-  }
-  recurse(scripts, callback, 0);
-};
-*/
 var loadScripts = function(scripts, callback) {
   var recurse = function(scripts, callback, i) {
     if (i < scripts.length) {
@@ -73,8 +57,9 @@ var content;
         "js/libs/runner.js",
         "js/libs/vizlib/common.js",
         "js/libs/vizlib/factories/element_factory.js",
+        "js/libs/vizlib/factories/array_factory.js",
         "js/libs/vizlib/vizlib.js",
-        "js/libs/vizlib/redraw.js"
+        "js/libs/vizlib/redrawII.js"
       ],
       "children": [
         {
@@ -133,7 +118,8 @@ var content;
           "children": [
             {
               "uriName": "selection-sort",
-              "displayName": "Selection Sort"
+              "displayName": "Selection Sort",
+              "depends": ["js/libs/vizlib/algorithms/selection.js"]
             },
             {
               "uriName": "insertion-sort",
@@ -324,28 +310,7 @@ var content;
     }
     return {"children": makeRoutes(content)};
   }
-  /*
-  var makeRoutes = function(content) {
-    var recurse = function(content, routes) {
-      if (content) {
-        for (var i = 0; i < content.length; ++i) {
-          var c = content[i];
-          routes[c["uriName"]] = {
-            "displayName": c["displayName"],
-            "depends": c["depends"]
-          };
-          if (c.hasOwnProperty("children")) {
-            routes[c["uriName"]]["children"] = {}
-            recurse(c["children"], routes[c["uriName"]]["children"]);
-          }
-        }
-      }
-    };
-    var routes = { "children": {} };
-    recurse(content, routes["children"]);
-    return routes;
-  };
-*/
+
   try {
     // The comma-joined route, as extracted from the uri.
     var routeJoined = uriParams()["page"];
@@ -357,7 +322,7 @@ var content;
     var trace = [];
     // An array of html that will be appended to the body. Each imports a script
     // that provides common content for a level of the navigational hierarchy.
-    var scripts = ["js/content/index-inherit.js"];
+    var scripts = [];
     // An array of html that comprises the nav bar.
     var nav = [];
     // Iterate over the requested route level-by-level.
@@ -377,8 +342,7 @@ var content;
         // populates page-specific content and its dependencies.
         if (routes["children"] === undefined ) {
           scripts.push.apply(scripts, routes["depends"]);
-          scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
-                       + ".js");
+          scripts.push("js/content/" + trace.join("/") + ".js");
         } else {
           scripts = [
             "js/content/index-inherit.js",

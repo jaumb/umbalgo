@@ -7,7 +7,7 @@ PARSE=${WD}/tools/parser.py
 IN=${WD}/src/algo
 OUT=/var/www/html/
 
-rm -rf docs
+rm -rf ${OUT}/*
 mkdir -p ${OUT}/js/algo
 pushd .
 cd ${IN}
