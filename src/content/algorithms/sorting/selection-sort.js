@@ -1,5 +1,3 @@
-vm.loadFunc("exch.js");
-vm.loadFunc("less.js");
 vm.loadFunc("2.1-selection-sort.js");
 var onInvoke = function() {
   var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
@@ -11,8 +9,6 @@ var onInvoke = function() {
     .attr("width", svgW)
     .attr("height", svgH)
     .attr('id', svgCanvasName);
-
-  //redraw.initCanvas(svgCanvasName);
 
   vm.dur = 500;
   console.log("A");
@@ -28,4 +24,15 @@ var onNext = function() {
   vm.next();
 };
 
-document.getElementById("container").innerHTML += `<button onclick="onInvoke()">invoke</button><button onclick="onNext()">step</button>`;
+var onExport = function() {
+  let zip = new JSZip();
+  for (let i = 0; i < vm.images.length; ++i) {
+    zip.file("" + i + ".svg", vm.images[i]);
+  }
+  zip.generateAsync({type:"blob"})
+    .then(function (blob) {
+      saveAs(blob, "visualization.zip");
+    });
+}
+
+document.getElementById("container").innerHTML += `<button onclick="onInvoke()">invoke</button><button onclick="onNext()">step</button><button onclick="onExport()">export</button>`;

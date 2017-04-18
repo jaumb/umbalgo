@@ -7,6 +7,8 @@ class VirtualMachine {
     /** Map for storing "global" (i.e., higher-than-function-scope state. This
         will probably be used for class-level state in most circumstances. */
     this.globals = {};
+    /** Sequence of images produced thus far as svg source. */
+    this.images = [];
   }
 
   loadFunc(filename) {
@@ -37,6 +39,11 @@ class VirtualMachine {
     this.getFrame().highlightLine(this.getFrame().nextLineNumber);
     this.redrawStackPane();
     this.redrawVariablePanes();
+  }
+
+  updateViz() {
+    this.viz.play();
+    this.images.push(document.getElementById("svg_canvas").outerHTML);
   }
 
   populateCodePane() {
