@@ -132,6 +132,9 @@ var ll_factory = (function() {
     //    >= 5 : # elements + first + spaces between and on ends
     var _boxSize = _nodeCount < 5 ? _W / 11 : _W / (_nodeCount * 2 + 1);
 
+    // scale of resize
+    var _resizeScale = 1;
+
     // create default node ref labels objects
     //    name  : text element for the ref's label
     //    arrow : line element for the ref's arrow
@@ -223,9 +226,14 @@ var ll_factory = (function() {
       _first.name.setVal("first");
       _first.name.setFontSize((0.7 * _boxSize) + 'px');
       _first.arrow.setPosX1(coords.first.x);
-      _first.arrow.setPosY1(coords.first.y + 0.25 * _boxSize);
-      var fbb = redraw.getBBox(_first.name);
-      _first.arrow.setPosY1(fbb.y + fbb.height);
+      if (!_first.arrow.getPosY1()) {
+        var fbb = redraw.getBBox(_first.name);
+        _first.arrow.setPosY1(fbb.y + fbb.height);
+      } else {
+        _first.arrow.setPosY1(_first.arrow.getPosY1() + 1.75 * (_boxSize - (_resizeScale * _boxSize)));
+      }
+      // var fbb = redraw.getBBox(_first.name);
+      // _first.arrow.setPosY1(fbb.y + fbb.height);
 
       // initialize _oldfirst
       _oldfirst.name.setPosX(coords.oldfirst.x);
@@ -233,8 +241,14 @@ var ll_factory = (function() {
       _oldfirst.name.setVal("oldfirst");
       _oldfirst.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldfirst.arrow.setPosX1(coords.oldfirst.x);
-      var ofbb = redraw.getBBox(_oldfirst.name);
-      _oldfirst.arrow.setPosY1(ofbb.y);
+      if (!_oldfirst.arrow.getPosY1()) {
+        var ofbb = redraw.getBBox(_oldfirst.name);
+        _oldfirst.arrow.setPosY1(ofbb.y);
+      } else {
+        _oldfirst.arrow.setPosY1(_oldfirst.arrow.getPosY1() - 2.25 * (_boxSize - (_resizeScale * _boxSize)));
+      }
+      // var ofbb = redraw.getBBox(_oldfirst.name);
+      // _oldfirst.arrow.setPosY1(ofbb.y);
 
       // initialize _last
       _last.name.setPosX(coords.last.x);
@@ -265,6 +279,9 @@ var ll_factory = (function() {
         if (ref.target) {
           _pointRefsAtNode(ref.target, ref);
         }
+        // console.log("_resizeScale: " + _resizeScale);
+        // console.log(ref.name.getVal() + " arrow stroke width: " + ref.arrow.getStrokeWidth());
+        // ref.arrow.setStrokeWidth(ref.arrow.getStrokeWidth().split('v')[0] * _resizeScale + "vw");
       });
     }
 
@@ -449,9 +466,11 @@ var ll_factory = (function() {
      * if not provided.
      */
     function _resize(override) {
+      var oldBoxSize = _boxSize;
       _nodeCount = override ? override : _nodeMap.size;
       _boxSize = _nodeCount < 5 ? _W / 11 : _W / (_nodeCount * 2 + 1);
       _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
+      _resizeScale = _boxSize / oldBoxSize;
 
       _initNBox();
       _updateNodes();
