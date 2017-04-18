@@ -29,28 +29,28 @@
 
 
       // uncomment to start with 5 random items in bag
-      // var size = 5;
-      // var l = [];
-      // for (var i = 1; i <= size; i++) {
-      //   l.push(i);
-      // }
-      // d3.shuffle(l);
-      //
-      // var nodes = [];
-      // for (var i = 1; i <= size; i++) {
-      //   nodes.push(linkedNode_factory.getNode(l[i-1], null));
-      // }
-      // for (var i = 0; i <= size - 2; i++) {
-      //   nodes[i].setNext(nodes[i + 1]);
-      // }
-      // var root = nodes[0];
-      // var first = root;
-      // var viz = vizlib.get_linkedbag(root, svgW, svgH);
+      var size = 5;
+      var l = [];
+      for (var i = 1; i <= size; i++) {
+        l.push(i);
+      }
+      d3.shuffle(l);
+
+      var nodes = [];
+      for (var i = 1; i <= size; i++) {
+        nodes.push(linkedNode_factory.getNode(l[i-1], null));
+      }
+      for (var i = 0; i <= size - 2; i++) {
+        nodes[i].setNext(nodes[i + 1]);
+      }
+      var root = nodes[0];
+      var first = root;
+      var viz = vizlib.get_linkedbag(root, svgW, svgH);
 
 
       // uncomment to start with an empty bag
-      var viz = vizlib.get_linkedbag(null, svgW, svgH);
-      var first = null;
+      // var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      // var first = null;
 
       viz.updateCanvas(dur);
 
