@@ -6,23 +6,31 @@ sort(a) {
 // Code:  for (int i = 1; i < N; i++) {
   if (that.cache["3__firstIteration"] === undefined) {
     that.locals["i"] = 1;
+    that.vm.viz.setBoundPos(that.locals["i"]);
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.updateViz();
     that.cache["3__firstIteration"] = false;
   } else {
     that.locals["i"]++;
   }
   if (that.locals["i"] < that.locals["N"]) {
-    // TW NOTE 4/12/17: This appears to be an error that I just happened to
-    // notice, but I can't test the fix without a front end. So if this is
-    // broken, it's probably that this fix broke it.
     that.nextLineNumber = 4;
-//    that.nextLineNumber = 6;
+    that.vm.viz.setBoundPos(that.locals["i"]);
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.viz.setI(that.locals["i"]);
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.updateViz();
   } else {
+    that.vm.viz.removeI();
+    that.vm.viz.removeJ();
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.updateViz();
     that.nextLineNumber = undefined;
     that.locals["i"] = undefined;
     that.cache["3__firstIteration"] = undefined;
   }
 // Code:    for (int j = i; j > 0 && less(a[j], a[j - 1]); j--) {
-// Note:"Here's an example note that shows i=" + that.locals["i"] + "."
+//// Note:"Here's an example note that shows i=" + that.locals["i"] + "."
   if (that.cache["4__firstIteration"] === undefined) {
     that.locals["j"] = that.locals["i"];
     that.cache["4__firstIteration"] = false;
@@ -30,41 +38,45 @@ sort(a) {
     that.locals["j"]--;
   }
   if (that.locals["j"] > 0) {
-    //that.vm.visualization.highlight([that.locals["j"] - 1, that.locals["j"]]);
-    //that.vm.visualization.stepall();
-    that.vm.invokeFunc(
-      "less",
-      function(result) {
-        if (result) {
-          that.nextLineNumber = 5;
-        } else {
-          //that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
-          //that.vm.visualization.stepall();
-          that.nextLineNumber = 7;
-          that.locals["j"] = undefined;
-          that.cache["4__firstIteration"] = undefined;
-        }
-      },
-      that.args["a"][that.locals["j"]],
-      that.args["a"][that.locals["j"] - 1]);
+    that.vm.viz.setJ(that.locals["j"]);
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.viz.emphasize([that.locals["j"]]);
+    that.vm.viz.setFill([that.locals["j"] - 1, that.locals["j"]], colors.COMPARE);
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.updateViz();
+
+    if (that.args["a"][that.locals["j"]] < that.args["a"][that.locals["j"] - 1]) {
+
+      that.nextLineNumber = 5;
+    } else {
+      that.vm.viz.setFill([that.locals["j"] - 1, that.locals["j"]], colors.BACKGROUND);
+      that.vm.viz.deemphasize([that.locals["j"]]);
+      that.vm.viz.updateCanvas(that.vm.dur);
+      that.vm.updateViz();
+      that.nextLineNumber = 7;
+      that.locals["j"] = undefined;
+      that.cache["4__firstIteration"] = undefined;
+    }
   } else {
-    //that.vm.visualization.updateBoundary(that.locals["i"]);
-    //that.vm.visualization.stepall();
     that.nextLineNumber = 7;
     that.locals["j"] = undefined;
     that.cache["4__firstIteration"] = undefined;
   }
 // Code:      exch(a, j, j - 1);
-  //that.vm.visualization.swap(that.locals["j"] - 1, that.locals["j"]);
-  //that.vm.visualization.unhighlight([that.locals["j"] - 1, that.locals["j"]]);
-  //that.vm.visualization.stepall();
-  that.vm.invokeFunc(
-    "exch",
-    undefined,
-    that.args["a"],
-    that.locals["j"],
-    that.locals["j"] - 1);
+  let t = that.args["a"][that.locals["j"]];
+  that.args["a"][that.locals["j"]] = that.args["a"][that.locals["j"] - 1];
+  that.args["a"][that.locals["j"] - 1] = t;
   that.nextLineNumber = 6;
+  that.vm.viz.swap(that.locals["j"] - 1, that.locals["j"]);
+  that.vm.viz.moveEmphasis(that.locals["j"], that.locals["j"] - 1);
+  that.vm.viz.updateCanvas(that.vm.dur);
+  that.vm.viz.setFill([that.locals["j"] - 1, that.locals["j"]], colors.BACKGROUND);
+  that.vm.viz.updateCanvas(that.vm.dur);
+  if (that.locals["j"] === 1) {
+    that.vm.viz.deemphasize([that.locals["j"] - 1]);
+    that.vm.viz.updateCanvas(that.vm.dur);
+  }
+  that.vm.updateViz();
 // Code:    }
   that.nextLineNumber = 4;
 // Code:  }

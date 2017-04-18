@@ -1,4 +1,4 @@
-vm.loadFunc("2.1-selection-sort.js");
+vm.loadFunc("2.1-insertion-sort.js");
 
 var onInvoke = function() {
   var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
@@ -12,8 +12,12 @@ var onInvoke = function() {
     .attr('id', svgCanvasName);
 
   vm.dur = 500;
-  vm.viz = vizlib.get_selection(a, svgW, svgH);
+  vm.viz = vizlib.get_insertion(a, svgW, svgH);
   vm.viz.updateCanvas(0);
+  vm.viz.setBoundPos(0);
+  vm.viz.updateCanvas(vm.dur);
+
+  vm.viz.updateCanvas(vm.dur);
   vm.viz.play();
   console.log("Input: " + a);
   vm.invokeFunc("sort", function(result) { console.log("Result: " + a); }, a);

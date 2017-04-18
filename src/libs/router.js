@@ -125,7 +125,8 @@ var content;
             },
             {
               "uriName": "insertion-sort",
-              "displayName": "Insertion Sort"
+              "displayName": "Insertion Sort",
+              "depends": ["js/libs/vizlib/algorithms/insertion.js"]
             },
             {
               "uriName": "shell-sort",
