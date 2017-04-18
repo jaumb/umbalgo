@@ -6,6 +6,10 @@
  * @param {number} svgH - Height of the svg canvas.
  */
 var linkedbag = (function(elems, svgW, svgH) {
+
+  // initialize the canvas with element groups
+  redraw.initCanvas(svgCanvasName);
+
   //////////////////////////////////////////////////////////////////////////////
   // private variables
   //////////////////////////////////////////////////////////////////////////////
@@ -46,15 +50,15 @@ var linkedbag = (function(elems, svgW, svgH) {
   //end of element array getters////////////////////////////////////////////////
 
   var showOldFirst = function() {
-    return function() { _LL.showOldFirst(); };
+    return redraw.addOps(function() { _LL.showOldFirst(); });
   };
 
   var hideOldFirst = function() {
-    return function() { _LL.hideOldFirst(); };
+    return redraw.addOps(function() { _LL.hideOldFirst(); });
   };
 
   var addNodeFront = function(node) {
-    return function() { _LL.addNodeFront(node); };
+    return redraw.addOps(function() { _LL.addNodeFront(node); });
   };
 
   var shiftRight = function() {
@@ -69,7 +73,7 @@ var linkedbag = (function(elems, svgW, svgH) {
    * @param {string} color - New fill color for specified indices.
    */
   var setFill = function(nodeIDs, color) {
-    return function() { _LL.setFill(nodeIDs, color); };
+    return redraw.addOps(function() { _LL.setFill(nodeIDs, color); });
   };
 
   /**
@@ -89,7 +93,7 @@ var linkedbag = (function(elems, svgW, svgH) {
    * @param {string} val - Value to give to elements at specified indexes.
    */
   var setLabels = function(indices, val) {
-    return function() { _LL.setLabels(indices, val); };
+    return redraw.addOps(function() { _LL.setLabels(indices, val); });
   };
 
   /**
@@ -97,7 +101,7 @@ var linkedbag = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to emphasize.
    */
   var emphasize = function(indices) {
-    return function() { _LL.emphasize(indices); };
+    return redraw.addOps(function() { _LL.emphasize(indices); });
   };
 
   /**
@@ -106,7 +110,7 @@ var linkedbag = (function(elems, svgW, svgH) {
    * @param {number} j - The index of the slot to emphasize.
    */
   var moveEmphasis = function(i, j) {
-    return function() { _LL.moveEmphasis(i, j); };
+    return redraw.addOps(function() { _LL.moveEmphasis(i, j); });
   };
 
   /**
@@ -114,56 +118,85 @@ var linkedbag = (function(elems, svgW, svgH) {
    * @param {number[]} indices - The indices of the slots to de-emphasize.
    */
   var deemphasize = function(indices) {
-    return function() { _LL.deemphasize(indices); };
+    return redraw.addOps(function() { _LL.deemphasize(indices); });
   };
 
   var addNode = function(node) {
-    return function() { _LL.addNode(node); };
+    return redraw.addOps(function() { _LL.addNode(node); });
   };
 
   var showNode = function(nodeID) {
-    return function() { _LL.showNode(nodeID); };
+    return redraw.addOps(function() { _LL.showNode(nodeID); });
   };
 
   var showNodeBox = function(nodeID) {
-    return function() { _LL.showNodeBox(nodeID); };
+    return redraw.addOps(function() { _LL.showNodeBox(nodeID); });
   };
 
   var pointFirstAt = function(nodeID) {
-    return function() { _LL.pointFirstAt(nodeID); };
+    return redraw.addOps(function() { _LL.pointFirstAt(nodeID); });
   };
 
   var pointOldFirstAt = function(nodeID) {
-    return function() { _LL.pointOldFirstAt(nodeID); };
+    return redraw.addOps(function() { _LL.pointOldFirstAt(nodeID); });
   };
 
   var pointOldFirstAtFirst = function(nodeID) {
-    return function() { _LL.pointOldFirstAtFirst(); };
+    return redraw.addOps(function() { _LL.pointOldFirstAtFirst(); });
   };
 
   var showNodeLabel = function(nodeID) {
-    return function() { _LL.showNodeLabel(nodeID); };
+    return redraw.addOps(function() { _LL.showNodeLabel(nodeID); });
   };
 
   var showNodeArrow = function(nodeID) {
-    return function() { _LL.showNodeArrow(nodeID); };
+    return redraw.addOps(function() { _LL.showNodeArrow(nodeID); });
   };
 
   var pointNodeAtOldfirst = function(nodeID) {
-    return function() { _LL.pointNodeAtOldfirst(nodeID); };
+    return redraw.addOps(function() { _LL.pointNodeAtOldfirst(nodeID); });
   };
 
   var hideNLabel = function() {
-    return function() { _LL.hideNLabel(); };
+    return redraw.addOps(function() { _LL.hideNLabel(); });
   };
 
   var showNLabel = function() {
-    return function() { _LL.showNLabel(); };
+    return redraw.addOps(function() { _LL.showNLabel(); });
   };
 
   var updateN = function() {
-    return function() { _LL.updateN(); };
+    return redraw.addOps(function() { _LL.updateN(); });
   };
+
+  /**
+   * Update the canvas with the previously called visualization steps.
+   * @param {number} duration - Duration per step (in millis).
+   */
+  function updateCanvas(duration) {
+    redraw.addDraw(this, duration);
+  }
+
+  /**
+   * Play the animation.
+   */
+  function play() {
+    redraw.playAnimation();
+  }
+
+  /**
+   * Pause the animation.
+   */
+  function pause() {
+    redraw.pauseAnimation();
+  }
+
+  /**
+   * Take the next step in the animation.
+   */
+  function step() {
+    redraw.stepAnimation();
+  }
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -194,7 +227,11 @@ var linkedbag = (function(elems, svgW, svgH) {
     getRects:getRects,
     getCircles:getCircles,
     getLines:getLines,
-    getText:getText
+    getText:getText,
+    updateCanvas:updateCanvas,
+    play:play,
+    pause:pause,
+    step:step
   };
 
 });

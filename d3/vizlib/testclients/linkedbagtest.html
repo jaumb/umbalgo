@@ -10,7 +10,7 @@
     <script type="text/javascript" src="../factories/ll_factory.js"></script>
     <script type="text/javascript" src="../algorithms/linkedbag.js"></script>
     <script type="text/javascript" src="../vizlib.js"></script>
-    <script type="text/javascript" src="../redraw.js"></script>
+    <script type="text/javascript" src="../redrawII.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -23,20 +23,19 @@
         .attr("width", svgW)
         .attr("height", svgH)
         .attr('id',svgCanvasName);
-      redraw.initCanvas(svgCanvasName);
 
-      // example of a client using the insertion visualization
-      var dur = 50000;
-
-      var size = 5;
-      var l = [];
-      for (var i = 1; i <= size; i++) {
-        l.push(i);
-      }
-      d3.shuffle(l);
+      // example of a client using the linked bag visualization
+      var dur = 500;
 
 
       // uncomment to start with 5 random items in bag
+      // var size = 5;
+      // var l = [];
+      // for (var i = 1; i <= size; i++) {
+      //   l.push(i);
+      // }
+      // d3.shuffle(l);
+      //
       // var nodes = [];
       // for (var i = 1; i <= size; i++) {
       //   nodes.push(linkedNode_factory.getNode(l[i-1], null));
@@ -53,18 +52,18 @@
       var viz = vizlib.get_linkedbag(null, svgW, svgH);
       var first = null;
 
-      redraw.draw(viz, dur); // draw initial canvas
+      viz.updateCanvas(dur);
 
 
       function add(val) {
         // java: Node oldfirst = first;
         var oldfirst = first;
         // fade in oldfirst ref
-        redraw.addOpsAndDraw(viz, dur,
-                             viz.showOldFirst());
+        viz.showOldFirst();
+        viz.updateCanvas(dur);
         // point oldfirst at first
-        redraw.addOpsAndDraw(viz, dur,
-                             viz.pointOldFirstAtFirst());
+        viz.pointOldFirstAtFirst();
+        viz.updateCanvas(dur);
 
         // java: first = new Node();
         var newNode = linkedNode_factory.getNode(val, first);
@@ -72,44 +71,47 @@
         // add a node to front, resize elements, show node box (label hidden),
         // point first ref's arrow at new node
         if (first) {
-          redraw.addOpsAndDraw(viz, dur,
-                              viz.shiftRight(),
-                              viz.pointFirstAt(first.getID()),
-                              viz.pointOldFirstAtFirst());
+          viz.shiftRight();
+          viz.pointFirstAt(first.getID());
+          viz.pointOldFirstAtFirst();
+          viz.updateCanvas(dur);
         } else {
-          redraw.addOpsAndDraw(viz, dur,
-                              viz.shiftRight(),
-                              viz.pointFirstAt(null));
+          viz.shiftRight();
+          viz.pointFirstAt(null);
+          viz.updateCanvas(dur);
         }
 
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.addNodeFront(newNode));
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.showNodeBox(newNode.getID()));
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.pointFirstAt(newNode.getID()));
+        viz.addNodeFront(newNode);
+        viz.updateCanvas(dur);
+
+        viz.showNodeBox(newNode.getID());
+        viz.updateCanvas(dur);
+
+        viz.pointFirstAt(newNode.getID());
+        viz.updateCanvas(dur);
 
         // java: first.item = item;
         // fade label of new element into view
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.showNodeLabel(newNode.getID()));
+        viz.showNodeLabel(newNode.getID());
+        viz.updateCanvas(dur);
 
         // java: first.next = oldfirst;
         // new element points to whatever oldfirst references
-        redraw.addOpsAndDraw(viz, dur,
-                            viz.pointNodeAtOldfirst(newNode.getID()),
-                            viz.showNodeArrow(newNode.getID()));
+        viz.pointNodeAtOldfirst(newNode.getID());
+        viz.showNodeArrow(newNode.getID());
+        viz.updateCanvas(dur);
 
         // java: n++;
-        redraw.addOpsAndDraw(viz, dur,
-                              viz.hideNLabel());
-        redraw.addOpsAndDraw(viz, dur,
-                              viz.updateN(),
-                              viz.showNLabel());
+        viz.hideNLabel();
+        viz.updateCanvas(dur);
 
-        redraw.addOpsAndDraw(viz, dur,
-                              viz.pointOldFirstAt(null),
-                              viz.hideOldFirst());
+        viz.updateN();
+        viz.showNLabel();
+        viz.updateCanvas(dur);
+
+        viz.pointOldFirstAt(null);
+        viz.hideOldFirst();
+        viz.updateCanvas(dur);
 
         first = newNode;
       }
@@ -139,6 +141,8 @@
       add(7);
       add(8);
       add(9);
+
+      viz.play();
 
     </script>
   </body>
