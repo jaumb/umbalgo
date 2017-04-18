@@ -232,6 +232,15 @@ var redraw = (function() {
    ****************************************************************************/
 
   /**
+   * Immediately update the svg canvas (used by resize operations).
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Duration of the entire redraw in milliseconds.
+   */
+  function draw(viz, dur) {
+    _draw(viz, dur);
+  }
+
+  /**
    * Public method to execute all functions currently in the queue and then
    * update the svg canvas.
    * @param {Object} viz - The visualization object for a specific algorithm.
@@ -487,7 +496,8 @@ var redraw = (function() {
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
-    initCanvas:initCanvas
+    initCanvas:initCanvas,
+    draw:draw
   };
 
 })();

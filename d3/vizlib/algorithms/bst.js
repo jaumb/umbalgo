@@ -5,7 +5,7 @@
  * @param {number} svgW - Width of the svg canvas.
  * @param {number} svgH - Height of the svg canvas.
  */
-var bst = (function(root, svgW, svgH) {
+function bst(root, svgW, svgH) {
 
   // initialize the svg canvas with groups for svg elements
   redraw.initCanvas(svgCanvasName);
@@ -53,12 +53,12 @@ var bst = (function(root, svgW, svgH) {
    * @param {number} root - Root node of the client tree.
    * @param {number} root - Root node of the client tree.
    */
-  var resize = function(svgW, svgH) {
+  var resize = function(viz, svgW, svgH) {
     _boundingBox = {
       p1:{x:0, y:0},
       p2:{x:svgW, y:svgH}
     }
-    _tree.resize(_boundingBox);
+    _tree.resize(viz, _boundingBox);
   }
 
   /**
@@ -197,4 +197,4 @@ var bst = (function(root, svgW, svgH) {
     step:step
   }
 
-});
+};

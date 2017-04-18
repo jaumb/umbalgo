@@ -34,7 +34,7 @@ var tree_factory = (function() {
     var _someSpace = null;
 
     // calculate initial size of tree nodes
-    resize(bounding_box);
+    resize(null, bounding_box);
 
     ////////////////////////////////////////////////////////////////////////////
     //  private methods
@@ -52,7 +52,7 @@ var tree_factory = (function() {
     function _createNewNode(clientNode, cx, cy) {
       var newNode = element_factory.getCircle();
       newNode.setR(_radius);
-      newNode.setStrokeWidth('.3vw');
+      newNode.setStrokeWidth(1/15 * _radius);
       newNode.getLabel().setVal(clientNode.val());
       newNode.getLabel().setFontSize((1.2 * _radius) + 'px');
       newNode.setPosCX(cx);
@@ -342,9 +342,10 @@ var tree_factory = (function() {
      * Resize all nodes and edges in the tree.
      * Call this after the canvas size changes.
      */
-    function _resize() {
+    function _resize(viz) {
       _nodeMap.forEach(function(v, k) {
         v.setR(_radius);
+        v.setStrokeWidth(1/15 * _radius);
         v.getLabel().setFontSize((1.2 * _radius) + 'px');
         if (v.emphasis) {
           v.emphasis.setPosCX(v.getPosCX());
@@ -356,6 +357,7 @@ var tree_factory = (function() {
         _root.setPosCY(_rootPos.cy);
       }
       _reposition(_root);
+      redraw.draw(viz, 0);
     }
 
 
@@ -367,7 +369,7 @@ var tree_factory = (function() {
      * Resize the tree and all nodes and edges in the tree based on a new
      * bounding box.
      */
-    function resize(bounding_box) {
+    function resize(viz, bounding_box) {
       _X1 = bounding_box.p1.x;
       _Y1 = bounding_box.p1.y;
       _X2 = bounding_box.p2.x;
@@ -380,7 +382,8 @@ var tree_factory = (function() {
       _xOffset = 2 * _radius;
       _yOffset = 3 * _radius;
       _someSpace = .1 * _radius;
-      _resize();
+      if (viz)
+        _resize(viz);
     }
 
     /**
