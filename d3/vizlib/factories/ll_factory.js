@@ -224,6 +224,8 @@ var ll_factory = (function() {
       _first.name.setFontSize((0.7 * _boxSize) + 'px');
       _first.arrow.setPosX1(coords.first.x);
       _first.arrow.setPosY1(coords.first.y + 0.25 * _boxSize);
+      var fbb = redraw.getBBox(_first.name);
+      _first.arrow.setPosY1(fbb.y + fbb.height);
 
       // initialize _oldfirst
       _oldfirst.name.setPosX(coords.oldfirst.x);
@@ -231,7 +233,8 @@ var ll_factory = (function() {
       _oldfirst.name.setVal("oldfirst");
       _oldfirst.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldfirst.arrow.setPosX1(coords.oldfirst.x);
-      _oldfirst.arrow.setPosY1(coords.oldfirst.y - 0.5 * _boxSize);
+      var ofbb = redraw.getBBox(_oldfirst.name);
+      _oldfirst.arrow.setPosY1(ofbb.y);
 
       // initialize _last
       _last.name.setPosX(coords.last.x);
@@ -239,7 +242,8 @@ var ll_factory = (function() {
       _last.name.setVal("last");
       _last.name.setFontSize((0.7 * _boxSize) + 'px');
       _last.arrow.setPosX1(coords.last.x);
-      _last.arrow.setPosY1(coords.last.y + 0.25 * _boxSize);
+      var lbb = redraw.getBBox(_last.name);
+      _last.arrow.setPosY1(lbb.y + lbb.height);
 
       // initialize _oldlast
       _oldlast.name.setPosX(coords.oldlast.x);
@@ -247,7 +251,8 @@ var ll_factory = (function() {
       _oldlast.name.setVal("oldlast");
       _oldlast.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldlast.arrow.setPosX1(coords.oldlast.x);
-      _oldlast.arrow.setPosY1(coords.oldlast.y - 0.5 * _boxSize);
+      var olbb = redraw.getBBox(_oldlast.name);
+      _oldlast.arrow.setPosY1(olbb.y);
     }
 
 
