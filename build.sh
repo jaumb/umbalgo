@@ -7,14 +7,13 @@ PARSE=${WD}/tools/parser.py
 IN=${WD}/src/algo
 OUT=${WD}/docs/js/algo
 
+rm -rf docs
 mkdir -p ${OUT}
-rm -rf ${OUT}/*
-
 pushd .
 cd ${IN}
 for f in *.js
 do
-  ${PARSE} $f ${OUT}/$f
+	${PARSE} $f ${OUT}/$f
 done
 popd
 

@@ -1,3 +1,1 @@
-(function() {
-  console.log("sorting-inherit");
-}());
+console.log("sorting-inherit");
