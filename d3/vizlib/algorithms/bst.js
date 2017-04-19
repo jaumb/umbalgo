@@ -5,7 +5,7 @@
  * @param {number} svgW - Width of the svg canvas.
  * @param {number} svgH - Height of the svg canvas.
  */
-function bst(root, svgW, svgH) {
+var bst = function(root, svgW, svgH) {
 
   // initialize the svg canvas with groups for svg elements
   redraw.initCanvas(svgCanvasName);
@@ -69,6 +69,11 @@ function bst(root, svgW, svgH) {
     _tree.buildTree(root);
   }
 
+  var buildTreeAndUpdate = function(root, dur) {
+    _tree.buildTree(root);
+    updateCanvas.apply(this, [dur]);
+  }
+
   /**
    * Set the color of the edges in the list. Edges in the list are
    * defined by (parent, child) pairs where the edge from parent to
@@ -83,6 +88,11 @@ function bst(root, svgW, svgH) {
     _tree.setEdgesColor(nodePairs, color);
   }
 
+  var setEdgesColorAndUpdate = function(nodePairs, color, dur) {
+    _tree.setEdgesColor(nodePairs, color);
+    updateCanvas.apply(this, [dur]);
+  }
+
   /**
    * Display the next node to be inserted into the tree. It
    * is displayed in the top left of the bounding box.
@@ -90,6 +100,11 @@ function bst(root, svgW, svgH) {
    */
   var dispNextNode = function(node) {
     _tree.dispNextNode(node);
+  }
+
+  var dispNextNodeAndUpdate = function(node, dur) {
+    _tree.dispNextNode(node);
+    updateCanvas.apply(this, [dur]);
   }
 
   /**
@@ -101,6 +116,11 @@ function bst(root, svgW, svgH) {
     _tree.setFill(nodes, color);
   }
 
+  var setFillAndUpdate = function(nodes, color, dur) {
+    _tree.setFill(nodes, color);
+    updateCanvas.apply(this, [dur]);
+  }
+
   /**
    * Set the outline of nodes.
    * @param {Object[]} nodes - Nodes to modify.
@@ -110,12 +130,22 @@ function bst(root, svgW, svgH) {
     _tree.setOutline(nodes, color);
   }
 
+  var setOutlineAndUpdate = function(nodes, dur) {
+    _tree.setOutline(nodes, color);
+    updateCanvas.apply(this, [dur]);
+  }
+
   /**
    * Emphasize tree nodes.
    * @param {Object[]} nodes - The nodes to emphasize.
    */
   var emphasize = function(nodes) {
     _tree.emphasize(nodes);
+  }
+
+  var emphasizeAndUpdate = function(nodes, dur) {
+    _tree.emphasize(nodes);
+    updateCanvas.apply(this, [dur]);
   }
 
   /**
@@ -128,11 +158,21 @@ function bst(root, svgW, svgH) {
     _tree.moveEmphasis(node1, node2, dir);
   }
 
+  var moveEmphasisAndUpdate = function(node1, node2, dir, dur) {
+    _tree.moveEmphasis(node1, node2, dir);
+    updateCanvas.apply(this, [dur]);
+  }
+
   /**
    * Clear all emphases on tree nodes.
    */
   var clearEmphases = function() {
     _tree.clearEmphases();
+  }
+
+  var clearEmphasesAndUpdate = function(dur) {
+    _tree.clearEmphases();
+    updateCanvas.apply(this, [dur]);
   }
 
   /**
@@ -141,6 +181,11 @@ function bst(root, svgW, svgH) {
    */
   var deemphasize = function(nodes) {
     _tree.deemphasize(nodes);
+  }
+
+  var deemphasizeAndUpdate = function(nodes, dur) {
+    _tree.deemphasize(nodes);
+    updateCanvas.apply(this, [dur]);
   }
 
   /**
@@ -172,14 +217,23 @@ function bst(root, svgW, svgH) {
   return {
     resize:resize,
     buildTree:buildTree,
+    buildTreeAndUpdate:buildTreeAndUpdate,
     setEdgesColor:setEdgesColor,
+    setEdgesColorAndUpdate:setEdgesColorAndUpdate,
     dispNextNode:dispNextNode,
+    dispNextNodeAndUpdate:dispNextNodeAndUpdate,
     setFill:setFill,
+    setFillAndUpdate:setFillAndUpdate,
     setOutline:setOutline,
+    setOutlineAndUpdate:setOutlineAndUpdate,
     emphasize:emphasize,
+    emphasizeAndUpdate:emphasizeAndUpdate,
     moveEmphasis:moveEmphasis,
+    moveEmphasisAndUpdate:moveEmphasisAndUpdate,
     deemphasize:deemphasize,
+    deemphasizeAndUpdate:deemphasizeAndUpdate,
     clearEmphases:clearEmphases,
+    clearEmphasesAndUpdate:clearEmphasesAndUpdate,
     getRects:getRects,
     getText:getText,
     getCircles:getCircles,

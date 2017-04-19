@@ -42,13 +42,10 @@
 
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
-        viz.dispNextNode(newElem);
-        viz.updateCanvas(dur);
+        viz.dispNextNodeAndUpdate(newElem, dur);
         root = addNode(root, newElem);
-        viz.buildTree(root);
-        viz.updateCanvas(dur);
-        viz.clearEmphases();
-        viz.updateCanvas(dur);
+        viz.buildTreeAndUpdate(root, dur);
+        viz.clearEmphasesAndUpdate(dur);
       });
 
       // start the visualization once we finish building the tree
@@ -59,24 +56,16 @@
         if (!rootNode) {
           return newNode;
         } else if (newNode.val() > rootNode.val()) {
-          viz.emphasize([rootNode]);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.COMPARE);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.BACKGROUND);
-          viz.updateCanvas(dur);
-          viz.moveEmphasis(rootNode, rootNode.rChild(), 1);
-          viz.updateCanvas(dur);
+          viz.emphasizeAndUpdate([rootNode], dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
+          viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
           rootNode.setRChild(addNode(rootNode.rChild(), newNode));
         } else if (newNode.val() < rootNode.val()) {
-          viz.emphasize([rootNode]);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.COMPARE);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.BACKGROUND);
-          viz.updateCanvas(dur);
-          viz.moveEmphasis(rootNode, rootNode.lChild(), -1);
-          viz.updateCanvas(dur);
+          viz.emphasizeAndUpdate([rootNode], dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
+          viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
           rootNode.setLChild(addNode(rootNode.lChild(), newNode));
         } else {
           // deal with equal keys here
@@ -89,24 +78,16 @@
         if (!rootNode) {
           return null;
         } else if (newNode.val() > rootNode.val()) {
-          viz.emphasize([rootNode]);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.COMPARE);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.BACKGROUND);
-          viz.updateCanvas(dur);
-          viz.moveEmphasis(rootNode, rootNode.rChild(), 1);
-          viz.updateCanvas(dur);
+          viz.emphasizeAndUpdate([rootNode], dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
+          viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
           rootNode.setRChild(successor(rootNode.rChild(), newNode));
         } else if (newNode.val() < rootNode.val()) {
-          viz.emphasize([rootNode]);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.COMPARE);
-          viz.updateCanvas(dur);
-          viz.setFill([rootNode, newNode], colors.BACKGROUND);
-          viz.updateCanvas(dur);
-          viz.moveEmphasis(rootNode, rootNode.lChild(), -1);
-          viz.updateCanvas(dur);
+          viz.emphasizeAndUpdate([rootNode], dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
+          viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
           rootNode.setLChild(successor(rootNode.lChild(), newNode));
         }
         return rootNode;
