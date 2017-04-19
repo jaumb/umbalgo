@@ -199,17 +199,10 @@ var insertion = (function(elems, svgW, svgH) {
   }
 
   /**
-   * Play the animation.
+   * Toggle the animation.
    */
-  function play() {
-    redraw.playAnimation();
-  }
-
-  /**
-   * Pause the animation.
-   */
-  function pause() {
-    redraw.pauseAnimation();
+  function playpause() {
+    redraw.toggleAnimation();
   }
 
   /**
@@ -241,8 +234,7 @@ var insertion = (function(elems, svgW, svgH) {
     getLines:getLines,
     getText:getText,
     updateCanvas:updateCanvas,
-    play:play,
-    pause:pause,
+    playpause:playpause,
     step:step
   }
 

@@ -8,8 +8,8 @@ var redraw = (function() {
   var _q = [];
   var _intervalID = null;
   var _idPrefix = 'elem_';
-  var _callback = null;
-  var _args = null;
+  var _callbacks = new Array();
+  var _playpause = false; // true = play, false = pause
 
 
   /****************************************************************************
@@ -17,23 +17,33 @@ var redraw = (function() {
    ****************************************************************************/
 
   /**
-   * Execute the next function on the queue.
-   * @param {Object} viz - The visualization object for a specific algorithm.
-   * @param {number} dur - Duration of the function's execution in milliseconds.
+   * Toggle play/pause
    */
-  function _next(viz, dur) {
-    var f = _q.shift();
-    if ( f ) { f(); }
-    _draw(viz, dur);
-    if (_q.length <= 0) {
-      clearInterval(_intervalID);
-      _intervalID = null;
-      if (_callback) {
-        var callback = _callback;
-        _callback = null;
-        callback.apply(null, _args);
-      }
+  function _play() {
+    _intervalID = null;
+    var f = _step();
+    if (f) {
+      _intervalID = setTimeout(_play, f.duration);
     }
+  }
+
+  /**
+   * Execute the next visualization step.
+   */
+  function _step() {
+    while (_q.length > 0 && !(_q[0].isRedraw)) {
+      _q.shift()();
+    }
+    if (_q.length > 0) {
+      var f = _q.shift();
+      f();
+      _callbacks.forEach(function(callback) {
+        setTimeout(callback, f.duration);
+      });
+      _callbacks = new Array();
+      return f;
+    }
+    return null;
   }
 
   /**
@@ -223,24 +233,25 @@ var redraw = (function() {
    ****************************************************************************/
 
   /**
+   * Immediately update the svg canvas (used by resize operations).
+   * @param {Object} viz - The visualization object for a specific algorithm.
+   * @param {number} dur - Duration of the entire redraw in milliseconds.
+   */
+  function draw(viz, dur) {
+    _draw(viz, dur);
+  }
+
+  /**
    * Public method to execute all functions currently in the queue and then
    * update the svg canvas.
    * @param {Object} viz - The visualization object for a specific algorithm.
    * @param {number} dur - Duration of the entire redraw in milliseconds.
    */
-  function draw(viz, dur) {
-    // TODO: Revisit how to allocate time per redraw component.
-    if ( _q.length ) {
-
-      var durPerFunction = dur / _q.length;
-      if (_intervalID) { clearInterval(_intervalID); }
-      _intervalID = setInterval(_next,
-                               durPerFunction,
-                               viz,               // next arg 1
-                               durPerFunction);   // next arg 2
-    } else {
-      _draw(viz, dur);
-    }
+  function addDraw(viz, dur) {
+    var f = function() { _draw(viz, dur); };
+    f.duration = dur;
+    f.isRedraw = 1;
+    _q.push(f);
   }
 
   /**
@@ -266,18 +277,38 @@ var redraw = (function() {
     _q.push(function() {
       ops.forEach(function(f) { f(); });
     });
-    draw(viz, dur);
+    addDraw(viz, dur);
   }
 
   /**
-   * Add a callback function to invoke once the animation queue is empty.
+   * Add a callback function to invoke once the next redraw function added
+   * to the queue ends.
    * @param {function} callback - Function to invoke when animation ends.
+   * @param {Object} args - Arguments to pass to callback function.
    */
-  function onAnimationEnd(callback, ...args) {
-    if (!_callback) {
-      _callback = callback;
-      _args = args;
+  function onNextDrawEnd(callback, ...args) {
+    _callbacks.push(function() { callback.apply(null, args); });
+  }
+
+  /**
+   * Toggle play/pause
+   */
+  function toggleAnimation() {
+    if (_playpause) {
+      if (_intervalID) { clearInterval(_intervalID); }
+      _intervalID = null;
+      _playpause = false;
+    } else {
+      _playpause = true;
+      _play();
     }
+  }
+
+  /**
+   * Draw the next step in the visualization.
+   */
+  function stepAnimation() {
+    _step();
   }
 
   /**
@@ -351,9 +382,7 @@ var redraw = (function() {
         .attr('y2', e.getPosY2())
         .attr('stroke', e.getStroke())
         .attr('stroke-width', e.getStrokeWidth())
-        .attr('stroke-opacity', e.getStrokeOpacity())
-        .attr('marker-start', e.getMarkerStart())
-        .attr('marker-end', e.getMarkerEnd());
+        .attr('stroke-opacity', e.getStrokeOpacity());
     }
   }
 
@@ -450,18 +479,22 @@ var redraw = (function() {
         .attr('fill', function(d) { return colors.BLACK;});
   }
 
+
   /****************************************************************************
    *  return public methods
    ****************************************************************************/
   return {
-    draw:draw,
+    addDraw:addDraw,
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
+    onNextDrawEnd:onNextDrawEnd,
+    toggleAnimation:toggleAnimation,
+    stepAnimation:stepAnimation,
     getElem:getElem,
     removeElem:removeElem,
     getBBox:getBBox,
-    onAnimationEnd:onAnimationEnd,
-    initCanvas:initCanvas
+    initCanvas:initCanvas,
+    draw:draw
   };
 
 })();

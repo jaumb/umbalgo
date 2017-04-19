@@ -10,7 +10,7 @@
     <script type="text/javascript" src="../factories/tree_factory.js"></script>
     <script type="text/javascript" src="../algorithms/bst.js"></script>
     <script type="text/javascript" src="../vizlib.js"></script>
-    <script type="text/javascript" src="../redrawII.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
   </head>
   <body>
     <div class="chart-container" style="max-width: 1000px;"></div>
@@ -52,7 +52,7 @@
       });
 
       // start the visualization once we finish building the tree
-      viz.play();
+      viz.playpause();
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {
@@ -68,7 +68,7 @@
           viz.moveEmphasis(rootNode, rootNode.rChild(), 1);
           viz.updateCanvas(dur);
           rootNode.setRChild(addNode(rootNode.rChild(), newNode));
-        } else {
+        } else if (newNode.val() < rootNode.val()) {
           viz.emphasize([rootNode]);
           viz.updateCanvas(dur);
           viz.setFill([rootNode, newNode], colors.COMPARE);
@@ -78,8 +78,43 @@
           viz.moveEmphasis(rootNode, rootNode.lChild(), -1);
           viz.updateCanvas(dur);
           rootNode.setLChild(addNode(rootNode.lChild(), newNode));
+        } else {
+          // deal with equal keys here
         }
         return rootNode;
+      }
+
+      // remove a node from the tree rooted at rootNode
+      function removeNode(rootNode, newNode) {
+        if (!rootNode) {
+          return null;
+        } else if (newNode.val() > rootNode.val()) {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          viz.moveEmphasis(rootNode, rootNode.rChild(), 1);
+          viz.updateCanvas(dur);
+          rootNode.setRChild(successor(rootNode.rChild(), newNode));
+        } else if (newNode.val() < rootNode.val()) {
+          viz.emphasize([rootNode]);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.COMPARE);
+          viz.updateCanvas(dur);
+          viz.setFill([rootNode, newNode], colors.BACKGROUND);
+          viz.updateCanvas(dur);
+          viz.moveEmphasis(rootNode, rootNode.lChild(), -1);
+          viz.updateCanvas(dur);
+          rootNode.setLChild(successor(rootNode.lChild(), newNode));
+        }
+        return rootNode;
+      }
+
+      // find the successor of node in the tree rooted at rootNode
+      function successor(rootNode, node) {
+        
       }
 
       // tree node representation

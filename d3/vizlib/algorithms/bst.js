@@ -152,17 +152,10 @@ function bst(root, svgW, svgH) {
   }
 
   /**
-   * Play the animation.
+   * Toggle play/pause.
    */
-  function play() {
-    redraw.playAnimation();
-  }
-
-  /**
-   * Pause the animation.
-   */
-  function pause() {
-    redraw.pauseAnimation();
+  function playpause() {
+    redraw.toggleAnimation();
   }
 
   /**
@@ -192,8 +185,7 @@ function bst(root, svgW, svgH) {
     getCircles:getCircles,
     getLines:getLines,
     updateCanvas:updateCanvas,
-    play:play,
-    pause:pause,
+    playpause:playpause,
     step:step
   }
 
