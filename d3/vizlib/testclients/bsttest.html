@@ -73,30 +73,79 @@
         return rootNode;
       }
 
-      // remove a node from the tree rooted at rootNode
-      function removeNode(rootNode, newNode) {
+      // remove oldNode from the tree rooted at rootNode
+      function removeNode(rootNode, oldNode) {
         if (!rootNode) {
           return null;
-        } else if (newNode.val() > rootNode.val()) {
+        } else if (oldNode.val() > rootNode.val()) {
           viz.emphasizeAndUpdate([rootNode], dur);
-          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
-          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
-          viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
-          rootNode.setRChild(successor(rootNode.rChild(), newNode));
-        } else if (newNode.val() < rootNode.val()) {
+          viz.setFillAndUpdate([rootNode, oldNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, oldNode], colors.BACKGROUND, dur);
+          if (rootNode.rChild()) {
+            viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
+            rootNode.setRChild(removeNode(rootNode.rChild(), oldNode));
+          } else {
+            viz.deemphasizeAndUpdate([rootNode]);
+          }
+        } else if (oldNode.val() < rootNode.val()) {
           viz.emphasizeAndUpdate([rootNode], dur);
-          viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
-          viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
-          viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
-          rootNode.setLChild(successor(rootNode.lChild(), newNode));
+          viz.setFillAndUpdate([rootNode, oldNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode, oldNode], colors.BACKGROUND, dur);
+          if (rootNode.lChild()) {
+            viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
+            rootNode.setLChild(removeNode(rootNode.lChild(), oldNode));
+          } else {
+            viz.deemphasizeAndUpdate([rootNode]);
+          }
+        } else {
+          viz.setFillAndUpdate([rootNode], colors.GREEN, dur);
+          if (!rootNode.rChild()) {
+            viz.setFill([rootNode], colors.BACKGROUND);
+            viz.setOutline([rootNode], colors.BACKGROUND);
+            viz.setLabelFill([rootNode], colors.BACKGROUND);
+            viz.deemphasizeAndUpdate([rootNode]);
+            return rootNode.lChild();
+          } else if (!rootNode.lChild()) {
+            viz.setFill([rootNode], colors.BACKGROUND);
+            viz.setOutline([rootNode], colors.BACKGROUND);
+            viz.setLabelFill([rootNode], colors.BACKGROUND);
+            viz.deemphasizeAndUpdate([rootNode]);
+            return rootNode.rChild();
+          } else {
+            var suc = successor(rootNode);
+            delMin(rootNode.rChild());
+            viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
+          }
         }
         return rootNode;
       }
 
-      // find the successor of node in the tree rooted at rootNode
-      function successor(rootNode, node) {
-        
+      // find the successor of aNode
+      function successor(aNode) {
+        return min(aNode.rChild());
       }
+
+      // delete min node in tree rooted at root
+      function delMin(rootNode) {
+        if (!rootNode) {
+          return null;
+        } else if (!rootNode.lChild()) {
+          return rootNode.rChild();
+        } else {
+          rootNode.setLChild(delMin(rootNode.lChild()));
+        }
+        return rootNode;
+      }
+
+      // find the min node in the tree rooted at rootNode
+      function min(rootNode) {
+        if (!rootNode) { return null; }
+        while (rootNode.lChild()) {
+          rootNode = rootNode.lChild();
+        }
+        return rootNode;
+      }
+
 
       // tree node representation
       // id(), val(), lChild(), and rChild() are expected by tree visualizations

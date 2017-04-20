@@ -136,6 +136,19 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Set the nodes' labels' fill.
+   * @param {Object[]} nodes - Nodes to modify.
+   */
+  var setLabelFill = function(nodes) {
+    _tree.setOutline(nodes, color);
+  }
+
+  var setLabelFillAndUpdate = function(nodes, dur) {
+    _tree.setOutline(nodes, color);
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
    * Emphasize tree nodes.
    * @param {Object[]} nodes - The nodes to emphasize.
    */
@@ -226,6 +239,8 @@ var bst = function(root, svgW, svgH) {
     setFillAndUpdate:setFillAndUpdate,
     setOutline:setOutline,
     setOutlineAndUpdate:setOutlineAndUpdate,
+    setLabelFill:setLabelFill,
+    setLabelFillAndUpdate:setLabelFillAndUpdate,
     emphasize:emphasize,
     emphasizeAndUpdate:emphasizeAndUpdate,
     moveEmphasis:moveEmphasis,
