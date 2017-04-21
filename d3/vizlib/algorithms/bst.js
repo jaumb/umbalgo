@@ -126,7 +126,7 @@ var bst = function(root, svgW, svgH) {
    * @param {Object[]} nodes - Nodes to modify.
    * @param {string} color - New color of nodes.
    */
-  var setOutline = function(nodes) {
+  var setOutline = function(nodes, color) {
     _tree.setOutline(nodes, color);
   }
 
@@ -139,7 +139,7 @@ var bst = function(root, svgW, svgH) {
    * Set the nodes' labels' fill.
    * @param {Object[]} nodes - Nodes to modify.
    */
-  var setLabelFill = function(nodes) {
+  var setLabelFill = function(nodes, color) {
     _tree.setOutline(nodes, color);
   }
 
