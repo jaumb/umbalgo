@@ -140,11 +140,11 @@ var bst = function(root, svgW, svgH) {
    * @param {Object[]} nodes - Nodes to modify.
    */
   var setLabelFill = function(nodes, color) {
-    _tree.setOutline(nodes, color);
+    _tree.setLabelFill(nodes, color);
   }
 
   var setLabelFillAndUpdate = function(nodes, dur) {
-    _tree.setOutline(nodes, color);
+    _tree.setLabelFill(nodes, color);
     updateCanvas.apply(this, [dur]);
   }
 

@@ -34,20 +34,26 @@
       var viz = vizlib.get_bst(root, svgW, svgH);
 
       // get 5 randomly ordered integers
-      elements = d3.range(1,6);
+      elements = d3.range(1,8);
       d3.shuffle(elements);
 
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
 
+      //elements.forEach(function(e) {
+      //  var newElem = new node(ids++, e, null, null);
+      //  viz.dispNextNodeAndUpdate(newElem, dur);
+      //  root = addNode(root, newElem);
+      //  viz.buildTreeAndUpdate(root, dur);
+      //  viz.clearEmphasesAndUpdate(dur);
+      //});
+
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
-        viz.dispNextNodeAndUpdate(newElem, dur);
-        root = addNode(root, newElem);
-        viz.buildTreeAndUpdate(root, dur);
-        viz.clearEmphasesAndUpdate(dur);
+        root = addNodeNoViz(root, newElem);
       });
 
+      viz.buildTreeAndUpdate(root, dur);
       d3.shuffle(elements);
 
       elements.forEach(function(e) {
@@ -193,6 +199,20 @@
         svgW = window.innerWidth;
         svgH = window.innerHeight;
         viz.resize(viz, svgW, svgH);
+      }
+
+      // add a node to the tree without visualizing it
+      function addNodeNoViz(rootNode, newNode) {
+        if (!rootNode) {
+          return newNode;
+        } else if (newNode.val() > rootNode.val()) {
+          rootNode.setRChild(addNodeNoViz(rootNode.rChild(), newNode));
+        } else if (newNode.val() < rootNode.val()) {
+          rootNode.setLChild(addNodeNoViz(rootNode.lChild(), newNode));
+        } else {
+          // deal with equal keys here
+        }
+        return rootNode;
       }
 
     </script>
