@@ -75,6 +75,31 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Remove the specified node from the tree.
+   * @param {Object} node - Node to remove.
+   */
+  var removeNode = function(node) {
+    _tree.removeNode(node);
+  }
+
+  var removeNodeAndUpdate = function(node, dur) {
+    _tree.removeNode(node);
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
+   * Delete node with minimum value from tree.
+   */
+  var delMinNode = function() {
+    _tree.delMinNode();
+  }
+
+  var delMinNodeAndUpdate = function(dur) {
+    _tree.delMinNode();
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
    * Set the color of the edges in the list. Edges in the list are
    * defined by (parent, child) pairs where the edge from parent to
    * child is modified.
@@ -231,6 +256,10 @@ var bst = function(root, svgW, svgH) {
     resize:resize,
     buildTree:buildTree,
     buildTreeAndUpdate:buildTreeAndUpdate,
+    removeNode:removeNode,
+    removeNodeAndUpdate:removeNodeAndUpdate,
+    delMinNode:delMinNode,
+    delMinNodeAndUpdate:delMinNodeAndUpdate,
     setEdgesColor:setEdgesColor,
     setEdgesColorAndUpdate:setEdgesColorAndUpdate,
     dispNextNode:dispNextNode,

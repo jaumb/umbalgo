@@ -57,8 +57,13 @@
       d3.shuffle(elements);
 
       elements.forEach(function(e) {
-        root = removeNode(root, e);
-        if (root) { viz.buildTreeAndUpdate(root, dur); }
+        var minNode = min(root);
+        root = removeNode(minNode);
+        viz.removeNodeAndUpdate(minNode, dur);
+        //console.log('removing: ' + e);
+        //if (root) { viz.emphasizeAndUpdate([root], dur); }
+        //root = removeNode(root, e);
+        //if (root) { viz.buildTreeAndUpdate(root, dur); }
       });
 
       // start the visualization once we finish building the tree
@@ -91,7 +96,6 @@
         if (!rootNode) {
           return null;
         } else if (nodeVal > rootNode.val()) {
-          viz.emphasizeAndUpdate([rootNode], dur);
           viz.setFillAndUpdate([rootNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           if (rootNode.rChild()) {
@@ -101,7 +105,6 @@
             viz.deemphasizeAndUpdate([rootNode], dur);
           }
         } else if (nodeVal < rootNode.val()) {
-          viz.emphasizeAndUpdate([rootNode], dur);
           viz.setFillAndUpdate([rootNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           if (rootNode.lChild()) {

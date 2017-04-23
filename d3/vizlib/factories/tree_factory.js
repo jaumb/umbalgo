@@ -22,7 +22,8 @@ var tree_factory = (function() {
     var _Y2 = null;
     var _W = null;
     var _H = null;
-    var _nodeMap = new Map();
+    var _clientNodeMap = new Map();
+    var _vizNodeMap = new Map();
     var _edgeMap = new Map();
     var _radius = null;
     var _root = null;
@@ -119,6 +120,99 @@ var tree_factory = (function() {
     }
 
     /**
+     * Remove targetClientNode from the tree rooted at rootVizNode.
+     * @param {Object} rootVizNode - Root of the subtree.
+     * @param {Object} targetClientNode - Node to remove from subtree.
+     */
+    function _removeNode(rootVizNode, targetClientNode) {
+      if (!rootVizNode) {
+        return null;
+      } else if (targetClientNode.val() > rootVizNode.getVal()) {
+        rootVizNode.rChild = _removeNode(rootVizNode.rChild, targetClientNode);
+      } else if (targetClientNode.val() < rootVizNode.getVal()) {
+        rootVizNode.lChild = _removeNode(rootVizNode.lChild, targetClientNode);
+      } else {
+        if (!rootVizNode.rChild) {
+          return rootVizNode.lChild;
+        } else if (!rootVizNode.lChild) {
+          return rootVizNode.rChild;
+        } else {
+          var suc = _getMinNode(rootVizNode.rChild);
+          suc.rChild = _delMinNode(rootVizNode.rChild, rootVizNode);
+          suc.lChild = rootVizNode.lChild;
+          _delNodeFromCanvas(targetClientNode);
+          return suc;
+        }
+      }
+      return rootVizNode;
+    }
+
+    /**
+     * Get the node with the smallest value in the tree rooted at rootVizNode.
+     * @param {undefined|Object} rootVizNode - Root of the subtree.
+     */
+    function _getMinNode(rootVizNode) {
+      if (!rootVizNode) { return null; }
+      while (rootVizNode.lChild) {
+        rootVizNode = rootVizNode.lChild;
+      }
+      return rootVizNode;
+    }
+
+    /**
+     * Remove the node with the smallest value from the tree rooted at
+     * rootVizNode.
+     * @param {Object} rootVizNode - Root of the subtree.
+     * @param {undefined|Object} vizNodeParent - Parent of rootVizNode.
+     */
+    function _delMinNode(rootVizNode, vizNodeParent) {
+      if (!rootVizNode.lChild) {
+        _delEdgeFromCanvas(_edgeID(vizNodeParent, rootVizNode));
+        return rootVizNode.rChild;
+      } else {
+        rootVizNode.lChild = _delMinNode(rootVizNode.lChild, rootVizNode);
+      }
+      return rootVizNode;
+    }
+
+    /**
+     * Remove edge with edgeStringID from canvas.
+     * @param {Object} edgeStringID - ID of edge to remove from canvas.
+     */
+    function _delEdgeFromCanvas(edgeStringID) {
+      var edge = _edgeMap.get(edgeStringID);
+      if (edge) {
+        edge.setPosX2(edge.getPosX1());
+        edge.setPosY2(edge.getPosY1());
+        redraw.onNextDrawEnd(function(edgeElemID, edgeStringIDarg) {
+          redraw.removeElem(edgeElemID);
+          _edgeMap.delete(edgeStringIDarg);
+        }, edge.getID(), edgeStringID);
+      }
+    }
+
+    /**
+     * Remove node from canvas.
+     * @param {Object} node - Node to remove from canvas.
+     */
+    function _delNodeFromCanvas(node) {
+      if (!node) { return; }
+      var vizNode = _getVizNode(node); // try looking up client node
+      if (!vizNode && node.className && node.className() === 'circle') {
+        vizNode = node; // it's a visualization node
+      }
+      if (vizNode) {
+        vizNode.setFillOpacity(0);
+        vizNode.setStrokeOpacity(0);
+        vizNode.getLabel().setFillOpacity(0);
+        redraw.onNextDrawEnd(function(nodeElemID, aNode) {
+          redraw.removeElem(nodeElemID);
+          _removeVizNode(aNode);
+        }, vizNode.getID(), node);
+      }
+    }
+
+    /**
      * Get the height of the tree rooted at node.
      * @param {undefined|Object} node - Root of the subtree.
      */
@@ -172,7 +266,8 @@ var tree_factory = (function() {
      * @param {Object} vizNode - A visualization node.
      */
     function _addVizNode(clientNode, vizNode) {
-      _nodeMap.set(clientNode.id(), vizNode);
+      _clientNodeMap.set(clientNode.id(), vizNode);
+      _vizNodeMap.set(vizNode.getID(), clientNode);
     }
 
     /**
@@ -182,15 +277,34 @@ var tree_factory = (function() {
      * @return vizNode - Visualization node.
      */
     function _getVizNode(clientNode) {
-      return _nodeMap.get(clientNode.id());
+      if (!clientNode.id) { return null; }
+      return _clientNodeMap.get(clientNode.id());
+    }
+
+    /**
+     * Get the client node corresponding to the visualization
+     * node.
+     * @param {Object} vizNode - Viz node's tree node object.
+     * @return clientNode - Client node.
+     */
+    function _getClientNode(vizNode) {
+      return _vizNodeMap.get(vizNode.getID());
     }
 
     /**
      * Remove a node from the visualization.
-     * @param {Object} clientNode - Client's tree node object.
+     * @param {Object} aNode - Node object.
      */
-    function _removeVizNode(clientNode) {
-      _nodeMap.delete(clientNode.id());
+    function _removeVizNode(aNode) {
+      if (aNode.className && aNode.className() === 'circle') { // viz node
+        var cNode = _getClientNode(aNode);
+        _vizNodeMap.delete(aNode.getID());
+        _clientNodeMap.delete(cNode.id());
+      } else { // client node
+        var vNode = _getVizNode(aNode);
+        _vizNodeMap.delete(vNode.getID());
+        _clientNodeMap.delete(aNode.id());
+      }
     }
 
     /**
@@ -200,6 +314,7 @@ var tree_factory = (function() {
      * @return id - Id of the edge.
      */
     function _edgeID(vizParent, vizChild) {
+      if (!vizParent) { return ''; }
       var n1 = vizParent.getID();
       var n2 = vizChild.getID();
       if (n2 < n1) {
@@ -343,7 +458,7 @@ var tree_factory = (function() {
      * Call this after the canvas size changes.
      */
     function _resize(viz) {
-      _nodeMap.forEach(function(v, k) {
+      _clientNodeMap.forEach(function(v, k) {
         v.setR(_radius);
         v.setStrokeWidth(1/15 * _radius);
         v.getLabel().setFontSize((1.2 * _radius) + 'px');
@@ -403,6 +518,29 @@ var tree_factory = (function() {
         // if clientNode does not have a corresponding node on the svg
         // canvas and there is already a root node on the canvas then
         // we ignore this call (we don't want to draw two root nodes)
+      });
+    }
+
+    /**
+     * Remove clientNode from the tree.
+     * @param {Object} clientNode - The node being removed from the tree.
+     */
+    function removeNode(clientNode) {
+      redraw.addOps(function() {
+        _root = _removeNode(_root, clientNode);
+      });
+    }
+
+    /**
+     * Remove the node with the minimum value from the canvas.
+     * @param {Object} clientRoot - Root of the client subtree.
+     */
+    function delMinNode() {
+      redraw.addOps(function() {
+        if (!_root) { return; }
+        var minNode = _getMinNode(_root);
+        _root = _delMinNode(_root, null);
+        _delNodeFromCanvas(minNode);
       });
     }
 
@@ -537,7 +675,7 @@ var tree_factory = (function() {
      */
     function clearEmphases() {
       redraw.addOps(function() {
-        _nodeMap.forEach(function(v, k) {
+        _clientNodeMap.forEach(function(v, k) {
           if (v.emphasis) {
             v.emphasis.setFillOpacity(0);
             v.emphasis.setStrokeOpacity(0);
@@ -580,7 +718,7 @@ var tree_factory = (function() {
      */
     function getNodes() {
       var nodes = [];
-      _nodeMap.forEach(function(v, k) {
+      _clientNodeMap.forEach(function(v, k) {
         nodes.push(v.copy());
       });
       return nodes;
@@ -614,7 +752,7 @@ var tree_factory = (function() {
      */
     function getText() {
       var text = [];
-      _nodeMap.forEach(function(v, k) {
+      _clientNodeMap.forEach(function(v, k) {
         text.push(v.getLabel());
       });
       return text;
@@ -626,7 +764,7 @@ var tree_factory = (function() {
      */
     function getCircles() {
       var circs = [];
-      _nodeMap.forEach(function(v, k) {
+      _clientNodeMap.forEach(function(v, k) {
         circs.push(v);
         if (v.emphasis) {
           circs.push(v.emphasis);
@@ -681,6 +819,8 @@ var tree_factory = (function() {
     ////////////////////////////////////////////////////////////////////////////
     return {
       buildTree:buildTree,
+      removeNode:removeNode,
+      delMinNode:delMinNode,
       setEdgesColor:setEdgesColor,
       dispNextNode:dispNextNode,
       setFill:setFill,
