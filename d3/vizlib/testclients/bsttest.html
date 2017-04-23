@@ -51,7 +51,8 @@
       d3.shuffle(elements);
 
       elements.forEach(function(e) {
-        removeNode(root, e);
+        root = removeNode(root, e);
+        viz.buildTreeAndUpdate(root, dur);
       });
 
       // start the visualization once we finish building the tree
