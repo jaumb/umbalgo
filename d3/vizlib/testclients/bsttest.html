@@ -52,7 +52,7 @@
 
       elements.forEach(function(e) {
         root = removeNode(root, e);
-        viz.buildTreeAndUpdate(root, dur);
+        if (root) { viz.buildTreeAndUpdate(root, dur); }
       });
 
       // start the visualization once we finish building the tree
@@ -107,24 +107,24 @@
         } else {
           viz.setFillAndUpdate([rootNode], colors.GREEN, dur);
           if (!rootNode.rChild()) {
-            viz.setFill([rootNode], colors.BACKGROUND);
-            viz.setOutline([rootNode], colors.BACKGROUND);
-            viz.setLabelFill([rootNode], colors.BACKGROUND);
+            viz.setFill([rootNode], colors.WHITE);
+            viz.setOutline([rootNode], colors.WHITE);
+            viz.setLabelFill([rootNode], colors.WHITE);
             viz.deemphasizeAndUpdate([rootNode], dur);
             return rootNode.lChild();
           } else if (!rootNode.lChild()) {
-            viz.setFill([rootNode], colors.BACKGROUND);
-            viz.setOutline([rootNode], colors.BACKGROUND);
-            viz.setLabelFill([rootNode], colors.BACKGROUND);
+            viz.setFill([rootNode], colors.WHITE);
+            viz.setOutline([rootNode], colors.WHITE);
+            viz.setLabelFill([rootNode], colors.WHITE);
             viz.deemphasizeAndUpdate([rootNode], dur);
             return rootNode.rChild();
           } else {
             var suc = successor(rootNode);
             viz.emphasizeAndUpdate([rootNode.rChild()], dur);
             delMin(rootNode.rChild());
-            viz.setFill([rootNode], colors.BACKGROUND);
-            viz.setOutline([rootNode], colors.BACKGROUND);
-            viz.setLabelFill([rootNode], colors.BACKGROUND);
+            viz.setFill([rootNode], colors.WHITE);
+            viz.setOutline([rootNode], colors.WHITE);
+            viz.setLabelFill([rootNode], colors.WHITE);
             suc.setRChild(rootNode.rChild());
             suc.setLChild(rootNode.lChild());
             return suc;
