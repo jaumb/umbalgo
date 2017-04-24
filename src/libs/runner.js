@@ -42,7 +42,7 @@ class VirtualMachine {
   }
 
   updateViz() {
-    this.viz.play();
+    this.viz.step();
     this.images.push(document.getElementById("svg_canvas").outerHTML);
   }
 

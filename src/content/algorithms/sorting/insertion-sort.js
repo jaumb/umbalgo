@@ -16,9 +16,7 @@ var onInvoke = function() {
   vm.viz.updateCanvas(0);
   vm.viz.setBoundPos(0);
   vm.viz.updateCanvas(vm.dur);
-
-  vm.viz.updateCanvas(vm.dur);
-  vm.viz.play();
+  vm.viz.step();
   console.log("Input: " + a);
   vm.invokeFunc("sort", function(result) { console.log("Result: " + a); }, a);
 };

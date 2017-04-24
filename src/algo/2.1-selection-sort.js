@@ -28,7 +28,7 @@ sort(a) {
     that.vm.viz.setMinPos(that.locals["i"]);      // put the min box beneath target index
     that.vm.viz.setMinFill(colors.ACTIVE); // color min red (stays red throughout)
     that.vm.viz.updateCanvas(that.vm.dur);
-      that.vm.updateViz()
+    that.vm.updateViz();
   } else {
     // Otherwise, jump past the loop body
     that.nextLineNumber = undefined;
@@ -43,7 +43,7 @@ sort(a) {
   that.vm.viz.setFill([that.locals["i"]], colors.ACTIVE);
   that.vm.viz.setMinLabel(that.args["a"][that.locals["i"]]);
   that.vm.viz.updateCanvas(that.vm.dur * 2);
-  that.vm.updateViz()
+  that.vm.updateViz();
 // Code:    for (int j = i + 1; j < N; j++) {
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
@@ -57,7 +57,7 @@ sort(a) {
     that.vm.viz.setFill([that.locals["j"]], colors.BACKGROUND);
     that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE);
     that.vm.viz.updateCanvas(that.vm.dur);
-      that.vm.updateViz()
+    that.vm.updateViz();
     that.locals["j"]++;
   }
   // Check if the condition is true
@@ -68,7 +68,7 @@ sort(a) {
     that.vm.viz.setMinPos(that.locals["j"]);                 // move min to compare index
     that.vm.viz.setFill([that.locals["j"]], colors.COMPARE); // color compare index orange
     that.vm.viz.updateCanvas(that.vm.dur);
-      that.vm.updateViz()
+    that.vm.updateViz();
   } else {
     // Otherwise, jump to past the loop body
     that.nextLineNumber = 9;
@@ -93,7 +93,7 @@ sort(a) {
   that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE);
   that.vm.viz.setMinLabel(that.args["a"][that.locals["min"]]);
   that.vm.viz.updateCanvas(that.vm.dur);
-  that.vm.updateViz()
+  that.vm.updateViz();
   // Then advance to the next line.
   that.nextLineNumber = 8;
 // Code:    }
@@ -117,7 +117,7 @@ sort(a) {
   that.vm.viz.setFill([that.locals["i"]], colors.FINISHED);     // set target to blue as we have put min there
   that.vm.viz.deemphasize([that.locals["i"]]);                  // get rid of emphasis square square on target
   that.vm.viz.updateCanvas(that.vm.dur);
-  that.vm.updateViz()
+  that.vm.updateViz();
 // Code:  }
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.

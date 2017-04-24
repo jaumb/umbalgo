@@ -59,7 +59,7 @@ var content;
         "js/libs/vizlib/factories/element_factory.js",
         "js/libs/vizlib/factories/array_factory.js",
         "js/libs/vizlib/vizlib.js",
-        "js/libs/vizlib/redrawII.js",
+        "js/libs/vizlib/redraw.js",
         "js/libs/jszip.min.js",
         "js/libs/FileSaver.min.js"
       ],
