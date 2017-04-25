@@ -61,7 +61,11 @@ var content;
         "js/libs/vizlib/vizlib.js",
         "js/libs/vizlib/redraw.js",
         "js/libs/jszip.min.js",
-        "js/libs/FileSaver.min.js"
+        "js/libs/FileSaver.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js",
+        "http://canvg.github.io/canvg/rgbcolor.js",
+        "http://canvg.github.io/canvg/StackBlur.js",
+        "http://canvg.github.io/canvg/canvg.js"
       ],
       "children": [
         {
