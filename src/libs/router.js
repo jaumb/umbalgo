@@ -53,7 +53,7 @@ var content;
       "displayName": "Algorithms",
       "depends": [
         "js/libs/highlight.pack.js",
-        "http://d3js.org/d3.v3.min.js",
+        "http://d3js.org/d3.v4.min.js",
         "js/libs/runner.js",
         "js/libs/vizlib/common.js",
         "js/libs/vizlib/factories/element_factory.js",
@@ -70,7 +70,8 @@ var content;
           "children": [
             {
               "uriName": "shuffle",
-              "displayName": "Shuffle"
+              "displayName": "Shuffle",
+              "depends": ["js/libs/vizlib/algorithms/shuffle.js"]
             },
             {
               "uriName": "search",
