@@ -42,8 +42,13 @@ class VirtualMachine {
   }
 
   updateViz() {
+    document.getElementById("next").disabled = true;
+    let cachedThis = this;
+    redraw.onNextDrawEnd(function() {
+      cachedThis.images.push(document.getElementById("svg_canvas").outerHTML);
+      document.getElementById("next").disabled = false;
+    });
     this.viz.step();
-    this.images.push(document.getElementById("svg_canvas").outerHTML);
   }
 
   populateCodePane() {

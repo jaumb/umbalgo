@@ -34,4 +34,4 @@ var onExport = function() {
     });
 }
 
-document.getElementById("container").innerHTML += `<button onclick="onInvoke()">invoke</button><button onclick="onNext()">step</button><button onclick="onExport()">export</button>`;
+document.getElementById("container").innerHTML += `<button onclick="onInvoke()">invoke</button><button onclick="onNext()" id="next">step</button><button onclick="onExport()">export</button>`;
