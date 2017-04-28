@@ -97,7 +97,7 @@ var ll_factory = (function() {
   //  private linked list vizualization variables
   //////////////////////////////////////////////////////////////////////////////
   /**
-   * Create a new array visualization on the canvas.
+   * Create a new linked list visualization on the canvas.
    * @param {Object} root - root element for the linked list.
    * The root element is expected to be an object with getters and setters for
    * the following fields:
@@ -108,7 +108,7 @@ var ll_factory = (function() {
    *   RefBox    : rect that holds the node's pointer (null in client)
    *   RefArrow  : line that represent's node's pointer arrow (null in client)
    * Note that root can be null if starting from an empty linked list.
-   * @param {Object} bounding_box - The box inside of which to center the array
+   * @param {Object} bounding_box - The box inside of which to center the LL
    */
   function LL_viz(root, bounding_box) {
     var _X1 = bounding_box.p1.x;
@@ -690,9 +690,9 @@ var ll_factory = (function() {
 
 
     /**
-     * Fit the emphasis box around an array slot.
+     * Fit the emphasis box around an linked list node.
      * @param {Object} emphasis - The emphasis rect element.
-     * @param {Object} slot - The array slot rect element.
+     * @param {Object} slot - The linked list slot rect element.
      * TODO: not updated for LLs yet
      */
     function _fitEmphasis(emphasis, slot) {
@@ -987,7 +987,7 @@ var ll_factory = (function() {
     /**
      * Set the fill attribute of set of node IDs.
      * @param {number[]} nodeIDs - The node IDs of the nodes to modify.
-     * @param {string} color - The new fill color of these array slots.
+     * @param {string} color - The new fill color of these linked list nodes.
      */
     function setFill(nodeIDs, color) {
       nodeIDs.forEach(function(id) {
@@ -999,7 +999,7 @@ var ll_factory = (function() {
     /**
      * Set the outline attribute of set of nodeIDs.
      * @param {number[]} nodeIDs - The indices of the slots to modify.
-     * @param {string} color - The new outline color of these array slots.
+     * @param {string} color - The new outline color of these linked list nodes.
      */
     function setOutline(nodeIDs, color) {
       nodeIDs.forEach(function(id) {
@@ -1082,7 +1082,7 @@ var ll_factory = (function() {
     }
 
     /**
-     * De-emphasize array slots.
+     * De-emphasize linked list nodes.
      * @param {number[]} indices - The indices of the slots to de-emphasize.
      * TODO: update for linked list nodes
      */
@@ -1137,7 +1137,7 @@ var ll_factory = (function() {
     // element gathering functions /////////////////////////////////////////////
 
     /**
-     * Gather all rectangles used in this array..
+     * Gather all rectangles used in this linked list.
      * Used to get a list of all rectangles to draw on the canvas.
      */
     function getRects() {
@@ -1152,7 +1152,7 @@ var ll_factory = (function() {
     }
 
     /**
-     * Gather all text elements used in this array.
+     * Gather all text elements used in this linked list.
      * Used to get a list of all text to draw on the canvas.
      */
     function getText() {
@@ -1170,7 +1170,7 @@ var ll_factory = (function() {
     }
 
     /**
-     * Gather all circles used in this array.
+     * Gather all circles used in this linked list.
      * Used to get a list of all circles to draw on the canvas.
      */
     function getCircles() {
@@ -1178,7 +1178,7 @@ var ll_factory = (function() {
     }
 
     /**
-     * Gather all lines used in this array.
+     * Gather all lines used in this linked list.
      * Used to get a list of all lines to draw on the canvas.
      */
     function getLines() {
@@ -1242,15 +1242,15 @@ var ll_factory = (function() {
   //  public linked list factory method
   //////////////////////////////////////////////////////////////////////////////
   /**
-   * Get a new array visualization object.
-   * @param {number[]|string[]} elems - Elements occupying array slots
-   * @param {Object} bounding_box - The box inside of which to center the array
+   * Get a new linked list visualization object.
+   * @param {number[]|string[]} elems - Elements occupying linked list slots
+   * @param {Object} bounding_box - The box inside of which to center the LL
    */
   function get_LL(elems, bounding_box) {
     return new LL_viz(elems, bounding_box);
   }
 
-  // return public Array_viz methods
+  // return public linked list factory methods
   return {
     get_LL:get_LL
   };
