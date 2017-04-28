@@ -232,8 +232,6 @@ var ll_factory = (function() {
       } else {
         _first.arrow.setPosY1(_first.arrow.getPosY1() + 1.75 * (_boxSize - (_resizeScale * _boxSize)));
       }
-      // var fbb = redraw.getBBox(_first.name);
-      // _first.arrow.setPosY1(fbb.y + fbb.height);
 
       // initialize _oldfirst
       _oldfirst.name.setPosX(coords.oldfirst.x);
@@ -247,8 +245,6 @@ var ll_factory = (function() {
       } else {
         _oldfirst.arrow.setPosY1(_oldfirst.arrow.getPosY1() - 2.25 * (_boxSize - (_resizeScale * _boxSize)));
       }
-      // var ofbb = redraw.getBBox(_oldfirst.name);
-      // _oldfirst.arrow.setPosY1(ofbb.y);
 
       // initialize _last
       _last.name.setPosX(coords.last.x);
@@ -279,9 +275,6 @@ var ll_factory = (function() {
         if (ref.target) {
           _pointRefsAtNode(ref.target, ref);
         }
-        // console.log("_resizeScale: " + _resizeScale);
-        // console.log(ref.name.getVal() + " arrow stroke width: " + ref.arrow.getStrokeWidth());
-        // ref.arrow.setStrokeWidth(ref.arrow.getStrokeWidth().split('v')[0] * _resizeScale + "vw");
       });
     }
 
@@ -306,6 +299,7 @@ var ll_factory = (function() {
       _nLabel.setFontSize((0.7 * _boxSize) + 'px');
       _nLabel.setVal('n');
     }
+
 
     /**
      * Change the label value in the n box.
@@ -389,7 +383,6 @@ var ll_factory = (function() {
           i++;
         }
       }
-
     }
 
 
