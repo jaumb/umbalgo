@@ -1,11 +1,11 @@
 /**
  * linkedbag.java
  * linked bag visualization object.
- * @param {number[]|string[]} elems - Initial elements in linked list.
+ * @param {Object} root - The root of any initial linked nodes upon LL creation.
  * @param {number} svgW - Width of the svg canvas.
  * @param {number} svgH - Height of the svg canvas.
  */
-var linkedbag = (function(elems, svgW, svgH) {
+var linkedbag = (function(root, svgW, svgH) {
 
   // initialize the canvas with element groups
   redraw.initCanvas(svgCanvasName);
@@ -18,7 +18,7 @@ var linkedbag = (function(elems, svgW, svgH) {
     p2:{x:svgW, y:svgH}
   };
 
-  var _LL = ll_factory.get_LL(elems, _boundingBox);
+  var _LL = ll_factory.get_LL(root, _boundingBox);
 
 
   //////////////////////////////////////////////////////////////////////////////
