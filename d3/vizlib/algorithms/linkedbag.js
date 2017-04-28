@@ -76,49 +76,8 @@ var linkedbag = (function(elems, svgW, svgH) {
     return redraw.addOps(function() { _LL.setFill(nodeIDs, color); });
   };
 
-  /**
-   * Change the fill color of the "first" node.
-   * @param {string} color - New fill color for specified indices.
-   */
-  var setFirstFill = function(color) {
-    return function() {
-      firstNode.contentBox.setFill(color);
-      firstNode.refBox.setFill(color);
-    };
-  };
-
-  /**
-   * Set val of label property for elements at specified indices.
-   * @param {number[]} indices - Indices of elements to get new val.
-   * @param {string} val - Value to give to elements at specified indexes.
-   */
-  var setLabels = function(indices, val) {
-    return redraw.addOps(function() { _LL.setLabels(indices, val); });
-  };
-
-  /**
-   * Emphasize array slots.
-   * @param {number[]} indices - The indices of the slots to emphasize.
-   */
-  var emphasize = function(indices) {
-    return redraw.addOps(function() { _LL.emphasize(indices); });
-  };
-
-  /**
-   * Move emphasis box.
-   * @param {number} i - The index of the emphasized slot.
-   * @param {number} j - The index of the slot to emphasize.
-   */
-  var moveEmphasis = function(i, j) {
-    return redraw.addOps(function() { _LL.moveEmphasis(i, j); });
-  };
-
-  /**
-   * De-emphasize array slots.
-   * @param {number[]} indices - The indices of the slots to de-emphasize.
-   */
-  var deemphasize = function(indices) {
-    return redraw.addOps(function() { _LL.deemphasize(indices); });
+  var setNFill = function(color) {
+    return redraw.addOps(function() { _LL.setNFill(color); });
   };
 
   var addNode = function(node) {
@@ -126,7 +85,7 @@ var linkedbag = (function(elems, svgW, svgH) {
   };
 
   var showNode = function(nodeID) {
-    return redraw.addOps(function() { _LL.showNode(nodeID); });
+    return redraw.addOps(function() { _LL.showNodes(nodeID); });
   };
 
   var showNodeBox = function(nodeID) {
@@ -146,11 +105,11 @@ var linkedbag = (function(elems, svgW, svgH) {
   };
 
   var showNodeLabel = function(nodeID) {
-    return redraw.addOps(function() { _LL.showNodeLabel(nodeID); });
+    return redraw.addOps(function() { _LL.showNodeLabels(nodeID); });
   };
 
   var showNodeArrow = function(nodeID) {
-    return redraw.addOps(function() { _LL.showNodeArrow(nodeID); });
+    return redraw.addOps(function() { _LL.showNodeArrows(nodeID); });
   };
 
   var pointNodeAtOldfirst = function(nodeID) {
@@ -212,11 +171,7 @@ var linkedbag = (function(elems, svgW, svgH) {
     updateN:updateN,
     shiftRight:shiftRight,
     setFill:setFill,
-    setFirstFill:setFirstFill,
-    setLabels:setLabels,
-    emphasize:emphasize,
-    moveEmphasis:moveEmphasis,
-    deemphasize:deemphasize,
+    setNFill:setNFill,
     getRects:getRects,
     getCircles:getCircles,
     getLines:getLines,
