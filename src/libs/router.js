@@ -47,7 +47,7 @@ var content;
    * that each level of the hierarchy's collection of children is ordered. This
    * is required to generate the index pages.
    */
-  content = [
+   content = [
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
@@ -71,183 +71,276 @@ var content;
         {
           "uriName": "fundamentals",
           "displayName": "Fundamentals",
+          "ImgName": "fundamentals.svg",
+          "description": "These are some of the Basic Algorithms you should know",
+          "titleColor": "#ea6874",
+          "descriptionColor": "#ea6874",
           "children": [
             {
               "uriName": "shuffle",
               "displayName": "Shuffle",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"]
             },
             {
               "uriName": "search",
-              "displayName": "Search"
+              "displayName": "Search",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "bag-linked-list",
-              "displayName": "Bag (Linked List)"
+              "displayName": "Bag (Linked List)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "bag-array",
-              "displayName": "Bag (Array)"
+              "displayName": "Bag (Array)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "queue-linked-list",
-              "displayName": "Queue (Linked List)"
+              "displayName": "Queue (Linked List)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "queue-array",
-              "displayName": "Queue (Array)"
+              "displayName": "Queue (Array)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "stack-linked-list",
-              "displayName": "String (Linked List)"
+              "displayName": "String (Linked List)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "stack-array",
-              "displayName": "Stack (Array)"
+              "displayName": "Stack (Array)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "union-find-quickfind",
-              "displayName": "Union-Find (Quickfind)"
+              "displayName": "Union-Find (Quickfind)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "union-find-quickunion",
-              "displayName": "Union-Find (Quickunion)"
+              "displayName": "Union-Find (Quickunion)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             },
             {
               "uriName": "union-find-weightedquickunion",
-              "displayName": "Union-Find (Weighted Quickunion)"
+              "displayName": "Union-Find (Weighted Quickunion)",
+              "ImgName": "fundamentals.svg",
+              "color": "#f79fb0",
             }
           ],
         },
         {
           "uriName": "sorting",
           "displayName": "Sorting",
+          "ImgName": "sorting.svg",
+          "description": "Learn Sorting the fun way",
+          "titleColor": "#e7a32a",
+          "descriptionColor": "#e7a32a",
           "children": [
             {
               "uriName": "selection-sort",
               "displayName": "Selection Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
               "depends": ["js/libs/vizlib/algorithms/selection.js"]
             },
             {
               "uriName": "insertion-sort",
               "displayName": "Insertion Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"]
             },
             {
               "uriName": "shell-sort",
-              "displayName": "Shell Sort"
+              "displayName": "Shell Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "merge-sort",
-              "displayName": "Merge Sort"
+              "displayName": "Merge Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "quick-sort",
-              "displayName": "Quick Sort"
+              "displayName": "Quick Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "quick-3way-sort",
-              "displayName": "Quick 3-Way Sort"
+              "displayName": "Quick 3-Way Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "heap-sort",
-              "displayName": "Heap Sort"
+              "displayName": "Heap Sort",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "maxpq",
-              "displayName": "MaxPQ"
+              "displayName": "MaxPQ",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             },
             {
               "uriName": "minpq",
-              "displayName": "MinPQ"
+              "displayName": "MinPQ",
+              "ImgName": "sorting.svg",
+              "color": "#a0c9e4",
             }
           ]
         },
         {
           "uriName": "searching",
           "displayName": "Searching",
+          "ImgName": "searching.svg",
+          "description": "Learn the most efficient way to search anything",
+          "titleColor": "#3cda83",
+          "descriptionColor": "#3cda83",
           "children": [
             {
               "uriName": "basic-unordered-symbol-table",
-              "displayName": "Basic Unordered Symbol Table"
+              "displayName": "Basic Unordered Symbol Table",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "binary-symbol-table",
-              "displayName": "Binary Symbol Table"
+              "displayName": "Binary Symbol Table",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "ordered-symbol-table-bst",
-              "displayName": "Ordered Symbol Table (BST)"
+              "displayName": "Ordered Symbol Table (BST)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "ordered-symbol-table-red-black-bst",
-              "displayName": "Ordered Symbol Table (Reb/Black BST)"
+              "displayName": "Ordered Symbol Table (Reb/Black BST)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "separate-chaining-hash-table",
-              "displayName": "Separate Chaining Hash Table"
+              "displayName": "Separate Chaining Hash Table",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "graph-undirected",
-              "displayName": "Graph (Undirected)"
+              "displayName": "Graph (Undirected)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "depth-first-search-undirected",
-              "displayName": "Depth First Search (Undirected)"
+              "displayName": "Depth First Search (Undirected)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "breadth-first-search-undirected",
-              "displayName": "Breadth First Search (Undirected)"
+              "displayName": "Breadth First Search (Undirected)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "connected-components",
-              "displayName": "Connected Components"
+              "displayName": "Connected Components",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "graph-directed",
-              "displayName": "Graph (Directed)"
+              "displayName": "Graph (Directed)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "cycle-detection",
-              "displayName": "Cycle Detection"
+              "displayName": "Cycle Detection",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "depth-first-search-directed",
-              "displayName": "Depth First Search (Directed)"
+              "displayName": "Depth First Search (Directed)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "reverse-postorder-vertex-ordering",
-              "displayName": "Reverse Post-Order Vertex Ordering"
+              "displayName": "Reverse Post-Order Vertex Ordering",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "kosarajus-strongly-connected-components",
-              "displayName": "Kosaraju's Strongly-Connected Components"
+              "displayName": "Kosaraju's Strongly-Connected Components",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "edge-weighted-graph",
-              "displayName": "Edge-Weighted Graph"
+              "displayName": "Edge-Weighted Graph",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "kruskals-minimum-spanning-tree",
-              "displayName": "Kruskal's Minimum Spanning Tree"
+              "displayName": "Kruskal's Minimum Spanning Tree",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "edge-weighted-directed-graph",
-              "displayName": "Edge-Weighted Directed Graph"
+              "displayName": "Edge-Weighted Directed Graph",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "dijkstras-shortest-paths",
-              "displayName": "Dijkstra's Shortest Paths"
+              "displayName": "Dijkstra's Shortest Paths",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             },
             {
               "uriName": "shortest-paths-edge-weighted-directed-acyclic-graphs",
-              "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)"
+              "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)",
+              "ImgName": "searching.svg",
+              "color": "#e4cc55",
             }
           ]
         },
         {
           "uriName": "strings",
           "displayName": "Strings",
+          "description": "Some Demos related to the strings",
+          "titleColor": "#20bdd0",
+          "descriptionColor": "#20bdd0",
           "children": [
             {
               "uriName": "lsd-string-sort",
@@ -282,6 +375,8 @@ var content;
       ]
     }
   ];
+
+
   /**
    * Decode uri parameters to a map.
    */

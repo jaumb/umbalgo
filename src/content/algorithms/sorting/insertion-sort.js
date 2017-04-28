@@ -1,5 +1,10 @@
 vm.loadFunc("2.1-insertion-sort.js");
 
+
+function jsFunction(value)
+{
+   onInvoke();
+}
 var onInvoke = function() {
   var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
   var v = document.getElementById("visualization").getBoundingClientRect();
@@ -37,3 +42,4 @@ var onExport = function() {
 }
 
 document.getElementById("container").innerHTML += `<button onclick="onInvoke()">invoke</button><button onclick="onNext()" id="next">step</button><button onclick="onExport()">export</button>`;
+document.getElementById("selectMethod").innerHTML += `<option value="1">Sort</option>`;
