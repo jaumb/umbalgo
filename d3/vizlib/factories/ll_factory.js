@@ -174,6 +174,11 @@ var ll_factory = (function() {
       setFill([k], colors.FINISHED);
     });
 
+    // get the last node and if it's not null, point last to it
+    if (_getLastNode(root)) {
+      _pointRefsAtNode(_getLastNode().getID(), _oldlast);
+    }
+
     // add n
     var _n = element_factory.getRect();
     var _nLabel = element_factory.getText();
@@ -203,6 +208,23 @@ var ll_factory = (function() {
       }
       console.log("number of nodes is: " + count);
       return count;
+    }
+
+
+    /**
+     * Get the current last node in the linked list from the node map.
+     * If the linked list is empty, returns null.
+     */
+    function _getLastNode(root) {
+      var next = root;
+      if (next) {
+        return null;
+      } else {
+        while (next.getNext()) {
+          next = next.getNext();
+        }
+        return next;
+      }
     }
 
 
@@ -688,6 +710,67 @@ var ll_factory = (function() {
     }
 
 
+    function _addNodeRight(node) {
+      var last = _getLastNode();
+      var pos = last === null ?
+                _firstNodePos :
+                { x:last.getContentBox().getPosX(),
+                  y:last.getContentBox().getPosX() };
+
+      // the content box for the new node
+      var contentBox = element_factory.getRect();
+      contentBox.setPosX(pos.x + 2 * _boxSize);
+      contentBox.setPosY(pos.y);
+      contentBox.setSpX(contentBox.getPosX());
+      contentBox.setSpY(contentBox.getPosY());
+      contentBox.setWidth(_boxSize);
+      contentBox.setHeight(_boxSize);
+      contentBox.setStrokeWidth('.3vw');
+      contentBox.getLabel().setVal(newNode.getVal());
+      contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
+      contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
+      contentBox.getLabel().setPosY(contentBox.getPosY() + 0.72 * _boxSize);
+      contentBox.getLabel().setSpX(contentBox.getLabel().getPosX());
+      contentBox.getLabel().setSpY(contentBox.getLabel().getPosY());
+
+      // the ref arrow box for the new node
+      var refBox = element_factory.getRect();
+      refBox.setPosX(contentBox.getPosX());
+      refBox.setPosY(pos.y + _boxSize);
+      refBox.setSpX(refBox.getPosX());
+      refBox.setSpY(refBox.getPosY());
+      refBox.setWidth(_boxSize);
+      refBox.setHeight(0.5 * _boxSize);
+      refBox.setStrokeWidth('.3vw');
+      refBox.getLabel().setVisibility('hidden');
+
+      // the ref arrow for the new node
+      var refArrow = element_factory.getLine();
+      refArrow.setPosX1(refBox.getCenter().x);
+      refArrow.setPosY1(refBox.getCenter().y);
+      refArrow.setSpX1(refArrow.getPosX1());
+      refArrow.setSpY1(refArrow.getPosY1());
+      refArrow.setMarkerStart("url(#marker_circle)");
+      refArrow.setPosX2(refArrow.getPosX1() + _boxSize);
+      refArrow.setPosY2(refArrow.getPosY1());
+      refArrow.setMarkerEnd("url(#marker_stub)");
+      refArrow.setSpX2(refArrow.getPosX2());
+      refArrow.setSpY2(refArrow.getPosY2());
+
+      newNode.setNext(null);
+      newNode.setContentBox(contentBox);
+      newNode.setRefBox(refBox);
+      newNode.setRefArrow(refArrow);
+
+      _nodeMap.set(newNode.getID(), newNode);
+
+      // update old last node to point at the new node
+      last.setNext(newNode);
+
+      hideNodes(newNode.getID());
+    }
+
+
 
     /**
      * Fit the emphasis box around an linked list node.
@@ -885,7 +968,10 @@ var ll_factory = (function() {
       _resize();
     }
 
-    // TODO: add node back
+    function addNodeRight(node) {
+      _addNodeRight(node);
+      _resize();
+    }
 
 
 
@@ -1211,6 +1297,7 @@ var ll_factory = (function() {
       hideNodeArrows:hideNodeArrows,
       showNodeBox:showNodeBox,
       addNodeLeft:addNodeLeft,
+      addNodeRight:addNodeRight,
       pointFirstAt:pointFirstAt,
       pointOldFirstAt:pointOldFirstAt,
       pointLastAt:pointLastAt,
