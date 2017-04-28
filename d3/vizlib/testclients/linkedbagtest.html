@@ -82,6 +82,7 @@
         }
 
         viz.addNodeFront(newNode);
+        viz.setFill([newNode.getID()], colors.COMPARE);
         viz.updateCanvas(dur);
 
         viz.showNodeBox(newNode.getID());
@@ -101,12 +102,19 @@
         viz.showNodeArrow(newNode.getID());
         viz.updateCanvas(dur);
 
+        viz.setFill([newNode.getID()], colors.FINISHED);
+        viz.updateCanvas(dur);
+
         // java: n++;
         viz.hideNLabel();
+        viz.setNFill(colors.ACTIVE);
         viz.updateCanvas(dur);
 
         viz.updateN();
         viz.showNLabel();
+        viz.updateCanvas(dur);
+
+        viz.setNFill(colors.BACKGROUND);
         viz.updateCanvas(dur);
 
         viz.pointOldFirstAt(null);
