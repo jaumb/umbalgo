@@ -118,9 +118,11 @@
         viz.setNFill(colors.BACKGROUND);
         viz.updateCanvas(dur);
 
-        viz.pointOldFirstAt(null);
         viz.hideOldFirst();
         viz.updateCanvas(dur);
+
+        viz.pointOldFirstAt(null);
+        viz.updateCanvas(0);
 
         first = newNode;
       }
