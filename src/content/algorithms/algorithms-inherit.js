@@ -19,12 +19,15 @@ document.getElementById("container").innerHTML += `
         <div class="col-md-6 col-sm-6">
 
         <select class="form-control">
-          <option>Choose Data Set</option>
+          <option>Choose Data Set &nbsp;</option>
         </select>
         </div>
 
       </div>
     </div>
+  </div>
+
+  <div class="visible-xs" id="sm-device-btn">
   </div>
 
 

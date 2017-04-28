@@ -80,68 +80,80 @@ var content;
               "uriName": "shuffle",
               "displayName": "Shuffle",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"]
             },
             {
               "uriName": "search",
               "displayName": "Search",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "bag-linked-list",
               "displayName": "Bag (Linked List)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "bag-array",
               "displayName": "Bag (Array)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "queue-linked-list",
               "displayName": "Queue (Linked List)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "queue-array",
               "displayName": "Queue (Array)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "stack-linked-list",
               "displayName": "String (Linked List)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "stack-array",
               "displayName": "Stack (Array)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "union-find-quickfind",
               "displayName": "Union-Find (Quickfind)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "union-find-quickunion",
               "displayName": "Union-Find (Quickunion)",
               "ImgName": "fundamentals.svg",
               "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             },
             {
               "uriName": "union-find-weightedquickunion",
               "displayName": "Union-Find (Weighted Quickunion)",
               "ImgName": "fundamentals.svg",
-              "color": "#f79fb0",
+              "titleColor": "#ea6874",
+              "descriptionColor": "#ea6874"
             }
           ],
         },
@@ -157,57 +169,66 @@ var content;
               "uriName": "selection-sort",
               "displayName": "Selection Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a",
               "depends": ["js/libs/vizlib/algorithms/selection.js"]
             },
             {
               "uriName": "insertion-sort",
               "displayName": "Insertion Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"]
             },
             {
               "uriName": "shell-sort",
               "displayName": "Shell Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "merge-sort",
               "displayName": "Merge Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "quick-sort",
               "displayName": "Quick Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "quick-3way-sort",
               "displayName": "Quick 3-Way Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "heap-sort",
               "displayName": "Heap Sort",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "maxpq",
               "displayName": "MaxPQ",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             },
             {
               "uriName": "minpq",
               "displayName": "MinPQ",
               "ImgName": "sorting.svg",
-              "color": "#a0c9e4",
+              "titleColor": "#e7a32a",
+              "descriptionColor": "#e7a32a"
             }
           ]
         },
@@ -223,115 +244,134 @@ var content;
               "uriName": "basic-unordered-symbol-table",
               "displayName": "Basic Unordered Symbol Table",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83",
             },
             {
               "uriName": "binary-symbol-table",
               "displayName": "Binary Symbol Table",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "ordered-symbol-table-bst",
               "displayName": "Ordered Symbol Table (BST)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "ordered-symbol-table-red-black-bst",
               "displayName": "Ordered Symbol Table (Reb/Black BST)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "separate-chaining-hash-table",
               "displayName": "Separate Chaining Hash Table",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "graph-undirected",
               "displayName": "Graph (Undirected)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "depth-first-search-undirected",
               "displayName": "Depth First Search (Undirected)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "breadth-first-search-undirected",
               "displayName": "Breadth First Search (Undirected)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "connected-components",
               "displayName": "Connected Components",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "graph-directed",
               "displayName": "Graph (Directed)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "cycle-detection",
               "displayName": "Cycle Detection",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "depth-first-search-directed",
               "displayName": "Depth First Search (Directed)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "reverse-postorder-vertex-ordering",
               "displayName": "Reverse Post-Order Vertex Ordering",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "kosarajus-strongly-connected-components",
               "displayName": "Kosaraju's Strongly-Connected Components",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "edge-weighted-graph",
               "displayName": "Edge-Weighted Graph",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "kruskals-minimum-spanning-tree",
               "displayName": "Kruskal's Minimum Spanning Tree",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "edge-weighted-directed-graph",
               "displayName": "Edge-Weighted Directed Graph",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "dijkstras-shortest-paths",
               "displayName": "Dijkstra's Shortest Paths",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             },
             {
               "uriName": "shortest-paths-edge-weighted-directed-acyclic-graphs",
               "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)",
               "ImgName": "searching.svg",
-              "color": "#e4cc55",
+              "titleColor": "#3cda83",
+              "descriptionColor": "#3cda83"
             }
           ]
         },
@@ -344,31 +384,45 @@ var content;
           "children": [
             {
               "uriName": "lsd-string-sort",
-              "displayName": "LSD String Sort"
+              "displayName": "LSD String Sort",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "msd-string-sort",
-              "displayName": "MSD String Sort"
+              "displayName": "MSD String Sort",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "trie-symbol-table",
-              "displayName": "Trie Symbol Table"
+              "displayName": "Trie Symbol Table",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "knuth-morris-pratt-substring-search",
-              "displayName": "Knuth-Morris-Pratt Substring Search"
+              "displayName": "Knuth-Morris-Pratt Substring Search",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "non-deterministic-finite-state-automata",
-              "displayName": "Non-Deterministic Finite State Automata"
+              "displayName": "Non-Deterministic Finite State Automata",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "run-length-encoding",
-              "displayName": "Run Length Encoding"
+              "displayName": "Run Length Encoding",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "huffman-compression",
-              "displayName": "Huffman Compression"
+              "displayName": "Huffman Compression",
+              "titleColor": "#20bdd0",
+              "descriptionColor": "#20bdd0"
             }
           ]
         }
