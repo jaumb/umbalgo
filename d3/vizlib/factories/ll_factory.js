@@ -89,6 +89,7 @@ var linkedNode_factory = (function() {
 /**
  * Create the linked list factory singleton. This is an IIFE (immediately
  * invoked function expression).
+ * TODO: wishlist - resize all borders/arrows when calling _resize
  */
 var ll_factory = (function() {
 
