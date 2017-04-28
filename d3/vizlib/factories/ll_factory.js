@@ -630,7 +630,7 @@ var ll_factory = (function() {
      * When this function is invoked, newNode's contentBox, refBox, and
      * refArrow are null.
      */
-    function _addNodeFront(newNode) {
+    function _addNodeLeft(newNode) {
       var contentBox = element_factory.getRect();
       contentBox.setPosX(_firstNodePos.x);
       contentBox.setPosY(_firstNodePos.y);
@@ -880,8 +880,8 @@ var ll_factory = (function() {
 
     // add node methods ////////////////////////////////////////////////////////
 
-    function addNodeFront(node) {
-      _addNodeFront(node);
+    function addNodeLeft(node) {
+      _addNodeLeft(node);
       _resize();
     }
 
@@ -1210,7 +1210,7 @@ var ll_factory = (function() {
       showNodeArrows:showNodeArrows,
       hideNodeArrows:hideNodeArrows,
       showNodeBox:showNodeBox,
-      addNodeFront:addNodeFront,
+      addNodeLeft:addNodeLeft,
       pointFirstAt:pointFirstAt,
       pointOldFirstAt:pointOldFirstAt,
       pointLastAt:pointLastAt,

@@ -65,8 +65,8 @@ var linkedbag = (function(root, svgW, svgH) {
     return redraw.addOps(function() { _LL.hideOldFirst(); });
   };
 
-  var addNodeFront = function(node) {
-    return redraw.addOps(function() { _LL.addNodeFront(node); });
+  var addNodeLeft = function(node) {
+    return redraw.addOps(function() { _LL.addNodeLeft(node); });
   };
 
   var shiftRight = function() {
@@ -163,7 +163,7 @@ var linkedbag = (function(root, svgW, svgH) {
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
-    addNodeFront:addNodeFront,
+    addNodeLeft:addNodeLeft,
     showNode:showNode,
     showNodeBox:showNodeBox,
     showNodeLabel:showNodeLabel,

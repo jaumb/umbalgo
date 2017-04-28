@@ -49,11 +49,35 @@ var linkedqueue = (function(root, svgW, svgH) {
   };
   //end of element array getters////////////////////////////////////////////////
 
+  var showFirst = function() {
+    return redraw.addOps(function() { _LL.showFirst(); });
+  };
+
+  var hideFirst = function() {
+    return redraw.addOps(function() { _LL.hideFirst(); });
+  };
+
   var showOldFirst = function() {
     return redraw.addOps(function() { _LL.showOldFirst(); });
   };
 
   var hideOldFirst = function() {
+    return redraw.addOps(function() { _LL.hideOldFirst(); });
+  };
+
+  var showLast = function() {
+    return redraw.addOps(function() { _LL.showLast(); });
+  };
+
+  var hideLast = function() {
+    return redraw.addOps(function() { _LL.hideLast(); });
+  };
+
+  var showOldLast = function() {
+    return redraw.addOps(function() { _LL.showOldFirst(); });
+  };
+
+  var hideOldLast = function() {
     return redraw.addOps(function() { _LL.hideOldFirst(); });
   };
 
