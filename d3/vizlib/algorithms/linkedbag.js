@@ -1,7 +1,7 @@
 /**
- * Insertion.java
- * Insertion Sort visualization object.
- * @param {number[]|string[]} elems - Elements to sort.
+ * linkedbag.java
+ * linked bag visualization object.
+ * @param {number[]|string[]} elems - Initial elements in linked list.
  * @param {number} svgW - Width of the svg canvas.
  * @param {number} svgH - Height of the svg canvas.
  */
