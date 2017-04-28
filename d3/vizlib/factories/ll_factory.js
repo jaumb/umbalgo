@@ -1243,11 +1243,12 @@ var ll_factory = (function() {
   //////////////////////////////////////////////////////////////////////////////
   /**
    * Get a new linked list visualization object.
-   * @param {number[]|string[]} elems - Elements occupying linked list slots
+   * @param {Object} root - The root of any existing linked list when the
+   * vizualization object is created.
    * @param {Object} bounding_box - The box inside of which to center the LL
    */
-  function get_LL(elems, bounding_box) {
-    return new LL_viz(elems, bounding_box);
+  function get_LL(root, bounding_box) {
+    return new LL_viz(root, bounding_box);
   }
 
   // return public linked list factory methods
