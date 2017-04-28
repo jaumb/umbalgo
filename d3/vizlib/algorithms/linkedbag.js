@@ -49,6 +49,14 @@ var linkedbag = (function(root, svgW, svgH) {
   };
   //end of element array getters////////////////////////////////////////////////
 
+  var showFirst = function() {
+    return redraw.addOps(function() { _LL.showFirst(); });
+  };
+
+  var hideFirst = function() {
+    return redraw.addOps(function() { _LL.hideFirst(); });
+  };
+
   var showOldFirst = function() {
     return redraw.addOps(function() { _LL.showOldFirst(); });
   };
@@ -164,6 +172,8 @@ var linkedbag = (function(root, svgW, svgH) {
     pointFirstAt:pointFirstAt,
     pointOldFirstAt:pointOldFirstAt,
     pointOldFirstAtFirst:pointOldFirstAtFirst,
+    showFirst:showFirst,
+    hideFirst:hideFirst,
     showOldFirst:showOldFirst,
     hideOldFirst:hideOldFirst,
     hideNLabel:hideNLabel,

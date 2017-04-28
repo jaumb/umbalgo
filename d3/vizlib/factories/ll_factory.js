@@ -157,7 +157,7 @@ var ll_factory = (function() {
     _updateRefs();                         // set pos. of label / arrow start
     // all refs initially point to null
     _pointRefsAtNode(null, _first, _last, _oldfirst, _oldlast);
-    _hideRefs(_oldfirst, _last, _oldlast); // only first visible at start
+    _hideRefs(_first, _oldfirst, _last, _oldlast); // all refs hidden at start
 
     // calculate coordinates of first node
     var _firstNodePos = {x:_X1 + _boxSize, y:_Y1 + (_H - _boxSize) / 2};
