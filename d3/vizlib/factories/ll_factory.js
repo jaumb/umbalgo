@@ -93,7 +93,7 @@ var linkedNode_factory = (function() {
 var ll_factory = (function() {
 
   //////////////////////////////////////////////////////////////////////////////
-  //  private array_factory methods
+  //  private linked list vizualization variables
   //////////////////////////////////////////////////////////////////////////////
   /**
    * Create a new array visualization on the canvas.
@@ -168,6 +168,10 @@ var ll_factory = (function() {
 
     // initialize nodes
     _initNodes(root);
+    // if we started with existing nodes, set their fill color
+    _nodeMap.forEach(function(v,k) {
+      setFill([k], colors.FINISHED);
+    });
 
     // add n
     var _n = element_factory.getRect();
@@ -179,7 +183,7 @@ var ll_factory = (function() {
 
 
     ////////////////////////////////////////////////////////////////////////////
-    //  private Array_viz methods
+    //  private linked list vizualization methods
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -284,7 +288,7 @@ var ll_factory = (function() {
      * number of elements in the linked list.
      */
     function _initNBox() {
-      _n.setPosX(_X2 - 1.5 * _boxSize);
+      _n.setPosX(_X2 / 2);
       _n.setPosY(0.5 * _boxSize);
       _n.setSpX(_n.getPosX());
       _n.setSpY(_n.getPosY());
@@ -500,105 +504,6 @@ var ll_factory = (function() {
     }
 
 
-    /**
-     * Hide all graphical components (box, label, refbox, arrow) of one or
-     * more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs to hide.
-     */
-    function _hideNodes(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getContentBox().setFillOpacity(0);
-        node.getContentBox().setStrokeOpacity(0);
-        node.getContentBox().getLabel().setFillOpacity(0);
-        node.getContentBox().getLabel().setStrokeOpacity(0);
-        node.getRefBox().setFillOpacity(0);
-        node.getRefBox().setStrokeOpacity(0);
-        node.getRefArrow().setOpacity(0);
-      });
-    }
-
-    /**
-     * Show all graphical components (box, label, refbox, arrow) of one or
-     * more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs to show.
-     */
-    function _showNodes(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getContentBox().setFillOpacity(1);
-        node.getContentBox().setStrokeOpacity(1);
-        node.getContentBox().getLabel().setFillOpacity(1);
-        node.getContentBox().getLabel().setStrokeOpacity(1);
-        node.getRefBox().setFillOpacity(1);
-        node.getRefBox().setStrokeOpacity(1);
-        node.getRefArrow().setOpacity(1);
-      });
-    }
-
-    /**
-     * Hide the label of one or more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs whose label to hide.
-     */
-    function _hideLabels(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getContentBox().getLabel().setFillOpacity(0);
-        node.getContentBox().getLabel().setStrokeOpacity(0);
-      });
-    }
-
-    /**
-     * Show the label of one or more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs whose label to show.
-     */
-    function _showLabels(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getContentBox().getLabel().setFillOpacity(1);
-        node.getContentBox().getLabel().setStrokeOpacity(1);
-      });
-    }
-
-    /**
-     * Hide the arrow of one or more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs whose arrow to hide.
-     */
-    function _hideArrows(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getRefArrow().setOpacity(0);
-      });
-    }
-
-    /**
-     * Show the arrow of one or more of the nodes.
-     * @param {...number} nodeIDs - One or more node IDs whose arrow to show.
-     */
-    function _showArrows(...nodeIDs) {
-      nodeIDs.forEach(function(nodeID) {
-        var node = _nodeMap.get(nodeID);
-        node.getRefArrow().setOpacity(1);
-      });
-    }
-
-    /**
-     * Hide the label of the n counter.
-     */
-    function _hideNLabel() {
-      _n.getLabel().setFillOpacity(0);
-      _n.getLabel().setStrokeOpacity(0);
-    }
-
-    /**
-     * Show the label of the n counter.
-     */
-    function _showNLabel() {
-      _n.getLabel().setFillOpacity(1);
-      _n.getLabel().setStrokeOpacity(1);
-    }
-
-    // end show/hide functions /////////////////////////////////////////////////
 
 
     // pointing functions //////////////////////////////////////////////////////
@@ -778,7 +683,7 @@ var ll_factory = (function() {
       _nodeMap.set(newNode.getID(), newNode);
       _root = newNode;
 
-      _hideNodes(newNode.getID());
+      hideNodes(newNode.getID());
     }
 
 
@@ -797,75 +702,263 @@ var ll_factory = (function() {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    //  public Array_viz methods
+    //  public linked list vizualization methods
     ////////////////////////////////////////////////////////////////////////////
 
+    // reference variable visibility methods ///////////////////////////////////
+
+    /**
+     * Set the opacity of the "first" reference variable and its arrow to 1
+     * (making it visible).
+     */
+    function showFirst() {
+      _showRefs(_first);
+    }
+
+    /**
+     * Set the opacity of the "first" reference variable and its arrow to 0
+     * (making it invisible).
+     */
+    function hideFirst() {
+      _hideRefs(_first);
+    }
+
+    /**
+     * Set the opacity of the "old first" reference variable and its arrow to 1
+     * (making it visible).
+     */
     function showOldFirst() {
       _showRefs(_oldfirst);
     }
 
+    /**
+     * Set the opacity of the "old first" reference variable and its arrow to 0
+     * (making it invisible).
+     */
     function hideOldFirst() {
       _hideRefs(_oldfirst);
     }
 
+    /**
+     * Set the opacity of the "last" reference variable and its arrow to 1
+     * (making it visible).
+     */
+    function showLast() {
+      _showRefs(_last);
+    }
+
+    /**
+     * Set the opacity of the "last" reference variable and its arrow to 0
+     * (making it invisible).
+     */
+    function hideLast() {
+      _hideRefs(_last);
+    }
+
+    /**
+     * Set the opacity of the "old last" reference variable and its arrow to 1
+     * (making it visible).
+     */
     function showOldLast() {
       _showRefs(_oldlast);
     }
 
+    /**
+     * Set the opacity of the "old last" reference variable and its arrow to 0
+     * (making it invisible).
+     */
     function hideOldLast() {
       _hideRefs(_oldlast);
     }
 
-    function showNode(nodeID) {
-      _showNodes(nodeID);
+
+
+
+    // node visibility methods /////////////////////////////////////////////////
+
+    /**
+     * Show all graphical components (box, label, refbox, arrow) of one or
+     * more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs to show.
+     */
+    function showNodes(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getContentBox().setFillOpacity(1);
+        node.getContentBox().setStrokeOpacity(1);
+        node.getContentBox().getLabel().setFillOpacity(1);
+        node.getContentBox().getLabel().setStrokeOpacity(1);
+        node.getRefBox().setFillOpacity(1);
+        node.getRefBox().setStrokeOpacity(1);
+        node.getRefArrow().setOpacity(1);
+      });
     }
 
+
+    /**
+     * Hide all graphical components (box, label, refbox, arrow) of one or
+     * more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs to hide.
+     */
+    function hideNodes(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getContentBox().setFillOpacity(0);
+        node.getContentBox().setStrokeOpacity(0);
+        node.getContentBox().getLabel().setFillOpacity(0);
+        node.getContentBox().getLabel().setStrokeOpacity(0);
+        node.getRefBox().setFillOpacity(0);
+        node.getRefBox().setStrokeOpacity(0);
+        node.getRefArrow().setOpacity(0);
+      });
+    }
+
+
+    /**
+     * Show the label of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose label to show.
+     */
+    function showNodeLabels(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getContentBox().getLabel().setFillOpacity(1);
+        node.getContentBox().getLabel().setStrokeOpacity(1);
+      });
+    }
+
+
+    /**
+     * Hide the label of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose label to hide.
+     */
+    function hideNodeLabels(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getContentBox().getLabel().setFillOpacity(0);
+        node.getContentBox().getLabel().setStrokeOpacity(0);
+      });
+    }
+
+
+    /**
+     * Show the arrow of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose arrow to show.
+     */
+    function showNodeArrows(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getRefArrow().setOpacity(1);
+      });
+    }
+
+    /**
+     * Hide the arrow of one or more of the nodes.
+     * @param {...number} nodeIDs - One or more node IDs whose arrow to hide.
+     */
+    function hideNodeArrows(...nodeIDs) {
+      nodeIDs.forEach(function(nodeID) {
+        var node = _nodeMap.get(nodeID);
+        node.getRefArrow().setOpacity(0);
+      });
+    }
+
+
+    /**
+     * Convenience function to represent a newly-created node by setting the
+     * opacity of all visual elements of the node except the box to 0.
+     @param {number} nodeID - The ID of the node whose box to show.
+     */
     function showNodeBox(nodeID) {
-      _showNodes(nodeID);
-      _hideLabels(nodeID);
-      _hideArrows(nodeID);
+      showNodes(nodeID);
+      hideNodeLabels(nodeID);
+      hideNodeArrows(nodeID);
     }
 
-    function showNodeLabel(nodeID) {
-      _showLabels(nodeID);
-    }
 
-    function showNodeArrow(nodeID) {
-      _showArrows(nodeID);
-    }
 
+
+    // add node methods ////////////////////////////////////////////////////////
 
     function addNodeFront(node) {
       _addNodeFront(node);
       _resize();
     }
 
+    // TODO: add node back
 
 
-    function pointFirstAt(position) {
-      _pointRefsAtNode(position, _first);
+
+
+    // pointing methods ////////////////////////////////////////////////////////
+
+    /**
+     * Point the "first" reference variable at the specified node.
+     * @param {number} nodeID - The ID of the node to point "first" at.
+     */
+    function pointFirstAt(nodeID) {
+      _pointRefsAtNode(nodeID, _first);
     }
 
+    /**
+     * Point the "old first" reference variable at the specified node.
+     * @param {number} nodeID - The ID of the node to point "old first" at.
+     */
     function pointOldFirstAt(position) {
       _pointRefsAtNode(position, _oldfirst);
     }
 
+    /**
+     * Point the "last" reference variable at the specified node.
+     * @param {number} nodeID - The ID of the node to point "last" at.
+     */
+    function pointLastAt(nodeID) {
+      _pointRefsAtNode(nodeID, _last);
+    }
+
+    /**
+     * Point the "old last" reference variable at the specified node.
+     * @param {number} nodeID - The ID of the node to point "old last" at.
+     */
+    function pointOldLastAt(position) {
+      _pointRefsAtNode(position, _oldlast);
+    }
+
+    /**
+     * Point the "old first" reference variable at the node "first" currently
+     * points to.
+     */
     function pointOldFirstAtFirst() {
       _pointRefsAtNode(_first.target, _oldfirst);
     }
 
+    /**
+     * Point specified node at the node the "old first" reference variable
+     * currently points at.
+     */
     function pointNodeAtOldfirst(nodeID) {
       _pointNodeAtRef(nodeID, _oldfirst);
     }
 
 
 
+
+    // number of elements (n) tracker methods //////////////////////////////////
+
+    /**
+     * Hide the label of the n counter.
+     */
     function hideNLabel() {
-      _hideNLabel();
+      _n.getLabel().setFillOpacity(0);
+      _n.getLabel().setStrokeOpacity(0);
     }
 
+
+    /**
+     * Show the label of the n counter.
+     */
     function showNLabel() {
-      _showNLabel();
+      _n.getLabel().setFillOpacity(1);
+      _n.getLabel().setStrokeOpacity(1);
     }
 
     function updateN() {
@@ -874,12 +967,21 @@ var ll_factory = (function() {
 
 
 
+
+    // move nodes methods //////////////////////////////////////////////////////
+
+
     function moveAllNodes(horiz, vert) {
       _moveNodes(horiz * _boxSize, vert * _boxSize);
       if (_nodeCount >= 5) {
         _resize();
       }
     }
+
+
+
+
+    // color-related methods ///////////////////////////////////////////////////
 
     /**
      * Set the fill attribute of set of node IDs.
@@ -927,6 +1029,18 @@ var ll_factory = (function() {
       });
     }
 
+    /**
+     * Set the fill attribute of the n box.
+     * @param {string} color - The new text color for slot labels.
+     */
+    function setNFill(color) {
+        _n.setFill(color);
+    }
+
+
+
+
+    // emphasis methods ////////////////////////////////////////////////////////
 
     /**
      * Emphasize linked list nodes.
@@ -980,35 +1094,42 @@ var ll_factory = (function() {
       });
     }
 
+
+
+
+    // copy methods ////////////////////////////////////////////////////////////
+
     /**
-     * Get a deep copy of the underlying array.
+     * Get a deep copy of the nodes in the underlying linked list.
      * @param {number[]=} nodeIDs - The indices of the slots to retrieve.
-     * TODO: All fucked up right now
+     * TODO: Untested. This needs work to be useful.
      */
-    function getSlots(indices) {
+    function getSlots(nodeIDs) {
       var copy = [];
-      if (indices) {
-        indices.forEach(function(i) {
-          copy.push({
-            id:_nodeMap.get(i).id,
-            next:_nodeMap.get(i).next,
-            contentBox:_nodeMap.get(i).contentBox.copy(),
-            refBox:_nodeMap.get(i).refBox.copy(),
-            refArrow:_nodeMap.get(i).refArrow.copy(),
-          });
+      if (nodeIDs) {
+        nodeIDs.forEach(function(id) {
+          var node = _nodeMap.get(id);
+          var nodeCopy = linkedNode_factory.getNode(node.getVal(),
+                                                    node.getNext());
+          nodeCopy.setContentBox(node.getContentBox().copy());
+          nodeCopy.setRefBox(node.getRefBox().copy());
+          nodeCopy.setRefArrow(node.getRefArrow().copy());
+          copy.push(nodeCopy);
         });
       } else {
         _nodeMap.forEach(function(v,k,m) {
-          copy.push({
-            contentBox:v.contentBox.copy(),
-            refBox:v.refBox.copy(),
-            // refArrow:e.refArrow.copy(), TODO: get copy functions jeff implemented
-            refArrow:''
-          });
+          var node = _nodeMap.get(k);
+          var nodeCopy = linkedNode_factory.getNode(node.getVal(),
+                                                    node.getNext());
+          nodeCopy.setContentBox(node.getContentBox().copy());
+          nodeCopy.setRefBox(node.getRefBox().copy());
+          nodeCopy.setRefArrow(node.getRefArrow().copy());
+          copy.push(nodeCopy);
         });
       }
       return copy;
     }
+
 
 
 
@@ -1073,39 +1194,51 @@ var ll_factory = (function() {
 
     // return public functions
     return {
-      moveAllNodes:moveAllNodes,
-      showNode:showNode,
-      showNodeBox:showNodeBox,
-      showNodeLabel:showNodeLabel,
-      showNodeArrow:showNodeArrow,
-      addNodeFront:addNodeFront,
+      showFirst:showFirst,
+      hideFirst:hideFirst,
       showOldFirst:showOldFirst,
       hideOldFirst:hideOldFirst,
+      showLast:showLast,
+      hideLast:hideLast,
+      showOldLast:showOldLast,
+      hideOldLast:hideOldLast,
+      showNodes:showNodes,
+      hideNodes:hideNodes,
+      showNodeLabels:showNodeLabels,
+      hideNodeLabels:hideNodeLabels,
+      showNodeArrows:showNodeArrows,
+      hideNodeArrows:hideNodeArrows,
+      showNodeBox:showNodeBox,
+      addNodeFront:addNodeFront,
+      pointFirstAt:pointFirstAt,
+      pointOldFirstAt:pointOldFirstAt,
+      pointLastAt:pointLastAt,
+      pointOldLastAt:pointOldLastAt,
+      pointOldFirstAtFirst:pointOldFirstAtFirst,
       pointNodeAtOldfirst:pointNodeAtOldfirst,
       hideNLabel:hideNLabel,
       showNLabel:showNLabel,
       updateN:updateN,
-      pointFirstAt:pointFirstAt,
-      pointOldFirstAtFirst:pointOldFirstAtFirst,
-      pointOldFirstAt:pointOldFirstAt,
+      moveAllNodes:moveAllNodes,
       setFill:setFill,
       setOutline:setOutline,
+      setLabels:setLabels,
+      setLabelFill:setLabelFill,
+      setNFill:setNFill,
       emphasize:emphasize,
       moveEmphasis:moveEmphasis,
       deemphasize:deemphasize,
-      setLabelFill:setLabelFill,
-      setLabels:setLabels,
+      getSlots:getSlots,
       getRects:getRects,
       getText:getText,
       getCircles:getCircles,
       getLines:getLines,
-      getSlots:getSlots
     };
   }
 
 
   //////////////////////////////////////////////////////////////////////////////
-  //  public Array_viz methods
+  //  public linked list factory method
   //////////////////////////////////////////////////////////////////////////////
   /**
    * Get a new array visualization object.
