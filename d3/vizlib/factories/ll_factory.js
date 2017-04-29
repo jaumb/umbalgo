@@ -176,7 +176,7 @@ var ll_factory = (function() {
 
     // get the last node and if it's not null, point last to it
     if (_getLastNode(root)) {
-      _pointRefsAtNode(_getLastNode().getID(), _oldlast);
+      _pointRefsAtNode(_getLastNode(root).getID(), _last);
     }
 
     // add n
@@ -217,12 +217,14 @@ var ll_factory = (function() {
      */
     function _getLastNode(root) {
       var next = root;
-      if (next) {
+      if (!next) {
         return null;
       } else {
         while (next.getNext()) {
           next = next.getNext();
+          console.log("next reassigned, new next.val = " + next.getVal());
         }
+        console.log("return value of next is: " + next.getID());
         return next;
       }
     }
@@ -279,8 +281,13 @@ var ll_factory = (function() {
       _last.name.setVal("last");
       _last.name.setFontSize((0.7 * _boxSize) + 'px');
       _last.arrow.setPosX1(coords.last.x);
-      var lbb = redraw.getBBox(_last.name);
-      _last.arrow.setPosY1(lbb.y + lbb.height);
+      if (!_last.arrow.getPosY1()) {
+        var lbb = redraw.getBBox(_last.name);
+        _last.arrow.setPosY1(lbb.y + lbb.height);
+      } else {
+        _last.arrow.setPosY1(_last.arrow.getPosY1() + 1.75 * (_boxSize - (_resizeScale * _boxSize)));
+      }
+
 
       // initialize _oldlast
       _oldlast.name.setPosX(coords.oldlast.x);
@@ -288,8 +295,12 @@ var ll_factory = (function() {
       _oldlast.name.setVal("oldlast");
       _oldlast.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldlast.arrow.setPosX1(coords.oldlast.x);
-      var olbb = redraw.getBBox(_oldlast.name);
-      _oldlast.arrow.setPosY1(olbb.y);
+      if (!_oldlast.arrow.getPosY1()) {
+        var olbb = redraw.getBBox(_oldlast.name);
+        _oldlast.arrow.setPosY1(olbb.y);
+      } else {
+        _oldlast.arrow.setPosY1(_oldlast.arrow.getPosY1() - 2.25 * (_boxSize - (_resizeScale * _boxSize)));
+      }
     }
 
 
@@ -299,9 +310,7 @@ var ll_factory = (function() {
      */
     function _updateRefArrows() {
       _refs.forEach(function(ref){
-        if (ref.target) {
-          _pointRefsAtNode(ref.target, ref);
-        }
+        _pointRefsAtNode(ref.target, ref);
       });
     }
 
@@ -710,8 +719,8 @@ var ll_factory = (function() {
     }
 
 
-    function _addNodeRight(node) {
-      var last = _getLastNode();
+    function _addNodeRight(newNode) {
+      var last = _getLastNode(root);
       var pos = last === null ?
                 _firstNodePos :
                 { x:last.getContentBox().getPosX(),
@@ -1019,6 +1028,14 @@ var ll_factory = (function() {
     }
 
     /**
+     * Point the "old last" reference variable at the node "last" currently
+     * points to.
+     */
+    function pointOldLastAtLast() {
+      _pointRefsAtNode(_last.target, _oldlast);
+    }
+
+    /**
      * Point specified node at the node the "old first" reference variable
      * currently points at.
      */
@@ -1303,6 +1320,7 @@ var ll_factory = (function() {
       pointLastAt:pointLastAt,
       pointOldLastAt:pointOldLastAt,
       pointOldFirstAtFirst:pointOldFirstAtFirst,
+      pointOldLastAtLast:pointOldLastAtLast,
       pointNodeAtOldfirst:pointNodeAtOldfirst,
       hideNLabel:hideNLabel,
       showNLabel:showNLabel,
