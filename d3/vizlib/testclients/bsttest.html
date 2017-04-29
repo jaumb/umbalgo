@@ -58,7 +58,8 @@
 
       elements.forEach(function(e) {
         var minNode = min(root);
-        root = removeNode(minNode);
+        viz.emphasizeAndUpdate([root], dur);
+        root = removeNode(root, minNode.val());
         viz.removeNodeAndUpdate(minNode, dur);
         //console.log('removing: ' + e);
         //if (root) { viz.emphasizeAndUpdate([root], dur); }
