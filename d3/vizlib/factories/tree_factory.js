@@ -75,7 +75,7 @@ var tree_factory = (function() {
     function _createNewEdge(vizParent, vizChild) {
       var newEdge = element_factory.getLine();
       newEdge.setStroke(colors.BLACK);
-      newEdge.setStrokeWidth('.3vw');
+      newEdge.setStrokeWidth(1/15 * _radius);
       _positionEdge(vizParent, vizChild, newEdge);
       _addEdge(vizParent, vizChild, newEdge);
       return newEdge;
@@ -127,9 +127,9 @@ var tree_factory = (function() {
     function _removeNode(rootVizNode, targetClientNode) {
       if (!rootVizNode) {
         return null;
-      } else if (targetClientNode.val() > rootVizNode.getVal()) {
+      } else if (targetClientNode.val() > rootVizNode.getLabel().getVal()) {
         rootVizNode.rChild = _removeNode(rootVizNode.rChild, targetClientNode);
-      } else if (targetClientNode.val() < rootVizNode.getVal()) {
+      } else if (targetClientNode.val() < rootVizNode.getLabel().getVal()) {
         rootVizNode.lChild = _removeNode(rootVizNode.lChild, targetClientNode);
       } else {
         if (!rootVizNode.rChild) {
@@ -646,6 +646,7 @@ var tree_factory = (function() {
           vizNode1.emphasis = null;
           emphasis.setPosCX(vizNode2.getPosCX());
           emphasis.setPosCY(vizNode2.getPosCY());
+          vizNode2.emphasis = emphasis;
         } else {
           emphasis.setPosCX(vizNode1.getPosCX() + dir * _xOffset);
           emphasis.setPosCY(vizNode1.getPosCY() + _yOffset);
