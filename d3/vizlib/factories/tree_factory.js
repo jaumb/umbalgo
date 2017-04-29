@@ -506,6 +506,7 @@ var tree_factory = (function() {
      * @param {Object} clientNode - The node to make the root of the tree.
      */
     function buildTree(clientNode) {
+      if (!clientNode) { return; }
       var savedRootNode = saveTreeState(clientNode);
       redraw.addOps(function() {
         var vizNode = _getVizNode(savedRootNode);

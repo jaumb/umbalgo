@@ -60,7 +60,8 @@
         var minNode = min(root);
         viz.emphasizeAndUpdate([root], dur);
         root = removeNode(root, minNode.val());
-        viz.removeNodeAndUpdate(minNode, dur);
+        viz.removeNode(minNode);
+        viz.buildTreeAndUpdate(root, dur);
         //console.log('removing: ' + e);
         //if (root) { viz.emphasizeAndUpdate([root], dur); }
         //root = removeNode(root, e);
