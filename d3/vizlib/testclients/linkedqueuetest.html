@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="../d3.v3.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../factories/element_factory.js">
+    </script>
+    <script type="text/javascript" src="../factories/ll_factory.js"></script>
+    <script type="text/javascript" src="../algorithms/linkedqueue.js"></script>
+    <script type="text/javascript" src="../vizlib.js"></script>
+    <script type="text/javascript" src="../redraw.js"></script>
+  </head>
+  <body>
+    <div class="chart-container" style="max-width: 1000px;"></div>
+    <script type="text/javascript">
+      var svgW = window.innerWidth - 50;
+      var svgH = window.innerHeight;
+
+      d3.select(".chart-container")
+        .append("svg")
+        .attr("width", svgW)
+        .attr("height", svgH)
+        .attr('id',svgCanvasName);
+
+      // example of a client using the linked bag visualization
+      var dur = 500;
+
+
+      // uncomment to start with 5 random items in bag
+      var size = 5;
+      var l = [];
+      for (var i = 1; i <= size; i++) {
+        l.push(i);
+      }
+      d3.shuffle(l);
+
+      var nodes = [];
+      for (var i = 1; i <= size; i++) {
+        nodes.push(linkedNode_factory.getNode(l[i-1], null));
+      }
+      for (var i = 0; i <= size - 2; i++) {
+        nodes[i].setNext(nodes[i + 1]);
+      }
+      var root = nodes[0];
+      var first = root;
+      var last = nodes[4];
+      var viz = vizlib.get_linkedqueue(root, svgW, svgH);
+
+
+      // uncomment to start with an empty bag
+      // var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      // var first = null;
+      // var last = null;
+
+      viz.showFirst();
+      viz.showLast();
+      viz.updateCanvas(dur);
+
+
+      // JAVA: public void enqueue(Item item) {
+      function enqueue(val) {
+        //   JAVA: Node oldlast = last;
+        var oldlast = last;
+
+        // VIZ: fade in oldlast ref
+        viz.showOldLast();
+        viz.updateCanvas(dur);
+        // VIZ: point oldlast at last
+        viz.pointOldLastAtLast();
+        viz.updateCanvas(dur);
+
+        //   JAVA: last = new Node();
+
+        //   VIZ: create new node
+        var newNode = linkedNode_factory.getNode(val, first);
+        //   VIZ: add it to the right
+        viz.addNodeRight(newNode);
+        viz.setFill([newNode.getID()], colors.COMPARE);
+        viz.updateCanvas(dur);
+        //   VIZ: show the empty box
+        viz.showNodeBox(newNode.getID());
+        viz.updateCanvas(dur);
+        //   VIZ: point last at it
+        viz.pointLastAt(newNode.getID());
+        viz.updateCanvas(dur);
+
+        //   JAVA: last.item = item;
+        //   VIZ: fade label of new element into view
+        viz.showNodeLabel(newNode.getID());
+        viz.updateCanvas(dur);
+
+        //   JAVA: last.next = null;
+        //   VIZ: fade arrow (default to null) into view
+        viz.showNodeArrow(newNode.getID());
+        viz.updateCanvas(dur);
+
+        //   JAVA: if (isEmpty())
+        //     JAVA: first = last;
+        //     VIZ: if first is null, point first at new node
+        if (!first) {
+          viz.pointFirstAt(newNode.getID());
+          viz.updateCanvas(dur);
+        }
+        //   JAVA: else
+        //     JAVA: oldlast.next = last;
+        //     VIZ: otherwise point old last at the new node
+        else {
+          viz.pointLastAt(newNode.getID());
+          viz.updateCanvas(dur);
+        }
+        //   JAVA: n++;
+        viz.hideNLabel();
+        viz.setNFill(colors.ACTIVE);
+        viz.updateCanvas(dur);
+
+        viz.updateN();
+        viz.showNLabel();
+        viz.updateCanvas(dur);
+
+        viz.setNFill(colors.BACKGROUND);
+        viz.updateCanvas(dur);
+
+        // VIZ: cleanup
+        viz.hideOldLast();
+        viz.updateCanvas(dur);
+
+        viz.pointOldLastAt(null);
+        viz.updateCanvas(0);
+
+        viz.hideOldLast();
+        viz.updateCanvas(dur);
+        // JAVA: }
+      }
+
+      enqueue(5);
+      enqueue(5);
+
+      viz.playpause();
+
+    </script>
+  </body>
+</html>
