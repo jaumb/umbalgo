@@ -74,15 +74,19 @@ var linkedqueue = (function(root, svgW, svgH) {
   };
 
   var showOldLast = function() {
-    return redraw.addOps(function() { _LL.showOldFirst(); });
+    return redraw.addOps(function() { _LL.showOldLast(); });
   };
 
   var hideOldLast = function() {
-    return redraw.addOps(function() { _LL.hideOldFirst(); });
+    return redraw.addOps(function() { _LL.hideOldLast(); });
   };
 
-  var addNodeFront = function(node) {
-    return redraw.addOps(function() { _LL.addNodeFront(node); });
+  var addNodeLeft = function(node) {
+    return redraw.addOps(function() { _LL.addNodeLeft(node); });
+  };
+
+  var addNodeRight = function(node) {
+    return redraw.addOps(function() { _LL.addNodeRight(node); });
   };
 
   var shiftRight = function() {
@@ -120,12 +124,24 @@ var linkedqueue = (function(root, svgW, svgH) {
     return redraw.addOps(function() { _LL.pointFirstAt(nodeID); });
   };
 
+  var pointLastAt = function(nodeID) {
+    return redraw.addOps(function() { _LL.pointLastAt(nodeID); });
+  };
+
   var pointOldFirstAt = function(nodeID) {
     return redraw.addOps(function() { _LL.pointOldFirstAt(nodeID); });
   };
 
+  var pointOldLastAt = function(nodeID) {
+    return redraw.addOps(function() { _LL.pointOldLastAt(nodeID); });
+  };
+
   var pointOldFirstAtFirst = function(nodeID) {
     return redraw.addOps(function() { _LL.pointOldFirstAtFirst(); });
+  };
+
+  var pointOldLastAtLast = function(nodeID) {
+    return redraw.addOps(function() { _LL.pointOldLastAtLast(); });
   };
 
   var showNodeLabel = function(nodeID) {
@@ -179,17 +195,28 @@ var linkedqueue = (function(root, svgW, svgH) {
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
-    addNodeFront:addNodeFront,
+    addNodeLeft:addNodeLeft,
     showNode:showNode,
     showNodeBox:showNodeBox,
     showNodeLabel:showNodeLabel,
     showNodeArrow:showNodeArrow,
     pointNodeAtOldfirst:pointNodeAtOldfirst,
     pointFirstAt:pointFirstAt,
+    pointLastAt:pointLastAt,
     pointOldFirstAt:pointOldFirstAt,
+    pointOldLastAt:pointOldLastAt,
     pointOldFirstAtFirst:pointOldFirstAtFirst,
+    pointOldLastAtLast:pointOldLastAtLast,
+    showFirst:showFirst,
+    hideFirst:hideFirst,
     showOldFirst:showOldFirst,
     hideOldFirst:hideOldFirst,
+    showLast:showLast,
+    hideLast:hideLast,
+    showOldLast:showOldLast,
+    hideOldLast:hideOldLast,
+    addNodeLeft:addNodeLeft,
+    addNodeRight:addNodeRight,
     hideNLabel:hideNLabel,
     showNLabel:showNLabel,
     updateN:updateN,
