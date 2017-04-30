@@ -57,15 +57,13 @@
       d3.shuffle(elements);
 
       elements.forEach(function(e) {
-        var minNode = min(root);
-        viz.emphasizeAndUpdate([root], dur);
-        root = removeNode(root, minNode.val());
-        viz.removeNode(minNode);
-        viz.buildTreeAndUpdate(root, dur);
-        //console.log('removing: ' + e);
-        //if (root) { viz.emphasizeAndUpdate([root], dur); }
-        //root = removeNode(root, e);
-        //if (root) { viz.buildTreeAndUpdate(root, dur); }
+        var nodeToDel = findNodeWithVal(root, elements.shift());
+        if (nodeToDel) {
+          viz.emphasizeAndUpdate([root], dur);
+          root = removeNode(root, nodeToDel);
+          viz.removeNodeAndUpdate(nodeToDel, dur);
+          viz.buildTreeAndUpdate(root, dur);
+        }
       });
 
       // start the visualization once we finish building the tree
@@ -93,25 +91,25 @@
         return rootNode;
       }
 
-      // remove node with nodeVal from the tree rooted at rootNode
-      function removeNode(rootNode, nodeVal) {
+      // remove theNode from the tree rooted at rootNode
+      function removeNode(rootNode, theNode) {
         if (!rootNode) {
           return null;
-        } else if (nodeVal > rootNode.val()) {
+        } else if (theNode.val() > rootNode.val()) {
           viz.setFillAndUpdate([rootNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           if (rootNode.rChild()) {
             viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
-            rootNode.setRChild(removeNode(rootNode.rChild(), nodeVal));
+            rootNode.setRChild(removeNode(rootNode.rChild(), theNode));
           } else {
             viz.deemphasizeAndUpdate([rootNode], dur);
           }
-        } else if (nodeVal < rootNode.val()) {
+        } else if (theNode.val() < rootNode.val()) {
           viz.setFillAndUpdate([rootNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           if (rootNode.lChild()) {
             viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
-            rootNode.setLChild(removeNode(rootNode.lChild(), nodeVal));
+            rootNode.setLChild(removeNode(rootNode.lChild(), theNode));
           } else {
             viz.deemphasizeAndUpdate([rootNode], dur);
           }
@@ -132,7 +130,9 @@
           } else {
             var suc = successor(rootNode);
             viz.emphasizeAndUpdate([rootNode.rChild()], dur);
+            var minNode = min(rootNode.rChild());
             delMin(rootNode.rChild());
+            viz.removeNodeAndUpdate(minNode, dur);
             viz.setFill([rootNode], colors.WHITE);
             viz.setOutline([rootNode], colors.WHITE);
             viz.setLabelFill([rootNode], colors.WHITE);
@@ -172,6 +172,19 @@
           rootNode = rootNode.lChild();
         }
         return rootNode;
+      }
+
+      // find the node containing value in tree rooted at rootNode
+      function findNodeWithVal(rootNode, value) {
+        while (rootNode && rootNode.val() !== value) {
+          if (value < rootNode.val()) {
+            rootNode = rootNode.lChild();
+          } else {
+            rootNode = rootNode.rChild();
+          }
+        }
+        if (rootNode.val() === value) { return rootNode; }
+        return null;
       }
 
 

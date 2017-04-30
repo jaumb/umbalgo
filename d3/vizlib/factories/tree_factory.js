@@ -166,8 +166,7 @@ var tree_factory = (function() {
      * @param {undefined|Object} rootVizNode - Root of the subtree.
      */
     function _getMinNode(rootVizNode) {
-      if (!rootVizNode) { return null; }
-      while (rootVizNode.lChild) {
+      while (rootVizNode && rootVizNode.lChild) {
         rootVizNode = rootVizNode.lChild;
       }
       return rootVizNode;
@@ -366,7 +365,7 @@ var tree_factory = (function() {
      * @param {Object} vizChild - Visualization child node.
      */
     function _removeEdge(vizParent, vizChild) {
-      delete _edgeMap[_edgeID(vizParent, vizChild)];
+      _edgeMap.delete(_edgeID(vizParent, vizChild));
     }
 
     /**
@@ -749,11 +748,9 @@ var tree_factory = (function() {
      */
     function getEdges() {
       var edges = [];
-      for (var key in _edgeMap) {
-        if (_edgeMap.hasOwnProperty(key)) {
-          edges.push(_edgeMap[key].copy());
-        }
-      }
+      _edgeMap.forEach(function(v, k) {
+        edges.push(v.copy());
+      });
       return edges;
     }
 
@@ -798,11 +795,10 @@ var tree_factory = (function() {
      */
     function getLines() {
       var lines = [];
-      for (var key in _edgeMap) {
-        if (_edgeMap.hasOwnProperty(key)) {
-          lines.push(_edgeMap[key]);
-        }
-      }
+      console.log(_edgeMap.size); // debug
+      _edgeMap.forEach(function(v, k) {
+        lines.push(v);
+      });
       return lines;
     }
 
