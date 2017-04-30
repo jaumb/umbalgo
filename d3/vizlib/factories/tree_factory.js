@@ -346,7 +346,7 @@ var tree_factory = (function() {
      * @param {Object} edge - Visualization edge.
      */
     function _addEdge(vizParent, vizChild, edge) {
-      _edgeMap[_edgeID(vizParent, vizChild)] = edge;
+      _edgeMap.set(_edgeID(vizParent, vizChild), edge);
     }
 
     /**
@@ -356,7 +356,7 @@ var tree_factory = (function() {
      * @return edge - Visualization edge between parent and child.
      */
     function _getEdge(vizParent, vizChild) {
-      return _edgeMap[_edgeID(vizParent, vizChild)];
+      return _edgeMap.get(_edgeID(vizParent, vizChild));
     }
 
     /**
@@ -521,9 +521,7 @@ var tree_factory = (function() {
      * Build a tree given a node to be treated as the root of the tree.
      * @param {Object} clientNode - The node to make the root of the tree.
      */
-    var callCount = 0; // debug
     function buildTree(clientNode) {
-      callCount = 0; // debug
       if (!clientNode) { return; }
       var savedRootNode = saveTreeState(clientNode);
       redraw.addOps(function() {
@@ -797,7 +795,6 @@ var tree_factory = (function() {
      */
     function getLines() {
       var lines = [];
-      console.log(_edgeMap.size); // debug
       _edgeMap.forEach(function(v, k) {
         lines.push(v);
       });
