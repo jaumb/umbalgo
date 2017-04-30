@@ -538,4 +538,36 @@ var content;
   try {
     document.getElementById("title").innerHTML = title;
   } catch (e) {}
+
+  // Populate dropdown menu
+  let buildDropdown = function() {
+    let buildDropdown = function(page, route) {
+      let dropdownContent = "";
+      if (page["children"] === undefined) {
+        dropdownContent += `<li><a href="?page=` + route.join(",") + `,` + page["uriName"] + `">` + page["displayName"] + `</a></li>`;
+      } else {
+        dropdownContent +=
+          `<li><a href="?page=` + route.join(",") + "," + page["uriName"] + `">` + page["displayName"] + `<span class="caret"></span></a>
+             <ul class="dropdown-menu" id="fundamentals">`;
+        for (let child of page["children"]) {
+          let newRoute = route.slice();
+          newRoute.push(page["uriName"]);
+          dropdownContent += buildDropdown(child, newRoute);
+        }
+        dropdownContent += `</ul></li>`;
+      }
+      return dropdownContent;
+    }
+    for (let child of content) {
+      if (child["uriName"] === "algorithms") {
+        let dropdownContent = "";
+        for (let c of child["children"]) {
+          dropdownContent += buildDropdown(c, ["algorithms"]);
+        }
+        return dropdownContent;
+      }
+    }
+  }
+
+  document.getElementById("dropdown-menu").innerHTML = buildDropdown();
 }());
