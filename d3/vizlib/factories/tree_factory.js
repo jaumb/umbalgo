@@ -122,22 +122,28 @@ var tree_factory = (function() {
     /**
      * Remove targetClientNode from the tree rooted at rootVizNode.
      * @param {Object} rootVizNode - Root of the subtree.
+     * @param {Object|undefined} parVizNode - Root's parent node (if any).
      * @param {Object} targetClientNode - Node to remove from subtree.
      */
-    function _removeNode(rootVizNode, targetClientNode) {
+    function _removeNode(rootVizNode, parVizNode, targetClientNode) {
       if (!rootVizNode) {
         return null;
       } else if (targetClientNode.val() > rootVizNode.getLabel().getVal()) {
-        rootVizNode.rChild = _removeNode(rootVizNode.rChild, targetClientNode);
+        rootVizNode.rChild = _removeNode(rootVizNode.rChild, rootVizNode,
+                                                            targetClientNode);
       } else if (targetClientNode.val() < rootVizNode.getLabel().getVal()) {
-        rootVizNode.lChild = _removeNode(rootVizNode.lChild, targetClientNode);
+        rootVizNode.lChild = _removeNode(rootVizNode.lChild, rootVizNode,
+                                                            targetClientNode);
       } else {
-        // first remove edges to children
+        // first remove edges
+        if (parVizNode) {
+          _delEdgeFromCanvas(parVizNode, rootVizNode);
+        }
         if (rootVizNode.rChild) {
-          _delEdgeFromCanvas(_edgeID(rootVizNode, rootVizNode.rChild));
+          _delEdgeFromCanvas(rootVizNode, rootVizNode.rChild);
         }
         if (rootVizNode.lChild) {
-          _delEdgeFromCanvas(_edgeID(rootVizNode, rootVizNode.lChild));
+          _delEdgeFromCanvas(rootVizNode, rootVizNode.lChild);
         }
         // next remove node itself
         _delNodeFromCanvas(targetClientNode);
@@ -175,7 +181,7 @@ var tree_factory = (function() {
      */
     function _delMinNode(rootVizNode, vizNodeParent) {
       if (!rootVizNode.lChild) {
-        _delEdgeFromCanvas(_edgeID(vizNodeParent, rootVizNode));
+        _delEdgeFromCanvas(vizNodeParent, rootVizNode);
         return rootVizNode.rChild;
       } else {
         rootVizNode.lChild = _delMinNode(rootVizNode.lChild, rootVizNode);
@@ -184,18 +190,19 @@ var tree_factory = (function() {
     }
 
     /**
-     * Remove edge with edgeStringID from canvas.
-     * @param {Object} edgeStringID - ID of edge to remove from canvas.
+     * Remove edge between vizPar and vizChild from canvas.
+     * @param {Object} vizPar - Visualization parent node.
+     * @param {Object} vizChild - Visualization child node.
      */
-    function _delEdgeFromCanvas(edgeStringID) {
-      var edge = _edgeMap.get(edgeStringID);
+    function _delEdgeFromCanvas(vizPar, vizChild) {
+      var edge = _getEdge(vizPar, vizChild);
       if (edge) {
         edge.setPosX2(edge.getPosX1());
         edge.setPosY2(edge.getPosY1());
-        redraw.onNextDrawEnd(function(edgeElemID, edgeStringIDarg) {
-          redraw.removeElem(edgeElemID);
-          _edgeMap.delete(edgeStringIDarg);
-        }, edge.getID(), edgeStringID);
+        redraw.onNextDrawEnd(function(theEdge, par, child) {
+          redraw.removeElem(theEdge.getID());
+          _removeEdge(par, child);
+        }, edge, vizPar, vizChild);
       }
     }
 
@@ -324,6 +331,7 @@ var tree_factory = (function() {
     function _edgeID(vizParent, vizChild) {
       if (!vizParent) { return ''; }
       var n1 = vizParent.getID();
+      if (!vizChild) { return n1 + '->' + 'null'; }
       var n2 = vizChild.getID();
       if (n2 < n1) {
         n1 = vizChild.getID();
@@ -537,7 +545,7 @@ var tree_factory = (function() {
      */
     function removeNode(clientNode) {
       redraw.addOps(function() {
-        _root = _removeNode(_root, clientNode);
+        _root = _removeNode(_root, null, clientNode);
       });
     }
 
