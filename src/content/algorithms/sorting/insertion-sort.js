@@ -51,7 +51,7 @@ document.getElementById("container").innerHTML += `<!--<button onclick="onInvoke
                                                   <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
                                                   </button>
                                                   </div>
-                                                  
+
                                                   <div class="pull-left">
                                                   <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Export" onclick="onExport()">
                                                   <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
@@ -68,11 +68,13 @@ document.getElementById("sm-device-btn").innerHTML += `<!--<button onclick="onIn
                                                   <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
                                                   </button>
                                                   </div>
-                                                  
+
                                                   <div class="pull-left">
                                                   <button type="button" class="btn btn-primary btn-lg outline" onclick="onExport()">
                                                   <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
                                                   </button>
                                                   </div>`;
 
-document.getElementById("selectMethod").innerHTML += `<option value="1">Sort</option>`;
+for (let method of routes["methods"]) {
+  document.getElementById("selectMethod").innerHTML += `<option value="1">` + method + `</option>`;
+}

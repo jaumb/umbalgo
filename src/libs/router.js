@@ -82,7 +82,8 @@ var content;
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874",
-              "depends": ["js/libs/vizlib/algorithms/shuffle.js"]
+              "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
+              "methods": ["shuffle"]
             },
             {
               "uriName": "search",
@@ -171,7 +172,8 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
-              "depends": ["js/libs/vizlib/algorithms/selection.js"]
+              "depends": ["js/libs/vizlib/algorithms/selection.js"],
+              "methods": ["sort"]
             },
             {
               "uriName": "insertion-sort",
@@ -179,7 +181,8 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
-              "depends": ["js/libs/vizlib/algorithms/insertion.js"]
+              "depends": ["js/libs/vizlib/algorithms/insertion.js"],
+              "methods": ["sort"]
             },
             {
               "uriName": "shell-sort",
@@ -434,10 +437,10 @@ var content;
   /**
    * Decode uri parameters to a map.
    */
-  var uriParams = function() {
-    var params = {};
-    var tokens;
-    var re = /[?&]?([^=]+)=([^&/]*)/g;
+  let uriParams = function() {
+    let params = {};
+    let tokens;
+    let re = /[?&]?([^=]+)=([^&/]*)/g;
     while (tokens = re.exec(document.location.search.split('+').join(' '))) {
       params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
     }
@@ -447,20 +450,22 @@ var content;
    * Extract the routes from the content object, sacrificing order for map-speed
    * lookups.
    */
-  var makeRoutes = function(content) {
-    var makeRoutes = function(content) {
+  let makeRoutes = function(content) {
+    let makeRoutes = function(content) {
       if (content !== undefined) {
-        var routes = {};
-        for (var c of content) {
+        let routes = {};
+        for (let c of content) {
           let children = makeRoutes(c["children"]);
           routes[c["uriName"]] = {
-            "displayName": c["displayName"],
-            "uriName": c["uriName"],
-            "depends": c["depends"],
             "index": children === undefined,
             "children": c.hasOwnProperty("children")
               ? children : undefined
           };
+          for (let property in c) {
+            if (c.hasOwnProperty(property) && property !== "index" && property !== "children") {
+              routes[c["uriName"]][property] = c[property];
+            }
+          }
         }
         return routes;
       }
@@ -484,7 +489,6 @@ var content;
     var nav = [];
     // Iterate over the requested route level-by-level.
     routes = makeRoutes(content);
-    console.log(routes);
     for (var i = 0; i < route.length; ++i) {
       routes = routes["children"][route[i]];
       // Add the current level to the trace.
