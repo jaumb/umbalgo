@@ -521,7 +521,9 @@ var tree_factory = (function() {
      * Build a tree given a node to be treated as the root of the tree.
      * @param {Object} clientNode - The node to make the root of the tree.
      */
+    var callCount = 0; // debug
     function buildTree(clientNode) {
+      callCount = 0; // debug
       if (!clientNode) { return; }
       var savedRootNode = saveTreeState(clientNode);
       redraw.addOps(function() {

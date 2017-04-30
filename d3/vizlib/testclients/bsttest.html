@@ -131,7 +131,7 @@
             var suc = successor(rootNode);
             viz.emphasizeAndUpdate([rootNode.rChild()], dur);
             var minNode = min(rootNode.rChild());
-            delMin(rootNode.rChild());
+            rootNode.setRChild(delMin(rootNode.rChild()));
             viz.removeNodeAndUpdate(minNode, dur);
             viz.setFill([rootNode], colors.WHITE);
             viz.setOutline([rootNode], colors.WHITE);
