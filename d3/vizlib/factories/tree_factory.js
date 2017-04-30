@@ -132,6 +132,15 @@ var tree_factory = (function() {
       } else if (targetClientNode.val() < rootVizNode.getLabel().getVal()) {
         rootVizNode.lChild = _removeNode(rootVizNode.lChild, targetClientNode);
       } else {
+        // first remove edges to children
+        if (rootVizNode.rChild) {
+          _delEdgeFromCanvas(_edgeID(rootVizNode, rootVizNode.rChild));
+        }
+        if (rootVizNode.lChild) {
+          _delEdgeFromCanvas(_edgeID(rootVizNode, rootVizNode.lChild));
+        }
+        // next remove node itself
+        _delNodeFromCanvas(targetClientNode);
         if (!rootVizNode.rChild) {
           return rootVizNode.lChild;
         } else if (!rootVizNode.lChild) {
@@ -140,7 +149,6 @@ var tree_factory = (function() {
           var suc = _getMinNode(rootVizNode.rChild);
           suc.rChild = _delMinNode(rootVizNode.rChild, rootVizNode);
           suc.lChild = rootVizNode.lChild;
-          _delNodeFromCanvas(targetClientNode);
           return suc;
         }
       }
@@ -205,10 +213,11 @@ var tree_factory = (function() {
         vizNode.setFillOpacity(0);
         vizNode.setStrokeOpacity(0);
         vizNode.getLabel().setFillOpacity(0);
-        redraw.onNextDrawEnd(function(nodeElemID, aNode) {
-          redraw.removeElem(nodeElemID);
+        redraw.onNextDrawEnd(function(aNode) {
+          redraw.removeElem(aNode.getLabel().getID());
+          redraw.removeElem(aNode.getID());
           _removeVizNode(aNode);
-        }, vizNode.getID(), node);
+        }, vizNode);
       }
     }
 
@@ -277,7 +286,6 @@ var tree_factory = (function() {
      * @return vizNode - Visualization node.
      */
     function _getVizNode(clientNode) {
-      if (!clientNode.id) { return null; }
       return _clientNodeMap.get(clientNode.id());
     }
 
@@ -409,19 +417,19 @@ var tree_factory = (function() {
      * Reposition all nodes in the tree.
      * @param {undefined|Object} root - The root of the subtree to reposition.
      */
-    function _repositionNodes(node, dir) {
+    function _repositionNodes(node) {
       var leafCount = _getLeafCount(node);
       if (node.lChild) {
         node.lChild.setPosCX((node.getPosCX() - 2*_radius) -
                       ((_getHeight(_root) - _getHeight(node.lChild)) *
                                   _W * (leafCount-1)/2));
-        _repositionNodes(node.lChild, -1);
+        _repositionNodes(node.lChild);
       }
       if (node.rChild) {
         node.rChild.setPosCX((node.getPosCX() + 2*_radius) +
                       ((_getHeight(_root) - _getHeight(node.rChild)) *
                                   _W * (leafCount-1)/2));
-        _repositionNodes(node.rChild, 1);
+        _repositionNodes(node.rChild);
       }
       node.setSpCX(node.getPosCX());
       _positionNodeLabel(node);
@@ -447,7 +455,8 @@ var tree_factory = (function() {
     function _reposition(node) {
       if (!node) { return; }
       else if (node === _root) {
-
+        node.setPosCX(_rootPos.cx);
+        node.setPosCY(_rootPos.cy);
       }
       _repositionNodes(node);
       _repositionEdges(node);
