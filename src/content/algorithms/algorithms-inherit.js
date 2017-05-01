@@ -33,7 +33,7 @@ document.getElementById("container").innerHTML += `
 
   <div id="codeNote">
   </div>
-  <div class="row" style="height:100%">
+  <div class="row" style="height:75%">
     <div class="col-xs-12 col-sm-12 col-md-6" style="height:100%">
       <div class="panel panel-default" style="height:100%; box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 1);">
         <div class="panel-body" style="height:100%">
