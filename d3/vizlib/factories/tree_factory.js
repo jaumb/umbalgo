@@ -451,13 +451,22 @@ var tree_factory = (function() {
 
     /**
      * Reposition all edges in the tree.
-     * @param {undefined|Object} root - The root of the subtree to reposition.
+     * @param {undefined|Object} rootNode - The root of the subtree.
      */
-    function _repositionEdges(node, vizParentNode) {
-      if (!node) { return; }
-      else if (vizParentNode) { _positionEdge(vizParentNode, node); }
-      _repositionEdges(node.lChild, node);
-      _repositionEdges(node.rChild, node);
+    function _repositionEdges(rootNode) {
+      if (!rootNode) { return; }
+      var q = [rootNode];
+      while (q.length > 0) {
+        var par = q.shift();
+        if (par.lChild) {
+          _positionEdge(par, par.lChild);
+          q.push(par.lChild);
+        }
+        if (par.rChild) {
+          _positionEdge(par, par.rChild);
+          q.push(par.rChild);
+        }
+      }
     }
 
     /**
