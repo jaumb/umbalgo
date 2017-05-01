@@ -75,6 +75,31 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Remove the specified node from the tree.
+   * @param {Object} node - Node to remove.
+   */
+  var removeNode = function(node) {
+    _tree.removeNode(node);
+  }
+
+  var removeNodeAndUpdate = function(node, dur) {
+    _tree.removeNode(node);
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
+   * Delete node with minimum value from tree.
+   */
+  var delMinNode = function() {
+    _tree.delMinNode();
+  }
+
+  var delMinNodeAndUpdate = function(dur) {
+    _tree.delMinNode();
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
    * Set the color of the edges in the list. Edges in the list are
    * defined by (parent, child) pairs where the edge from parent to
    * child is modified.
@@ -126,12 +151,25 @@ var bst = function(root, svgW, svgH) {
    * @param {Object[]} nodes - Nodes to modify.
    * @param {string} color - New color of nodes.
    */
-  var setOutline = function(nodes) {
+  var setOutline = function(nodes, color) {
     _tree.setOutline(nodes, color);
   }
 
   var setOutlineAndUpdate = function(nodes, dur) {
     _tree.setOutline(nodes, color);
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
+   * Set the nodes' labels' fill.
+   * @param {Object[]} nodes - Nodes to modify.
+   */
+  var setLabelFill = function(nodes, color) {
+    _tree.setLabelFill(nodes, color);
+  }
+
+  var setLabelFillAndUpdate = function(nodes, dur) {
+    _tree.setLabelFill(nodes, color);
     updateCanvas.apply(this, [dur]);
   }
 
@@ -218,6 +256,10 @@ var bst = function(root, svgW, svgH) {
     resize:resize,
     buildTree:buildTree,
     buildTreeAndUpdate:buildTreeAndUpdate,
+    removeNode:removeNode,
+    removeNodeAndUpdate:removeNodeAndUpdate,
+    delMinNode:delMinNode,
+    delMinNodeAndUpdate:delMinNodeAndUpdate,
     setEdgesColor:setEdgesColor,
     setEdgesColorAndUpdate:setEdgesColorAndUpdate,
     dispNextNode:dispNextNode,
@@ -226,6 +268,8 @@ var bst = function(root, svgW, svgH) {
     setFillAndUpdate:setFillAndUpdate,
     setOutline:setOutline,
     setOutlineAndUpdate:setOutlineAndUpdate,
+    setLabelFill:setLabelFill,
+    setLabelFillAndUpdate:setLabelFillAndUpdate,
     emphasize:emphasize,
     emphasizeAndUpdate:emphasizeAndUpdate,
     moveEmphasis:moveEmphasis,
