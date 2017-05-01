@@ -181,6 +181,9 @@ var tree_factory = (function() {
     function _delMinNode(rootVizNode, vizNodeParent) {
       if (!rootVizNode.lChild) {
         _delEdgeFromCanvas(vizNodeParent, rootVizNode);
+        if (rootVizNode.rChild) {
+          _delEdgeFromCanvas(rootVizNode, rootVizNode.rChild);
+        }
         return rootVizNode.rChild;
       } else {
         rootVizNode.lChild = _delMinNode(rootVizNode.lChild, rootVizNode);
