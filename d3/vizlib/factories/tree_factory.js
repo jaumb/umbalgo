@@ -597,6 +597,8 @@ var tree_factory = (function() {
           node = _createNewNode(clientNode);
         }
         node.setPos(_nextNodePos.cx, _nextNodePos.cy);
+        node.setSp(_nextNodePos.cx, _nextNodePos.cy);
+        _positionNodeLabel(node);
         node.isDisplayNode = true;
       });
     }
@@ -669,8 +671,15 @@ var tree_factory = (function() {
           emphasis.setPosCY(vizNode2.getPosCY());
           vizNode2.emphasis = emphasis;
         } else {
-          emphasis.setPosCX(vizNode1.getPosCX() + dir * _xOffset);
-          emphasis.setPosCY(vizNode1.getPosCY() + _yOffset);
+          if (dir < 0) {
+            vizNode1.lChild = emphasis;
+            _repositionNodes(_root);
+            vizNode1.lChild = null;
+          } else {
+            vizNode1.rChild = emphasis;
+            _repositionNodes(_root);
+            vizNode1.rChild = null;
+          }
         }
       });
     }

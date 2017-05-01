@@ -40,25 +40,20 @@
       ////////////////////////// MAIN LOOP ////////////////////////////////////
       // visualize inserting elements one at a time
 
-      //elements.forEach(function(e) {
-      //  var newElem = new node(ids++, e, null, null);
-      //  viz.dispNextNodeAndUpdate(newElem, dur);
-      //  root = addNode(root, newElem);
-      //  viz.buildTreeAndUpdate(root, dur);
-      //  viz.clearEmphasesAndUpdate(dur);
-      //});
-
+      // insert elements in random order one at a time
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
-        root = addNodeNoViz(root, newElem);
+        viz.dispNextNodeAndUpdate(newElem, dur);
+        root = addNode(root, newElem);
+        viz.buildTreeAndUpdate(root, dur);
+        viz.clearEmphasesAndUpdate(dur);
       });
 
-      viz.buildTreeAndUpdate(root, dur);
       d3.shuffle(elements);
 
+      // delete elements in random order one at a time
       elements.forEach(function(e) {
-        //var nodeToDel = findNodeWithVal(root, elements.shift());
-        var nodeToDel = root;
+        var nodeToDel = findNodeWithVal(root, e);
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
           root = removeNode(root, nodeToDel);
