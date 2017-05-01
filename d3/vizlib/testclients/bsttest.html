@@ -153,6 +153,8 @@
           viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           return rootNode.rChild();
         } else {
+          viz.setFillAndUpdate([rootNode], colors.COMPARE, dur);
+          viz.setFillAndUpdate([rootNode], colors.BACKGROUND, dur);
           viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
           rootNode.setLChild(delMin(rootNode.lChild()));
           return rootNode;

@@ -50,17 +50,12 @@ var tree_factory = (function() {
      * clientNode.val() - Value with which to label the node
      * @param {Object} clientNode - Node created by client.
      */
-    function _createNewNode(clientNode, cx, cy) {
+    function _createNewNode(clientNode) {
       var newNode = element_factory.getCircle();
       newNode.setR(_radius);
       newNode.setStrokeWidth(1/15 * _radius);
       newNode.getLabel().setVal(clientNode.val());
       newNode.getLabel().setFontSize((1.2 * _radius) + 'px');
-      newNode.setPosCX(cx);
-      newNode.setPosCY(cy);
-      newNode.setSpCX(newNode.getPosCX());
-      newNode.setSpCY(newNode.getPosCY());
-      _positionNodeLabel(newNode);
       newNode.isDisplayNode = false;
       _addVizNode(clientNode, newNode);
       return newNode;
@@ -84,38 +79,21 @@ var tree_factory = (function() {
     /**
      * Create a new binary tree given the root of a subtree.
      * @param {Object} clientNode - Root of the subtree.
-     * @param {Object} vizParentNode - Parent node of the root of this subtree.
-     * @param {number} dir - Direction of x axis offset (-1 | 1).
      */
-    function _buildTree(clientNode, vizParentNode, dir) {
+    function _buildTree(clientNode) {
       if (!clientNode) { return null; }
       var vizNode = _getVizNode(clientNode);
       if (vizNode) {
-        if (vizParentNode) {
-          vizNode.setPosCX(vizParentNode.getPosCX() + dir * _xOffset);
-          vizNode.setPosCY(vizParentNode.getPosCY() + _yOffset);
-          _positionEdge(vizParentNode, vizNode);
-        } else if (vizNode.isDisplayNode && !_root) {
-          vizNode.setPosCX(_rootPos.cx);
-          vizNode.setPosCY(_rootPos.cy);
+        if (vizNode.isDisplayNode && !_root) {
           _root = vizNode;
+          vizNode.isDisplayNode = undefined;
         }
       } else {
-        vizNode = _createNewNode(clientNode, _rootPos.cx, _rootPos.cy);
-        if (vizParentNode) {
-          vizNode.setPosCX(vizParentNode.getPosCX() + dir * _xOffset);
-          vizNode.setPosCY(vizParentNode.getPosCY() + _yOffset);
-          vizNode.setSpCX(vizNode.getPosCX());
-          vizNode.setSpCY(vizNode.getPosCY());
-          _positionNodeLabel(vizNode);
-          _createNewEdge(vizParentNode, vizNode);
-        } else {
-          _root = vizNode;
-        }
+        vizNode = _createNewNode(clientNode);
+        if (!_root) { _root = vizNode; }
       }
-      vizNode.isDisplayNode = false;
-      vizNode.lChild = _buildTree(clientNode.lChild(), vizNode, -1);
-      vizNode.rChild = _buildTree(clientNode.rChild(), vizNode, 1);
+      vizNode.lChild = _buildTree(clientNode.lChild());
+      vizNode.rChild = _buildTree(clientNode.rChild());
       return vizNode;
     }
 
@@ -231,15 +209,38 @@ var tree_factory = (function() {
     }
 
     /**
-     * Get the height of the tree rooted at node.
-     * @param {undefined|Object} node - Root of the subtree.
+     * Set node indices in the subtree rooted at root.
+     * @param {} rootNode - Root of the subtree.
      */
-    function _getHeight(node) {
-      var height = 0;
-      if (node) {
-        height = _getHeight(node.lChild) + _getHeight(node.rChild);
+    function _setIndices(rootNode) {
+      rootNode.index = 1;
+      var q = [rootNode];
+      while (q.length > 0) {
+        var par = q.shift();
+        if (par.lChild) {
+          par.lChild.index = 2 * par.index - 1;
+          q.push(par.lChild);
+        }
+        if (par.rChild) {
+          par.rChild.index = 2 * par.index;
+          q.push(par.rChild);
+        }
       }
-      return height;
+    }
+
+    /**
+     * Get the height of the tree rooted at node.
+     * @param {undefined|Object} rootNode - Root of the subtree.
+     * @param {number} level - Level of node (root of tree is 0).
+     */
+    function _getHeight(rootNode, level) {
+      if (!rootNode) { return (level === 0) ? 0 : level - 1; }
+      rootNode.depth = level;
+      var lHeight = 0;
+      var rHeight = 0;
+      lHeight = _getHeight(rootNode.lChild, level + 1);
+      rHeight = _getHeight(rootNode.rChild, level + 1);
+      return Math.max(lHeight, rHeight);
     }
 
     /**
@@ -425,24 +426,27 @@ var tree_factory = (function() {
 
     /**
      * Reposition all nodes in the tree.
-     * @param {undefined|Object} root - The root of the subtree to reposition.
+     * @param {undefined|Object} rootNode - The root of the subtree.
      */
-    function _repositionNodes(node) {
-      var leafCount = _getLeafCount(node);
-      if (node.lChild) {
-        node.lChild.setPosCX((node.getPosCX() - 2*_radius) -
-                      ((_getHeight(_root) - _getHeight(node.lChild)) *
-                                  _W * (leafCount-1)/2));
-        _repositionNodes(node.lChild);
+    function _repositionNodes(rootNode) {
+      var treeHeight = _getHeight(rootNode, 0); // sets depths
+      if (treeHeight === 0) { treeHeight = 1; }
+      _setIndices(rootNode); // sets indices
+      var H = _H - 4 * _radius;
+      var W = _W - 4 * _radius;
+      var q = [rootNode];
+      while (q.length > 0) {
+        var par = q.shift();
+        var x = par.index * W / (Math.pow(2, par.depth) + 1) + 1.7 * _radius;
+        var y = par.depth * H / treeHeight + 1.7 * _radius;
+        par.setPosCX(x);
+        par.setPosCY(y);
+        par.setSpCX(x);
+        par.setSpCY(y);
+        _positionNodeLabel(par);
+        if (par.lChild) { q.push(par.lChild); }
+        if (par.rChild) { q.push(par.rChild); }
       }
-      if (node.rChild) {
-        node.rChild.setPosCX((node.getPosCX() + 2*_radius) +
-                      ((_getHeight(_root) - _getHeight(node.rChild)) *
-                                  _W * (leafCount-1)/2));
-        _repositionNodes(node.rChild);
-      }
-      node.setSpCX(node.getPosCX());
-      _positionNodeLabel(node);
     }
 
     /**
@@ -460,16 +464,12 @@ var tree_factory = (function() {
      * Reposition the tree based on the size of the canvas, height of
      * the tree, number of nodes in the tree, and the number of leaves
      * in the tree.
-     * @param {undefined|Object} root - The root of the subtree to reposition.
+     * @param {undefined|Object} rootNode - The root of the subtree.
      */
-    function _reposition(node) {
-      if (!node) { return; }
-      else if (node === _root) {
-        node.setPosCX(_rootPos.cx);
-        node.setPosCY(_rootPos.cy);
-      }
-      _repositionNodes(node);
-      _repositionEdges(node);
+    function _reposition(rootNode) {
+      if (!rootNode) { return; }
+      _repositionNodes(rootNode);
+      _repositionEdges(rootNode);
     }
 
     /**
@@ -594,8 +594,9 @@ var tree_factory = (function() {
       redraw.addOps(function() {
         var node = _getVizNode(clientNode);
         if (!node) {
-          node = _createNewNode(clientNode, _nextNodePos.cx, _nextNodePos.cy);
+          node = _createNewNode(clientNode);
         }
+        node.setPos(_nextNodePos.cx, _nextNodePos.cy);
         node.isDisplayNode = true;
       });
     }
