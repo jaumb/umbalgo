@@ -10,8 +10,9 @@ document.getElementById("container").innerHTML += `
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control" id ="selectMethod" onmousedown="this.value='';" onchange="jsFunction(this.value);">
+        <select class="form-control" id="selectMethod" onchange="onInvoke();">
           <option>Choose Method</option>
+          <!-- Algorithm methods will be inserted here -->
         </select>
 
         </div>
@@ -45,15 +46,44 @@ document.getElementById("container").innerHTML += `
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6" style="height:100%">
       <div class="panel panel-default" style="height:100%; box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 1);">
-        <div class="panel-body" style="height:100%">
-          <pre>
-            <code id="codePane">
-              <!-- Code pane will be inserted here -->
-            </code>
-          </pre>
-        </div>
+        <pre style="height:100%;background-color:#f5f5f5">
+          <code id="codePane" style="background-color:#f5f5f5">
+            <!-- Code pane will be inserted here -->
+          </code>
+        </pre>
       </div>
     </div>
   </div>
   <br>`;
+
 var vm = new VirtualMachine();
+vm.dur = 500;
+
+var v = document.getElementById("visualization").getBoundingClientRect();
+var svgW = v.width;
+var svgH = v.height;
+d3.select(".visualization")
+  .append("svg")
+  .attr("width", svgW)
+  .attr("height", svgH)
+  .attr('id', svgCanvasName);
+
+var onNext = function() {
+  vm.next();
+};
+
+var onExport = function() {
+  let zip = new JSZip();
+  for (let i = 0; i < vm.images.length; ++i) {
+    zip.file("" + i + ".svg", vm.images[i]);
+  }
+  zip.generateAsync({type:"blob"})
+    .then(function (blob) {
+      saveAs(blob, "visualization.zip");
+    });
+}
+
+// Populate the list of available methods
+for (let method of routes["methods"]) {
+  document.getElementById("selectMethod").innerHTML += `<option value="` + method + `">` + method + `</option>`;
+}
