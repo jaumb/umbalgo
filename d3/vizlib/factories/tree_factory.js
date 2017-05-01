@@ -454,7 +454,6 @@ var tree_factory = (function() {
      * @param {undefined|Object} rootNode - The root of the subtree.
      */
     function _repositionEdges(rootNode) {
-      if (!rootNode) { return; }
       var q = [rootNode];
       while (q.length > 0) {
         var par = q.shift();
@@ -682,13 +681,14 @@ var tree_factory = (function() {
         } else {
           if (dir < 0) {
             vizNode1.lChild = emphasis;
-            _repositionNodes(_root);
+            _reposition(_root); // trick to get position in advance
             vizNode1.lChild = null;
           } else {
             vizNode1.rChild = emphasis;
-            _repositionNodes(_root);
+            _reposition(_root); // trick to get position in advance
             vizNode1.rChild = null;
           }
+          _removeEdge(vizNode1, emphasis);
         }
       });
     }
