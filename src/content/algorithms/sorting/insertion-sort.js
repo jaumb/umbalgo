@@ -9,33 +9,3 @@ let onInvoke = function() {
   vm.viz.step();
   vm.invokeFunc(document.getElementById("selectMethod").value, undefined, a);
 };
-
-document.getElementById("container").innerHTML +=
-  `<div class="pull-right">
-     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onInvoke()">
-       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
-     </button>
-     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
-       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
-     </button>
-   </div>
-   <div class="pull-left">
-     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Export" onclick="onExport()">
-       <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
-     </button>
-   </div>`;
-
-document.getElementById("sm-device-btn").innerHTML +=
-  `<div class="pull-right">
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
-       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
-     </button>
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
-       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
-     </button>
-   </div>
-   <div class="pull-left">
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onExport()">
-       <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
-     </button>
-   </div>`;

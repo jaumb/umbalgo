@@ -1,6 +1,5 @@
 document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
-
   <div class="panel panel-default" style="margin-top:30px; background-color:#222; border: 1px solid #080808;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
     <div class="panel-body">
@@ -54,7 +53,35 @@ document.getElementById("container").innerHTML += `
       </div>
     </div>
   </div>
-  <br>`;
+  <br>
+  <div class="pull-right">
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onInvoke()">
+      <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
+      <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="pull-left">
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Export" onclick="onExport()">
+      <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
+    </button>
+  </div>`;
+
+document.getElementById("sm-device-btn").innerHTML +=
+  `<div class="pull-right">
+     <button type="button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
+       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
+     </button>
+     <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
+       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
+     </button>
+   </div>
+   <div class="pull-left">
+     <button type="button" class="btn btn-primary btn-lg outline" onclick="onExport()">
+       <span class="glyphicon glyphicon-save-file icon-export" aria-hidden="true"></span>
+     </button>
+   </div>`;
 
 var vm = new VirtualMachine();
 vm.dur = 500;
