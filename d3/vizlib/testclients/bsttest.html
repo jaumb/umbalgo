@@ -57,7 +57,8 @@
       d3.shuffle(elements);
 
       elements.forEach(function(e) {
-        var nodeToDel = findNodeWithVal(root, elements.shift());
+        //var nodeToDel = findNodeWithVal(root, elements.shift());
+        var nodeToDel = root;
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
           root = removeNode(root, nodeToDel);
@@ -129,15 +130,13 @@
             return rootNode.rChild();
           } else {
             var suc = successor(rootNode);
-            viz.emphasizeAndUpdate([rootNode.rChild()], dur);
             var minNode = min(rootNode.rChild());
-            rootNode.setRChild(delMin(rootNode.rChild()));
-            viz.removeNodeAndUpdate(minNode, dur);
+            viz.emphasizeAndUpdate([rootNode.rChild()], dur);
+            suc.setRChild(delMin(rootNode.rChild()));
+            suc.setLChild(rootNode.lChild());
             viz.setFill([rootNode], colors.WHITE);
             viz.setOutline([rootNode], colors.WHITE);
             viz.setLabelFill([rootNode], colors.WHITE);
-            suc.setRChild(rootNode.rChild());
-            suc.setLChild(rootNode.lChild());
             return suc;
           }
         }
@@ -156,8 +155,8 @@
         } else {
           viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);
           rootNode.setLChild(delMin(rootNode.lChild()));
+          return rootNode;
         }
-        return rootNode;
       }
 
       // find the successor of aNode (not visualized)
@@ -167,8 +166,7 @@
 
       // find the min node in the tree rooted at rootNode (not visualized)
       function min(rootNode) {
-        if (!rootNode) { return null; }
-        while (rootNode.lChild()) {
+        while (rootNode && rootNode.lChild()) {
           rootNode = rootNode.lChild();
         }
         return rootNode;
