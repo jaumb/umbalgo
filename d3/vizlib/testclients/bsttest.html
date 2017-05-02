@@ -62,7 +62,7 @@
         }
       });
 
-      // start the visualization once we finish building the tree
+      // start the visualization once we finish add and remove operations
       viz.playpause();
 
       // add a node to the tree rooted at rootNode
@@ -169,19 +169,6 @@
         return rootNode;
       }
 
-      // find the node containing value in tree rooted at rootNode
-      function findNodeWithVal(rootNode, value) {
-        while (rootNode && rootNode.val() !== value) {
-          if (value < rootNode.val()) {
-            rootNode = rootNode.lChild();
-          } else {
-            rootNode = rootNode.rChild();
-          }
-        }
-        if (rootNode.val() === value) { return rootNode; }
-        return null;
-      }
-
 
       // tree node representation
       // id(), val(), lChild(), and rChild() are expected by tree visualizations
@@ -212,20 +199,6 @@
         svgW = window.innerWidth;
         svgH = window.innerHeight;
         viz.resize(viz, svgW, svgH);
-      }
-
-      // add a node to the tree without visualizing it
-      function addNodeNoViz(rootNode, newNode) {
-        if (!rootNode) {
-          return newNode;
-        } else if (newNode.val() > rootNode.val()) {
-          rootNode.setRChild(addNodeNoViz(rootNode.rChild(), newNode));
-        } else if (newNode.val() < rootNode.val()) {
-          rootNode.setLChild(addNodeNoViz(rootNode.lChild(), newNode));
-        } else {
-          // deal with equal keys here
-        }
-        return rootNode;
       }
 
     </script>
