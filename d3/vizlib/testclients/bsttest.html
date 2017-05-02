@@ -44,6 +44,7 @@
       elements.forEach(function(e) {
         var newElem = new node(ids++, e, null, null);
         viz.dispNextNodeAndUpdate(newElem, dur);
+        viz.emphasizeAndUpdate([root], dur);
         root = addNode(root, newElem);
         viz.buildTreeAndUpdate(root, dur);
         viz.clearEmphasesAndUpdate(dur);
@@ -53,7 +54,7 @@
 
       // delete elements in random order one at a time
       elements.forEach(function(e) {
-        var nodeToDel = findNodeWithVal(root, e);
+        var nodeToDel = root;
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
           root = removeNode(root, nodeToDel);
@@ -70,13 +71,11 @@
         if (!rootNode) {
           return newNode;
         } else if (newNode.val() > rootNode.val()) {
-          viz.emphasizeAndUpdate([rootNode], dur);
           viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
           viz.moveEmphasisAndUpdate(rootNode, rootNode.rChild(), 1, dur);
           rootNode.setRChild(addNode(rootNode.rChild(), newNode));
         } else if (newNode.val() < rootNode.val()) {
-          viz.emphasizeAndUpdate([rootNode], dur);
           viz.setFillAndUpdate([rootNode, newNode], colors.COMPARE, dur);
           viz.setFillAndUpdate([rootNode, newNode], colors.BACKGROUND, dur);
           viz.moveEmphasisAndUpdate(rootNode, rootNode.lChild(), -1, dur);

@@ -644,19 +644,21 @@ var tree_factory = (function() {
     function emphasize(clientNodes) {
       redraw.addOps(function() {
         clientNodes.forEach(function(clientNode) {
-          var vizNode = _getVizNode(clientNode);
-          if (!vizNode.emphasis) {
-            var emphasis = element_factory.getCircle();
-            emphasis.setR(1.3 * vizNode.getR())
-            emphasis.setStroke(colors.EMPHASIZE);
-            emphasis.setStrokeOpacity(75);
-            emphasis.setFill(colors.WHITE);
-            emphasis.setFillOpacity(0);
-            emphasis.setPosCX(vizNode.getPosCX());
-            emphasis.setPosCY(vizNode.getPosCY());
-            emphasis.setSpCX(vizNode.getPosCX());
-            emphasis.setSpCY(vizNode.getPosCY());
-            vizNode.emphasis = emphasis;
+          if (clientNode) {
+            var vizNode = _getVizNode(clientNode);
+            if (!vizNode.emphasis) {
+              var emphasis = element_factory.getCircle();
+              emphasis.setR(1.3 * vizNode.getR())
+              emphasis.setStroke(colors.EMPHASIZE);
+              emphasis.setStrokeOpacity(75);
+              emphasis.setFill(colors.WHITE);
+              emphasis.setFillOpacity(0);
+              emphasis.setPosCX(vizNode.getPosCX());
+              emphasis.setPosCY(vizNode.getPosCY());
+              emphasis.setSpCX(vizNode.getPosCX());
+              emphasis.setSpCY(vizNode.getPosCY());
+              vizNode.emphasis = emphasis;
+            }
           }
         });
       });
