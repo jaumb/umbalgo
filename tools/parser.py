@@ -31,7 +31,7 @@ class Parser:
 		return json.dumps(self._lines, indent=2, sort_keys=True) + '\n'
 
 	def _add_line(self):
-		line = { 'code': self._code, 'impl': self._make_function() }
+		line = { 'code': self._code.replace('\\n', '\n'), 'impl': self._make_function() }
 		if self._note:
 			line['note'] = self._note
 		self._lines.append(line)
