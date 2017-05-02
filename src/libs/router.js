@@ -58,6 +58,7 @@ var content;
         "js/libs/vizlib/common.js",
         "js/libs/vizlib/factories/element_factory.js",
         "js/libs/vizlib/factories/array_factory.js",
+        "js/libs/vizlib/factories/tree_factory.js",
         "js/libs/vizlib/vizlib.js",
         "js/libs/vizlib/redraw.js",
         "js/libs/jszip.min.js",
@@ -262,7 +263,22 @@ var content;
               "displayName": "Ordered Symbol Table (BST)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "depends": ["js/libs/vizlib/algorithms/bst.js"],
+              "methods": [
+                "ceiling",
+                "delete",
+                "deleteMax",
+                "deleteMin",
+                "floor",
+                "get",
+                "keys",
+                "max",
+                "min",
+                "put",
+                "rank",
+                "select"
+              ]
             },
             {
               "uriName": "ordered-symbol-table-red-black-bst",

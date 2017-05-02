@@ -89,6 +89,7 @@ vm.dur = 500;
 var v = document.getElementById("visualization").getBoundingClientRect();
 var svgW = v.width;
 var svgH = v.height;
+// window.onresize = resize;
 d3.select(".visualization")
   .append("svg")
   .attr("width", svgW)
@@ -96,7 +97,9 @@ d3.select(".visualization")
   .attr('id', svgCanvasName);
 
 var onNext = function() {
-  vm.next();
+  if (vm.getFrame() !== undefined) {
+    vm.next();
+  }
 };
 
 var onExport = function() {
