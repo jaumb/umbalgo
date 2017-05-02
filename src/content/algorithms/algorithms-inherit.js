@@ -55,7 +55,7 @@ document.getElementById("container").innerHTML += `
   </div>
   <br>
   <div class="pull-right">
-    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onInvoke()">
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
@@ -101,6 +101,24 @@ var onNext = function() {
     vm.next();
   }
 };
+
+let playInterval;
+var paused = true;
+
+var onPlayPause = function() {
+  if (paused === true) {
+    playInterval = window.setInterval(onPlayInterval, vm.dur);
+  }
+  paused = !paused;
+}
+
+var onPlayInterval = function() {
+  if (vm.getFrame() === undefined) {
+    window.clearInterval(playInterval);
+  } else {
+    vm.next();
+  }
+}
 
 var onExport = function() {
   let zip = new JSZip();
