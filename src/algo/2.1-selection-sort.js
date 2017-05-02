@@ -89,6 +89,7 @@ sort(a) {
   // This is a simple assignment.
   that.vm.viz.setFill([that.locals["min"]], colors.BACKGROUND);
   that.vm.viz.updateCanvas(that.vm.dur);
+  that.vm.updateViz();
   that.locals["min"] = that.locals["j"];
   that.vm.viz.setFill([that.locals["min"]], colors.ACTIVE);
   that.vm.viz.setMinLabel(that.args["a"][that.locals["min"]]);
