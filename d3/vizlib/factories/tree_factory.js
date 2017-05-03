@@ -851,6 +851,21 @@ var tree_factory = (function() {
       return treeCopy;
     }
 
+    /**
+     * Compare node1 to node2.
+     * @param {Object} node1 - Node 1 to compare.
+     * @param {Object} node2 - Node 2 to compare.
+     */
+    var compareNodes = function(node1, node2) {
+      redraw.addOps(function() {
+        var n1 = _getVizNode(node1);
+        var n2 = _getVizNode(node2);
+        n1.setFill(colors.COMPARE);
+        n2.setFill(colors.COMPARE);
+        redraw.onNextDrawEnd(n1.setFill, colors.BACKGROUND);
+        redraw.onNextDrawEnd(n2.setFill, colors.BACKGROUND);
+      });
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     //  return public methods
@@ -876,6 +891,7 @@ var tree_factory = (function() {
       getCircles:getCircles,
       getLines:getLines,
       saveTreeState:saveTreeState,
+      compareNodes:compareNodes,
       resize:resize
     };
 

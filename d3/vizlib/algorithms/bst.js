@@ -227,6 +227,20 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Compare node1 to node2.
+   * @param {Object} node1 - Node 1 to compare.
+   * @param {Object} node2 - Node 2 to compare.
+   */
+  var compareNodes = function(node1, node2) {
+    _tree.compareNodes(node1, node2);
+  }
+
+  var compareNodesAndUpdate = function(node1, node2, dur) {
+    _tree.compareNodes(node1, node2);
+    updateCanvas.apply(this, [dur]);
+  }
+
+  /**
    * Update the canvas with the previously called visualization steps.
    * @param {number} duration - Duration per step (in millis).
    */
@@ -282,6 +296,8 @@ var bst = function(root, svgW, svgH) {
     getText:getText,
     getCircles:getCircles,
     getLines:getLines,
+    compareNodes:compareNodes,
+    compareNodesAndUpdate:compareNodesAndUpdate,
     updateCanvas:updateCanvas,
     playpause:playpause,
     step:step
