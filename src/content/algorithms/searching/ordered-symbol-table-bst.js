@@ -47,20 +47,6 @@ function resize() {
   vm.viz.resize(vm.viz, svgW, svgH);
 }
 
-// add a node to the tree without visualizing it
-function addNodeNoViz(rootNode, newNode) {
-  if (!rootNode) {
-    return newNode;
-  } else if (newNode.val() > rootNode.val()) {
-    rootNode.setRChild(addNodeNoViz(rootNode.rChild(), newNode));
-  } else if (newNode.val() < rootNode.val()) {
-    rootNode.setLChild(addNodeNoViz(rootNode.lChild(), newNode));
-  } else {
-    // deal with equal keys here
-  }
-  return rootNode;
-}
-
 // add a node to the tree rooted at rootNode
 function addNode(rootNode, newNode) {
   if (!rootNode) {
@@ -165,19 +151,6 @@ function min(rootNode) {
   return rootNode;
 }
 
-// find the node containing value in tree rooted at rootNode
-function findNodeWithVal(rootNode, value) {
-  while (rootNode && rootNode.val() !== value) {
-    if (value < rootNode.val()) {
-      rootNode = rootNode.lChild();
-    } else {
-      rootNode = rootNode.rChild();
-    }
-  }
-  if (rootNode.val() === value) { return rootNode; }
-  return null;
-}
-
 var a = [86, 71, 10, 75, 73, 64, 87, 23];
 var nodeId = 1;
 vm.globals["root"] = null;
@@ -186,13 +159,19 @@ vm.viz = vizlib.get_bst(vm.globals["root"], svgW, svgH);
 
 let onInvoke = function() {
   // Emphasize the root (if it exists)
+  let key = a.pop();
+  let newNode = new node(nodeId++, key, null, null);
   if (vm.globals["root"]) {
     vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
     vm.viz.step();
   }
-  let key = a.pop();
-  let newNode = new node(nodeId++, key, null, null);
   vm.viz.dispNextNodeAndUpdate(newNode, vm.dur);
   vm.viz.step();
-  vm.invokeFunc("put", undefined, vm.globals["root"], key, newNode);
+  vm.invokeFunc("put", function(result) {
+    vm.globals["root"] = result;
+    vm.viz.buildTreeAndUpdate(result, vm.dur);
+    vm.viz.step();
+    vm.viz.clearEmphasesAndUpdate(vm.dur);
+    vm.viz.step();
+  }, vm.globals["root"], key, newNode);
 };

@@ -6,20 +6,17 @@ put(x, key, newNode) {
   that.result = that.args["newNode"];
   that.vm.globals["nodes"][that.args["key"]] = that.args["newNode"];
   that.vm.globals["root"] = that.args["newNode"];
-  that.vm.viz.buildTreeAndUpdate(that.vm.globals["root"], that.vm.dur);
-  that.vm.viz.step();
-  that.vm.viz.clearEmphasesAndUpdate(that.vm.dur);
-  that.vm.viz.step();
+  //vm.viz.buildTreeAndUpdate(vm.globals["root"], vm.dur);
+  //vm.viz.step();
+  //that.vm.viz.clearEmphasesAndUpdate(that.vm.dur);
+  //that.vm.viz.step();
   that.nextLineNumber = undefined;
 // Code:  }
+  that.vm.viz.compareNodesAndUpdate(that.args["x"], that.args["newNode"],
+                                    that.vm.dur);
+  that.vm.viz.step();
   that.nextLineNumber = 5;
 // Code:  int cmp = key.compareTo(x.key);
-  that.vm.viz.setFillAndUpdate([that.args["x"], that.args["newNode"]],
-                               colors.COMPARE,
-                               that.vm.dur);
-  that.vm.viz.buildTreeAndUpdate(that.args["newNode"], that.vm.dur);
-  that.vm.viz.step();
-
   if (that.args["key"] < that.args["x"].val()) {
     that.locals["cmp"] = -1;
   } else if (that.args["key"] > that.args["x"].val()) {
@@ -31,9 +28,8 @@ put(x, key, newNode) {
 // Code:  if (cmp < 0) {
   that.nextLineNumber = that.locals["cmp"] < 0 ? 7 : 8;
 // Code:    x.left = put(x.left,  key, val);
-  that.vm.viz.setFillAndUpdate([that.args["x"], that.args["newNode"]],
-                               colors.BACKGROUND,
-                               that.vm.dur);
+  that.vm.viz.moveEmphasisAndUpdate(that.args["x"], that.args["x"].lChild(),
+                                     -1, that.vm.dur);
   that.vm.viz.step();
   that.vm.invokeFunc(
     "put",
@@ -45,13 +41,10 @@ put(x, key, newNode) {
     that.args["key"],
     that.args["newNode"]);
 // Code:  } else if (cmp > 0) {
-  that.vm.viz.emphasizeAndUpdate([that.args["x"]], that.vm.dur);
-  that.vm.viz.step();
   that.nextLineNumber = that.locals["cmp"] > 0 ? 9 : 11;
 // Code:    x.right = put(x.right, key, val);
-  that.vm.viz.setFillAndUpdate([that.args["x"], that.args["newNode"]],
-                               colors.BACKGROUND,
-                               that.vm.dur);
+  that.vm.viz.moveEmphasisAndUpdate(that.args["x"], that.args["x"].rChild(),
+                                     1, that.vm.dur);
   that.vm.viz.step();
   that.vm.invokeFunc(
     "put",
@@ -76,8 +69,8 @@ put(x, key, newNode) {
       + 1);
   that.nextLineNumber = 14;
 // Code:  return x;
-  that.vm.viz.clearEmphasesAndUpdate(that.vm.dur);
-  that.vm.viz.step();
   that.result = that.args["x"];
+  that.vm.viz.buildTreeAndUpdate(that.args["x"], vm.dur);
+  that.vm.viz.step();
   that.nextLineNumber = undefined;
 // Code:}
