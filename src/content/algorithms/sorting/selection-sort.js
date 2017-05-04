@@ -5,7 +5,6 @@ populateSelectInput({
 });
 
 var onInvoke = function() {
-  //  var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
   var data = inputData[document.getElementById("selectInput").value];
   vm.viz = vizlib.get_selection(data, svgW, svgH);
   vm.viz.updateCanvas(0);
