@@ -27,6 +27,6 @@ cp src/html/*.html ${OUT}
 mkdir -p ${OUT}/css
 cp src/css/*.css ${OUT}/css
 cp -r d3/vizlib ${OUT}/js/libs
-mkdir -p ${OUT}/logo
-cp src/logo/*.svg ${OUT}/logo
+mkdir -p ${OUT}/images
+cp src/images/*.svg ${OUT}/images
 

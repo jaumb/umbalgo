@@ -81,6 +81,7 @@ var content;
               "uriName": "shuffle",
               "displayName": "Shuffle",
               "ImgName": "fundamentals.svg",
+              "status": "enabled",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
@@ -89,6 +90,7 @@ var content;
             {
               "uriName": "search",
               "displayName": "Search",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -96,6 +98,7 @@ var content;
             {
               "uriName": "bag-linked-list",
               "displayName": "Bag (Linked List)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -103,6 +106,7 @@ var content;
             {
               "uriName": "bag-array",
               "displayName": "Bag (Array)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -110,6 +114,7 @@ var content;
             {
               "uriName": "queue-linked-list",
               "displayName": "Queue (Linked List)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -117,6 +122,7 @@ var content;
             {
               "uriName": "queue-array",
               "displayName": "Queue (Array)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -124,6 +130,7 @@ var content;
             {
               "uriName": "stack-linked-list",
               "displayName": "String (Linked List)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -131,6 +138,7 @@ var content;
             {
               "uriName": "stack-array",
               "displayName": "Stack (Array)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -138,6 +146,7 @@ var content;
             {
               "uriName": "union-find-quickfind",
               "displayName": "Union-Find (Quickfind)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -145,6 +154,7 @@ var content;
             {
               "uriName": "union-find-quickunion",
               "displayName": "Union-Find (Quickunion)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "color": "#f79fb0",
               "titleColor": "#ea6874",
@@ -153,6 +163,7 @@ var content;
             {
               "uriName": "union-find-weightedquickunion",
               "displayName": "Union-Find (Weighted Quickunion)",
+              "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874"
@@ -170,6 +181,7 @@ var content;
             {
               "uriName": "selection-sort",
               "displayName": "Selection Sort",
+              "status": "enabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
@@ -179,6 +191,7 @@ var content;
             {
               "uriName": "insertion-sort",
               "displayName": "Insertion Sort",
+              "status": "enabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
@@ -188,6 +201,7 @@ var content;
             {
               "uriName": "shell-sort",
               "displayName": "Shell Sort",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -195,6 +209,7 @@ var content;
             {
               "uriName": "merge-sort",
               "displayName": "Merge Sort",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -202,6 +217,7 @@ var content;
             {
               "uriName": "quick-sort",
               "displayName": "Quick Sort",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -209,6 +225,7 @@ var content;
             {
               "uriName": "quick-3way-sort",
               "displayName": "Quick 3-Way Sort",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -216,6 +233,7 @@ var content;
             {
               "uriName": "heap-sort",
               "displayName": "Heap Sort",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -223,6 +241,7 @@ var content;
             {
               "uriName": "maxpq",
               "displayName": "MaxPQ",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -230,6 +249,7 @@ var content;
             {
               "uriName": "minpq",
               "displayName": "MinPQ",
+              "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a"
@@ -247,6 +267,7 @@ var content;
             {
               "uriName": "basic-unordered-symbol-table",
               "displayName": "Basic Unordered Symbol Table",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
@@ -254,6 +275,7 @@ var content;
             {
               "uriName": "binary-symbol-table",
               "displayName": "Binary Symbol Table",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -261,6 +283,7 @@ var content;
             {
               "uriName": "ordered-symbol-table-bst",
               "displayName": "Ordered Symbol Table (BST)",
+              "status": "enabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
@@ -283,6 +306,7 @@ var content;
             {
               "uriName": "ordered-symbol-table-red-black-bst",
               "displayName": "Ordered Symbol Table (Reb/Black BST)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -290,6 +314,7 @@ var content;
             {
               "uriName": "separate-chaining-hash-table",
               "displayName": "Separate Chaining Hash Table",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -297,6 +322,7 @@ var content;
             {
               "uriName": "graph-undirected",
               "displayName": "Graph (Undirected)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -304,6 +330,7 @@ var content;
             {
               "uriName": "depth-first-search-undirected",
               "displayName": "Depth First Search (Undirected)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -311,6 +338,7 @@ var content;
             {
               "uriName": "breadth-first-search-undirected",
               "displayName": "Breadth First Search (Undirected)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -318,6 +346,7 @@ var content;
             {
               "uriName": "connected-components",
               "displayName": "Connected Components",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -325,6 +354,7 @@ var content;
             {
               "uriName": "graph-directed",
               "displayName": "Graph (Directed)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -332,6 +362,7 @@ var content;
             {
               "uriName": "cycle-detection",
               "displayName": "Cycle Detection",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -339,6 +370,7 @@ var content;
             {
               "uriName": "depth-first-search-directed",
               "displayName": "Depth First Search (Directed)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -346,6 +378,7 @@ var content;
             {
               "uriName": "reverse-postorder-vertex-ordering",
               "displayName": "Reverse Post-Order Vertex Ordering",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -353,6 +386,7 @@ var content;
             {
               "uriName": "kosarajus-strongly-connected-components",
               "displayName": "Kosaraju's Strongly-Connected Components",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -360,6 +394,7 @@ var content;
             {
               "uriName": "edge-weighted-graph",
               "displayName": "Edge-Weighted Graph",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -367,6 +402,7 @@ var content;
             {
               "uriName": "kruskals-minimum-spanning-tree",
               "displayName": "Kruskal's Minimum Spanning Tree",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -374,6 +410,7 @@ var content;
             {
               "uriName": "edge-weighted-directed-graph",
               "displayName": "Edge-Weighted Directed Graph",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -381,6 +418,7 @@ var content;
             {
               "uriName": "dijkstras-shortest-paths",
               "displayName": "Dijkstra's Shortest Paths",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -388,6 +426,7 @@ var content;
             {
               "uriName": "shortest-paths-edge-weighted-directed-acyclic-graphs",
               "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)",
+              "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83"
@@ -397,6 +436,7 @@ var content;
         {
           "uriName": "strings",
           "displayName": "Strings",
+          "ImgName": "strings.svg",
           "description": "Some Demos related to the strings",
           "titleColor": "#20bdd0",
           "descriptionColor": "#20bdd0",
@@ -404,42 +444,56 @@ var content;
             {
               "uriName": "lsd-string-sort",
               "displayName": "LSD String Sort",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "msd-string-sort",
               "displayName": "MSD String Sort",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "trie-symbol-table",
               "displayName": "Trie Symbol Table",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "knuth-morris-pratt-substring-search",
               "displayName": "Knuth-Morris-Pratt Substring Search",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "non-deterministic-finite-state-automata",
               "displayName": "Non-Deterministic Finite State Automata",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "run-length-encoding",
               "displayName": "Run Length Encoding",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             },
             {
               "uriName": "huffman-compression",
               "displayName": "Huffman Compression",
+              "status": "disabled",
+              "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
               "descriptionColor": "#20bdd0"
             }
