@@ -1,15 +1,15 @@
 document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
-  <div class="panel panel-default" style="margin-top:30px; background-color:#222; border: 1px solid #080808;
+  <div class="panel panel-default" style="margin: 10px 0 15px; background-color:#222; border: 1px solid #080808;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
-    <div class="panel-body">
+    <div class="panel-body" style="padding: 5px 3px 2px;">
 
       <p class="pull-left" style="color:#dce9f2; font-size:20px;">` + routes["displayName"] + `</p>
 
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control" id="selectMethod">
+        <select class="form-control input-sm" id="selectMethod">
           <option>Choose Method</option>
           <!-- Algorithm methods will be inserted here -->
         </select>
@@ -18,7 +18,7 @@ document.getElementById("container").innerHTML += `
 
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control" id="selectInput" onchange="onInvoke();">
+        <select class="form-control input-sm" id="selectInput" onchange="onInvoke();">
           <option>Choose Input</option>
           <!-- Input datasets will be inserted here -->
         </select>
@@ -54,10 +54,10 @@ document.getElementById("container").innerHTML += `
       </div>
     </div>
   </div>
-  <br>
+
   <div class="pull-right">
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onPlayPause()">
-      <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
@@ -71,8 +71,8 @@ document.getElementById("container").innerHTML += `
 
 document.getElementById("sm-device-btn").innerHTML +=
   `<div class="pull-right">
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
-       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
+     <button type="button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
      </button>
      <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
        <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
