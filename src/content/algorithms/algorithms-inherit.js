@@ -107,13 +107,15 @@ var paused = true;
 
 var onPlayPause = function() {
   if (paused === true) {
+    paused = false;
     playInterval = window.setInterval(onPlayInterval, vm.dur);
+  } else {
+    paused = true;
   }
-  paused = !paused;
 }
 
 var onPlayInterval = function() {
-  if (vm.getFrame() === undefined) {
+  if (vm.getFrame() === undefined || paused === true) {
     window.clearInterval(playInterval);
   } else {
     vm.next();
