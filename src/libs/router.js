@@ -40,6 +40,10 @@ var loadScripts = function(scripts, callback) {
 var routes;
 var route;
 var content;
+let populateSelectInput = function() {
+
+};
+
 (function() {
   /**
    * The content's navigational hierarchy. This is used to validate page
@@ -47,7 +51,7 @@ var content;
    * that each level of the hierarchy's collection of children is ordered. This
    * is required to generate the index pages.
    */
-   content = [
+  content = [
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
@@ -85,7 +89,7 @@ var content;
               "descriptionColor": "#ea6874",
               "description": "Randomly shuffle the elements in an array (pg. 32).",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
-              "methods": ["shuffle"]
+              "methods": ["shuffle(Object[] a)"]
             },
             {
               "uriName": "search",
@@ -186,7 +190,7 @@ var content;
               "descriptionColor": "#e7a32a",
               "description": "Sort by repeatedly selecting the smallest remaining item (pg. 248).",
               "depends": ["js/libs/vizlib/algorithms/selection.js"],
-              "methods": ["sort"]
+              "methods": ["sort(Comparable[] a)"]
             },
             {
               "uriName": "insertion-sort",
@@ -196,7 +200,7 @@ var content;
               "descriptionColor": "#e7a32a",
               "description": "Sort by moving larger items one position to the right, before inserting the current item into the vacated position (pg. 250).",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"],
-              "methods": ["sort"]
+              "methods": ["sort(Comparable[] a)"]
             },
             {
               "uriName": "shell-sort",
@@ -289,18 +293,18 @@ var content;
               "description": "A table that stores a set of objects ordered by keys and provides a variety of operations to manipulate them (pg. 366).",
               "depends": ["js/libs/vizlib/algorithms/bst.js"],
               "methods": [
-                "ceiling",
-                "delete",
-                "deleteMax",
-                "deleteMin",
-                "floor",
-                "get",
-                "keys",
-                "max",
-                "min",
-                "put",
-                "rank",
-                "select"
+                "ceiling(Node x, Key key)",
+                "delete(Node x, Key key)",
+                "deleteMax(Node x)",
+                "deleteMin(Node x)",
+                "floor(Node x, Key key)",
+                "get(Node x, Key key)",
+                "keys(Node x, Queue<Key> queue, Key lo, Key hi)",
+                "max(Node x)",
+                "min(Node x)",
+                "put(Node x, Key key, Value val)",
+                "rank(Key key, Node x)",
+                "select(Node x, int k)"
               ]
             },
             {
@@ -494,7 +498,6 @@ var content;
       ]
     }
   ];
-
   /**
    * Decode uri parameters to a map.
    */
