@@ -1,7 +1,7 @@
 // Code:private Node delete(Node x, Key key) {
 delete_(x, key) {
 // Code:  if (x == null) {
-  that.nextLineNumber = that.args["x"] === null ? 3 : 5;
+  that.nextLineNumber = !(that.args["x"]) ? 3 : 5;
 // Code:    return null;
   that.result = null;
   that.nextLineNumber = undefined;

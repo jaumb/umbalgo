@@ -174,7 +174,7 @@ vm.viz = vizlib.get_bst(vm.globals["root"], svgW, svgH);
 let onInvoke = function() {
   // Emphasize the root (if it exists)
   console.log('invoke');
-  var method = document.getElementById("selectMethod").value;
+  let method = document.getElementById("selectMethod").value;
   if (method === 'put') {
     let key = a.pop();
     let newNode = new node(nodeId++, key, null, null);

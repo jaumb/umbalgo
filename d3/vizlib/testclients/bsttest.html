@@ -54,11 +54,14 @@
 
       // delete elements in random order one at a time
       elements.forEach(function(e) {
-        var nodeToDel = root;
+        //var nodeToDel = root;
+        var nodeToDel = min(root);
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
-          root = removeNode(root, nodeToDel);
-          viz.removeNodeAndUpdate(nodeToDel, dur);
+          //root = removeNode(root, nodeToDel);
+          root = delMin(root);
+          //viz.removeNodeAndUpdate(nodeToDel, dur);
+          viz.delMinNode();
           viz.buildTreeAndUpdate(root, dur);
         }
       });

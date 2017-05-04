@@ -70,7 +70,6 @@ var tree_factory = (function() {
     function _createNewEdge(vizParent, vizChild) {
       var newEdge = element_factory.getLine();
       newEdge.setStroke(colors.BLACK);
-      newEdge.setStrokeWidth(1/15 * _radius);
       _positionEdge(vizParent, vizChild, newEdge);
       _addEdge(vizParent, vizChild, newEdge);
       return newEdge;
@@ -192,9 +191,11 @@ var tree_factory = (function() {
      */
     function _delNodeFromCanvas(node) {
       if (!node) { return; }
-      var vizNode = _getVizNode(node); // try looking up client node
-      if (!vizNode && node.className && node.className() === 'circle') {
+      var vizNode = null;
+      if (node.className && node.className() === 'circle') {
         vizNode = node; // it's a visualization node
+      } else { // client node 
+        vizNode = _getVizNode(node);
       }
       if (vizNode) {
         vizNode.setFillOpacity(0);
@@ -422,6 +423,7 @@ var tree_factory = (function() {
       }
       edge.setPos(x1,y1,x2,y2);
       edge.setSp(x1,y1,x1,y1);
+      edge.setStrokeWidth(1/15 * _radius);
     }
 
     /**

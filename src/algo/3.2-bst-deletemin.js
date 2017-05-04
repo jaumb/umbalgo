@@ -1,7 +1,7 @@
 // Code:private Node deleteMin(Node x) {
 deleteMin(x) {
 // Code:  if (x.left == null) {
-  that.nextLineNumber = that.args["x"].left === null ? 3 : 5;
+  that.nextLineNumber = !(that.args["x"].left) ? 3 : 5;
 // Code:    return x.right;
   that.vm.viz.setFillAndUpdate([that.args["x"]], colors.GREEN, that.vm.dur);
   that.vm.viz.deemphasize([that.args["x"]]);
