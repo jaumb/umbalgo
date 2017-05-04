@@ -73,7 +73,7 @@ var content;
           "uriName": "fundamentals",
           "displayName": "Fundamentals",
           "ImgName": "fundamentals.svg",
-          "description": "These are some of the Basic Algorithms you should know",
+          "description": "Basic tools required for the study of algorithms and data structures (pg. 3).",
           "titleColor": "#ea6874",
           "descriptionColor": "#ea6874",
           "children": [
@@ -83,6 +83,7 @@ var content;
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874",
+              "description": "Randomly shuffle the elements in an array (pg. 32).",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
               "methods": ["shuffle"]
             },
@@ -91,13 +92,15 @@ var content;
               "displayName": "Search",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "bag-linked-list",
               "displayName": "Bag (Linked List)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
+              "description": "A collection that provides the ability to collect items, but does not support item removal (pg. 124).",
               "descriptionColor": "#ea6874"
             },
             {
@@ -105,13 +108,15 @@ var content;
               "displayName": "Bag (Array)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "queue-linked-list",
               "displayName": "Queue (Linked List)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
+              "description": "A collection that is based on the first-in-first-out (FIFO) policy (pg. 126).",
               "descriptionColor": "#ea6874"
             },
             {
@@ -119,28 +124,32 @@ var content;
               "displayName": "Queue (Array)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "stack-linked-list",
               "displayName": "String (Linked List)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "stack-array",
               "displayName": "Stack (Array)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-quickfind",
               "displayName": "Union-Find (Quickfind)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-quickunion",
@@ -148,14 +157,16 @@ var content;
               "ImgName": "fundamentals.svg",
               "color": "#f79fb0",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-weightedquickunion",
               "displayName": "Union-Find (Weighted Quickunion)",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ],
         },
@@ -163,7 +174,7 @@ var content;
           "uriName": "sorting",
           "displayName": "Sorting",
           "ImgName": "sorting.svg",
-          "description": "Learn Sorting the fun way",
+          "description": "The process of rearranging a sequence of objects so as to put them in some logical order (pg. 242).",
           "titleColor": "#e7a32a",
           "descriptionColor": "#e7a32a",
           "children": [
@@ -173,6 +184,7 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
+              "description": "Sort by repeatedly selecting the smallest remaining item (pg. 248).",
               "depends": ["js/libs/vizlib/algorithms/selection.js"],
               "methods": ["sort"]
             },
@@ -182,6 +194,7 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
+              "description": "Sort by moving larger items one position to the right, before inserting the current item into the vacated position (pg. 250).",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"],
               "methods": ["sort"]
             },
@@ -190,49 +203,56 @@ var content;
               "displayName": "Shell Sort",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "merge-sort",
               "displayName": "Merge Sort",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "quick-sort",
               "displayName": "Quick Sort",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "quick-3way-sort",
               "displayName": "Quick 3-Way Sort",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "heap-sort",
               "displayName": "Heap Sort",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "maxpq",
               "displayName": "MaxPQ",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "minpq",
               "displayName": "MinPQ",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         },
@@ -240,7 +260,7 @@ var content;
           "uriName": "searching",
           "displayName": "Searching",
           "ImgName": "searching.svg",
-          "description": "Learn the most efficient way to search anything",
+          "description": "Algorithms related to searching through the vast amount of information made accessible by modern computing (pg. 361).",
           "titleColor": "#3cda83",
           "descriptionColor": "#3cda83",
           "children": [
@@ -250,13 +270,15 @@ var content;
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "binary-symbol-table",
               "displayName": "Binary Symbol Table",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "ordered-symbol-table-bst",
@@ -264,6 +286,7 @@ var content;
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
+              "description": "A table that stores a set of objects ordered by keys and provides a variety of operations to manipulate them (pg. 366).",
               "depends": ["js/libs/vizlib/algorithms/bst.js"],
               "methods": [
                 "ceiling",
@@ -285,119 +308,135 @@ var content;
               "displayName": "Ordered Symbol Table (Reb/Black BST)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "separate-chaining-hash-table",
               "displayName": "Separate Chaining Hash Table",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "graph-undirected",
               "displayName": "Graph (Undirected)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "depth-first-search-undirected",
               "displayName": "Depth First Search (Undirected)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "breadth-first-search-undirected",
               "displayName": "Breadth First Search (Undirected)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "connected-components",
               "displayName": "Connected Components",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "graph-directed",
               "displayName": "Graph (Directed)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "cycle-detection",
               "displayName": "Cycle Detection",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "depth-first-search-directed",
               "displayName": "Depth First Search (Directed)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "reverse-postorder-vertex-ordering",
               "displayName": "Reverse Post-Order Vertex Ordering",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "kosarajus-strongly-connected-components",
               "displayName": "Kosaraju's Strongly-Connected Components",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "edge-weighted-graph",
               "displayName": "Edge-Weighted Graph",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "kruskals-minimum-spanning-tree",
               "displayName": "Kruskal's Minimum Spanning Tree",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "edge-weighted-directed-graph",
               "displayName": "Edge-Weighted Directed Graph",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "dijkstras-shortest-paths",
               "displayName": "Dijkstra's Shortest Paths",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "shortest-paths-edge-weighted-directed-acyclic-graphs",
               "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         },
         {
           "uriName": "strings",
           "displayName": "Strings",
-          "description": "Some Demos related to the strings",
+          "description": "Classic algorithms for addressing the underlying computational challenges related to processing strings (pg. 695).",
           "titleColor": "#20bdd0",
           "descriptionColor": "#20bdd0",
           "children": [
@@ -405,43 +444,50 @@ var content;
               "uriName": "lsd-string-sort",
               "displayName": "LSD String Sort",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "msd-string-sort",
               "displayName": "MSD String Sort",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "trie-symbol-table",
               "displayName": "Trie Symbol Table",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "knuth-morris-pratt-substring-search",
               "displayName": "Knuth-Morris-Pratt Substring Search",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "non-deterministic-finite-state-automata",
               "displayName": "Non-Deterministic Finite State Automata",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "run-length-encoding",
               "displayName": "Run Length Encoding",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "huffman-compression",
               "displayName": "Huffman Compression",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         }
