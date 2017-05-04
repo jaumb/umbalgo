@@ -21,7 +21,7 @@ let buildIndex = function() {
     indexHtml += `<div class = "col-sm-6 col-md-4">
                     <div class="card ` + child["status"] + `">
                     <a href="?page=` + route.join(",") + ","+ child["uriName"] + `" class="` + child["status"] + `"><span></span></a>
-                      <div class="avatar" id="avatar"><img src="images/` + child["ImgName"] + `"/></div>
+                      <div class="avatar" id="avatar"><img src="images/` + child["ImgName"] + `"/><a href="?page=` + route.join(",") + ","+ child["uriName"] + `" class="` + child["status"] + `"><span></span></a></div>
                       <div class="bottom-section">
                         <h3 style="color:` + child["titleColor"] + `;">` + child["displayName"] + `</h3>
                         <p style="color:` + child["descriptionColor"] + `;">"` + child["description"] + `"</p>
