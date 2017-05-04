@@ -295,8 +295,10 @@ var redraw = (function() {
    */
   function toggleAnimation() {
     if (_playpause) {
-      if (_intervalID) { clearInterval(_intervalID); }
-      _intervalID = null;
+      if (_intervalID) {
+        clearInterval(_intervalID);
+        _intervalID = null;
+      }
       _playpause = false;
     } else {
       _playpause = true;

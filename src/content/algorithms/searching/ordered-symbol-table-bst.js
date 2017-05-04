@@ -69,6 +69,20 @@ function addNode(rootNode, newNode) {
   return rootNode;
 }
 
+// add a node to the tree rooted at rootNode without visualizing the steps
+function addNodeNoViz(rootNode, newNode) {
+  if (!rootNode) {
+    return newNode;
+  } else if (newNode.val() > rootNode.val()) {
+    rootNode.setRChild(addNodeNoViz(rootNode.rChild(), newNode));
+  } else if (newNode.val() < rootNode.val()) {
+    rootNode.setLChild(addNodeNoViz(rootNode.lChild(), newNode));
+  } else {
+    // deal with equal keys here
+  }
+  return rootNode;
+}
+
 // remove theNode from the tree rooted at rootNode
 function removeNode(rootNode, theNode) {
   if (!rootNode) {
@@ -159,19 +173,41 @@ vm.viz = vizlib.get_bst(vm.globals["root"], svgW, svgH);
 
 let onInvoke = function() {
   // Emphasize the root (if it exists)
-  let key = a.pop();
-  let newNode = new node(nodeId++, key, null, null);
-  if (vm.globals["root"]) {
+  console.log('invoke');
+  var method = document.getElementById("selectMethod").value;
+  if (method === 'put') {
+    let key = a.pop();
+    let newNode = new node(nodeId++, key, null, null);
+    if (vm.globals["root"]) {
+      vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
+      vm.viz.step();
+    }
+    vm.viz.dispNextNodeAndUpdate(newNode, vm.dur);
+    vm.viz.step();
+    vm.invokeFunc(method, function(result) {
+      vm.globals["root"] = result;
+      vm.viz.buildTreeAndUpdate(result, vm.dur);
+      vm.viz.step();
+      vm.viz.clearEmphasesAndUpdate(vm.dur);
+      vm.viz.step();
+    }, vm.globals["root"], key, newNode);
+  } else if (method === 'deleteMin') {
+    if (!vm.globals["root"]) { // build a tree
+      let i = 0;
+      while (i < a.length) {
+        let newNode = new node(nodeId++, a[i++], null, null);
+        vm.globals["root"] = addNodeNoViz(vm.globals["root"], newNode);
+      }
+      vm.viz.buildTreeAndUpdate(vm.globals["root"], vm.dur);
+      vm.viz.step();
+    }
     vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
     vm.viz.step();
+    vm.invokeFunc(method, function(result) {
+      vm.globals["root"] = result;
+      vm.viz.delMinNode();
+      vm.viz.buildTreeAndUpdate(result, vm.dur);
+      vm.viz.step();
+    }, vm.globals["root"]);
   }
-  vm.viz.dispNextNodeAndUpdate(newNode, vm.dur);
-  vm.viz.step();
-  vm.invokeFunc("put", function(result) {
-    vm.globals["root"] = result;
-    vm.viz.buildTreeAndUpdate(result, vm.dur);
-    vm.viz.step();
-    vm.viz.clearEmphasesAndUpdate(vm.dur);
-    vm.viz.step();
-  }, vm.globals["root"], key, newNode);
 };
