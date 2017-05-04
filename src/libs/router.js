@@ -40,10 +40,6 @@ var loadScripts = function(scripts, callback) {
 var routes;
 var route;
 var content;
-let populateSelectInput = function() {
-
-};
-
 (function() {
   /**
    * The content's navigational hierarchy. This is used to validate page
@@ -89,7 +85,12 @@ let populateSelectInput = function() {
               "descriptionColor": "#ea6874",
               "description": "Randomly shuffle the elements in an array (pg. 32).",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
-              "methods": ["shuffle(Object[] a)"]
+              "methods": [
+                {
+                  "displayName": "shuffle(Object[] a)",
+                  "name": "shuffle"
+                }
+              ]
             },
             {
               "uriName": "search",
@@ -190,7 +191,12 @@ let populateSelectInput = function() {
               "descriptionColor": "#e7a32a",
               "description": "Sort by repeatedly selecting the smallest remaining item (pg. 248).",
               "depends": ["js/libs/vizlib/algorithms/selection.js"],
-              "methods": ["sort(Comparable[] a)"]
+              "methods": [
+                {
+                  "displayName": "sort(Comparable[] a)",
+                  "name": "sort"
+                }
+              ]
             },
             {
               "uriName": "insertion-sort",
@@ -200,7 +206,12 @@ let populateSelectInput = function() {
               "descriptionColor": "#e7a32a",
               "description": "Sort by moving larger items one position to the right, before inserting the current item into the vacated position (pg. 250).",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"],
-              "methods": ["sort(Comparable[] a)"]
+              "methods": [
+                {
+                  "displayName": "sort(Comparable[] a)",
+                  "name": "sort"
+                }
+              ]
             },
             {
               "uriName": "shell-sort",
@@ -293,18 +304,54 @@ let populateSelectInput = function() {
               "description": "A table that stores a set of objects ordered by keys and provides a variety of operations to manipulate them (pg. 366).",
               "depends": ["js/libs/vizlib/algorithms/bst.js"],
               "methods": [
-                "ceiling(Node x, Key key)",
-                "delete(Node x, Key key)",
-                "deleteMax(Node x)",
-                "deleteMin(Node x)",
-                "floor(Node x, Key key)",
-                "get(Node x, Key key)",
-                "keys(Node x, Queue<Key> queue, Key lo, Key hi)",
-                "max(Node x)",
-                "min(Node x)",
-                "put(Node x, Key key, Value val)",
-                "rank(Key key, Node x)",
-                "select(Node x, int k)"
+                {
+                  "displayName": "ceiling(Node x, Key key)",
+                  "name": "ceiling"
+                },
+                {
+                  "displayName": "delete(Node x, Key key)",
+                  "name": "delete"
+                },
+                {
+                  "displayName": "deleteMax(Node x)",
+                  "name": "deleteMax"
+                },
+                {
+                  "displayName": "deleteMin(Node x)",
+                  "name": "deleteMin"
+                },
+                {
+                  "displayName": "floor(Node x, Key key)",
+                  "name": "floor"
+                },
+                {
+                  "displayName": "get(Node x, Key key)",
+                  "name": "get"
+                },
+                {
+                  "displayName": "keys(Node x, Queue<Key> queue, Key lo, Key hi)",
+                  "name": "keys"
+                },
+                {
+                  "displayName": "max(Node x)",
+                  "name": "max"
+                },
+                {
+                  "displayName": "min(Node x)",
+                  "name": "min"
+                },
+                {
+                  "displayName": "put(Node x, Key key, Value val)",
+                  "name": "put"
+                },
+                {
+                  "displayName": "rank(Key key, Node x)",
+                  "name": "rank"
+                },
+                {
+                  "displayName": "select(Node x, int k)",
+                  "name": "select"
+                }
               ]
             },
             {
