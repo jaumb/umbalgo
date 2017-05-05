@@ -139,25 +139,26 @@
           viz.updateCanvas(dur);
         }
         //   JAVA: n++;
-        viz.hideNLabel();
-        viz.setNFill(colors.ACTIVE);
+        viz.hideNLabel();             // hide current n value
+        viz.setNFill(colors.ACTIVE);  // change color to indicate we are
+        viz.updateCanvas(dur);        // updating n
+
+        viz.updateN();     // update n's value to current number of nodes
+        viz.showNLabel();  // fade in the new n value
         viz.updateCanvas(dur);
 
-        viz.updateN();
-        viz.showNLabel();
-        viz.updateCanvas(dur);
-
-        viz.setNFill(colors.BACKGROUND);
+        viz.setNFill(colors.BACKGROUND);  // set n to background to show we are done
         viz.updateCanvas(dur);
 
         // VIZ: cleanup
-        viz.hideOldLast();
+        viz.hideOldLast();     // oldlast is local to the add call, so we fade it out
         viz.updateCanvas(dur);
 
-        viz.pointOldLastAt(null);
+        viz.pointOldLastAt(null);  // we set it to null for the next call
         viz.updateCanvas(0);
 
-        viz.hideOldLast();
+        // this stops the animation of the arrow moving from being visible
+        viz.hideOldLast();    
         viz.updateCanvas(dur);
         // JAVA: }
       }
