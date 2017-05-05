@@ -49,6 +49,10 @@ var content;
    */
   content = [
     {
+      "uriName": "about",
+      "displayName": "About"
+    },
+    {
       "uriName": "algorithms",
       "displayName": "Algorithms",
       "depends": [
@@ -623,8 +627,7 @@ var content;
           let children = makeRoutes(c["children"]);
           routes[c["uriName"]] = {
             "index": children === undefined,
-            "children": c.hasOwnProperty("children")
-              ? children : undefined
+            "children": c.hasOwnProperty("children") ? children : undefined
           };
           for (let property in c) {
             if (c.hasOwnProperty(property) && property !== "index" && property !== "children") {
