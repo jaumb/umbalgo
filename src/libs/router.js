@@ -711,7 +711,7 @@ var content;
     let buildDropdown = function(page, route) {
       let dropdownContent = "";
       if (page["children"] === undefined) {
-        dropdownContent += `<li><a href="?page=` + route.join(",") + `,` + page["uriName"] + `">` + page["displayName"] + `</a></li>`;
+        dropdownContent += `<li role="presentation" class="` + page["status"] + `"><a href="?page=` + route.join(",") + `,` + page["uriName"] + `">` + page["displayName"] + `</a></li>`;
       } else {
         dropdownContent +=
           `<li><a href="?page=` + route.join(",") + "," + page["uriName"] + `">` + page["displayName"] + `<span class="caret"></span></a>
