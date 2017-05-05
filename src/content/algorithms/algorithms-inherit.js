@@ -9,7 +9,7 @@ document.getElementById("container").innerHTML += `
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control input-sm" id="selectMethod" onchange="onInvoke();">
+        <select class="form-control input-sm" id="selectMethod">
           <option>Choose Method</option>
           <!-- Algorithm methods will be inserted here -->
         </select>
@@ -18,8 +18,9 @@ document.getElementById("container").innerHTML += `
 
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control input-sm">
-          <option>Choose Data Set &nbsp;</option>
+        <select class="form-control input-sm" id="selectInput" onchange="onInvoke();">
+          <option>Choose Input</option>
+          <!-- Input datasets will be inserted here -->
         </select>
         </div>
 
@@ -53,7 +54,7 @@ document.getElementById("container").innerHTML += `
       </div>
     </div>
   </div>
- 
+
   <div class="pull-right">
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
@@ -107,13 +108,16 @@ var paused = true;
 
 var onPlayPause = function() {
   if (paused === true) {
+    paused = false;
     playInterval = window.setInterval(onPlayInterval, vm.dur);
+  } else {
+    paused = true;
   }
-  paused = !paused;
 }
 
 var onPlayInterval = function() {
-  if (vm.getFrame() === undefined) {
+  if (vm.getFrame() === undefined || paused === true) {
+    paused = true;
     window.clearInterval(playInterval);
   } else {
     vm.next();
@@ -131,7 +135,18 @@ var onExport = function() {
     });
 }
 
+let inputData;
+let populateSelectInput = function(inputMap) {
+  inputData = inputMap;
+  for (let inputName in inputMap) {
+    if (inputMap.hasOwnProperty(inputName)) {
+      document.getElementById('selectInput').innerHTML
+        += `<option value="` + inputName + `">` + inputName + `</option>`;
+    }
+  }
+};
+
 // Populate the list of available methods
 for (let method of routes["methods"]) {
-  document.getElementById("selectMethod").innerHTML += `<option value="` + method + `">` + method + `</option>`;
+  document.getElementById("selectMethod").innerHTML += `<option value="` + method["name"] + `">` + method["displayName"] + `</option>`;
 }

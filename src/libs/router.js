@@ -47,7 +47,7 @@ var content;
    * that each level of the hierarchy's collection of children is ordered. This
    * is required to generate the index pages.
    */
-   content = [
+  content = [
     {
       "uriName": "algorithms",
       "displayName": "Algorithms",
@@ -73,7 +73,7 @@ var content;
           "uriName": "fundamentals",
           "displayName": "Fundamentals",
           "ImgName": "fundamentals.svg",
-          "description": "These are some of the Basic Algorithms you should know",
+          "description": "Basic tools required for the study of algorithms and data structures (pg. 3).",
           "titleColor": "#ea6874",
           "descriptionColor": "#ea6874",
           "children": [
@@ -84,8 +84,14 @@ var content;
               "status": "enabled",
               "titleColor": "#ea6874",
               "descriptionColor": "#ea6874",
+              "description": "Randomly shuffle the elements in an array (pg. 32).",
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
-              "methods": ["shuffle"]
+              "methods": [
+                {
+                  "displayName": "shuffle(Object[] a)",
+                  "name": "shuffle"
+                }
+              ]
             },
             {
               "uriName": "search",
@@ -93,7 +99,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "bag-linked-list",
@@ -101,6 +108,7 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
+              "description": "A collection that provides the ability to collect items, but does not support item removal (pg. 124).",
               "descriptionColor": "#ea6874"
             },
             {
@@ -109,7 +117,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "queue-linked-list",
@@ -117,6 +126,7 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
+              "description": "A collection that is based on the first-in-first-out (FIFO) policy (pg. 126).",
               "descriptionColor": "#ea6874"
             },
             {
@@ -125,7 +135,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "stack-linked-list",
@@ -133,7 +144,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "stack-array",
@@ -141,7 +153,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-quickfind",
@@ -149,7 +162,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-quickunion",
@@ -158,7 +172,8 @@ var content;
               "ImgName": "fundamentals.svg",
               "color": "#f79fb0",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "union-find-weightedquickunion",
@@ -166,7 +181,8 @@ var content;
               "status": "disabled",
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ],
         },
@@ -174,7 +190,7 @@ var content;
           "uriName": "sorting",
           "displayName": "Sorting",
           "ImgName": "sorting.svg",
-          "description": "Learn Sorting the fun way",
+          "description": "The process of rearranging a sequence of objects so as to put them in some logical order (pg. 242).",
           "titleColor": "#e7a32a",
           "descriptionColor": "#e7a32a",
           "children": [
@@ -185,8 +201,14 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
+              "description": "Sort by repeatedly selecting the smallest remaining item (pg. 248).",
               "depends": ["js/libs/vizlib/algorithms/selection.js"],
-              "methods": ["sort"]
+              "methods": [
+                {
+                  "displayName": "sort(Comparable[] a)",
+                  "name": "sort"
+                }
+              ]
             },
             {
               "uriName": "insertion-sort",
@@ -195,8 +217,14 @@ var content;
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
               "descriptionColor": "#e7a32a",
+              "description": "Sort by moving larger items one position to the right, before inserting the current item into the vacated position (pg. 250).",
               "depends": ["js/libs/vizlib/algorithms/insertion.js"],
-              "methods": ["sort"]
+              "methods": [
+                {
+                  "displayName": "sort(Comparable[] a)",
+                  "name": "sort"
+                }
+              ]
             },
             {
               "uriName": "shell-sort",
@@ -204,7 +232,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "merge-sort",
@@ -212,7 +241,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "quick-sort",
@@ -220,7 +250,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "quick-3way-sort",
@@ -228,7 +259,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "heap-sort",
@@ -236,7 +268,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "maxpq",
@@ -244,7 +277,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "minpq",
@@ -252,7 +286,8 @@ var content;
               "status": "disabled",
               "ImgName": "sorting.svg",
               "titleColor": "#e7a32a",
-              "descriptionColor": "#e7a32a"
+              "descriptionColor": "#e7a32a",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         },
@@ -260,7 +295,7 @@ var content;
           "uriName": "searching",
           "displayName": "Searching",
           "ImgName": "searching.svg",
-          "description": "Learn the most efficient way to search anything",
+          "description": "Algorithms related to searching through the vast amount of information made accessible by modern computing (pg. 361).",
           "titleColor": "#3cda83",
           "descriptionColor": "#3cda83",
           "children": [
@@ -271,6 +306,7 @@ var content;
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "binary-symbol-table",
@@ -278,7 +314,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "ordered-symbol-table-bst",
@@ -287,20 +324,57 @@ var content;
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
+              "description": "A table that stores a set of objects ordered by keys and provides a variety of operations to manipulate them (pg. 366).",
               "depends": ["js/libs/vizlib/algorithms/bst.js"],
               "methods": [
-                "ceiling",
-                "delete",
-                "deleteMax",
-                "deleteMin",
-                "floor",
-                "get",
-                "keys",
-                "max",
-                "min",
-                "put",
-                "rank",
-                "select"
+                {
+                  "displayName": "ceiling(Node x, Key key)",
+                  "name": "ceiling"
+                },
+                {
+                  "displayName": "delete(Node x, Key key)",
+                  "name": "delete"
+                },
+                {
+                  "displayName": "deleteMax(Node x)",
+                  "name": "deleteMax"
+                },
+                {
+                  "displayName": "deleteMin(Node x)",
+                  "name": "deleteMin"
+                },
+                {
+                  "displayName": "floor(Node x, Key key)",
+                  "name": "floor"
+                },
+                {
+                  "displayName": "get(Node x, Key key)",
+                  "name": "get"
+                },
+                {
+                  "displayName": "keys(Node x, Queue<Key> queue, Key lo, Key hi)",
+                  "name": "keys"
+                },
+                {
+                  "displayName": "max(Node x)",
+                  "name": "max"
+                },
+                {
+                  "displayName": "min(Node x)",
+                  "name": "min"
+                },
+                {
+                  "displayName": "put(Node x, Key key, Value val)",
+                  "name": "put"
+                },
+                {
+                  "displayName": "rank(Key key, Node x)",
+                  "name": "rank"
+                },
+                {
+                  "displayName": "select(Node x, int k)",
+                  "name": "select"
+                }
               ]
             },
             {
@@ -309,7 +383,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "separate-chaining-hash-table",
@@ -317,7 +392,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "graph-undirected",
@@ -325,7 +401,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "depth-first-search-undirected",
@@ -333,7 +410,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "breadth-first-search-undirected",
@@ -341,7 +419,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "connected-components",
@@ -349,7 +428,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "graph-directed",
@@ -357,7 +437,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "cycle-detection",
@@ -365,7 +446,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "depth-first-search-directed",
@@ -373,7 +455,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "reverse-postorder-vertex-ordering",
@@ -381,7 +464,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "kosarajus-strongly-connected-components",
@@ -389,7 +473,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "edge-weighted-graph",
@@ -397,7 +482,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "kruskals-minimum-spanning-tree",
@@ -405,7 +491,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "edge-weighted-directed-graph",
@@ -413,7 +500,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "dijkstras-shortest-paths",
@@ -421,7 +509,8 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "shortest-paths-edge-weighted-directed-acyclic-graphs",
@@ -429,15 +518,15 @@ var content;
               "status": "disabled",
               "ImgName": "searching.svg",
               "titleColor": "#3cda83",
-              "descriptionColor": "#3cda83"
+              "descriptionColor": "#3cda83",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         },
         {
           "uriName": "strings",
           "displayName": "Strings",
-          "ImgName": "strings.svg",
-          "description": "Some Demos related to the strings",
+          "description": "Classic algorithms for addressing the underlying computational challenges related to processing strings (pg. 695).",
           "titleColor": "#20bdd0",
           "descriptionColor": "#20bdd0",
           "children": [
@@ -447,7 +536,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "msd-string-sort",
@@ -455,7 +545,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "trie-symbol-table",
@@ -463,7 +554,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "knuth-morris-pratt-substring-search",
@@ -471,7 +563,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "non-deterministic-finite-state-automata",
@@ -479,7 +572,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "run-length-encoding",
@@ -487,7 +581,8 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
               "uriName": "huffman-compression",
@@ -495,15 +590,14 @@ var content;
               "status": "disabled",
               "ImgName": "strings.svg",
               "titleColor": "#20bdd0",
-              "descriptionColor": "#20bdd0"
+              "descriptionColor": "#20bdd0",
+              "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
         }
       ]
     }
   ];
-
-
   /**
    * Decode uri parameters to a map.
    */
@@ -543,71 +637,73 @@ var content;
     return {"children": makeRoutes(content)};
   }
 
-  try {
-    // The comma-joined route, as extracted from the uri.
-    var routeJoined = uriParams()["page"];
-    // A list of levels in the navigational hierarchy as specified by the uri,
-    // in descending order.
-    route = routeJoined.split(',');
-    // A list of the levels of the navigational hierarchy that have already been
-    // traversed.
-    var trace = [];
-    // An array of html that will be appended to the body. Each imports a script
-    // that provides common content for a level of the navigational hierarchy.
-    var scripts = [];
-    // An array of html that comprises the nav bar.
-    var nav = [];
-    // Iterate over the requested route level-by-level.
-    routes = makeRoutes(content);
-    for (var i = 0; i < route.length; ++i) {
-      routes = routes["children"][route[i]];
-      // Add the current level to the trace.
-      trace.push(route[i]);
-      // Load dependencies (if any).
-      if (routes["index"] === false && routes["depends"] !== undefined) {
-        scripts.push.apply(scripts, routes["depends"]);
-      }
-
-      if (i == route.length - 1) {
-        // If this is the bottom level of the route, load the script that
-        // populates page-specific content and its dependencies.
-        if (routes["children"] === undefined ) {
+  let loadRoute = function(uriRoute) {
+    try {
+      // A list of levels in the navigational hierarchy as specified by the uri,
+      // in descending order.
+      route = uriRoute.split(',');
+      // A list of the levels of the navigational hierarchy that have already been
+      // traversed.
+      var trace = [];
+      // An array of html that will be appended to the body. Each imports a script
+      // that provides common content for a level of the navigational hierarchy.
+      var scripts = [];
+      // An array of html that comprises the nav bar.
+      var nav = [];
+      // Iterate over the requested route level-by-level.
+      routes = makeRoutes(content);
+      for (var i = 0; i < route.length; ++i) {
+        routes = routes["children"][route[i]];
+        // Add the current level to the trace.
+        trace.push(route[i]);
+        // Load dependencies (if any).
+        if (routes["index"] === false && routes["depends"] !== undefined) {
           scripts.push.apply(scripts, routes["depends"]);
-          scripts.push("js/content/" + trace.join("/") + ".js");
-        } else {
-          scripts = [
-            "js/content/index-inherit.js",
-            "js/content/" + trace.join("/") + "/" + routes["uriName"] + "-index.js"
-          ];
         }
-        // Add an active breadcrumb to the navbar.
-        nav.push("<li class=\"active\"><a href=\"index.html?page="
-                 + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
-      } else {
-        // Load a script that populates all content common to pages that descend
-        // from this one.
-        scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
-                     + "-inherit.js");
-        // Add an inactive breadcrumb to the navbar.
-        nav.push("<li><a href=\"index.html?page="
-                 + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+
+        if (i == route.length - 1) {
+          // If this is the bottom level of the route, load the script that
+          // populates page-specific content and its dependencies.
+          if (routes["children"] === undefined ) {
+            scripts.push.apply(scripts, routes["depends"]);
+            scripts.push("js/content/" + trace.join("/") + ".js");
+          } else {
+            scripts = [
+              "js/content/index-inherit.js",
+              "js/content/" + trace.join("/") + "/" + routes["uriName"] + "-index.js"
+            ];
+          }
+          // Add an active breadcrumb to the navbar.
+          nav.push("<li class=\"active\"><a href=\"index.html?page="
+                   + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+        } else {
+          // Load a script that populates all content common to pages that descend
+          // from this one.
+          scripts.push("js/content/" + trace.join("/") + "/" + routes["uriName"]
+                       + "-inherit.js");
+          // Add an inactive breadcrumb to the navbar.
+          nav.push("<li><a href=\"index.html?page="
+                   + trace.join(",") + "\">" + routes["displayName"] + "</a></li>");
+        }
       }
+    } catch(e) {
+      // If an invalid route was requested, we'll end up here. Load the home page
+      // instead.
+      scripts = [];
+      loadRoute('algorithms');
     }
-  } catch(e) {
-    // If an invalid route was requested, we'll end up here. Load the home page
-    // instead.
-    scripts = ["js/content/index.js"];
-    nav = ["<li class=\"active\"><a href=\"index.html\">Home</a></li>"];
+    console.log(scripts);
+    // Load the scripts in order.
+    loadScripts(scripts);
+    // Populate the nav bar.
+    document.getElementById("nav").innerHTML = nav.join("");
+    // Populate the page title (if it has one).
+    try {
+      document.getElementById("title").innerHTML = title;
+    } catch (e) {}
   }
-  console.log(scripts);
-  // Load the scripts in order.
-  loadScripts(scripts);
-  // Populate the nav bar.
-  document.getElementById("nav").innerHTML = nav.join("");
-  // Populate the page title (if it has one).
-  try {
-    document.getElementById("title").innerHTML = title;
-  } catch (e) {}
+
+  loadRoute(uriParams()["page"]);
 
   // Populate dropdown menu
   let buildDropdown = function() {
