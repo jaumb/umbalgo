@@ -30,7 +30,6 @@ var linkedqueue = (function(root, svgW, svgH) {
   // public methods
   //////////////////////////////////////////////////////////////////////////////
 
-
   //element array getters///////////////////////////////////////////////////////
   var getRects = function() {
     return vizlib.getRects(_LL.getRects());
@@ -89,11 +88,21 @@ var linkedqueue = (function(root, svgW, svgH) {
     return redraw.addOps(function() { _LL.addNodeRight(node); });
   };
 
+  var removeFirstNode = function() {
+    return redraw.addOps(function() { _LL.removeFirstNode(); });
+  };
+
   var shiftRight = function() {
     return function() {
       _LL.moveAllNodes(2, 0);
     };
   };
+
+  var shiftLeft = function() {
+    return function() {
+      _LL.moveAllNodes(-2, 0);
+    }
+  }
 
   /**
    * Change the fill color of elements at specified indices.
@@ -114,6 +123,10 @@ var linkedqueue = (function(root, svgW, svgH) {
 
   var showNode = function(nodeID) {
     return redraw.addOps(function() { _LL.showNodes(nodeID); });
+  };
+
+  var hideNode = function(nodeID) {
+    return redraw.addOps(function() { _LL.hideNodes(nodeID); });
   };
 
   var showNodeBox = function(nodeID) {
@@ -151,6 +164,10 @@ var linkedqueue = (function(root, svgW, svgH) {
   var showNodeArrow = function(nodeID) {
     return redraw.addOps(function() { _LL.showNodeArrows(nodeID); });
   };
+
+  var hideNodeArrow = function(nodeID) {
+    return redraw.addOps(function() { _LL.hideNodeArrows(nodeID); });
+  }
 
   var pointNodeAtOldfirst = function(nodeID) {
     return redraw.addOps(function() { _LL.pointNodeAtOldfirst(nodeID); });
@@ -195,11 +212,12 @@ var linkedqueue = (function(root, svgW, svgH) {
   // exposed methods
   //////////////////////////////////////////////////////////////////////////////
   return {
-    addNodeLeft:addNodeLeft,
     showNode:showNode,
+    hideNode:hideNode,
     showNodeBox:showNodeBox,
     showNodeLabel:showNodeLabel,
     showNodeArrow:showNodeArrow,
+    hideNodeArrow:hideNodeArrow,
     pointNodeAtOldfirst:pointNodeAtOldfirst,
     pointFirstAt:pointFirstAt,
     pointLastAt:pointLastAt,
@@ -217,10 +235,12 @@ var linkedqueue = (function(root, svgW, svgH) {
     hideOldLast:hideOldLast,
     addNodeLeft:addNodeLeft,
     addNodeRight:addNodeRight,
+    removeFirstNode:removeFirstNode,
     hideNLabel:hideNLabel,
     showNLabel:showNLabel,
     updateN:updateN,
     shiftRight:shiftRight,
+    shiftLeft:shiftLeft,
     setFill:setFill,
     setNFill:setNFill,
     getRects:getRects,

@@ -54,7 +54,16 @@
       // var first = null;
       // var last = null;
 
+
+      if (first) {
+        viz.pointFirstAt(first.getID());
+        viz.updateCanvas(0);
+      }
       viz.showFirst();
+      if (last) {
+        viz.pointLastAt(last.getID());
+        viz.updateCanvas(0);
+      }
       viz.showLast();
       viz.updateCanvas(dur);
 
@@ -71,13 +80,16 @@
         viz.pointOldLastAtLast();
         viz.updateCanvas(dur);
 
-        //   JAVA: last = new Node();
-
         //   VIZ: create new node
         var newNode = linkedNode_factory.getNode(val, first);
-        //   VIZ: add it to the right
-        viz.addNodeRight(newNode);
-        viz.setFill([newNode.getID()], colors.COMPARE);
+
+        //   JAVA: last = new Node();
+        last = newNode;
+
+        //   VIZ: add new node to the right
+        viz.hideNodeArrow(oldlast.getID());             // fade out arrow of old last
+        viz.addNodeRight(newNode);                      // add new node to right side
+        viz.setFill([newNode.getID()], colors.COMPARE); // set new node color
         viz.updateCanvas(dur);
         //   VIZ: show the empty box
         viz.showNodeBox(newNode.getID());
@@ -96,6 +108,10 @@
         viz.showNodeArrow(newNode.getID());
         viz.updateCanvas(dur);
 
+        //   VIZ: set new node color to finished
+        viz.setFill([newNode.getID()], colors.FINISHED);
+        viz.updateCanvas(dur);
+
         //   JAVA: if (isEmpty())
         //     JAVA: first = last;
         //     VIZ: if first is null, point first at new node
@@ -107,7 +123,8 @@
         //     JAVA: oldlast.next = last;
         //     VIZ: otherwise point old last at the new node
         else {
-          viz.pointLastAt(newNode.getID());
+          // viz.pointLastAt(newNode.getID());
+          viz.showNodeArrow(oldlast.getID());
           viz.updateCanvas(dur);
         }
         //   JAVA: n++;
@@ -134,8 +151,44 @@
         // JAVA: }
       }
 
-      enqueue(5);
-      enqueue(5);
+      // JAVA: public Item dequeue() {
+      function dequeue() {
+        // JAVA: if (isEmpty())
+        if (first === null) {
+          // JAVA: throw new NoSuchElementException("Queue underflow");
+          // viz.showUnderflow();
+          // viz.updateCanvas(dur);
+        } else {
+          // JAVA: Item item = first.item;
+          // VIZ: set first to ACTIVE fill color
+          viz.setFill([first.getID()], colors.ACTIVE);
+          viz.updateCanvas(dur);
+
+          // VIZ: fade out the first node
+          viz.hideNode(first.getID());
+          viz.updateCanvas(dur);
+
+          // JAVA: first = first.next;
+          first = first.getNext();
+          // VIZ: point first to first.next, remove old first, shift nodes left
+          viz.pointFirstAt(first.getID());
+          viz.removeFirstNode();
+          viz.shiftLeft();
+          viz.updateCanvas(dur);
+          // JAVA: n--;
+          // JAVA: if (isEmpty())
+            // JAVA: last = null;   // to avoid loitering
+          // JAVA: return item;
+        }
+
+      // JAVA: }
+      }
+
+      // enqueue(1);
+      // enqueue(2);
+      // enqueue(3);
+      dequeue();
+      dequeue();
 
       viz.playpause();
 

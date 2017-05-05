@@ -52,8 +52,14 @@
       // var viz = vizlib.get_linkedbag(null, svgW, svgH);
       // var first = null;
 
+
+      if (first) {
+        viz.pointFirstAt(first.getID());
+        viz.updateCanvas(0);
+      } 
       viz.showFirst();
       viz.updateCanvas(dur);
+
 
 
       function add(val) {

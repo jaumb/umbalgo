@@ -6,11 +6,11 @@ var linkedNode_factory = (function() {
 
   function LinkedNode(val, next) {
     var _id = _ID++;
-    var _val = val;
-    var _next = next;
-    var _contentBox = null;
-    var _refBox = null;
-    var _refArrow = null;
+    var _val = val;         // the node's value
+    var _next = next;       // the next node (a LinkedNode)
+    var _contentBox = null; // the box that holds the node's value (a rect)
+    var _refBox = null;     // the box that holds the node's link arrow (a rect)
+    var _refArrow = null;   // the node's link arrow (a line)
 
     var getID = function() {
       return _id;
@@ -222,9 +222,7 @@ var ll_factory = (function() {
       } else {
         while (next.getNext()) {
           next = next.getNext();
-          console.log("next reassigned, new next.val = " + next.getVal());
         }
-        console.log("return value of next is: " + next.getID());
         return next;
       }
     }
@@ -798,6 +796,11 @@ var ll_factory = (function() {
     //  public linked list vizualization methods
     ////////////////////////////////////////////////////////////////////////////
 
+    function getBoxSize() {
+      return _boxSize;
+    }
+
+
     // reference variable visibility methods ///////////////////////////////////
 
     /**
@@ -970,7 +973,7 @@ var ll_factory = (function() {
 
 
 
-    // add node methods ////////////////////////////////////////////////////////
+    // add / remove node methods ////////////////////////////////////////////////////////
 
     function addNodeLeft(node) {
       _addNodeLeft(node);
@@ -980,6 +983,13 @@ var ll_factory = (function() {
     function addNodeRight(node) {
       _addNodeRight(node);
       _resize();
+    }
+
+    function removeFirstNode(node) {
+      var oldFirstNode = _root;
+      _root = _root.getNext();
+      _nodeMap.delete(oldFirstNode.getID());
+      // redraw.removeElem(_root.getID());
     }
 
 
@@ -1056,7 +1066,6 @@ var ll_factory = (function() {
       _n.getLabel().setStrokeOpacity(0);
     }
 
-
     /**
      * Show the label of the n counter.
      */
@@ -1065,6 +1074,9 @@ var ll_factory = (function() {
       _n.getLabel().setStrokeOpacity(1);
     }
 
+    /**
+     * Set the value in the N box to the current number of nodes.
+     */
     function updateN() {
       _setN(parseInt(_nodeCount));
     }
@@ -1076,6 +1088,7 @@ var ll_factory = (function() {
 
 
     function moveAllNodes(horiz, vert) {
+      console.log("moving all nodes: " + horiz);
       _moveNodes(horiz * _boxSize, vert * _boxSize);
       if (_nodeCount >= 5) {
         _resize();
@@ -1298,6 +1311,7 @@ var ll_factory = (function() {
 
     // return public functions
     return {
+      getBoxSize:getBoxSize,
       showFirst:showFirst,
       hideFirst:hideFirst,
       showOldFirst:showOldFirst,
@@ -1315,6 +1329,7 @@ var ll_factory = (function() {
       showNodeBox:showNodeBox,
       addNodeLeft:addNodeLeft,
       addNodeRight:addNodeRight,
+      removeFirstNode:removeFirstNode,
       pointFirstAt:pointFirstAt,
       pointOldFirstAt:pointOldFirstAt,
       pointLastAt:pointLastAt,
