@@ -54,16 +54,19 @@
       // var first = null;
       // var last = null;
 
-
+      // if we are starting with linked list, we want the first/last refs to
+      // appear on the screen pointing at the first/last node
       if (first) {
-        viz.pointFirstAt(first.getID());
-        viz.updateCanvas(0);
+        viz.pointFirstAt(first.getID()); // update arrow with a duration of
+        viz.updateCanvas(0);             // 0 as we don't want to show this transition
       }
-      viz.showFirst();
       if (last) {
         viz.pointLastAt(last.getID());
         viz.updateCanvas(0);
       }
+      // now when first/last are revealed they will be pointing at null in an
+      // empty list or the appropriate nodes in a populated list
+      viz.showFirst();
       viz.showLast();
       viz.updateCanvas(dur);
 
@@ -80,21 +83,27 @@
         viz.pointOldLastAtLast();
         viz.updateCanvas(dur);
 
-        //   VIZ: create new node
-        var newNode = linkedNode_factory.getNode(val, first);
-
         //   JAVA: last = new Node();
+        var newNode = linkedNode_factory.getNode(val, first);
         last = newNode;
 
         //   VIZ: add new node to the right
-        viz.hideNodeArrow(oldlast.getID());             // fade out arrow of old last
-        viz.addNodeRight(newNode);                      // add new node to right side
-        viz.setFill([newNode.getID()], colors.COMPARE); // set new node color
+        //   first we add a new node to the right, which resizes the LL if needed
+        viz.addNodeRight(newNode);
+        //   then we set the color of the new node to show it's being operated on
+        viz.setFill([newNode.getID()], colors.COMPARE);
+        //   when the new node is added, the old last node's object in the nodeMap
+        //   has its next property set to the new node, but in the visualization
+        //   we want to see that happen, so for now we set the visualization to
+        //   show it pointint to null
+        viz.pointNodeAtNull(oldlast.getID());
         viz.updateCanvas(dur);
-        //   VIZ: show the empty box
+
+
+        //   VIZ: show the empty box of the new node
         viz.showNodeBox(newNode.getID());
         viz.updateCanvas(dur);
-        //   VIZ: point last at it
+        //   VIZ: point the last ref at it
         viz.pointLastAt(newNode.getID());
         viz.updateCanvas(dur);
 
@@ -123,7 +132,9 @@
         //     JAVA: oldlast.next = last;
         //     VIZ: otherwise point old last at the new node
         else {
-          // viz.pointLastAt(newNode.getID());
+          // now we can restore the visualization's arrow to the correct
+          // position in sync with the java code
+          viz.pointNodeAtNext(oldlast.getID());
           viz.showNodeArrow(oldlast.getID());
           viz.updateCanvas(dur);
         }
@@ -184,11 +195,11 @@
       // JAVA: }
       }
 
-      // enqueue(1);
-      // enqueue(2);
-      // enqueue(3);
-      dequeue();
-      dequeue();
+      enqueue(1);
+      enqueue(2);
+      enqueue(3);
+      // dequeue();
+      // dequeue();
 
       viz.playpause();
 

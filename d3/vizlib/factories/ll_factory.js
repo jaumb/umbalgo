@@ -717,6 +717,15 @@ var ll_factory = (function() {
     }
 
 
+    /**
+     * Add a new node to the end (right side) of the linked list. Generates
+     * a content box, ref box, and ref arrow for the new node and adds it to
+     * the node map. Also increments the node count by one. The new node is
+     * hidden upon creation and can be faded into view using the show functions.
+     * @param {Object} newNode - The node object to add to the linked list.
+     * When this function is invoked, newNode's contentBox, refBox, and
+     * refArrow are null.
+     */
     function _addNodeRight(newNode) {
       var last = _getLastNode(root);
       var pos = last === null ?
@@ -980,6 +989,7 @@ var ll_factory = (function() {
       _resize();
     }
 
+
     function addNodeRight(node) {
       _addNodeRight(node);
       _resize();
@@ -1053,7 +1063,28 @@ var ll_factory = (function() {
       _pointNodeAtRef(nodeID, _oldfirst);
     }
 
+    /**
+     * Adjust the reference arrow associated with a node to point at null.
+     * @param {number} nodeID - The unique ID of the node whose arrow to update.
+     */
+    function pointNodeAtNull(nodeID) {
+      var node = _nodeMap.get(nodeID);
+      node.getRefArrow().setPosX2(node.getRefArrow().getPosX1() + _boxSize);
+      node.getRefArrow().setPosY2(node.getRefArrow().getPosY1());
+      node.getRefArrow().setMarkerEnd("url(#marker_stub)");
+    }
 
+    /**
+     * Adjust the reference arrow associated with a node to point at the next
+     * node to its right.
+     * @param {number} nodeID - The unique ID of the node whose arrow to update.
+     */
+    function pointNodeAtNext(nodeID) {
+      var node = _nodeMap.get(nodeID);
+      node.getRefArrow().setPosX2(node.getRefBox().getPosX() + 2 * _boxSize);
+      node.getRefArrow().setPosY2(node.getRefBox().getPosY());
+      node.getRefArrow().setMarkerEnd("url(#marker_arrow)");
+    }
 
 
     // number of elements (n) tracker methods //////////////////////////////////
@@ -1337,6 +1368,8 @@ var ll_factory = (function() {
       pointOldFirstAtFirst:pointOldFirstAtFirst,
       pointOldLastAtLast:pointOldLastAtLast,
       pointNodeAtOldfirst:pointNodeAtOldfirst,
+      pointNodeAtNull:pointNodeAtNull,
+      pointNodeAtNext:pointNodeAtNext,
       hideNLabel:hideNLabel,
       showNLabel:showNLabel,
       updateN:updateN,

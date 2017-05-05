@@ -169,6 +169,14 @@ var linkedqueue = (function(root, svgW, svgH) {
     return redraw.addOps(function() { _LL.hideNodeArrows(nodeID); });
   }
 
+  var pointNodeAtNull = function(nodeID) {
+    return redraw.addOps(function() { _LL.pointNodeAtNull(nodeID); });
+  };
+
+  var pointNodeAtNext = function(nodeID) {
+    return redraw.addOps(function() { _LL.pointNodeAtNext(nodeID); });
+  };
+
   var pointNodeAtOldfirst = function(nodeID) {
     return redraw.addOps(function() { _LL.pointNodeAtOldfirst(nodeID); });
   };
@@ -219,6 +227,8 @@ var linkedqueue = (function(root, svgW, svgH) {
     showNodeArrow:showNodeArrow,
     hideNodeArrow:hideNodeArrow,
     pointNodeAtOldfirst:pointNodeAtOldfirst,
+    pointNodeAtNull:pointNodeAtNull,
+    pointNodeAtNext:pointNodeAtNext,
     pointFirstAt:pointFirstAt,
     pointLastAt:pointLastAt,
     pointOldFirstAt:pointOldFirstAt,
