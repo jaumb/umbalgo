@@ -4,7 +4,7 @@ document.getElementById("container").innerHTML += `
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
     <div class="panel-body" style="padding: 5px 3px 2px;">
 
-      <p class="pull-left" style="color:#dce9f2; font-size:20px;">` + routes["displayName"] + `</p>
+      <p class="pull-left" style="color:#dce9f2; font-size:20px; font-family: 'Hammersmith One', sans-serif;">` + routes["displayName"] + `</p>
 
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
@@ -28,13 +28,13 @@ document.getElementById("container").innerHTML += `
     </div>
   </div>
 
-  <div class="visible-xs" id="sm-device-btn">
+  <div class="visible-xs visible-sm" id="sm-device-btn">
   </div>
 
 
   <div id="codeNote">
   </div>
-  <div class="row" style="height:75%">
+  <div class="row" style="height:85%">
     <div class="col-xs-12 col-sm-12 col-md-6" style="height:100%">
       <div class="panel panel-default" style="height:100%; box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 1);">
         <div class="panel-body" style="height:100%">

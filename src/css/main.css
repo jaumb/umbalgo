@@ -12,13 +12,21 @@ body {
 .control col-lg-6{
 	float: right !important;
 }
-
-
+.logo {
+  position: absolute;
+  transform: translateX(-50%);
+  background-color: #222;
+  border-radius: 50%;
+  border: 2px solid #222;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  margin-left: 25px;
+  margin-top: -15px;
+}
 .card {
   display: inline-block;
   background: #22313F;
-  width: 200px;
-  height: 250px;
+  width: 230px;
+  height: 270px;
   border-radius: 4px;
   position: relative;
   margin: auto;
@@ -29,8 +37,8 @@ body {
   opacity: 0.5;
   display: inline-block;
   background: #22313F;
-  width: 200px;
-  height: 250px;
+  width: 230px;
+  height: 270px;
   border-radius: 4px;
   position: relative;
   margin: auto;
@@ -61,15 +69,16 @@ body {
 }
 .card .bottom-section {
   text-align: center;
-  padding: 80px 5px 10px 5px;
+  padding: 60px 5px 40px 5px;
 }
 .card .bottom-section h3 {
   /*color: #ea6874;*/
-  font-family: 'Pacifico';
+  font-family: 'Hammersmith One', sans-serif;
 }
 .card .bottom-section p {
   font-size: 14px;
   /*color: #ea6874;*/
+  font-family: 'Montserrat', sans-serif;
 }
 
 .card a span { 
@@ -204,5 +213,5 @@ body {
 }
 .clear { 
   clear: both; 
-  height: 100px; 
+  height: 80px; 
 }

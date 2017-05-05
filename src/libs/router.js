@@ -526,6 +526,7 @@ var content;
         {
           "uriName": "strings",
           "displayName": "Strings",
+          "ImgName": "strings.svg",
           "description": "Classic algorithms for addressing the underlying computational challenges related to processing strings (pg. 695).",
           "titleColor": "#20bdd0",
           "descriptionColor": "#20bdd0",
