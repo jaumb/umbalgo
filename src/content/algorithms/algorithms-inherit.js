@@ -1,10 +1,10 @@
 document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
-  <div class="panel panel-default" style="margin: 10px 0 15px; background-color:#222; border: 1px solid #080808;
+  <div class="panel panel-default" style="margin: 27px 0 15px; background-color:#222; border: 1px solid #080808;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
     <div class="panel-body" style="padding: 5px 3px 2px;">
 
-      <p class="pull-left" style="color:#dce9f2; font-size:20px; font-family: 'Hammersmith One', sans-serif;">` + routes["displayName"] + `</p>
+      <p class="pull-left" style="color:#dce9f2; margin: 5px; font-size:20px; font-family: 'Hammersmith One', sans-serif;">` + routes["displayName"] + `</p>
 
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
@@ -56,7 +56,7 @@ document.getElementById("container").innerHTML += `
   </div>
 
   <div class="pull-right">
-    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onPlayPause()">
+    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Play/Pause" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
@@ -71,9 +71,9 @@ document.getElementById("container").innerHTML += `
 
 document.getElementById("sm-device-btn").innerHTML +=
   `<div class="pull-right">
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
        <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
-     </button>
+    </button>
      <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
        <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
      </button>
