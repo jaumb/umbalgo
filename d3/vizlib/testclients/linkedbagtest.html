@@ -56,13 +56,16 @@
       if (first) {
         viz.pointFirstAt(first.getID());
         viz.updateCanvas(0);
-      } 
+      }
       viz.showFirst();
       viz.updateCanvas(dur);
 
 
 
       function add(val) {
+        viz.pointOldFirstAt(null);
+        viz.updateCanvas(0);
+
         // java: Node oldfirst = first;
         var oldfirst = first;
         // fade in oldfirst ref
@@ -78,12 +81,10 @@
         // add a node to front, resize elements, show node box (label hidden),
         // point first ref's arrow at new node
         if (first) {
-          viz.shiftRight();
           viz.pointFirstAt(first.getID());
           viz.pointOldFirstAtFirst();
           viz.updateCanvas(dur);
         } else {
-          viz.shiftRight();
           viz.pointFirstAt(null);
           viz.updateCanvas(dur);
         }

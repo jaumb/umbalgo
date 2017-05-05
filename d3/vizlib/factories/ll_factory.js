@@ -307,9 +307,16 @@ var ll_factory = (function() {
      * This is used to readjust reference arrows after nodes have been resized.
      */
     function _updateRefArrows() {
-      _refs.forEach(function(ref){
-        _pointRefsAtNode(ref.target, ref);
-      });
+      console.log("size of nodemap: " + _nodeMap.size);
+      if (_nodeMap.size == 0) {
+        _refs.forEach(function(ref){
+          _pointRefsAtNode(null, ref);
+        });
+      } else {
+        _refs.forEach(function(ref){
+          _pointRefsAtNode(ref.target, ref);
+        });
+      }
     }
 
 
@@ -627,6 +634,7 @@ var ll_factory = (function() {
         });
       } else {
         _nodeMap.forEach(function(v,k,m) {
+          console.log("[in move nodes] moving node: " + horiz);
           // horizontal movement
           v.getContentBox().setPosX(v.getContentBox().getPosX() + horiz);
           v.getContentBox().getLabel().setPosX(v.getContentBox().getLabel().getPosX() + horiz);
@@ -999,7 +1007,11 @@ var ll_factory = (function() {
       var oldFirstNode = _root;
       _root = _root.getNext();
       _nodeMap.delete(oldFirstNode.getID());
-      // redraw.removeElem(_root.getID());
+      redraw.removeElem(oldFirstNode.getContentBox().getLabel().getID());
+      redraw.removeElem(oldFirstNode.getContentBox().getID());
+      redraw.removeElem(oldFirstNode.getRefBox().getID());
+      redraw.removeElem(oldFirstNode.getRefArrow().getID());
+      _resize();
     }
 
 
@@ -1052,7 +1064,11 @@ var ll_factory = (function() {
      * points to.
      */
     function pointOldLastAtLast() {
-      _pointRefsAtNode(_last.target, _oldlast);
+      if(_nodeMap.size == 0) {
+        _pointRefsAtNode(null, _oldlast);
+      } else {
+        _pointRefsAtNode(_last.target, _oldlast);
+      }
     }
 
     /**

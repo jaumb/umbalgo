@@ -50,7 +50,7 @@
 
 
       // uncomment to start with an empty bag
-      // var viz = vizlib.get_linkedbag(null, svgW, svgH);
+      // var viz = vizlib.get_linkedqueue(null, svgW, svgH);
       // var first = null;
       // var last = null;
 
@@ -96,7 +96,9 @@
         //   has its next property set to the new node, but in the visualization
         //   we want to see that happen, so for now we set the visualization to
         //   show it pointint to null
-        viz.pointNodeAtNull(oldlast.getID());
+        if (oldlast) {
+          viz.pointNodeAtNull(oldlast.getID());
+        }
         viz.updateCanvas(dur);
 
 
@@ -158,7 +160,7 @@
         viz.updateCanvas(0);
 
         // this stops the animation of the arrow moving from being visible
-        viz.hideOldLast();    
+        viz.hideOldLast();
         viz.updateCanvas(dur);
         // JAVA: }
       }
@@ -183,24 +185,54 @@
           // JAVA: first = first.next;
           first = first.getNext();
           // VIZ: point first to first.next, remove old first, shift nodes left
-          viz.pointFirstAt(first.getID());
+          if (first === null) {
+            viz.pointFirstAt(null);
+            viz.updateCanvas(dur);
+          } else {
+            viz.pointFirstAt(first.getID());
+            viz.updateCanvas(dur);
+          }
+
           viz.removeFirstNode();
-          viz.shiftLeft();
           viz.updateCanvas(dur);
+
+
           // JAVA: n--;
+          viz.hideNLabel();             // hide current n value
+          viz.setNFill(colors.ACTIVE);  // change color to indicate we are
+          viz.updateCanvas(dur);        // updating n
+
+          viz.updateN();     // update n's value to current number of nodes
+          viz.showNLabel();  // fade in the new n value
+          viz.updateCanvas(dur);
+
+          viz.setNFill(colors.BACKGROUND);  // set n to background to show we are done
+          viz.updateCanvas(dur);
+
           // JAVA: if (isEmpty())
+          if (first === null) {
             // JAVA: last = null;   // to avoid loitering
+            last = null;
+            viz.pointLastAt(null);
+            viz.updateCanvas(dur);
+          }
           // JAVA: return item;
         }
 
       // JAVA: }
       }
 
+
+      // dequeue();
+      // dequeue();
+      // dequeue();
+      dequeue();
+      dequeue();
       enqueue(1);
       enqueue(2);
       enqueue(3);
-      // dequeue();
-      // dequeue();
+
+
 
       viz.playpause();
 
