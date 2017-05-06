@@ -398,7 +398,17 @@ var content;
               "titleColor": "#3cda83",
               "descriptionColor": "#3cda83",
               "description": "This visualization is under construction. We will make it available as soon as possible."
-            },
+            }
+          ]
+        },
+        {
+          "uriName": "graphs",
+          "displayName": "Graphs",
+          "ImgName": "graph.svg",
+          "description": "Algorithms related to the analysis and manipulation of pairwise connections between items (pg. 515).",
+          "titleColor": "#ea6874",
+          "descriptionColor": "#ea6874",
+          "children": [
             {
               "uriName": "graph-undirected",
               "displayName": "Graph (Undirected)",
