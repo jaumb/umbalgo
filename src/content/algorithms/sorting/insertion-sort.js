@@ -7,9 +7,7 @@ populateSelectInput({
 });
 
 let onInvoke = function() {
-  console.log(inputData);
   var data = inputData[document.getElementById("selectInput").value];
-  console.log(data);
   vm.viz = vizlib.get_insertion(data, svgW, svgH);
   vm.viz.updateCanvas(0);
   vm.viz.setBoundPos(0);
