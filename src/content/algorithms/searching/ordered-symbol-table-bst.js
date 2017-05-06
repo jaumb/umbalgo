@@ -217,7 +217,7 @@ let onInvoke = function() {
         vm.globals["root"] = result;
         vm.viz.delMinNode(oldRoot);
         vm.viz.buildTreeAndUpdate(result, vm.dur);
-        vm.viz.step();
+        vm.viz.playpause();
       }, vm.globals["root"]);
     }
   }

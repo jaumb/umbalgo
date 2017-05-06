@@ -24,11 +24,11 @@ var insertion = (function(elems, svgW, svgH) {
   var index_j = element_factory.getText();
   index_i.setVal('i');
   index_i.setFont(_array.getSlots()[0].getLabel().getFont());
-  index_i.setVisibility('hidden');
+  index_i.setFillOpacity(0);
   var font_sz = _array.getSlots()[0].getLabel().getFontSize().split('p')[0];
   index_i.setFontSize(0.7 * parseFloat(font_sz));
   index_j.setVal('j');
-  index_j.setVisibility('hidden');
+  index_j.setFillOpacity(0);
   index_j.setFont(index_i.getFont());
   index_j.setFontSize(index_i.getFontSize());
 
@@ -89,7 +89,7 @@ var insertion = (function(elems, svgW, svgH) {
       index_i.setSpY(pos.y + h + 1 / 10 * h + 1 / 2 * bb.height);
       index_i.setPosX(index_i.getSpX());
       index_i.setPosY(index_i.getSpY());
-      index_i.setVisibility('visible');
+      index_i.setFillOpacity(100);
     });
   }
 
@@ -108,7 +108,7 @@ var insertion = (function(elems, svgW, svgH) {
       index_j.setSpY(pos.y - 1 / 4 * bb.height);
       index_j.setPosX(index_j.getSpX());
       index_j.setPosY(index_j.getSpY());
-      index_j.setVisibility('visible');
+      index_j.setFillOpacity(100);
     });
   }
 

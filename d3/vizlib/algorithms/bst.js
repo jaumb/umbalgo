@@ -250,6 +250,13 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Play animation.
+   */
+  function play() {
+    redraw.playAnimation();
+  }
+
+  /**
    * Toggle play/pause.
    */
   function playpause() {
@@ -300,6 +307,7 @@ var bst = function(root, svgW, svgH) {
     compareNodes:compareNodes,
     compareNodesAndUpdate:compareNodesAndUpdate,
     updateCanvas:updateCanvas,
+    play:play,
     playpause:playpause,
     step:step
   }

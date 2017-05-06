@@ -291,6 +291,16 @@ var redraw = (function() {
   }
 
   /**
+   * Play visualization
+   */
+  function playAnimation() {
+    if (!_playpause) {
+      _playpause = true;
+      _play();
+    }
+  }
+
+  /**
    * Toggle play/pause
    */
   function toggleAnimation() {
@@ -310,6 +320,7 @@ var redraw = (function() {
    * Draw the next step in the visualization.
    */
   function stepAnimation() {
+    if (_playpause) { return; }
     _step();
   }
 
@@ -490,6 +501,7 @@ var redraw = (function() {
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
     onNextDrawEnd:onNextDrawEnd,
+    playAnimation:playAnimation,
     toggleAnimation:toggleAnimation,
     stepAnimation:stepAnimation,
     getElem:getElem,
