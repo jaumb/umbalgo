@@ -3,8 +3,7 @@ vm.loadFunc("2.1-insertion-sort.js");
 populateSelectInput({
   "Best Case": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   "Worst Case": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-  "Random": d3.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-  "test": d3.shuffle([1, 2, 3, 4]) // TODO: REMOVE
+  "Random": d3.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 });
 
 let onInvoke = function() {
