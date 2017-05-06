@@ -137,14 +137,17 @@ var onPlayInterval = function() {
 }
 
 var onExport = function() {
-  let zip = new JSZip();
+  let doc = new jsPDF('p', 'pt', 'a4');
   for (let i = 0; i < vm.images.length; ++i) {
-    zip.file("" + i + ".svg", vm.images[i]);
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvg(canvas, vm.images[i]);
+    let imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 40, 40, vm.svgW, vm.svgH);
+    doc.addPage();
   }
-  zip.generateAsync({type:"blob"})
-    .then(function (blob) {
-      saveAs(blob, "visualization.zip");
-    });
+  doc.save("visualization.pdf");
 }
 
 let inputData;
