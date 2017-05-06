@@ -70,7 +70,7 @@ delete_(x, key) {
 // Code:    }
   that.nextLineNumber = 17;
 // Code:    Node t = x;
-  that.locals["t"] = x;
+  that.locals["t"] = that.args["x"];
   that.nextLineNumber = 18;
 // Code:    x = min(t.right);
   that.vm.invokeFunc(
