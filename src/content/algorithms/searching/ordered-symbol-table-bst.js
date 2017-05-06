@@ -184,7 +184,9 @@ let onInvoke = function() {
   console.log('invoke');
   let method = document.getElementById("selectMethod").value;
   if (method === 'put') {
-    let key = a.pop();
+    let locA = a.slice();
+    d3.shuffle(locA);
+    let key = locA.pop();
     let newNode = new node(nodeId++, key, null, null);
     if (vm.globals["root"]) {
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
@@ -219,6 +221,29 @@ let onInvoke = function() {
         vm.viz.buildTreeAndUpdate(result, vm.dur);
         vm.viz.step();
       }, vm.globals["root"]);
+    }
+  } else if (method === 'delete') {
+    if (!vm.globals["root"]) { // build a tree
+      let i = 0;
+      while (i < a.length) {
+        let newNode = new node(nodeId++, a[i++], null, null);
+        vm.globals["root"] = addNodeNoViz(vm.globals["root"], newNode);
+      }
+      vm.viz.buildTreeAndUpdate(vm.globals["root"], vm.dur);
+      vm.viz.step();
+    }
+    if (vm.globals["root"]) {
+      let locA = a.slice();
+      d3.shuffle(locA);
+      let key = locA.pop();
+      vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
+      vm.viz.play();
+      vm.invokeFunc(method, function(result) {
+        vm.globals["root"] = result;
+        vm.viz.delMinNode(oldRoot);
+        vm.viz.buildTreeAndUpdate(result, vm.dur);
+        vm.viz.step();
+      }, vm.globals["root"], key);
     }
   }
 };
