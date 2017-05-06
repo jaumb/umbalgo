@@ -59,9 +59,10 @@
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
           //root = removeNode(root, nodeToDel);
+          var oldRoot = root;
           root = delMin(root);
           //viz.removeNodeAndUpdate(nodeToDel, dur);
-          viz.delMinNode();
+          viz.delMinNode(oldRoot);
           viz.buildTreeAndUpdate(root, dur);
         }
       });

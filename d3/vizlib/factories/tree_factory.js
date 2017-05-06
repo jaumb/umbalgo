@@ -150,6 +150,27 @@ var tree_factory = (function() {
     }
 
     /**
+     * Get the parent visualization node of vizNode.
+     * @param {undefined|Object} vizNode - Visualization node.
+     */
+    function _parent(vizNode) {
+      var par = null;
+      var currNode = _root;
+      while (currNode !== vizNode) {
+        if (vizNode.getLabel().getVal() < currNode.getLabel().getVal()) {
+          par = currNode;
+          currNode = currNode.lChild;
+        } else if (vizNode.getLabel().getVal() > currNode.getLabel().getVal()) {
+          par = currNode;
+          currNode = currNode.rChild;
+        } else {
+          currNode = vizNode;
+        }
+      }
+      return par;
+    }
+
+    /**
      * Remove the node with the smallest value from the tree rooted at
      * rootVizNode.
      * @param {Object} rootVizNode - Root of the subtree.
@@ -565,11 +586,21 @@ var tree_factory = (function() {
      * Remove the node with the minimum value from the canvas.
      * @param {Object} clientRoot - Root of the client subtree.
      */
-    function delMinNode() {
+    function delMinNode(clientRoot) {
+      if (!clientRoot) { return; }
       redraw.addOps(function() {
-        if (!_root) { return; }
-        var minNode = _getMinNode(_root);
-        _root = _delMinNode(_root, null);
+        var vizNode = _getVizNode(clientRoot);
+        var minNode = _getMinNode(vizNode);
+        var par = _parent(vizNode);
+        if (!par) {
+          _root = _delMinNode(vizNode, null);
+        } else if (vizNode === par.lChild) {
+          par.lChild = _delMinNode(vizNode, par);
+        } else if (vizNode === par.rChild) {
+          par.rChild = _delMinNode(vizNode, par);
+        } else {
+          return;
+        }
         _delNodeFromCanvas(minNode);
       });
     }

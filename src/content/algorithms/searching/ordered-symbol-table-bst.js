@@ -201,13 +201,16 @@ let onInvoke = function() {
       vm.viz.buildTreeAndUpdate(vm.globals["root"], vm.dur);
       vm.viz.step();
     }
-    vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
-    vm.viz.step();
-    vm.invokeFunc(method, function(result) {
-      vm.globals["root"] = result;
-      vm.viz.delMinNode();
-      vm.viz.buildTreeAndUpdate(result, vm.dur);
+    if (vm.globals["root"]) {
+      vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
       vm.viz.step();
-    }, vm.globals["root"]);
+      vm.invokeFunc(method, function(result) {
+        var oldRoot = vm.globals["root"];
+        vm.globals["root"] = result;
+        vm.viz.delMinNode(oldRoot);
+        vm.viz.buildTreeAndUpdate(result, vm.dur);
+        vm.viz.step();
+      }, vm.globals["root"]);
+    }
   }
 };
