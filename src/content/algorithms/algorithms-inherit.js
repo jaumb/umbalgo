@@ -1,4 +1,3 @@
-document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
   <div class="panel panel-default" style="margin: 27px 0 15px; background-color:#222; border: 1px solid #080808;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
