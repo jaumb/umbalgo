@@ -63,6 +63,7 @@ var content;
         "js/libs/vizlib/factories/element_factory.js",
         "js/libs/vizlib/factories/array_factory.js",
         "js/libs/vizlib/factories/tree_factory.js",
+        "js/libs/vizlib/factories/ll_factory.js",
         "js/libs/vizlib/vizlib.js",
         "js/libs/vizlib/redraw.js",
         "js/libs/jszip.min.js",
@@ -109,7 +110,7 @@ var content;
             {
               "uriName": "bag-linked-list",
               "displayName": "Bag (Linked List)",
-              "status": "disabled",
+              "status": "enabled",
               "ImgName": "fundamentals.svg",
               "titleColor": colors.TEAL,
               "description": "A collection that provides the ability to collect items, but does not support item removal (pg. 124).",
