@@ -83,8 +83,8 @@ delete_(x, key) {
     },
     that.locals["t"].rChild());
 // Code:    x.right = deleteMin(t.right);
-  if (that.args["t"].rChild()) {
-    that.vm.viz.emphasizeAndUpdate([that.args["t"].rChild()], that.vm.dur);
+  if (that.locals["t"].rChild()) {
+    that.vm.viz.emphasizeAndUpdate([that.locals["t"].rChild()], that.vm.dur);
     that.vm.viz.step();
   }
   that.vm.invokeFunc(
