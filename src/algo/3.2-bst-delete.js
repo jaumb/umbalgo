@@ -46,6 +46,8 @@ delete_(x, key) {
     that.args["x"].rChild(),
     that.args["key"]);
 // Code:  } else {
+  that.vm.viz.setFill([that.args["x"]], colors.GREEN);
+  that.vm.viz.step();
   that.nextLineNumber = 11;
 // Code:    if (x.right == null) {
   if (!that.args["x"].rChild()) {
@@ -76,8 +78,6 @@ delete_(x, key) {
 // Code:    }
   that.nextLineNumber = 17;
 // Code:    Node t = x;
-  that.vm.viz.setFill([that.args["x"]], colors.GREEN);
-  that.vm.viz.step();
   that.locals["t"] = that.args["x"];
   that.nextLineNumber = 18;
 // Code:    x = min(t.right);
