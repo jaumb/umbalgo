@@ -12,9 +12,9 @@ delete_(x, key) {
   that.vm.viz.setFillAndUpdate([that.args["x"]], colors.BACKGROUND, that.vm.dur);
   that.vm.viz.play();
   if (that.args["key"] < that.args["x"].val()) {
-    that.locals["cmp"] = 1;
-  } else if (that.args["key"] > that.args["x"].val()) {
     that.locals["cmp"] = -1;
+  } else if (that.args["key"] > that.args["x"].val()) {
+    that.locals["cmp"] = 1;
   } else {
     that.locals["cmp"] = 0;
   }
