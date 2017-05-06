@@ -56,7 +56,10 @@ document.getElementById("container").innerHTML += `
   </div>
 
   <div class="pull-right">
-     <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Re-invoke" onclick="onInvoke()">
+      <span class="glyphicon glyphicon-repeat icon-repeat" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
     </button>
     <button type="button" id="idj-pause-button" class="btn btn-primary btn-lg outline hide" onclick="onPlayPause()">
@@ -74,6 +77,9 @@ document.getElementById("container").innerHTML += `
 
 document.getElementById("sm-device-btn").innerHTML +=
   `<div class="pull-right">
+    <button type="button" id="sm-repeat-button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
+      <span class="glyphicon glyphicon-repeat icon-repeat" aria-hidden="true"></span>
+    </button>
     <button type="button" id="sm-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
     </button>

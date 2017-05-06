@@ -1,6 +1,6 @@
 body {
   padding-top: 50px;
-  background-color: #22313F !important; 
+  background-color: #22313F !important;
 }
 
 
@@ -55,8 +55,8 @@ body {
   margin-left: 50%;
 }
 
-.card .avatar a span { 
-  position:absolute; 
+.card .avatar a span {
+  position:absolute;
   width:100%;
   height:100%;
   top: 0;
@@ -65,7 +65,7 @@ body {
 .card .avatar img {
   width: 50px;
   height: 50px;
-  
+
 }
 .card .bottom-section {
   text-align: center;
@@ -81,16 +81,16 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-.card a span { 
-  position:absolute; 
+.card a span {
+  position:absolute;
   width:100%;
   height:100%;
   top: 0;
   left: 0;
 }
 
-.card.disabled a span { 
-  position:absolute; 
+.card.disabled a span {
+  position:absolute;
   width:100%;
   height:100%;
   top: 0;
@@ -99,8 +99,8 @@ body {
 }
 
 .card:hover {
-   background-color: #34495E;  
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);  
+   background-color: #34495E;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 
 .card:active {
@@ -136,7 +136,7 @@ body {
 .profile-card .avatar img {
   width: 50px;
   height: 50px;
-  
+
 }
 .profile-card .bottom-section {
   text-align: center;
@@ -152,8 +152,8 @@ body {
   color: #B0B0B0;
   font-family: 'Montserrat', sans-serif;
 }
-.profile-card a span { 
-  position:absolute; 
+.profile-card a span {
+  position:absolute;
   width:100%;
   height:100%;
   top: 0;
@@ -161,10 +161,13 @@ body {
 }
 
 .profile-card:hover {
-  background-color: #22313F;  
+  background-color: #22313F;
 }
 
-
+.icon-repeat {
+  color: #5CB85C;
+  font-size: 25px;
+}
 
 .icon-play {
   color: #5CB85C;
@@ -206,7 +209,7 @@ body {
   border-radius: 4px;
   padding: 10px 16px;
 }
-  
+
 .btn-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -274,10 +277,10 @@ body {
   color: #95a5a6;
   font-family: 'Montserrat', sans-serif;
   text-align: center;
-  margin: 50px; 
+  margin: 50px;
 }
 
-.clear { 
-  clear: both; 
-  height: 70px; 
+.clear {
+  clear: both;
+  height: 70px;
 }
