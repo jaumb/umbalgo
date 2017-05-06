@@ -55,16 +55,20 @@
       // delete elements in random order one at a time
       elements.forEach(function(e) {
         var nodeToDel = root;
+        //var nodeToDel = min(root);
         if (nodeToDel) {
           viz.emphasizeAndUpdate([root], dur);
           root = removeNode(root, nodeToDel);
+          //var oldRoot = root;
+          //root = delMin(root);
           viz.removeNodeAndUpdate(nodeToDel, dur);
+          //viz.delMinNode(oldRoot);
           viz.buildTreeAndUpdate(root, dur);
         }
       });
 
       // start the visualization once we finish add and remove operations
-      viz.playpause();
+      viz.play();
 
       // add a node to the tree rooted at rootNode
       function addNode(rootNode, newNode) {

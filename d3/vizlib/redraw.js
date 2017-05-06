@@ -24,6 +24,8 @@ var redraw = (function() {
     var f = _step();
     if (f) {
       _intervalID = setTimeout(_play, f.duration);
+    } else {
+      _playpause = false;
     }
   }
 
@@ -291,12 +293,24 @@ var redraw = (function() {
   }
 
   /**
+   * Play visualization
+   */
+  function playAnimation() {
+    if (!_playpause) {
+      _playpause = true;
+      _play();
+    }
+  }
+
+  /**
    * Toggle play/pause
    */
   function toggleAnimation() {
     if (_playpause) {
-      if (_intervalID) { clearInterval(_intervalID); }
-      _intervalID = null;
+      if (_intervalID) {
+        clearInterval(_intervalID);
+        _intervalID = null;
+      }
       _playpause = false;
     } else {
       _playpause = true;
@@ -308,6 +322,7 @@ var redraw = (function() {
    * Draw the next step in the visualization.
    */
   function stepAnimation() {
+    if (_playpause) { return; }
     _step();
   }
 
@@ -488,6 +503,7 @@ var redraw = (function() {
     addOps:addOps,
     addOpsAndDraw:addOpsAndDraw,
     onNextDrawEnd:onNextDrawEnd,
+    playAnimation:playAnimation,
     toggleAnimation:toggleAnimation,
     stepAnimation:stepAnimation,
     getElem:getElem,

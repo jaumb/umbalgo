@@ -89,13 +89,14 @@ var bst = function(root, svgW, svgH) {
 
   /**
    * Delete node with minimum value from tree.
+   * @param {Object} rootNode - Root of subtree.
    */
-  var delMinNode = function() {
-    _tree.delMinNode();
+  var delMinNode = function(rootNode) {
+    _tree.delMinNode(rootNode);
   }
 
-  var delMinNodeAndUpdate = function(dur) {
-    _tree.delMinNode();
+  var delMinNodeAndUpdate = function(rootNode, dur) {
+    _tree.delMinNode(rootNode);
     updateCanvas.apply(this, [dur]);
   }
 
@@ -249,6 +250,13 @@ var bst = function(root, svgW, svgH) {
   }
 
   /**
+   * Play animation.
+   */
+  function play() {
+    redraw.playAnimation();
+  }
+
+  /**
    * Toggle play/pause.
    */
   function playpause() {
@@ -299,6 +307,7 @@ var bst = function(root, svgW, svgH) {
     compareNodes:compareNodes,
     compareNodesAndUpdate:compareNodesAndUpdate,
     updateCanvas:updateCanvas,
+    play:play,
     playpause:playpause,
     step:step
   }

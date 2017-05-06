@@ -108,6 +108,10 @@ var insertion = (function(elems, svgW, svgH) {
       index_j.setSpY(pos.y - 1 / 4 * bb.height);
       index_j.setPosX(index_j.getSpX());
       index_j.setPosY(index_j.getSpY());
+<<<<<<< HEAD
+      index_j.setVisibility('visible');
+=======
+>>>>>>> bst-integration
       index_j.setFillOpacity(100);
     });
   }

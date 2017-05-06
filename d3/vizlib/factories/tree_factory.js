@@ -70,7 +70,6 @@ var tree_factory = (function() {
     function _createNewEdge(vizParent, vizChild) {
       var newEdge = element_factory.getLine();
       newEdge.setStroke(colors.BLACK);
-      newEdge.setStrokeWidth(1/15 * _radius);
       _positionEdge(vizParent, vizChild, newEdge);
       _addEdge(vizParent, vizChild, newEdge);
       return newEdge;
@@ -151,6 +150,27 @@ var tree_factory = (function() {
     }
 
     /**
+     * Get the parent visualization node of vizNode.
+     * @param {undefined|Object} vizNode - Visualization node.
+     */
+    function _parent(vizNode) {
+      var par = null;
+      var currNode = _root;
+      while (currNode !== vizNode) {
+        if (vizNode.getLabel().getVal() < currNode.getLabel().getVal()) {
+          par = currNode;
+          currNode = currNode.lChild;
+        } else if (vizNode.getLabel().getVal() > currNode.getLabel().getVal()) {
+          par = currNode;
+          currNode = currNode.rChild;
+        } else {
+          currNode = vizNode;
+        }
+      }
+      return par;
+    }
+
+    /**
      * Remove the node with the smallest value from the tree rooted at
      * rootVizNode.
      * @param {Object} rootVizNode - Root of the subtree.
@@ -192,9 +212,11 @@ var tree_factory = (function() {
      */
     function _delNodeFromCanvas(node) {
       if (!node) { return; }
-      var vizNode = _getVizNode(node); // try looking up client node
-      if (!vizNode && node.className && node.className() === 'circle') {
+      var vizNode = null;
+      if (node.className && node.className() === 'circle') {
         vizNode = node; // it's a visualization node
+      } else { // client node 
+        vizNode = _getVizNode(node);
       }
       if (vizNode) {
         vizNode.setFillOpacity(0);
@@ -317,10 +339,14 @@ var tree_factory = (function() {
       if (aNode.className && aNode.className() === 'circle') { // viz node
         var cNode = _getClientNode(aNode);
         _vizNodeMap.delete(aNode.getID());
-        _clientNodeMap.delete(cNode.id());
+        if (cNode) {
+          _clientNodeMap.delete(cNode.id());
+        }
       } else { // client node
         var vNode = _getVizNode(aNode);
-        _vizNodeMap.delete(vNode.getID());
+        if (vNode) {
+          _vizNodeMap.delete(vNode.getID());
+        }
         _clientNodeMap.delete(aNode.id());
       }
     }
@@ -422,6 +448,7 @@ var tree_factory = (function() {
       }
       edge.setPos(x1,y1,x2,y2);
       edge.setSp(x1,y1,x1,y1);
+      edge.setStrokeWidth(1/15 * _radius);
     }
 
     /**
@@ -563,11 +590,21 @@ var tree_factory = (function() {
      * Remove the node with the minimum value from the canvas.
      * @param {Object} clientRoot - Root of the client subtree.
      */
-    function delMinNode() {
+    function delMinNode(clientRoot) {
+      if (!clientRoot) { return; }
       redraw.addOps(function() {
-        if (!_root) { return; }
-        var minNode = _getMinNode(_root);
-        _root = _delMinNode(_root, null);
+        var vizNode = _getVizNode(clientRoot);
+        var minNode = _getMinNode(vizNode);
+        var par = _parent(vizNode);
+        if (!par) {
+          _root = _delMinNode(vizNode, null);
+        } else if (vizNode === par.lChild) {
+          par.lChild = _delMinNode(vizNode, par);
+        } else if (vizNode === par.rChild) {
+          par.rChild = _delMinNode(vizNode, par);
+        } else {
+          return;
+        }
         _delNodeFromCanvas(minNode);
       });
     }
