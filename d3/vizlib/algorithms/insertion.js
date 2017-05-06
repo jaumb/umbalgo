@@ -109,6 +109,7 @@ var insertion = (function(elems, svgW, svgH) {
       index_j.setPosX(index_j.getSpX());
       index_j.setPosY(index_j.getSpY());
       index_j.setVisibility('visible');
+      index_j.setFillOpacity(100);
     });
   }
 

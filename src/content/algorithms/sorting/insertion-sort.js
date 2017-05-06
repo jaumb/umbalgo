@@ -3,12 +3,12 @@ vm.loadFunc("2.1-insertion-sort.js");
 populateSelectInput({
   "Best Case": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   "Worst Case": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-  "Random": d3.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  "Random": d3.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  "test": d3.shuffle([1, 2, 3, 4]) // TODO: REMOVE
 });
 
 let onInvoke = function() {
   console.log(inputData);
-  //var a = [86, 71, 10, 75, 73, 64, 87, 23, 41];
   var data = inputData[document.getElementById("selectInput").value];
   console.log(data);
   vm.viz = vizlib.get_insertion(data, svgW, svgH);
