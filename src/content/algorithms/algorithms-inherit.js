@@ -1,15 +1,15 @@
 document.body.innerHTML += `<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">`;
 document.getElementById("container").innerHTML += `
-  <div class="panel panel-default" style="margin-top:30px; background-color:#222; border: 1px solid #080808;
+  <div class="panel panel-default" style="margin: 27px 0 15px; background-color:#222; border: 1px solid #080808;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);">
-    <div class="panel-body">
+    <div class="panel-body" style="padding: 5px 3px 2px;">
 
-      <p class="pull-left" style="color:#dce9f2; font-size:20px;">` + routes["displayName"] + `</p>
+      <p class="pull-left" style="color:#dce9f2; margin: 5px; font-size:20px; font-family: 'Hammersmith One', sans-serif;">` + routes["displayName"] + `</p>
 
       <div class="pull-right">
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control" id="selectMethod" onchange="onInvoke();">
+        <select class="form-control input-sm" id="selectMethod">
           <option>Choose Method</option>
           <!-- Algorithm methods will be inserted here -->
         </select>
@@ -18,8 +18,9 @@ document.getElementById("container").innerHTML += `
 
         <div class="col-md-6 col-sm-6">
 
-        <select class="form-control">
-          <option>Choose Data Set &nbsp;</option>
+        <select class="form-control input-sm" id="selectInput" onchange="onInvoke();">
+          <option>Choose Input</option>
+          <!-- Input datasets will be inserted here -->
         </select>
         </div>
 
@@ -27,13 +28,13 @@ document.getElementById("container").innerHTML += `
     </div>
   </div>
 
-  <div class="visible-xs" id="sm-device-btn">
+  <div class="visible-xs visible-sm" id="sm-device-btn">
   </div>
 
 
   <div id="codeNote">
   </div>
-  <div class="row" style="height:75%">
+  <div class="row" style="height:85%">
     <div class="col-xs-12 col-sm-12 col-md-6" style="height:100%">
       <div class="panel panel-default" style="height:100%; box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 1);">
         <div class="panel-body" style="height:100%">
@@ -53,10 +54,16 @@ document.getElementById("container").innerHTML += `
       </div>
     </div>
   </div>
-  <br>
+
   <div class="pull-right">
-    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Invoke" onclick="onPlayPause()">
-      <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
+    <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Re-invoke" onclick="onInvoke()">
+      <span class="glyphicon glyphicon-repeat icon-repeat" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="idj-pause-button" class="btn btn-primary btn-lg outline hide" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-pause icon-play" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
@@ -70,9 +77,15 @@ document.getElementById("container").innerHTML += `
 
 document.getElementById("sm-device-btn").innerHTML +=
   `<div class="pull-right">
-     <button type="button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
-       <span class="glyphicon glyphicon-off icon-invoke" aria-hidden="true"></span>
-     </button>
+    <button type="button" id="sm-repeat-button" class="btn btn-primary btn-lg outline" onclick="onInvoke()">
+      <span class="glyphicon glyphicon-repeat icon-repeat" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="sm-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="sm-pause-button" class="btn btn-primary btn-lg outline hide" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-pause icon-play" aria-hidden="true"></span>
+    </button>
      <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
        <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
      </button>
@@ -107,13 +120,28 @@ var paused = true;
 
 var onPlayPause = function() {
   if (paused === true) {
+    paused = false;
+    $('#idj-play-button').addClass('hide');
+    $('#idj-pause-button').removeClass('hide');
+    $('#sm-play-button').addClass('hide');
+    $('#sm-pause-button').removeClass('hide');
     playInterval = window.setInterval(onPlayInterval, vm.dur);
+  } else {
+    paused = true;
+    $('#idj-pause-button').addClass('hide');
+    $('#idj-play-button').removeClass('hide');
+    $('#sm-pause-button').addClass('hide');
+    $('#sm-play-button').removeClass('hide');
   }
-  paused = !paused;
 }
 
 var onPlayInterval = function() {
-  if (vm.getFrame() === undefined) {
+  if (vm.getFrame() === undefined || paused === true) {
+    paused = true;
+    $('#idj-pause-button').addClass('hide');
+    $('#idj-play-button').removeClass('hide');
+    $('#sm-pause-button').addClass('hide');
+    $('#sm-play-button').removeClass('hide');
     window.clearInterval(playInterval);
   } else {
     vm.next();
@@ -121,17 +149,31 @@ var onPlayInterval = function() {
 }
 
 var onExport = function() {
-  let zip = new JSZip();
+  let doc = new jsPDF('p', 'pt', 'a4');
   for (let i = 0; i < vm.images.length; ++i) {
-    zip.file("" + i + ".svg", vm.images[i]);
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvg(canvas, vm.images[i]);
+    let imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 40, 40, vm.svgW, vm.svgH);
+    doc.addPage();
   }
-  zip.generateAsync({type:"blob"})
-    .then(function (blob) {
-      saveAs(blob, "visualization.zip");
-    });
+  doc.save("visualization.pdf");
 }
+
+let inputData;
+let populateSelectInput = function(inputMap) {
+  inputData = inputMap;
+  for (let inputName in inputMap) {
+    if (inputMap.hasOwnProperty(inputName)) {
+      document.getElementById('selectInput').innerHTML
+        += `<option value="` + inputName + `">` + inputName + `</option>`;
+    }
+  }
+};
 
 // Populate the list of available methods
 for (let method of routes["methods"]) {
-  document.getElementById("selectMethod").innerHTML += `<option value="` + method + `">` + method + `</option>`;
+  document.getElementById("selectMethod").innerHTML += `<option value="` + method["name"] + `">` + method["displayName"] + `</option>`;
 }

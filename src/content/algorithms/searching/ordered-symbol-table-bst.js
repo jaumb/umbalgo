@@ -171,6 +171,14 @@ vm.globals["root"] = null;
 vm.globals["nodes"] = {};
 vm.viz = vizlib.get_bst(vm.globals["root"], svgW, svgH);
 
+// TODO: These are dummy values. Currently, BST will operate on
+// hardcoded values in onInvoke when any data set is selected.
+populateSelectInput({
+  "Random": d3.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  "Ascending": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "Descending": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+});
+
 let onInvoke = function() {
   // Emphasize the root (if it exists)
   console.log('invoke');
