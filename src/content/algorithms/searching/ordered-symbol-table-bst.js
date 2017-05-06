@@ -47,6 +47,18 @@ function resize() {
   vm.viz.resize(vm.viz, svgW, svgH);
 }
 
+// find node with given key
+function findNodeWithKey(rootNode, key) {
+  while (rootNode && rootNode.val() !== key) {
+    if (key < rootNode.val()) {
+      rootNode = rootNode.lChild();
+    } else {
+      rootNode = rootNode.rChild();
+    }
+  }
+  return rootNode;
+}
+
 // add a node to the tree rooted at rootNode
 function addNode(rootNode, newNode) {
   if (!rootNode) {
@@ -213,7 +225,7 @@ let onInvoke = function() {
     }
     if (vm.globals["root"]) {
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
-      vm.viz.play();
+      vm.viz.step();
       vm.invokeFunc(method, function(result) {
         var oldRoot = vm.globals["root"];
         vm.globals["root"] = result;
@@ -236,13 +248,14 @@ let onInvoke = function() {
       let locA = a.slice();
       d3.shuffle(locA);
       let key = locA.pop();
+      let theNode = findNodeWithKey(vm.globals["root"], key);
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
-      vm.viz.play();
-      vm.invokeFunc(method, function(result) {
+      vm.viz.step();
+      vm.invokeFunc(method + "_", function(result) {
         vm.globals["root"] = result;
-        vm.viz.delMinNode(oldRoot);
+        vm.viz.removeNodeAndUpdate(theNode, vm.dur);
         vm.viz.buildTreeAndUpdate(result, vm.dur);
-        vm.viz.step();
+        vm.viz.play();
       }, vm.globals["root"], key);
     }
   }
