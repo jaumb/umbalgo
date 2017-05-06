@@ -339,10 +339,14 @@ var tree_factory = (function() {
       if (aNode.className && aNode.className() === 'circle') { // viz node
         var cNode = _getClientNode(aNode);
         _vizNodeMap.delete(aNode.getID());
-        _clientNodeMap.delete(cNode.id());
+        if (cNode) {
+          _clientNodeMap.delete(cNode.id());
+        }
       } else { // client node
         var vNode = _getVizNode(aNode);
-        _vizNodeMap.delete(vNode.getID());
+        if (vNode) {
+          _vizNodeMap.delete(vNode.getID());
+        }
         _clientNodeMap.delete(aNode.id());
       }
     }

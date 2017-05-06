@@ -211,13 +211,13 @@ let onInvoke = function() {
     }
     if (vm.globals["root"]) {
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
-      vm.viz.step();
+      vm.viz.play();
       vm.invokeFunc(method, function(result) {
         var oldRoot = vm.globals["root"];
         vm.globals["root"] = result;
         vm.viz.delMinNode(oldRoot);
         vm.viz.buildTreeAndUpdate(result, vm.dur);
-        vm.viz.playpause();
+        vm.viz.step();
       }, vm.globals["root"]);
     }
   }

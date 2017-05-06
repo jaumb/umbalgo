@@ -24,6 +24,8 @@ var redraw = (function() {
     var f = _step();
     if (f) {
       _intervalID = setTimeout(_play, f.duration);
+    } else {
+      _playpause = false;
     }
   }
 
