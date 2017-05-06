@@ -92,7 +92,7 @@ var content;
               "depends": ["js/libs/vizlib/algorithms/shuffle.js"],
               "methods": [
                 {
-                  "displayName": "shuffle(Object[] a)",
+                  "displayName": "void shuffle(Object[] a)",
                   "name": "shuffle"
                 }
               ]
@@ -113,7 +113,14 @@ var content;
               "ImgName": "fundamentals.svg",
               "titleColor": "#ea6874",
               "description": "A collection that provides the ability to collect items, but does not support item removal (pg. 124).",
-              "descriptionColor": "#ea6874"
+              "descriptionColor": "#ea6874",
+              "depends": ["js/libs/vizlib/algorithms/linkedbag.js"],
+              "methods": [
+                {
+                  "displayName": "void add(Item item)",
+                  "name": "add"
+                }
+              ]
             },
             {
               "uriName": "bag-array",
@@ -209,7 +216,7 @@ var content;
               "depends": ["js/libs/vizlib/algorithms/selection.js"],
               "methods": [
                 {
-                  "displayName": "sort(Comparable[] a)",
+                  "displayName": "void sort(Comparable[] a)",
                   "name": "sort"
                 }
               ]
@@ -225,7 +232,7 @@ var content;
               "depends": ["js/libs/vizlib/algorithms/insertion.js"],
               "methods": [
                 {
-                  "displayName": "sort(Comparable[] a)",
+                  "displayName": "void sort(Comparable[] a)",
                   "name": "sort"
                 }
               ]
@@ -332,51 +339,51 @@ var content;
               "depends": ["js/libs/vizlib/algorithms/bst.js"],
               "methods": [
                 {
-                  "displayName": "ceiling(Node x, Key key)",
+                  "displayName": "Node ceiling(Node x, Key key)",
                   "name": "ceiling"
                 },
                 {
-                  "displayName": "delete(Node x, Key key)",
+                  "displayName": "Node delete(Node x, Key key)",
                   "name": "delete"
                 },
                 {
-                  "displayName": "deleteMax(Node x)",
+                  "displayName": "Node deleteMax(Node x)",
                   "name": "deleteMax"
                 },
                 {
-                  "displayName": "deleteMin(Node x)",
+                  "displayName": "Node deleteMin(Node x)",
                   "name": "deleteMin"
                 },
                 {
-                  "displayName": "floor(Node x, Key key)",
+                  "displayName": "Node floor(Node x, Key key)",
                   "name": "floor"
                 },
                 {
-                  "displayName": "get(Node x, Key key)",
+                  "displayName": "Value get(Node x, Key key)",
                   "name": "get"
                 },
                 {
-                  "displayName": "keys(Node x, Queue<Key> queue, Key lo, Key hi)",
+                  "displayName": "void keys(Node x, Queue<Key> queue, Key lo, Key hi)",
                   "name": "keys"
                 },
                 {
-                  "displayName": "max(Node x)",
+                  "displayName": "Node max(Node x)",
                   "name": "max"
                 },
                 {
-                  "displayName": "min(Node x)",
+                  "displayName": "Node min(Node x)",
                   "name": "min"
                 },
                 {
-                  "displayName": "put(Node x, Key key, Value val)",
+                  "displayName": "Node put(Node x, Key key, Value val)",
                   "name": "put"
                 },
                 {
-                  "displayName": "rank(Key key, Node x)",
+                  "displayName": "int rank(Key key, Node x)",
                   "name": "rank"
                 },
                 {
-                  "displayName": "select(Node x, int k)",
+                  "displayName": "Node select(Node x, int k)",
                   "name": "select"
                 }
               ]
