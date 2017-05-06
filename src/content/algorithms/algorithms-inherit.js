@@ -121,15 +121,27 @@ var paused = true;
 var onPlayPause = function() {
   if (paused === true) {
     paused = false;
+    $('#idj-play-button').addClass('hide');
+    $('#idj-pause-button').removeClass('hide');
+    $('#sm-play-button').addClass('hide');
+    $('#sm-pause-button').removeClass('hide');
     playInterval = window.setInterval(onPlayInterval, vm.dur);
   } else {
     paused = true;
+    $('#idj-pause-button').addClass('hide');
+    $('#idj-play-button').removeClass('hide');
+    $('#sm-pause-button').addClass('hide');
+    $('#sm-play-button').removeClass('hide');
   }
 }
 
 var onPlayInterval = function() {
   if (vm.getFrame() === undefined || paused === true) {
     paused = true;
+    $('#idj-pause-button').addClass('hide');
+    $('#idj-play-button').removeClass('hide');
+    $('#sm-pause-button').addClass('hide');
+    $('#sm-play-button').removeClass('hide');
     window.clearInterval(playInterval);
   } else {
     vm.next();

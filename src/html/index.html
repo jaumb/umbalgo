@@ -71,32 +71,5 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="js/libs/ie10-viewport-bug-workaround.js"></script>
     <script src="js/libs/router.js"></script>
-    <script>
-      $('body').on('click', 'a.disabled', function(event) {
-        event.preventDefault();
-      });
-      $('body').on('click', 'li.disabled', function(event) {
-        event.preventDefault();
-      });
-
-      $('body').on('click', '#idj-play-button', function () {
-        $('#idj-play-button').addClass('hide');
-        $('#idj-pause-button').removeClass('hide');
-      });
-      $('body').on('click', '#idj-pause-button', function () {
-        $('#idj-pause-button').addClass('hide');
-        $('#idj-play-button').removeClass('hide');
-      });
-
-      $('body').on('click', '#sm-play-button', function () {
-        $('#sm-play-button').addClass('hide');
-        $('#sm-pause-button').removeClass('hide');
-      });
-      $('body').on('click', '#sm-pause-button', function () {
-        $('#sm-pause-button').addClass('hide');
-        $('#sm-play-button').removeClass('hide');
-      });
-
-    </script>
   </body>
 </html>
