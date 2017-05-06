@@ -111,6 +111,61 @@ body {
   top: +0px;
 }
 
+.profile-card {
+  display: inline-block;
+  background: #34495E;
+  width: 200px;
+  height: 200px;
+  border-radius: 4px;
+  position: relative;
+  margin-top: 70px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 7);
+}
+
+.profile-card .avatar {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #34495E;
+  border-radius: 50%;
+  border: 4px solid #34495E;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 7);
+  padding: 10px;
+}
+.profile-card .avatar img {
+  width: 50px;
+  height: 50px;
+  
+}
+.profile-card .bottom-section {
+  text-align: center;
+  padding: 40px 20px 15px 20px;
+}
+.profile-card .bottom-section h3 {
+  margin: 10px 0 20px 0;
+  color: #ffbb42;
+  font-family: 'Hammersmith One', sans-serif;
+}
+.profile-card .bottom-section p {
+  font-size: 14px;
+  color: #B0B0B0;
+  font-family: 'Montserrat', sans-serif;
+}
+.profile-card a span { 
+  position:absolute; 
+  width:100%;
+  height:100%;
+  top: 0;
+  left: 0;
+}
+
+.profile-card:hover {
+  background-color: #22313F;  
+}
+
+
+
 .icon-play {
   color: #5CB85C;
   font-size: 25px;
@@ -211,6 +266,17 @@ body {
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
 }
+.about-us {
+  margin-top:100px;
+  margin-bottom: 100px;
+}
+.info {
+  color: #95a5a6;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: 50px; 
+}
+
 .clear { 
   clear: both; 
   height: 70px; 

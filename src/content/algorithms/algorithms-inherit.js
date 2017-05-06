@@ -56,8 +56,11 @@ document.getElementById("container").innerHTML += `
   </div>
 
   <div class="pull-right">
-    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Play/Pause" onclick="onPlayPause()">
+     <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="idj-pause-button" class="btn btn-primary btn-lg outline hide" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-pause icon-play" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-primary btn-lg outline" data-toggle="tooltip" data-placement="bottom" title="Step" onclick="onNext()" id="next">
       <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>
@@ -71,8 +74,11 @@ document.getElementById("container").innerHTML += `
 
 document.getElementById("sm-device-btn").innerHTML +=
   `<div class="pull-right">
-    <button type="button" id="idj-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
-       <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
+    <button type="button" id="sm-play-button" class="btn btn-primary btn-lg outline" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-play icon-play" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="sm-pause-button" class="btn btn-primary btn-lg outline hide" onclick="onPlayPause()">
+      <span class="glyphicon glyphicon-pause icon-play" aria-hidden="true"></span>
     </button>
      <button type="button" class="btn btn-primary btn-lg outline" onclick="onNext()" id="next">
        <span class="glyphicon glyphicon-step-forward icon-step" aria-hidden="true"></span>

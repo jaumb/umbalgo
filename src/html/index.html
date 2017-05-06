@@ -54,7 +54,8 @@
 <!-- footer -->
 <div class="footer-nav">
 <nav class="navbar navbar-inverse navbar-fixed-bottom" style="height: 25px;">
-  <a  href="http://vm41.cs.umb.edu/index.html?page=algorithms" class="navbar-brand" style="color: #1a6ca8; font-family: 'Hammersmith One', sans-serif;">Algorithm Beacon</a>
+  <a href="http://vm41.cs.umb.edu/index.html?page=algorithms" class="navbar-brand" style="color: #1a6ca8; font-family: 'Hammersmith One', sans-serif;">Algorithm Beacon</a>
+  <a href="http://vm41.cs.umb.edu/index.html?page=about" class="navbar-brand navbar-right" style="margin-right: 15px;">About-Us</a>
 </nav>
 </div>
 <!-- footer ends -->
@@ -73,10 +74,28 @@
       $('body').on('click', 'a.disabled', function(event) {
         event.preventDefault();
       });
-
       $('body').on('click', 'li.disabled', function(event) {
         event.preventDefault();
       });
+
+      $('body').on('click', '#idj-play-button', function () {
+        $('#idj-play-button').addClass('hide');
+        $('#idj-pause-button').removeClass('hide');
+      });
+      $('body').on('click', '#idj-pause-button', function () {
+        $('#idj-pause-button').addClass('hide');
+        $('#idj-play-button').removeClass('hide');
+      });
+
+      $('body').on('click', '#sm-play-button', function () {
+        $('#sm-play-button').addClass('hide');
+        $('#sm-pause-button').removeClass('hide');
+      });
+      $('body').on('click', '#sm-pause-button', function () {
+        $('#sm-pause-button').addClass('hide');
+        $('#sm-play-button').removeClass('hide');
+      });
+
     </script>
   </body>
 </html>
