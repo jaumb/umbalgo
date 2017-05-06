@@ -32,6 +32,9 @@ sort(a) {
   } else {
     // Otherwise, jump past the loop body
     that.nextLineNumber = undefined;
+    that.vm.viz.setMinLabel('');
+    that.vm.viz.updateCanvas(that.vm.dur);
+    that.vm.updateViz();
     // Cleanup helper map entries in case this is a nested loop and they get
     // used again.
     that.locals["i"] = undefined;
@@ -115,6 +118,7 @@ sort(a) {
   that.vm.viz.swap(that.locals["i"], that.locals["min"]);                      // swap values
   that.vm.viz.setFill([that.locals["min"]], colors.BACKGROUND); // set position where min was back to grey
   that.vm.viz.updateCanvas(that.vm.dur);
+  that.vm.updateViz();
   that.vm.viz.setFill([that.locals["i"]], colors.FINISHED);     // set target to blue as we have put min there
   that.vm.viz.deemphasize([that.locals["i"]]);                  // get rid of emphasis square square on target
   that.vm.viz.updateCanvas(that.vm.dur);
