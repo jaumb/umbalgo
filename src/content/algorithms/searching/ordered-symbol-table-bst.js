@@ -251,7 +251,9 @@ let onInvoke = function() {
       let theNode = findNodeWithKey(vm.globals["root"], key);
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
       vm.viz.step();
+      console.log("deleting: " + theNode.val());
       vm.invokeFunc(method + "_", function(result) {
+        console.log("result: " + result.val());
         vm.globals["root"] = result;
         vm.viz.removeNodeAndUpdate(theNode, vm.dur);
         vm.viz.buildTreeAndUpdate(result, vm.dur);

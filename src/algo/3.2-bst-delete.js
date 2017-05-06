@@ -11,9 +11,9 @@ delete_(x, key) {
   that.vm.viz.setFillAndUpdate([that.args["x"]], colors.COMPARE, that.vm.dur);
   that.vm.viz.setFillAndUpdate([that.args["x"]], colors.BACKGROUND, that.vm.dur);
   that.vm.viz.play();
-  if (that.args["key"] < that.args["x"].key) {
+  if (that.args["key"] < that.args["x"].val()) {
     that.locals["cmp"] = 1;
-  } else if (that.args["key"] > that.args["x"].key) {
+  } else if (that.args["key"] > that.args["x"].val()) {
     that.locals["cmp"] = -1;
   } else {
     that.locals["cmp"] = 0;
@@ -48,11 +48,13 @@ delete_(x, key) {
 // Code:  } else {
   that.nextLineNumber = 11;
 // Code:    if (x.right == null) {
-  that.vm.viz.setFill([that.args["x"]], colors.WHITE);
-  that.vm.viz.setOutline([that.args["x"]], colors.WHITE);
-  that.vm.viz.setLabelFill([that.args["x"]], colors.WHITE);
-  that.vm.viz.deemphasizeAndUpdate([that.args["x"]], that.vm.dur);
-  that.vm.viz.play();
+  if (!that.args["x"].rChild()) {
+    that.vm.viz.setFill([that.args["x"]], colors.WHITE);
+    that.vm.viz.setOutline([that.args["x"]], colors.WHITE);
+    that.vm.viz.setLabelFill([that.args["x"]], colors.WHITE);
+    that.vm.viz.deemphasizeAndUpdate([that.args["x"]], that.vm.dur);
+    that.vm.viz.play();
+  }
   that.nextLineNumber = !(that.args["x"].rChild()) ? 12 : 14;
 // Code:      return x.left;
   that.result = that.args["x"].lChild();
@@ -60,11 +62,13 @@ delete_(x, key) {
 // Code:    }
   that.nextLineNumber = 14;
 // Code:    if (x.left == null) {
-  that.vm.viz.setFill([that.args["x"]], colors.WHITE);
-  that.vm.viz.setOutline([that.args["x"]], colors.WHITE);
-  that.vm.viz.setLabelFill([that.args["x"]], colors.WHITE);
-  that.vm.viz.deemphasizeAndUpdate([that.args["x"]], that.vm.dur);
-  that.vm.viz.play();
+  if (!that.args["x"].lChild()) {
+    that.vm.viz.setFill([that.args["x"]], colors.WHITE);
+    that.vm.viz.setOutline([that.args["x"]], colors.WHITE);
+    that.vm.viz.setLabelFill([that.args["x"]], colors.WHITE);
+    that.vm.viz.deemphasizeAndUpdate([that.args["x"]], that.vm.dur);
+    that.vm.viz.play();
+  }
   that.nextLineNumber = !(that.args["x"].lChild()) ? 15 : 17;
 // Code:      return x.right;
   that.results = that.args["x"].rChild();
@@ -72,6 +76,8 @@ delete_(x, key) {
 // Code:    }
   that.nextLineNumber = 17;
 // Code:    Node t = x;
+  that.vm.viz.setFill([that.args["x"]], colors.GREEN);
+  that.vm.viz.step();
   that.locals["t"] = that.args["x"];
   that.nextLineNumber = 18;
 // Code:    x = min(t.right);
@@ -104,8 +110,11 @@ delete_(x, key) {
     + (!(that.args["x"].rChild()) ? 0 : that.args["x"].rChild().n()) + 1);
   that.nextLineNumber = 23;
 // Code:  return x;
-  that.vm.viz.deemphasizeAndUpdate([that.args["x"]], that.vm.dur);
-  that.vm.viz.step();
+  that.vm.viz.setFill([that.locals["t"]], colors.WHITE);
+  that.vm.viz.setOutline([that.locals["t"]], colors.WHITE);
+  that.vm.viz.setLabelFill([that.locals["t"]], colors.WHITE);
+  that.vm.viz.deemphasizeAndUpdate([that.locals["t"]], that.vm.dur);
+  that.vm.viz.play();
   that.result = that.args["x"];
   that.nextLineNumber = undefined;
 // Code:}
