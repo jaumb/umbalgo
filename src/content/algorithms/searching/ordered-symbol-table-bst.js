@@ -248,12 +248,13 @@ let onInvoke = function() {
       let locA = a.slice();
       d3.shuffle(locA);
       let key = locA.pop();
+      console.log("looking for val: " + key);
       vm.viz.emphasizeAndUpdate([vm.globals["root"]], vm.dur);
       vm.viz.step();
-      console.log("deleting: " + theNode.val());
       vm.invokeFunc(method + "_", function(result) {
         console.log("result: " + result.val());
         let theNode = findNodeWithKey(vm.globals["root"], key);
+        console.log("deleting: " + theNode.val());
         vm.globals["root"] = result;
         vm.viz.removeNodeAndUpdate(theNode, vm.dur);
         vm.viz.buildTreeAndUpdate(result, vm.dur);
