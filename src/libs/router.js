@@ -49,6 +49,10 @@ var content;
    */
   content = [
     {
+      "uriName": "about",
+      "displayName": "About"
+    },
+    {
       "uriName": "algorithms",
       "displayName": "Algorithms",
       "depends": [
@@ -526,6 +530,7 @@ var content;
         {
           "uriName": "strings",
           "displayName": "Strings",
+          "ImgName": "strings.svg",
           "description": "Classic algorithms for addressing the underlying computational challenges related to processing strings (pg. 695).",
           "titleColor": "#20bdd0",
           "descriptionColor": "#20bdd0",
@@ -622,8 +627,7 @@ var content;
           let children = makeRoutes(c["children"]);
           routes[c["uriName"]] = {
             "index": children === undefined,
-            "children": c.hasOwnProperty("children")
-              ? children : undefined
+            "children": c.hasOwnProperty("children") ? children : undefined
           };
           for (let property in c) {
             if (c.hasOwnProperty(property) && property !== "index" && property !== "children") {
@@ -710,7 +714,7 @@ var content;
     let buildDropdown = function(page, route) {
       let dropdownContent = "";
       if (page["children"] === undefined) {
-        dropdownContent += `<li><a href="?page=` + route.join(",") + `,` + page["uriName"] + `">` + page["displayName"] + `</a></li>`;
+        dropdownContent += `<li role="presentation" class="` + page["status"] + `"><a href="?page=` + route.join(",") + `,` + page["uriName"] + `">` + page["displayName"] + `</a></li>`;
       } else {
         dropdownContent +=
           `<li><a href="?page=` + route.join(",") + "," + page["uriName"] + `">` + page["displayName"] + `<span class="caret"></span></a>

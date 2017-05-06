@@ -29,4 +29,5 @@ cp src/css/*.css ${OUT}/css
 cp -r d3/vizlib ${OUT}/js/libs
 mkdir -p ${OUT}/images
 cp src/images/*.svg ${OUT}/images
+cp src/images/*.ico ${OUT}/images
 
