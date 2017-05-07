@@ -62,7 +62,7 @@ add(item) {
   that.vm.updateViz();
 
   that.nextLineNumber = 6;
-// Code:  N++;
+// Code:  n++;
   that.vm.globals["N"]++;
 
   that.vm.viz.hideNLabel();
