@@ -114,7 +114,7 @@ var content;
               "ImgName": "fundamentals.svg",
               "titleColor": colors.TEAL,
               "description": "A collection that provides the ability to collect items, but does not support item removal (pg. 124).",
-              "descriptionColor": "colors.TEAL",
+              "descriptionColor": colors.TEAL,
               "depends": ["js/libs/vizlib/algorithms/linkedbag.js"],
               "methods": [
                 {
