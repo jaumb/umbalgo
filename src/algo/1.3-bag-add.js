@@ -1,6 +1,8 @@
+// Note:The add method has been called with a value to be added as the argument "item".
 // Code:public void add(Item item) {
 add(item) {
 // Code:  Node oldfirst = first;
+// Note:oldfirst is pointed at the node first currently points to.
   that.locals["oldfirst"] = that.vm.globals["first"];
   that.nextLineNumber = 3;
 
@@ -13,6 +15,7 @@ add(item) {
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
 // Code:  first = new Node();
+// Note: A new node is instantiated and the first is pointed at this new node.
   that.vm.globals["first"] = linkedNode_factory.getNode(that.args["item"], null);
 
   // add a node to front, resize elements, show node box (label hidden),
@@ -44,12 +47,14 @@ add(item) {
 
   that.nextLineNumber = 4;
 // Code:  first.item = item;
+// Node:The item field of the node pointed to by first is assigned the value of the item argument.
   that.vm.globals["first"].item = that.args["item"];
   that.vm.viz.showNodeLabel(that.vm.globals["first"].getID());
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
   that.nextLineNumber = 5;
 // Code:  first.next = oldfirst;
+// Note:The next field of the node pointed to by first is set to point at the node oldfirst points to.
   that.vm.globals["first"].next = that.locals["oldfirst"];
 
   that.vm.viz.pointNodeAtOldfirst(that.vm.globals["first"].getID());
@@ -63,6 +68,7 @@ add(item) {
 
   that.nextLineNumber = 6;
 // Code:  n++;
+// Note:The n field of this instance of the LinkedBag class is incremented to reflect the node that's been added.
   that.vm.globals["N"]++;
 
   that.vm.viz.hideNLabel();
