@@ -9,14 +9,16 @@ populateSelectInput({
 let firstInvocation = true;
 
 var onInvoke = function() {
-  if (firstInvocation === true) {
-    firstInvocation = false;
-    vm.globals["first"] = null;
-    vm.viz = vizlib.get_linkedbag(vm.globals["first"], svgW, svgH);
-    vm.viz.showFirst();
-    vm.viz.updateCanvas(vm.dur);
-    vm.viz.step();
+  if (vm.getFrame() === undefined) {
+    if (firstInvocation === true) {
+      firstInvocation = false;
+      vm.globals["first"] = null;
+      vm.viz = vizlib.get_linkedbag(vm.globals["first"], svgW, svgH);
+      vm.viz.showFirst();
+      vm.viz.updateCanvas(vm.dur);
+      vm.viz.step();
+    }
+    let data = inputData[document.getElementById("selectInput").value].pop();
+    vm.invokeFunc(document.getElementById("selectMethod").value, undefined, data);
   }
-  let data = inputData[document.getElementById("selectInput").value].pop();
-  vm.invokeFunc(document.getElementById("selectMethod").value, undefined, data);
 };

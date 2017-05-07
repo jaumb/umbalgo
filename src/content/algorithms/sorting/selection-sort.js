@@ -7,9 +7,11 @@ populateSelectInput({
 });
 
 var onInvoke = function() {
-  var data = inputData[document.getElementById("selectInput").value];
-  vm.viz = vizlib.get_selection(data, svgW, svgH);
-  vm.viz.updateCanvas(0);
-  vm.viz.step();
-  vm.invokeFunc(document.getElementById("selectMethod").value, undefined, data);
+  if (vm.getFrame() === undefined) {
+    var data = inputData[document.getElementById("selectInput").value];
+    vm.viz = vizlib.get_selection(data, svgW, svgH);
+    vm.viz.updateCanvas(0);
+    vm.viz.step();
+    vm.invokeFunc(document.getElementById("selectMethod").value, undefined, data);
+  }
 };

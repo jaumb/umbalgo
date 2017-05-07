@@ -109,7 +109,7 @@ d3.select(".visualization")
   .attr('id', svgCanvasName);
 
 var onNext = function() {
-  if (vm.getFrame() !== undefined) {
+  if (paused == true && vm.getFrame() !== undefined) {
     vm.next();
   }
 };
