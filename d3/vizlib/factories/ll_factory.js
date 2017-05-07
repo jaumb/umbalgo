@@ -253,6 +253,7 @@ var ll_factory = (function() {
       _first.name.setVal("first");
       _first.name.setFontSize((0.7 * _boxSize) + 'px');
       _first.arrow.setPosX1(coords.first.x);
+      _first.arrow.setStrokeWidth(1/30 * _boxSize);
       if (!_first.arrow.getPosY1()) {
         var fbb = redraw.getBBox(_first.name);
         _first.arrow.setPosY1(fbb.y + fbb.height);
@@ -266,6 +267,7 @@ var ll_factory = (function() {
       _oldfirst.name.setVal("oldfirst");
       _oldfirst.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldfirst.arrow.setPosX1(coords.oldfirst.x);
+      _oldfirst.arrow.setStrokeWidth(1/30 * _boxSize);
       if (!_oldfirst.arrow.getPosY1()) {
         var ofbb = redraw.getBBox(_oldfirst.name);
         _oldfirst.arrow.setPosY1(ofbb.y);
@@ -279,6 +281,7 @@ var ll_factory = (function() {
       _last.name.setVal("last");
       _last.name.setFontSize((0.7 * _boxSize) + 'px');
       _last.arrow.setPosX1(coords.last.x);
+      _last.arrow.setStrokeWidth(1/30 * _boxSize);
       if (!_last.arrow.getPosY1()) {
         var lbb = redraw.getBBox(_last.name);
         _last.arrow.setPosY1(lbb.y + lbb.height);
@@ -293,6 +296,7 @@ var ll_factory = (function() {
       _oldlast.name.setVal("oldlast");
       _oldlast.name.setFontSize((0.7 * _boxSize) + 'px');
       _oldlast.arrow.setPosX1(coords.oldlast.x);
+      _oldlast.arrow.setStrokeWidth(1/30 * _boxSize);
       if (!_oldlast.arrow.getPosY1()) {
         var olbb = redraw.getBBox(_oldlast.name);
         _oldlast.arrow.setPosY1(olbb.y);
@@ -309,6 +313,7 @@ var ll_factory = (function() {
     function _updateRefArrows() {
       _refs.forEach(function(ref){
         _pointRefsAtNode(ref.target, ref);
+        console.log("ref arrow stroke width: " + ref.arrow.getStrokeWidth());
         ref.arrow.setStrokeWidth(1/30 * _boxSize);
       });
     }
