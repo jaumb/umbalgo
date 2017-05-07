@@ -309,6 +309,7 @@ var ll_factory = (function() {
     function _updateRefArrows() {
       _refs.forEach(function(ref){
         _pointRefsAtNode(ref.target, ref);
+        ref.arrow.setStrokeWidth(1/30 * _boxSize);
       });
     }
 
@@ -327,6 +328,7 @@ var ll_factory = (function() {
       _n.getLabel().setPosX(_n.getPosX() + 0.5 * _boxSize);
       _n.getLabel().setPosY(_n.getPosY() + 0.72 * _boxSize);
       _n.getLabel().setFontSize((0.7 * _boxSize) + 'px');
+      _n.setStrokeWidth(1/30 * _boxSize);
 
       _nLabel.setPosX(_n.getPosX() - 0.5 * _boxSize);
       _nLabel.setPosY(_n.getPosY() + 0.7 * _boxSize);
@@ -363,7 +365,7 @@ var ll_factory = (function() {
           contentBox.setSpY(contentBox.getPosY());
           contentBox.setWidth(_boxSize);
           contentBox.setHeight(_boxSize);
-          contentBox.setStrokeWidth('.3vw');
+          contentBox.setStrokeWidth(1/30 * _boxSize);
           contentBox.getLabel().setVal(root.getVal());
           contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
           contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
@@ -379,7 +381,7 @@ var ll_factory = (function() {
           refBox.setSpY(refBox.getPosY());
           refBox.setWidth(_boxSize);
           refBox.setHeight(0.5 * _boxSize);
-          refBox.setStrokeWidth('.3vw');
+          refBox.setStrokeWidth(1/30 * _boxSize);
           refBox.getLabel().setVisibility('hidden');
 
           // create the ref arrow
@@ -436,7 +438,7 @@ var ll_factory = (function() {
         node.getContentBox().setSpY(node.getContentBox().getPosY());
         node.getContentBox().setWidth(_boxSize);
         node.getContentBox().setHeight(_boxSize);
-        node.getContentBox().setStrokeWidth(.3 * _resizeScale + 'vw');
+        node.getContentBox().setStrokeWidth(1/30 * _boxSize);
         node.getContentBox().getLabel().setFontSize((0.7 * _boxSize) + 'px');
         node.getContentBox().getLabel().setPosX(node.getContentBox().getPosX() + 0.5 * _boxSize);
         node.getContentBox().getLabel().setPosY(node.getContentBox().getPosY() + 0.72 * _boxSize);
@@ -449,14 +451,14 @@ var ll_factory = (function() {
         node.getRefBox().setSpY(node.getRefBox().getPosY());
         node.getRefBox().setWidth(_boxSize);
         node.getRefBox().setHeight(0.5 * _boxSize);
-        node.getRefBox().setStrokeWidth(.3 * _resizeScale + 'vw');
+        node.getRefBox().setStrokeWidth(1/30 * _boxSize);
         node.getRefBox().getLabel().setVisibility('hidden');
 
         node.getRefArrow().setPosX1(node.getRefBox().getCenter().x);
         node.getRefArrow().setPosY1(node.getRefBox().getCenter().y);
         node.getRefArrow().setSpX1(node.getRefArrow().getPosX1());
         node.getRefArrow().setSpY1(node.getRefArrow().getPosY1());
-        node.getRefArrow().setStrokeWidth(.3 * _resizeScale + 'vw');
+        node.getRefArrow().setStrokeWidth(1/30 * _boxSize);
         if (node.getNext()) {
           node.getRefArrow().setPosX2(node.getRefBox().getPosX() + 2 * _boxSize);
           node.getRefArrow().setPosY2(node.getRefBox().getPosY());
@@ -668,7 +670,7 @@ var ll_factory = (function() {
       contentBox.setSpY(contentBox.getPosY());
       contentBox.setWidth(_boxSize);
       contentBox.setHeight(_boxSize);
-      contentBox.setStrokeWidth('.3vw');
+      contentBox.setStrokeWidth(1/30 * _boxSize);
       contentBox.getLabel().setVal(newNode.getVal());
       contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
       contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
@@ -684,7 +686,7 @@ var ll_factory = (function() {
       refBox.setSpY(refBox.getPosY());
       refBox.setWidth(_boxSize);
       refBox.setHeight(0.5 * _boxSize);
-      refBox.setStrokeWidth('.3vw');
+      refBox.setStrokeWidth(1/30 * _boxSize);
       refBox.getLabel().setVisibility('hidden');
 
       // the ref arrow
@@ -733,7 +735,7 @@ var ll_factory = (function() {
       contentBox.setSpY(contentBox.getPosY());
       contentBox.setWidth(_boxSize);
       contentBox.setHeight(_boxSize);
-      contentBox.setStrokeWidth('.3vw');
+      contentBox.setStrokeWidth(1/30 * _boxSize);
       contentBox.getLabel().setVal(newNode.getVal());
       contentBox.getLabel().setFontSize((0.7 * _boxSize) + 'px');
       contentBox.getLabel().setPosX(contentBox.getPosX() + 0.5 * _boxSize);
@@ -749,7 +751,7 @@ var ll_factory = (function() {
       refBox.setSpY(refBox.getPosY());
       refBox.setWidth(_boxSize);
       refBox.setHeight(0.5 * _boxSize);
-      refBox.setStrokeWidth('.3vw');
+      refBox.setStrokeWidth(1/30 * _boxSize);
       refBox.getLabel().setVisibility('hidden');
 
       // the ref arrow for the new node
