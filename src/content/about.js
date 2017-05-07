@@ -19,7 +19,9 @@ document.getElementById("container").innerHTML += `
       are generated using a custom API that relies on the
       <a href="https://d3js.org/">D3 (Data-Driven Documents)</a> library.
       The site also makes use of of the
-      <a href="https://getbootstrap.com/">Bootstrap</a> framework.
+      <a href="https://getbootstrap.com/">Bootstrap</a> framework. The code
+      stepper is driven by a JavaScript engine that executes Java functions
+      modeled as special JavaScript Function objects.
     </p>
 
     <p align="left">
