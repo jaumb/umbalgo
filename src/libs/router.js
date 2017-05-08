@@ -659,10 +659,14 @@ var content;
     return {"children": makeRoutes(content)};
   }
 
+  let nav;
   let loadRoute = function(uriRoute) {
     try {
       // A list of levels in the navigational hierarchy as specified by the uri,
       // in descending order.
+      if (uriRoute === undefined) {
+        throw '';
+      }
       route = uriRoute.split(',');
       // A list of the levels of the navigational hierarchy that have already been
       // traversed.
@@ -671,7 +675,7 @@ var content;
       // that provides common content for a level of the navigational hierarchy.
       var scripts = [];
       // An array of html that comprises the nav bar.
-      var nav = [];
+      nav = [];
       // Iterate over the requested route level-by-level.
       routes = makeRoutes(content);
       for (var i = 0; i < route.length; ++i) {
@@ -714,7 +718,6 @@ var content;
       scripts = [];
       loadRoute('algorithms');
     }
-    console.log(scripts);
     // Load the scripts in order.
     loadScripts(scripts);
     // Populate the nav bar.
