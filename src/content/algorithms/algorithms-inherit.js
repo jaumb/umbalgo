@@ -45,7 +45,14 @@ document.getElementById("container").innerHTML += `
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6" style="height:100%">
       <div class="panel panel-default" style="height:100%; box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 1);">
-        <pre style="height:100%;background-color:#f5f5f5">
+
+   <div class="infoPane">
+			<p id="infoPane">
+			
+			<!-- Info pane will be inserted here -->
+			</p>
+	  </div>
+        <pre style="height:84%;background-color:#f5f5f5">
           <code id="codePane" style="background-color:#f5f5f5">
             <!-- Code pane will be inserted here -->
           </code>
