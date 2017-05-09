@@ -29,26 +29,25 @@ document.getElementById("container").innerHTML += `
       Swami Iyer at the University of Massachusetts Boston for the MS capstone.
     </p>
 
-    <p align="left">
+    <!--<p align="left">
       Jeff Amari<br>
       Jason Curran<br>
       Kinjalk Parmar<br>
       Nikhil Sidhwani<br>
       Tory Wheelwright<br>
-    </p>
+    </p>-->
   </div>
 
-  <!--
   <div class="row">
 
     <div class = "col-sm-6 col-md-2 col-md-offset-1">
       <div class="profile-card">
         <a href="#"><span></span></a>
-        <div class="avatar"><img src=""/></div>
+        <div class="avatar"><img src="images/avatar1.png"/></div>
         <div class="bottom-section">
           <a href="#"><span></span></a>
-          <h3>name</h3>
-          <p>information about each team member</p>
+          <h3>Jeff <br> Amari</h3>
+          <p>Visualization API</p>
         </div>
       </div>
     </div>
@@ -56,11 +55,11 @@ document.getElementById("container").innerHTML += `
     <div class = "col-sm-6 col-md-2">
       <div class="profile-card">
         <a href="#"><span></span></a>
-        <div class="avatar"><img src=""/></div>
+        <div class="avatar"><img src="images/avatar2.png"/></div>
         <div class="bottom-section">
           <a href="#"><span></span></a>
-          <h3>name</h3>
-          <p>information about each team member</p>
+          <h3>Jason <br> Curran</h3>
+          <p>Visualization API</p>
         </div>
       </div>
     </div>
@@ -68,11 +67,11 @@ document.getElementById("container").innerHTML += `
     <div class = "col-sm-6 col-md-2">
       <div class="profile-card">
         <a href="#"><span></span></a>
-        <div class="avatar"><img src=""/></div>
+        <div class="avatar"><img src="images/avatar3.png"/></div>
         <div class="bottom-section">
           <a href="#"><span></span></a>
-          <h3>name</h3>
-          <p>information about each team member</p>
+          <h3>Kinjalk <br> Parmar</h3>
+          <p>Front End</p>
         </div>
       </div>
     </div>
@@ -80,11 +79,11 @@ document.getElementById("container").innerHTML += `
     <div class = "col-sm-6 col-md-2">
       <div class="profile-card">
         <a href="#"><span></span></a>
-        <div class="avatar"><img src=""/></div>
+        <div class="avatar"><img src="images/avatar4.png"/></div>
         <div class="bottom-section">
           <a href="#"><span></span></a>
-          <h3>name</h3>
-          <p>information about each team member</p>
+          <h3>Nikhil Sidhwani</h3>
+          <p>Front End</p>
         </div>
       </div>
     </div>
@@ -92,17 +91,16 @@ document.getElementById("container").innerHTML += `
     <div class = "col-sm-6 col-md-2">
       <div class="profile-card">
         <a href="#"><span></span></a>
-        <div class="avatar"><img src=""/></div>
+        <div class="avatar"><img src="images/avatar5.png"/></div>
         <div class="bottom-section">
           <a href="#"><span></span></a>
-          <h3>name</h3>
-          <p>information about each team member</p>
+          <h3>Tory Wheelwright</h3>
+          <p>Code Stepper</p>
         </div>
       </div>
     </div>
 
   </div>
-  -->
 
 </div>
 `;
