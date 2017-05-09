@@ -10,8 +10,7 @@ var colors = {
   MUSTARD: '#EAB126',
   RED: '#F24C4E',
   LIGHTGREY: '#EEEEEE',
-  CARROT: '#e67e22',
-  ORANGE: '#f39c12',
+  PURPLE: '#BE90D4',
 
 }
 

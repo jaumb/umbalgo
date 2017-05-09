@@ -414,16 +414,16 @@ var content;
           "displayName": "Graphs",
           "ImgName": "graphs.svg",
           "description": "Algorithms related to the analysis and manipulation of pairwise connections between items (pg. 515).",
-          "titleColor": colors.GREEN,
-          "descriptionColor": colors.GREEN,
+          "titleColor": colors.PURPLE,
+          "descriptionColor": colors.PURPLE,
           "children": [
             {
               "uriName": "graph-undirected",
               "displayName": "Graph (Undirected)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -431,8 +431,8 @@ var content;
               "displayName": "Depth First Search (Undirected)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -440,8 +440,8 @@ var content;
               "displayName": "Breadth First Search (Undirected)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -449,8 +449,8 @@ var content;
               "displayName": "Connected Components",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -458,8 +458,8 @@ var content;
               "displayName": "Graph (Directed)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -467,8 +467,8 @@ var content;
               "displayName": "Cycle Detection",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -476,8 +476,8 @@ var content;
               "displayName": "Depth First Search (Directed)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -485,8 +485,8 @@ var content;
               "displayName": "Reverse Post-Order Vertex Ordering",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -494,8 +494,8 @@ var content;
               "displayName": "Kosaraju's Strongly-Connected Components",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -503,8 +503,8 @@ var content;
               "displayName": "Edge-Weighted Graph",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -512,8 +512,8 @@ var content;
               "displayName": "Kruskal's Minimum Spanning Tree",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -521,8 +521,8 @@ var content;
               "displayName": "Edge-Weighted Directed Graph",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -530,8 +530,8 @@ var content;
               "displayName": "Dijkstra's Shortest Paths",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             },
             {
@@ -539,8 +539,8 @@ var content;
               "displayName": "Shortest Paths (Edge-Weighted, Directed, Acyclic Graphs)",
               "status": "disabled",
               "ImgName": "graphs.svg",
-              "titleColor": colors.GREEN,
-              "descriptionColor": colors.GREEN,
+              "titleColor": colors.PURPLE,
+              "descriptionColor": colors.PURPLE,
               "description": "This visualization is under construction. We will make it available as soon as possible."
             }
           ]
