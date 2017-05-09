@@ -41,11 +41,33 @@ var selection = (function(elems, svgW, svgH) {
   minLabel.setPosY(min.getPosY() + 0.72 * min.getWidth());
 
   // initialize min caption
-  minCaption.setVal('min');
+  minCaption.setVal('a[min]');
   minCaption.setFontSize(0.25 * minLabel.getFontSize().split('p')[0] + 'px');
   minCaption.setTextAnchor('end');
   minCaption.setPosX(min.getPosX() + 0.9 * min.getWidth());
   minCaption.setPosY(min.getPosY() + 0.9 * min.getHeight());
+
+  // initialize i and j
+  var index_i = element_factory.getText();
+  var index_j = element_factory.getText();
+  var font_sz = array.getSlots()[0].getLabel().getFontSize().split('p')[0];
+  var _boxSize = array.getSlots()[1].getPosX() - array.getSlots()[0].getPosX();
+  index_i.setVal('i');
+  index_i.setFont(array.getSlots()[0].getLabel().getFont());
+  index_i.setFillOpacity(0);
+  index_i.setFontSize(0.7 * parseFloat(font_sz));
+  index_j.setVal('j');
+  index_j.setFillOpacity(0);
+  index_j.setFont(index_i.getFont());
+  index_j.setFontSize(index_i.getFontSize());
+  index_i.setPosX(array.getSlots()[0].getPosX() + 0.5 * _boxSize);
+  index_i.setPosY(array.getSlots()[0].getPosY() - 0.2 * _boxSize);
+  index_i.setSpX(index_i.getPosX());
+  index_i.setSpY(index_i.getPosY());
+  index_j.setPosX(array.getSlots()[1].getPosX() + 0.5 * _boxSize);
+  index_j.setPosY(array.getSlots()[1].getPosY() - 0.2 * _boxSize);
+  index_j.setSpX(index_i.getPosX());
+  index_j.setSpY(index_i.getPosY());
 
   //////////////////////////////////////////////////////////////////////////////
   // private methods
@@ -145,7 +167,9 @@ var selection = (function(elems, svgW, svgH) {
   var getText = function() {
     return vizlib.getText(array.getText()
                           .concat(min.getLabel())
-                          .concat(minCaption));
+                          .concat(minCaption)
+                          .concat(index_i)
+                          .concat(index_j));
   };
   //end of element array getters////////////////////////////////////////////////
 
@@ -218,6 +242,67 @@ var selection = (function(elems, svgW, svgH) {
   };
 
 
+  // i and j functions /////////////////////////////////////////////////////////
+
+  /**
+   * Set the position of i with respect to an array index.
+   * @param {number} index - Array element index to align i with.
+   */
+  var setI = function(index) {
+    redraw.addOps(function() {
+      var slot = array.getSlots()[index];
+      var pos = slot.getPos();
+      _boxSize = slot.getWidth();
+      index_i.setSpX(pos.x + 1 / 2 * _boxSize);
+      index_i.setSpY(pos.y - (_boxSize * 0.2));
+      index_i.setPosX(index_i.getSpX());
+      index_i.setPosY(index_i.getSpY());
+      index_i.setFillOpacity(100);
+      index_i.setStrokeOpacity(100);
+    });
+  }
+
+  /**
+   * Set the position of j with respect to an array index.
+   * @param {number} index - Array element index to align j with.
+   */
+  var setJ = function(index) {
+    redraw.addOps(function() {
+      var slot = array.getSlots()[index];
+      var pos = slot.getPos();
+      _boxSize = slot.getWidth();
+      index_j.setSpX(pos.x + 1 / 2 * _boxSize);
+      index_j.setSpY(pos.y - (_boxSize * 0.2));
+      index_j.setPosX(index_j.getSpX());
+      index_j.setPosY(index_j.getSpY());
+      index_j.setFillOpacity(100);
+      index_j.setStrokeOpacity(100)
+    });
+  }
+
+  /**
+   * Remove i from the canvas.
+   */
+  var removeI = function() {
+    redraw.addOps(function() {
+      index_i.setFillOpacity(0);
+      index_i.setStrokeOpacity(0);
+    });
+  }
+
+  /**
+   * Remove j from the canvas.
+   */
+  var removeJ = function() {
+    redraw.addOps(function() {
+      index_j.setFillOpacity(0);
+      index_j.setStrokeOpacity(0);
+    });
+  }
+
+  // end i and j functions /////////////////////////////////////////////////////
+
+
   /**
    * Update the canvas with the previously called visualization steps.
    * @param {number} duration - Duration per step (in millis).
@@ -259,6 +344,10 @@ var selection = (function(elems, svgW, svgH) {
     swap:swap,
     setFill:setFill,
     setLabels:setLabels,
+    setI:setI,
+    setJ:setJ,
+    removeI:removeI,
+    removeJ:removeJ,
     updateCanvas:updateCanvas,
     playpause:playpause,
     step:step

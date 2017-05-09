@@ -30,6 +30,7 @@ sort(a) {
     that.vm.viz.emphasize([that.locals["i"]]);    // draw box around target index
     that.vm.viz.setMinPos(that.locals["i"]);      // put the min box beneath target index
     that.vm.viz.setMinFill(colors.ACTIVE); // color min red (stays red throughout)
+    that.vm.viz.setI(that.locals["i"]);
     that.vm.viz.updateCanvas(that.vm.dur);
     that.vm.updateViz();
   } else {
@@ -75,6 +76,7 @@ sort(a) {
     that.nextLineNumber = 6;
     that.vm.viz.setMinPos(that.locals["j"]);                 // move min to compare index
     that.vm.viz.setFill([that.locals["j"]], colors.COMPARE); // color compare index orange
+    that.vm.viz.setJ(that.locals["j"]);
     that.vm.viz.updateCanvas(that.vm.dur);
     that.vm.updateViz();
   } else {
@@ -111,6 +113,9 @@ sort(a) {
 // Note:"Execute the loop update (j++) and return to the top of the inner loop to check the loop condition (j < n)."
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
+  that.vm.viz.removeJ();
+  that.vm.viz.updateCanvas(that.vm.dur);
+  that.vm.updateViz();
   that.nextLineNumber = 5;
 // Code:    exch(a, i, min);
 // Note:"The minimum value of the unsorted elements has been found. The min element is swapped with element i and index i is colored green to indicate it contains its sorted value."
@@ -130,6 +135,7 @@ sort(a) {
   that.vm.updateViz();
   that.vm.viz.setFill([that.locals["i"]], colors.FINISHED);     // set target to blue as we have put min there
   that.vm.viz.deemphasize([that.locals["i"]]);                  // get rid of emphasis square square on target
+  that.vm.viz.removeI();
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
 // Code:  }

@@ -57,6 +57,7 @@
         viz.emphasize([i]);    // draw box around target index
         viz.setMinPos(i);      // put the min box beneath target index
         viz.setMinFill(colors.ACTIVE); // color min red (stays red throughout)
+        viz.setI(i);
         viz.updateCanvas(dur);
       //         int min = i;
         var min = i;
@@ -67,6 +68,7 @@
         for (var j = i + 1; j < n; j++) {
           viz.setMinPos(j);                 // move min to compare index
           viz.setFill([j], colors.COMPARE); // color compare index orange
+          viz.setJ(j);
           viz.updateCanvas(dur);
       //             if (less(a[j], a[min])) min = j;
           if (l[j] < l[min]) {
@@ -79,6 +81,7 @@
           }
           viz.setFill([j], colors.BACKGROUND); // set compare index back to grey
           viz.setFill([min], colors.ACTIVE);   // set current min to red (might have been changed to grey)
+          viz.removeJ();
           viz.updateCanvas(dur);
         }
       //         exch(a, i, min);
@@ -90,6 +93,7 @@
         viz.updateCanvas(dur);
         viz.setFill([i], colors.FINISHED);     // set target to blue as we have put min there
         viz.deemphasize([i]);                  // get rid of emphasis square square on target
+        viz.removeI();
         viz.updateCanvas(dur);
       }
       viz.setMinLabel('');
