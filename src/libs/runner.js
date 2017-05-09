@@ -197,9 +197,10 @@ class StackFrame {
       // and display the associated note, if there is any.
       let note = this.funcModel.getLine(lineNumber)["note"];
       if (note) {
-        document.getElementById("codeNote").innerHTML = eval(note)(this);
+        console.log(eval(note)(this));
+        document.getElementById("infoPane").innerHTML = eval(note)(this);
       } else {
-        document.getElementById("codeNote").innerHTML = "";
+        document.getElementById("infoPane").innerHTML = "";
       }
     }
   }
