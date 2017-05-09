@@ -110,7 +110,7 @@ sort(a) {
   // Then advance to the next line.
   that.nextLineNumber = 8;
 // Code:    }
-// Note:"Execute the loop update (j++) and return to the top of the inner loop to check the loop condition (j < n)."
+// Note:"Return to the inner loop header."
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.vm.viz.removeJ();
@@ -139,7 +139,7 @@ sort(a) {
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
 // Code:  }
-// Note:"Execute the loop update (i++) and return to the top of the outer loop to check the loop condition (i < n)."
+// Note:"Return to the outer loop header."
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 3;

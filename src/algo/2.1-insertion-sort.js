@@ -94,14 +94,14 @@ sort(a) {
     that.vm.updateViz();
   }
 // Code:    }
-// Note:"Execute the inner loop update (j--) and return to the top of the inner loop to check the loop condition (j > 0 and the value at index j is less than the value at j-1.)."
+// Note:"Return to the inner loop header."
   that.vm.viz.setFill([that.locals["j"] - 1, that.locals["j"]], colors.BACKGROUND);
   that.vm.viz.deemphasize([that.locals["j"]]);
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
   that.nextLineNumber = 4;
 // Code:  }
-// Note:"Execute the outer loop update (i++) and return to the top of the outer loop to check the loop condition (i < n)."
+// Note:"Return to the outer loop header."
   that.nextLineNumber = 3;
 // Code:}
 }
