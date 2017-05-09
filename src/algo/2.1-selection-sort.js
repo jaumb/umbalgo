@@ -1,13 +1,16 @@
 // Code:public static void sort(Comparable[] a) {
+// Note:"Sort an array of Comparable items in ascending order."
 sort(a) {
-// Code:  int N = a.length;
+// Code:  int n = a.length;
+// Note:"Creates a variable n and stores the number of elements in the array there."
   that.locals["N"] = that.args["a"].length;
   // Tell the Runner which line should be executed next. If this were a
   // conditional construct of some sort, we may need to jump over a block or
   // back to the top of a loop. This was a simple assignment statement, so we
   // just want to proceed to the next line.
   that.nextLineNumber = 3;
-// Code:  for (int i = 0; i < N; i++) {
+// Code:  for (int i = 0; i < n; i++) {
+// Note:"If this is the first iteration of the outer loop, i is initialized to 0. On every iteration the loop condition (i < n) is checked to determine if the body will be executed. A red box is drawn around the element at this iteration's i."
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
   if (that.cache["3__firstIteration"] === undefined) {
@@ -41,13 +44,15 @@ sort(a) {
     that.cache["3__firstIteration"] = undefined;
   }
 // Code:    int min = i;
+// Note:"min is initially set to i. The inner loop will compare min to the unsorted elements, looking for the smallest value. (The current min is colored red)."
   that.locals["min"] = that.locals["i"];
   that.nextLineNumber = 5;
   that.vm.viz.setFill([that.locals["i"]], colors.ACTIVE);
   that.vm.viz.setMinLabel(that.args["a"][that.locals["i"]]);
   that.vm.viz.updateCanvas(that.vm.dur * 2);
   that.vm.updateViz();
-// Code:    for (int j = i + 1; j < N; j++) {
+// Code:    for (int j = i + 1; j < n; j++) {
+// Note:"If this is the first iteration of the inner loop, j is set to the first unsorted index (i + 1). On every iteration the loop condition (j < n) is checked to determine if the body will be executed."
   // Check if this is the first iteration of this loop. If it isn't, there'd be
   // an entry in this line's helpers map to indicate so.
   if (that.cache["5__firstIteration"] === undefined) {
@@ -81,6 +86,7 @@ sort(a) {
     that.cache["5__firstIteration"] = undefined;
   }
 // Code:      if (less(a[j], a[min]))
+// Note:"Check to see if the value of element j is less than the value of min. Element j is colored orange."
   // Invoke less() and store the result in the helpers map. The first argument
   // to invoke() is the function name, followed by a callback that takes a
   // single argument to recieve the return value. Any following arguments are
@@ -89,6 +95,7 @@ sort(a) {
     that.args["a"][that.locals["j"]] < that.args["a"][that.locals["min"]]
     ? 7 : 8;
 // Code:        min = j;
+// Note:"j is less than min and becomes the new min."
   // This is a simple assignment.
   that.vm.viz.setFill([that.locals["min"]], colors.BACKGROUND);
   that.vm.viz.updateCanvas(that.vm.dur);
@@ -101,10 +108,12 @@ sort(a) {
   // Then advance to the next line.
   that.nextLineNumber = 8;
 // Code:    }
+// Note:"Execute the loop update (j++) and return to the top of the inner loop to check the loop condition (j < n)."
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 5;
 // Code:    exch(a, i, min);
+// Note:"The minimum value of the unsorted elements has been found. The min element is swapped with element i and index i is colored green to indicate it contains its sorted value."
   // Invoke exch. exch() is a function that was registered with the runner
   // and is looked up by it's name as a string (the first argument to invoke()).
   // The other arguments are the arguments to exch. exch is then invoked with
@@ -124,8 +133,10 @@ sort(a) {
   that.vm.viz.updateCanvas(that.vm.dur);
   that.vm.updateViz();
 // Code:  }
+// Note:"Execute the loop update (i++) and return to the top of the outer loop to check the loop condition (i < n)."
   // The closing bracket of a for loop should always jump back to the top of the
   // loop and do nothing else.
   that.nextLineNumber = 3;
 // Code:}
+// Note:"Selection sort is complete."
 }
