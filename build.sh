@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# note: this script will fail on the default ubuntu shell, must run it as
+# bash build.sh
+
 set -v
 
 WD=$(pwd)
