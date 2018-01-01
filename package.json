@@ -1,0 +1,69 @@
+{
+  "name": "umbalgo",
+  "version": "2.0.0",
+  "description": "An algorithm visualization companion site",
+  "scripts": {
+    "start": "npm run prod && node server.js",
+    "dev": "webpack",
+    "prod": "NODE_ENV=production webpack",
+    "lint": "eslint **/*.js",
+    "clean": "rm -rf build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.1.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.14.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-config-standard-react": "^5.0.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.5.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "jasmine": "^2.8.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-webpack": "^2.0.9",
+    "underscore": "^1.8.3",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "d3": "^4.12.0",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
+  },
+  "engines": {
+    "node": "9.*",
+    "npm": "5.*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/umbalgo/umbalgo.git"
+  },
+  "keywords": [
+    "algorithms",
+    "visualize",
+    "d3",
+    "react"
+  ],
+  "author": "University of Massachusetts Boston",
+  "contributors": [
+    "Jason Curran",
+    "Tory Wheelwright",
+    "Jeff Amari",
+    "Nikhil Sidhwani",
+    "Kinjalk Parmar"
+  ],
+  "license": "MIT"
+}
