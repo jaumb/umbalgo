@@ -4,7 +4,7 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const srcPath = path.resolve(__dirname, 'src');
-const outPath = path.resolve(__dirname, 'build');
+const outPath = path.resolve(__dirname, 'client');
 
 const build = {
   context: __dirname,
@@ -14,8 +14,8 @@ const build = {
   devtool: !isProduction ? 'inline-source-map' : false,
 
   output: {
-    filename: 'bundle.js',
-    chunkFilename: '[name].bundle.js',
+    filename: 'client.min.js',
+    chunkFilename: '[name].client.min.js',
     path: outPath,
     publicPath: outPath
   },

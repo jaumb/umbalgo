@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
 });
 
 // static resources and homepage
-app.use(express.static(path.resolve(__dirname, 'src/images')));
+app.use(express.static(path.resolve(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
