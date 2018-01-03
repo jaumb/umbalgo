@@ -14,14 +14,19 @@ const build = {
   devtool: !isProduction ? 'inline-source-map' : false,
 
   output: {
-    filename: 'client.min.js',
-    chunkFilename: '[name].client.min.js',
+    filename: isProduction ? 'client.min.js' : 'client.js',
+    chunkFilename: isProduction ? '[name].client.min.js' : '[name].client.js',
     path: outPath,
     publicPath: outPath
   },
 
   plugins: !isProduction ? [] : [
-    new webpack.optimize.UglifyJsPlugin({ sourcemap: false }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourcemap: false,
+      output: { comments: false },
+      warnings: false,
+      ecma: 6
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(true)
   ],
 
